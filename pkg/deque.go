@@ -91,72 +91,72 @@ func Constructor(k int) MyCircularDeque {
 	return MyCircularDeque{items: s, front: 0, size: 0}
 }
 
-func (this *MyCircularDeque) InsertFront(value int) bool {
-	if this.IsFull() {
+func (d *MyCircularDeque) InsertFront(value int) bool {
+	if d.IsFull() {
 		return false
 	}
-	this.items[this.front] = value
-	this.front = (this.front + 1) % len(this.items)
-	this.size++
+	d.items[d.front] = value
+	d.front = (d.front + 1) % len(d.items)
+	d.size++
 	return true
 }
 
-func (this *MyCircularDeque) InsertLast(value int) bool {
-	if this.IsFull() {
+func (d *MyCircularDeque) InsertLast(value int) bool {
+	if d.IsFull() {
 		return false
 	}
-	this.items[this.getRearIndex()] = value
-	this.size++
+	d.items[d.getRearIndex()] = value
+	d.size++
 	return true
 }
 
-func (this *MyCircularDeque) DeleteFront() bool {
-	if this.IsEmpty() {
+func (d *MyCircularDeque) DeleteFront() bool {
+	if d.IsEmpty() {
 		return false
 	}
-	this.size--
-	this.front = (this.front - 1 + len(this.items)) % len(this.items)
-	this.items[this.front] = -1
+	d.size--
+	d.front = (d.front - 1 + len(d.items)) % len(d.items)
+	d.items[d.front] = -1
 	return true
 }
 
-func (this *MyCircularDeque) DeleteLast() bool {
-	if this.IsEmpty() {
+func (d *MyCircularDeque) DeleteLast() bool {
+	if d.IsEmpty() {
 		return false
 	}
-	this.size--
-	this.items[this.getRearIndex()] = -1
+	d.size--
+	d.items[d.getRearIndex()] = -1
 	return true
 }
 
-func (this *MyCircularDeque) getFrontIndex() int {
-	return (this.front - 1 + len(this.items)) % len(this.items)
+func (d *MyCircularDeque) getFrontIndex() int {
+	return (d.front - 1 + len(d.items)) % len(d.items)
 }
 
-func (this *MyCircularDeque) GetFront() int {
-	if this.IsEmpty() {
+func (d *MyCircularDeque) GetFront() int {
+	if d.IsEmpty() {
 		return -1
 	}
-	return this.items[this.getFrontIndex()]
+	return d.items[d.getFrontIndex()]
 }
 
-func (this *MyCircularDeque) getRearIndex() int {
-	return (this.front - this.size - 1 + len(this.items)) % len(this.items)
+func (d *MyCircularDeque) getRearIndex() int {
+	return (d.front - d.size - 1 + len(d.items)) % len(d.items)
 }
 
-func (this *MyCircularDeque) GetRear() int {
-	if this.IsEmpty() {
+func (d *MyCircularDeque) GetRear() int {
+	if d.IsEmpty() {
 		return -1
 	}
-	return this.items[(this.getRearIndex()+1)%len(this.items)]
+	return d.items[(d.getRearIndex()+1)%len(d.items)]
 }
 
-func (this *MyCircularDeque) IsEmpty() bool {
-	return this.size == 0
+func (d *MyCircularDeque) IsEmpty() bool {
+	return d.size == 0
 }
 
-func (this *MyCircularDeque) IsFull() bool {
-	return this.size == len(this.items)
+func (d *MyCircularDeque) IsFull() bool {
+	return d.size == len(d.items)
 }
 
 /**

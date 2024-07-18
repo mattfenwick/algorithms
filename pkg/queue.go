@@ -80,51 +80,51 @@ func QueueConstructor(k int) MyCircularQueue {
 	return MyCircularQueue{items: s, front: 0, size: 0}
 }
 
-func (this *MyCircularQueue) EnQueue(value int) bool {
-	if this.IsFull() {
+func (d *MyCircularQueue) EnQueue(value int) bool {
+	if d.IsFull() {
 		return false
 	}
-	this.items[this.front] = value
-	this.front = (this.front + 1) % len(this.items)
-	this.size++
+	d.items[d.front] = value
+	d.front = (d.front + 1) % len(d.items)
+	d.size++
 	return true
 }
 
-func (this *MyCircularQueue) DeQueue() bool {
-	if this.IsEmpty() {
+func (d *MyCircularQueue) DeQueue() bool {
+	if d.IsEmpty() {
 		return false
 	}
-	this.items[this.getRearIndex()] = -1
-	this.size--
+	d.items[d.getRearIndex()] = -1
+	d.size--
 	return true
 }
 
-func (this *MyCircularQueue) getFrontIndex() int {
-	return (this.front - 1 + len(this.items)) % len(this.items)
+func (d *MyCircularQueue) getFrontIndex() int {
+	return (d.front - 1 + len(d.items)) % len(d.items)
 }
 
-func (this *MyCircularQueue) getRearIndex() int {
-	return (this.front - this.size + len(this.items)) % len(this.items)
+func (d *MyCircularQueue) getRearIndex() int {
+	return (d.front - d.size + len(d.items)) % len(d.items)
 }
 
-func (this *MyCircularQueue) Front() int {
-	if this.IsEmpty() {
+func (d *MyCircularQueue) Front() int {
+	if d.IsEmpty() {
 		return -1
 	}
-	return this.items[this.getRearIndex()]
+	return d.items[d.getRearIndex()]
 }
 
-func (this *MyCircularQueue) Rear() int {
-	if this.IsEmpty() {
+func (d *MyCircularQueue) Rear() int {
+	if d.IsEmpty() {
 		return -1
 	}
-	return this.items[this.getFrontIndex()]
+	return d.items[d.getFrontIndex()]
 }
 
-func (this *MyCircularQueue) IsEmpty() bool {
-	return this.size == 0
+func (d *MyCircularQueue) IsEmpty() bool {
+	return d.size == 0
 }
 
-func (this *MyCircularQueue) IsFull() bool {
-	return this.size == len(this.items)
+func (d *MyCircularQueue) IsFull() bool {
+	return d.size == len(d.items)
 }
