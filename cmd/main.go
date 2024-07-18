@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/mattfenwick/algorithms/pkg"
+	"github.com/mattfenwick/algorithms/pkg/taxes"
 )
 
 func main() {
@@ -40,6 +41,8 @@ func main() {
 		pkg.MaxConsecutiveAnswersMain()
 	case "search-suggestions":
 		pkg.SuggestedProductsMain()
+	case "taxes":
+		taxes.RunTaxes()
 	default:
 		panic("missed case")
 	}
