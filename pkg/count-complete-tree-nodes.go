@@ -21,7 +21,9 @@ var (
 )
 
 func BuildTree(length int) *TreeNode {
-	if length == 0 { return nil }
+	if length == 0 {
+		return nil
+	}
 	nodes := make([]*TreeNode, length)
 	nodes[0] = &TreeNode{Val: 1}
 	for i := 1; i < length; i++ {
@@ -68,12 +70,12 @@ func isPresent(root *TreeNode, n int) bool {
 	turns := []bool{}
 	for i := n; i > 1; i = i / 2 {
 		// fmt.Printf("turn: %d, %d, %t\n", n, i, i % 2 == 0)
-		turns = append(turns, i % 2 == 0)
+		turns = append(turns, i%2 == 0)
 	}
 	cur := root
 	for j := 0; j < len(turns); j++ {
 		// fmt.Printf("%+v, %d, %+v\n", cur, j, turns)
-		if turns[len(turns) - j - 1] {
+		if turns[len(turns)-j-1] {
 			cur = cur.Left
 		} else {
 			cur = cur.Right
@@ -91,7 +93,7 @@ func countNodes(root *TreeNode) int {
 	for i := 1; i < maxDepth; i++ {
 		left *= 2
 	}
-	right := left * 2 -1
+	right := left*2 - 1
 	for right > left {
 		mid := (left + right + 1) / 2
 		if isPresent(root, mid) {

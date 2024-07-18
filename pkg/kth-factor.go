@@ -15,11 +15,11 @@ func GetFactors(n int) []int {
 	lows := []int{}
 	highs := []int{}
 	for i := 1; ; i++ {
-		quotient := n/i
+		quotient := n / i
 		if quotient < i {
 			break
 		}
-		if n % i == 0 {
+		if n%i == 0 {
 			lows = append(lows, i)
 			if i != quotient {
 				highs = append(highs, quotient)

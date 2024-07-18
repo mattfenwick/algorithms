@@ -15,9 +15,11 @@ func main() {
 	}
 	switch mode {
 	case "logs":
-	pkg.LogsMain()
+		pkg.LogsMain()
+	case "binary-search":
+		pkg.BinarySearchMain()
 	case "ugh":
-	pkg.UghMain()
+		pkg.UghMain()
 	case "kth-factor":
 		pkg.KthFactorMain()
 	case "count-complete-tree-nodes":
@@ -26,6 +28,19 @@ func main() {
 		pkg.CountNegativesMain()
 	case "find-target-indices":
 		pkg.FindTargetIndicesMain()
-	default: panic("missed case")
+	case "k-weakest-rows":
+		pkg.KWeakestRowsMain()
+	case "maximum-count":
+		pkg.MaximumCountMain()
+	case "find-distance-value":
+		pkg.FindDistanceValueMain()
+	case "ship-within-days":
+		pkg.ShipWithinDaysMain()
+	case "max-consecutive-answers":
+		pkg.MaxConsecutiveAnswersMain()
+	case "search-suggestions":
+		pkg.SuggestedProductsMain()
+	default:
+		panic("missed case")
 	}
 }
