@@ -3,6 +3,7 @@ package taxes
 import (
 	"fmt"
 
+	"github.com/mattfenwick/collections/pkg/json"
 	"github.com/mattfenwick/collections/pkg/slice"
 )
 
@@ -11,6 +12,16 @@ func RunTaxes() {
 	HackPrintOrdinaryIncomeBrackets()
 	fmt.Printf("\nlong term capital gains:\n")
 	HackPrintLTCGIncomeBrackets()
+
+	estimate := EstimateTaxes(&Income{
+		Year:   2024,
+		Status: FilingStatusSingle,
+		IncomeSources: []*IncomeSource{
+			{Description: "job1", IncomeType: IncomeTypeW2, Amount: 50000},
+		},
+		Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
+	})
+	fmt.Printf("estimate: \n%s\n\n", json.MustMarshalToString(estimate))
 }
 
 func HackPrintOrdinaryIncomeBrackets() {

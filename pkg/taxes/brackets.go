@@ -18,9 +18,14 @@ type Bracket struct {
 	End        *int
 }
 
-func (b *Bracket) GetTax(income int) int {
+type BracketTax struct {
+	TaxableAmount int
+	Tax           int
+}
+
+func (b *Bracket) GetTax(income int) *BracketTax {
 	if income <= b.Start {
-		return 0
+		return &BracketTax{0, 0}
 	}
 	amount := income - b.Start
 	if b.End != nil {
@@ -28,7 +33,7 @@ func (b *Bracket) GetTax(income int) int {
 		amount = builtin.Min(end-b.Start, income-b.Start)
 	}
 	// TODO probably doesn't round right
-	return amount * b.RawBracket.Rate / 100
+	return &BracketTax{amount, amount * b.RawBracket.Rate / 100}
 }
 
 type StatusBrackets struct {
@@ -60,7 +65,7 @@ func (b *StatusBrackets) GetBrackets() []*Bracket {
 		if r.Max < math.MaxInt {
 			end := r.Max
 			b.End = &end
-			start = end + 1
+			start = end
 		}
 		out = append(out, b)
 	}

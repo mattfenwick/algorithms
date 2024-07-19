@@ -144,21 +144,16 @@ type Income struct {
 	Deduction     int
 }
 
-type TaxResult struct {
-	Income   *Income
-	Brackets []*BracketResult
-}
-
-type BracketResult struct {
-	Income  int
-	Tax     int
-	Bracket *Bracket
+type TaxEstimateBracket struct {
+	BracketTax *BracketTax
+	Bracket    *Bracket
 }
 
 type TaxEstimate struct {
 	Income               *Income
 	TaxYearConstants     *TaxYearConstants
 	StatusConstants      *TaxStatusConstants
+	Taxes                []*TaxEstimateBracket
 	TotalIncome          int
 	IncomeAfterDeduction int
 }
@@ -175,11 +170,10 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 
 	incomeAfterDeduction := totalIncome - income.Deduction
 
-	// brackets := statusConstants.OrdinaryIncomeBrackets
-	// remainingIncome := incomeAfterDeduction
-	// for remainingIncome > 0 {
-	// 	taxed := builtin.Min()
-	// }
+	var bracketTaxes []*TaxEstimateBracket
+	for _, b := range statusConstants.OrdinaryIncomeBrackets.GetBrackets() {
+		bracketTaxes = append(bracketTaxes, &TaxEstimateBracket{b.GetTax(incomeAfterDeduction), b})
+	}
 
 	// TODO LTCG
 	// TODO Social Security
@@ -190,6 +184,7 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 		Income:               income,
 		TaxYearConstants:     yearConstants,
 		StatusConstants:      statusConstants,
+		Taxes:                bracketTaxes,
 		TotalIncome:          totalIncome,
 		IncomeAfterDeduction: incomeAfterDeduction,
 	}
