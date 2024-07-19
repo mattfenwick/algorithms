@@ -1,8 +1,7 @@
 package taxes
 
 import (
-	"math"
-
+	"github.com/mattfenwick/collections/pkg/builtin"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
 )
@@ -30,98 +29,6 @@ func (f FilingStatus) ToString() string {
 		panic(errors.Errorf("invalid status: %s", f))
 	}
 }
-
-type TaxStatusConstants struct {
-	OrdinaryIncomeBrackets *StatusBrackets
-	LTCGIncomeBrackets     *StatusBrackets
-	StandardDeduction      int
-	SocialSecurityLimit    int
-	// InvestmentTaxLimit todo name ?
-	// MedicareThreshold todo name ?
-}
-
-type TaxYearConstants struct {
-	ByStatus map[FilingStatus]*TaxStatusConstants
-}
-
-var (
-	TaxYear2024 = &TaxYearConstants{
-		ByStatus: map[FilingStatus]*TaxStatusConstants{
-			FilingStatusSingle: {
-				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
-					{10, 11600},
-					{12, 47150},
-					{22, 100525},
-					{24, 191950},
-					{32, 243725},
-					{35, 609350},
-					{37, math.MaxInt},
-				}),
-				LTCGIncomeBrackets: NewStatusBrackets([]*RawBracket{
-					{0, 47025},
-					{15, 518900},
-					{20, math.MaxInt},
-				}),
-				StandardDeduction: 14600,
-			},
-			FilingStatusMarriedJointly: {
-				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
-					{10, 23200},
-					{12, 94300},
-					{22, 201050},
-					{24, 383900},
-					{32, 487450},
-					{35, 731200},
-					{37, math.MaxInt},
-				}),
-				LTCGIncomeBrackets: NewStatusBrackets([]*RawBracket{
-					{0, 94050},
-					{15, 583750},
-					{20, math.MaxInt},
-				}),
-				StandardDeduction: 29200,
-			},
-			FilingStatusMarriedSeparately: {
-				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
-					{10, 11600},
-					{12, 47150},
-					{22, 100525},
-					{24, 191950},
-					{32, 243725},
-					{35, 365600},
-					{37, math.MaxInt},
-				}),
-				LTCGIncomeBrackets: NewStatusBrackets([]*RawBracket{
-					{0, 47025},
-					{15, 291850},
-					{20, math.MaxInt},
-				}),
-				StandardDeduction: 14600,
-			},
-			FilingStatusHeadOfHouseHold: {
-				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
-					{10, 16550},
-					{12, 63100},
-					{22, 100500},
-					{24, 191950},
-					{32, 243700},
-					{35, 609350},
-					{37, math.MaxInt},
-				}),
-				LTCGIncomeBrackets: NewStatusBrackets([]*RawBracket{
-					{0, 63000},
-					{15, 551350},
-					{20, math.MaxInt},
-				}),
-				StandardDeduction: 21900,
-			},
-		},
-	}
-
-	TaxYears = map[int]*TaxYearConstants{
-		2024: TaxYear2024,
-	}
-)
 
 type IncomeType string
 
@@ -153,7 +60,9 @@ type TaxEstimate struct {
 	Income               *Income
 	TaxYearConstants     *TaxYearConstants
 	StatusConstants      *TaxStatusConstants
-	Taxes                []*TaxEstimateBracket
+	OrdinaryTaxes        []*TaxEstimateBracket
+	NiitIncome           int
+	NiitTax              int
 	TotalIncome          int
 	IncomeAfterDeduction int
 }
@@ -167,6 +76,16 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 	// TODO decision -- include deduction as first bracket?
 
 	totalIncome := slice.Sum(slice.Map(func(i *IncomeSource) int { return i.Amount }, income.IncomeSources))
+	capitalGains := slice.Sum(
+		slice.Map(func(i *IncomeSource) int { return i.Amount },
+			slice.Filter(func(i *IncomeSource) bool {
+				switch i.IncomeType {
+				case IncomeTypeW2:
+					return false
+				default:
+					return true
+				}
+			}, income.IncomeSources)))
 
 	incomeAfterDeduction := totalIncome - income.Deduction
 
@@ -175,16 +94,27 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 		bracketTaxes = append(bracketTaxes, &TaxEstimateBracket{b.GetTax(incomeAfterDeduction), b})
 	}
 
+	// net investment tax -- 3.8% on investment income over $250K
+	//   https://www.irs.gov/taxtopics/tc559
+	niitInvestmentIncome := builtin.Max(0, incomeAfterDeduction-statusConstants.NetInvestmentTaxLimit)
+	niitIncome := builtin.Min(capitalGains, niitInvestmentIncome)
+	niitTax := int(yearConstants.NetInvestmentTaxRate * float32(niitIncome))
+
+	// social security
+	//   https://www.ssa.gov/oact/cola/cbb.html#:~:text=For%20earnings%20in%202024%2C%20this,for%20employees%20and%20employers%2C%20each.
+	//   https://www.irs.gov/taxtopics/tc751
+
 	// TODO LTCG
 	// TODO Social Security
 	// TODO medicare
-	// TODO investment
 
 	return &TaxEstimate{
 		Income:               income,
 		TaxYearConstants:     yearConstants,
 		StatusConstants:      statusConstants,
-		Taxes:                bracketTaxes,
+		OrdinaryTaxes:        bracketTaxes,
+		NiitIncome:           niitIncome,
+		NiitTax:              niitTax,
 		TotalIncome:          totalIncome,
 		IncomeAfterDeduction: incomeAfterDeduction,
 	}
