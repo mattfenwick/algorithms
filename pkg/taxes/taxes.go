@@ -1,6 +1,8 @@
 package taxes
 
 import (
+	"fmt"
+
 	"github.com/mattfenwick/collections/pkg/builtin"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
@@ -87,7 +89,6 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 		panic(errors.Errorf("no tax constant info for year %d", income.Year))
 	}
 	statusConstants := yearConstants.ByStatus[income.Status]
-	// TODO decision -- include deduction as first bracket?
 
 	totalIncome := slice.Sum(slice.Map(func(i *IncomeSource) int { return i.Amount }, income.IncomeSources))
 	capitalGains := slice.Sum(
@@ -115,9 +116,9 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 	niitIncome := builtin.Min(capitalGains, niitInvestmentIncome)
 	niitTax := int(yearConstants.NetInvestmentTaxRate * float32(niitIncome))
 
-	//   note that NIIT is an alternative to 0.9%:
-	//     NIIT applies to non-wage income only
-	//     0.9% applies to wage income only
+	// note that NIIT is an alternative to 0.9%:
+	//   NIIT applies to non-wage income only
+	//   0.9% applies to wage income only
 	// TODO is this calculated correctly?  using wageIncome
 	additionalMedicareIncome := builtin.Max(0, wageIncome-statusConstants.MedicareAdditionalThreshold)
 	additionalMedicareTax := int(yearConstants.MedicareAdditionalRate * float32(additionalMedicareIncome))
@@ -142,8 +143,27 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 	}
 }
 
-// TODO social security
+func (e *TaxEstimate) PrettyPrint() {
+	ordinaryTaxTable := NewTable([]string{"Range", "Rate", "Taxable amount", "Tax"})
+	for _, t := range e.OrdinaryTaxes {
+		end := "<none>"
+		if t.Bracket.End != nil {
+			end = fmt.Sprintf("%6d", *t.Bracket.End)
+		}
+		ordinaryTaxTable.AddRow([]string{
+			fmt.Sprintf("%6d - %s", t.Bracket.Start, end),
+			fmt.Sprintf("%d", t.Bracket.RawBracket.Rate),
+			fmt.Sprintf("%d", t.BracketTax.TaxableAmount),
+			fmt.Sprintf("%d", t.BracketTax.Tax),
+		})
+	}
+	fmt.Printf("ordinary tax:\n%s\n\n", ordinaryTaxTable.ToFormattedTable())
 
-// TODO medicare
+	// TODO medicare/niit/additional
 
-// TODO investment income
+	// TODO social security
+
+	// TODO LTCG
+
+	// TODO income calcs
+}

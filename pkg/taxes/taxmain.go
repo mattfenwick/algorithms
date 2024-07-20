@@ -3,7 +3,6 @@ package taxes
 import (
 	"fmt"
 
-	"github.com/mattfenwick/collections/pkg/json"
 	"github.com/mattfenwick/collections/pkg/slice"
 )
 
@@ -35,7 +34,9 @@ func RunTaxes() {
 	}
 	for _, inc := range incomes {
 		estimate := EstimateTaxes(inc)
-		fmt.Printf("estimate: \n%s\n\n", json.MustMarshalToString(estimate))
+		// fmt.Printf("estimate: \n%s\n\n", json.MustMarshalToString(estimate))
+		fmt.Println("estimate:")
+		estimate.PrettyPrint()
 	}
 }
 
