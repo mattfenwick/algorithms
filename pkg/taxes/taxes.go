@@ -56,15 +56,29 @@ type TaxEstimateBracket struct {
 	Bracket    *Bracket
 }
 
+type SocialSecurityTax struct {
+	Income int
+	Tax    int
+}
+
+type MedicareTax struct {
+	BaseIncome           int
+	BaseTax              int
+	IncomeAboveThreshold int
+	TaxAboveThreshold    int
+}
+
 type TaxEstimate struct {
-	Income               *Income
-	TaxYearConstants     *TaxYearConstants
-	StatusConstants      *TaxStatusConstants
-	OrdinaryTaxes        []*TaxEstimateBracket
-	NiitIncome           int
-	NiitTax              int
-	TotalIncome          int
-	IncomeAfterDeduction int
+	Income                   *Income
+	TaxYearConstants         *TaxYearConstants
+	StatusConstants          *TaxStatusConstants
+	OrdinaryTaxes            []*TaxEstimateBracket
+	NiitIncome               int
+	NiitTax                  int
+	AdditionalMedicareIncome int
+	AdditionalMedicareTax    int
+	TotalIncome              int
+	IncomeAfterDeduction     int
 }
 
 func EstimateTaxes(income *Income) *TaxEstimate {
@@ -86,6 +100,7 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 					return true
 				}
 			}, income.IncomeSources)))
+	wageIncome := totalIncome - capitalGains
 
 	incomeAfterDeduction := totalIncome - income.Deduction
 
@@ -100,23 +115,30 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 	niitIncome := builtin.Min(capitalGains, niitInvestmentIncome)
 	niitTax := int(yearConstants.NetInvestmentTaxRate * float32(niitIncome))
 
+	//   note that NIIT is an alternative to 0.9%:
+	//     NIIT applies to non-wage income only
+	//     0.9% applies to wage income only
+	// TODO is this calculated correctly?  using wageIncome
+	additionalMedicareIncome := builtin.Max(0, wageIncome-statusConstants.MedicareAdditionalThreshold)
+	additionalMedicareTax := int(yearConstants.MedicareAdditionalRate * float32(additionalMedicareIncome))
+
 	// social security
 	//   https://www.ssa.gov/oact/cola/cbb.html#:~:text=For%20earnings%20in%202024%2C%20this,for%20employees%20and%20employers%2C%20each.
 	//   https://www.irs.gov/taxtopics/tc751
 
 	// TODO LTCG
-	// TODO Social Security
-	// TODO medicare
 
 	return &TaxEstimate{
-		Income:               income,
-		TaxYearConstants:     yearConstants,
-		StatusConstants:      statusConstants,
-		OrdinaryTaxes:        bracketTaxes,
-		NiitIncome:           niitIncome,
-		NiitTax:              niitTax,
-		TotalIncome:          totalIncome,
-		IncomeAfterDeduction: incomeAfterDeduction,
+		Income:                   income,
+		TaxYearConstants:         yearConstants,
+		StatusConstants:          statusConstants,
+		OrdinaryTaxes:            bracketTaxes,
+		NiitIncome:               niitIncome,
+		NiitTax:                  niitTax,
+		AdditionalMedicareIncome: additionalMedicareIncome,
+		AdditionalMedicareTax:    additionalMedicareTax,
+		TotalIncome:              totalIncome,
+		IncomeAfterDeduction:     incomeAfterDeduction,
 	}
 }
 

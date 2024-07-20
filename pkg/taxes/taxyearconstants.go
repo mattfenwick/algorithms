@@ -3,11 +3,11 @@ package taxes
 import "math"
 
 type TaxStatusConstants struct {
-	OrdinaryIncomeBrackets *StatusBrackets
-	LTCGIncomeBrackets     *StatusBrackets
-	StandardDeduction      int
-	NetInvestmentTaxLimit  int
-	// MedicareThreshold todo name ?
+	OrdinaryIncomeBrackets      *StatusBrackets
+	LTCGIncomeBrackets          *StatusBrackets
+	StandardDeduction           int
+	NetInvestmentTaxLimit       int
+	MedicareAdditionalThreshold int
 }
 
 // TaxYearConstants organizes key constants for each tax year
@@ -18,23 +18,21 @@ type TaxStatusConstants struct {
 // - half of medicare is typically paid by the employer
 // - the medicare threshold limit is per-person according to https://www.irs.gov/taxtopics/tc751
 type TaxYearConstants struct {
-	SocialSecurityLimit         int
-	SocialSecurityRate          float32
-	MedicareBaseRate            float32
-	MedicareAdditionalThreshold int
-	MedicareAdditionalRate      float32
-	NetInvestmentTaxRate        float32
-	ByStatus                    map[FilingStatus]*TaxStatusConstants
+	SocialSecurityLimit    int
+	SocialSecurityRate     float32
+	MedicareBaseRate       float32
+	MedicareAdditionalRate float32
+	NetInvestmentTaxRate   float32
+	ByStatus               map[FilingStatus]*TaxStatusConstants
 }
 
 var (
 	TaxYear2024 = &TaxYearConstants{
-		SocialSecurityLimit:         168_600,
-		SocialSecurityRate:          0.062,
-		MedicareBaseRate:            0.0145,
-		MedicareAdditionalThreshold: 200_000,
-		MedicareAdditionalRate:      0.009,
-		NetInvestmentTaxRate:        0.038,
+		SocialSecurityLimit:    168_600,
+		SocialSecurityRate:     0.062,
+		MedicareBaseRate:       0.0145,
+		MedicareAdditionalRate: 0.009,
+		NetInvestmentTaxRate:   0.038,
 		ByStatus: map[FilingStatus]*TaxStatusConstants{
 			FilingStatusSingle: {
 				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
@@ -51,8 +49,9 @@ var (
 					{15, 518900},
 					{20, math.MaxInt},
 				}),
-				StandardDeduction:     14600,
-				NetInvestmentTaxLimit: 200_000,
+				StandardDeduction:           14600,
+				NetInvestmentTaxLimit:       200_000,
+				MedicareAdditionalThreshold: 200_000,
 			},
 			FilingStatusMarriedJointly: {
 				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
@@ -69,8 +68,9 @@ var (
 					{15, 583750},
 					{20, math.MaxInt},
 				}),
-				StandardDeduction:     29200,
-				NetInvestmentTaxLimit: 250_000,
+				StandardDeduction:           29200,
+				NetInvestmentTaxLimit:       250_000,
+				MedicareAdditionalThreshold: 250_000,
 			},
 			FilingStatusMarriedSeparately: {
 				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
@@ -87,8 +87,9 @@ var (
 					{15, 291850},
 					{20, math.MaxInt},
 				}),
-				StandardDeduction:     14600,
-				NetInvestmentTaxLimit: 125_000,
+				StandardDeduction:           14600,
+				NetInvestmentTaxLimit:       125_000,
+				MedicareAdditionalThreshold: 125_000,
 			},
 			FilingStatusHeadOfHouseHold: {
 				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
@@ -105,8 +106,9 @@ var (
 					{15, 551350},
 					{20, math.MaxInt},
 				}),
-				StandardDeduction:     21900,
-				NetInvestmentTaxLimit: 200_000,
+				StandardDeduction:           21900,
+				NetInvestmentTaxLimit:       200_000,
+				MedicareAdditionalThreshold: 200_000,
 			},
 		},
 	}
