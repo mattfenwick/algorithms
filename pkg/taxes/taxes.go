@@ -64,23 +64,22 @@ type SocialSecurityTax struct {
 }
 
 type MedicareTax struct {
-	BaseIncome           int
-	BaseTax              int
-	IncomeAboveThreshold int
-	TaxAboveThreshold    int
+	BaseIncome       int
+	BaseTax          int
+	NiitIncome       int
+	NiitTax          int
+	AdditionalIncome int
+	AdditionalTax    int
 }
 
 type TaxEstimate struct {
-	Income                   *Income
-	TaxYearConstants         *TaxYearConstants
-	StatusConstants          *TaxStatusConstants
-	OrdinaryTaxes            []*TaxEstimateBracket
-	NiitIncome               int
-	NiitTax                  int
-	AdditionalMedicareIncome int
-	AdditionalMedicareTax    int
-	TotalIncome              int
-	IncomeAfterDeduction     int
+	Income               *Income
+	TaxYearConstants     *TaxYearConstants
+	StatusConstants      *TaxStatusConstants
+	OrdinaryTaxes        []*TaxEstimateBracket
+	Medicare             *MedicareTax
+	TotalIncome          int
+	IncomeAfterDeduction int
 }
 
 func EstimateTaxes(income *Income) *TaxEstimate {
@@ -110,8 +109,14 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 		bracketTaxes = append(bracketTaxes, &TaxEstimateBracket{b.GetTax(incomeAfterDeduction), b})
 	}
 
+	// TODO should this use income after deduction?  or before?
+	// TODO should this include capital gains?
+	baseMedicareIncome := builtin.Min(statusConstants.MedicareAdditionalThreshold, wageIncome)
+	baseMedicareTax := int(yearConstants.MedicareBaseRate * float32(baseMedicareIncome))
+
 	// net investment tax -- 3.8% on investment income over $250K
 	//   https://www.irs.gov/taxtopics/tc559
+	// TODO should this use income after deduction?  or before?
 	niitInvestmentIncome := builtin.Max(0, incomeAfterDeduction-statusConstants.NetInvestmentTaxLimit)
 	niitIncome := builtin.Min(capitalGains, niitInvestmentIncome)
 	niitTax := int(yearConstants.NetInvestmentTaxRate * float32(niitIncome))
@@ -130,20 +135,25 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 	// TODO LTCG
 
 	return &TaxEstimate{
-		Income:                   income,
-		TaxYearConstants:         yearConstants,
-		StatusConstants:          statusConstants,
-		OrdinaryTaxes:            bracketTaxes,
-		NiitIncome:               niitIncome,
-		NiitTax:                  niitTax,
-		AdditionalMedicareIncome: additionalMedicareIncome,
-		AdditionalMedicareTax:    additionalMedicareTax,
-		TotalIncome:              totalIncome,
-		IncomeAfterDeduction:     incomeAfterDeduction,
+		Income:           income,
+		TaxYearConstants: yearConstants,
+		StatusConstants:  statusConstants,
+		OrdinaryTaxes:    bracketTaxes,
+		Medicare: &MedicareTax{
+			BaseIncome:       baseMedicareIncome,
+			BaseTax:          baseMedicareTax,
+			NiitIncome:       niitIncome,
+			NiitTax:          niitTax,
+			AdditionalIncome: additionalMedicareIncome,
+			AdditionalTax:    additionalMedicareTax,
+		},
+		TotalIncome:          totalIncome,
+		IncomeAfterDeduction: incomeAfterDeduction,
 	}
 }
 
 func (e *TaxEstimate) PrettyPrint() {
+	// ordinary tax
 	ordinaryTaxTable := NewTable([]string{"Range", "Rate", "Taxable amount", "Tax"})
 	for _, t := range e.OrdinaryTaxes {
 		end := "<none>"
@@ -159,11 +169,21 @@ func (e *TaxEstimate) PrettyPrint() {
 	}
 	fmt.Printf("ordinary tax:\n%s\n\n", ordinaryTaxTable.ToFormattedTable())
 
-	// TODO medicare/niit/additional
+	// medicare
+	fmt.Println("medicare:")
+	fmt.Printf(" - threshold: %d\n", -1) // TODO ???
+	fmt.Printf(" - base income: %d\n", e.Medicare.BaseIncome)
+	fmt.Printf(" - base tax: %d\n", e.Medicare.BaseTax)
+	fmt.Printf(" - NIIT income: %d\n", e.Medicare.NiitIncome)
+	fmt.Printf(" - NIIT tax: %d\n", e.Medicare.NiitTax)
+	fmt.Printf(" - additional income: %d\n", e.Medicare.AdditionalIncome)
+	fmt.Printf(" - additional tax: %d\n", e.Medicare.AdditionalTax)
 
 	// TODO social security
 
 	// TODO LTCG
 
 	// TODO income calcs
+
+	fmt.Println("\n")
 }
