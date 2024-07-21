@@ -36,7 +36,7 @@ func (b *Bracket) GetTax(income int) *BracketTax {
 	return &BracketTax{amount, amount * b.RawBracket.Rate / 100}
 }
 
-func (b *Bracket) GetLongTermCapitalGainsTax(ordinaryIncomeAfterDeduction int, totalIncomeAfterDeduction int) *BracketTax {
+func (b *Bracket) GetLongTermCapitalGainsTax(totalIncomeAfterDeduction int, ordinaryIncomeAfterDeduction int) *BracketTax {
 	// goal: determine how much LTCG income falls in this bracket
 	// step 1: determine starting point -- the higher of wage+STCG vs. bracket start
 	start := builtin.Max(ordinaryIncomeAfterDeduction, b.Start)

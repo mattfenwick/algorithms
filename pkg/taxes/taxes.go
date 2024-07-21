@@ -57,7 +57,7 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 	for _, b := range statusConstants.LTCGIncomeBrackets.GetBrackets() {
 		ltcgTaxes = append(ltcgTaxes,
 			&TaxEstimateBracket{
-				b.GetLongTermCapitalGainsTax(ordinaryIncomeAfterDeducion, totalIncomeAfterDeduction),
+				b.GetLongTermCapitalGainsTax(totalIncomeAfterDeduction, ordinaryIncomeAfterDeducion),
 				b})
 	}
 
