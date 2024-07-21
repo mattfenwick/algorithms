@@ -11,6 +11,7 @@ func TestTaxes(t *testing.T) {
 	gomega.RegisterFailHandler(Fail)
 
 	RunBracketTests()
+	RunMedicareTests()
 
 	RunSpecs(t, "taxes suite")
 }

@@ -6,7 +6,6 @@ type TaxStatusConstants struct {
 	OrdinaryIncomeBrackets      *StatusBrackets
 	LTCGIncomeBrackets          *StatusBrackets
 	StandardDeduction           int
-	NetInvestmentTaxLimit       int
 	MedicareAdditionalThreshold int
 }
 
@@ -50,7 +49,6 @@ var (
 					{20, math.MaxInt},
 				}),
 				StandardDeduction:           14600,
-				NetInvestmentTaxLimit:       200_000,
 				MedicareAdditionalThreshold: 200_000,
 			},
 			FilingStatusMarriedJointly: {
@@ -69,7 +67,6 @@ var (
 					{20, math.MaxInt},
 				}),
 				StandardDeduction:           29200,
-				NetInvestmentTaxLimit:       250_000,
 				MedicareAdditionalThreshold: 250_000,
 			},
 			FilingStatusMarriedSeparately: {
@@ -88,7 +85,6 @@ var (
 					{20, math.MaxInt},
 				}),
 				StandardDeduction:           14600,
-				NetInvestmentTaxLimit:       125_000,
 				MedicareAdditionalThreshold: 125_000,
 			},
 			FilingStatusHeadOfHouseHold: {
@@ -107,7 +103,6 @@ var (
 					{20, math.MaxInt},
 				}),
 				StandardDeduction:           21900,
-				NetInvestmentTaxLimit:       200_000,
 				MedicareAdditionalThreshold: 200_000,
 			},
 		},

@@ -15,7 +15,7 @@ type Table struct {
 func NewTable(headers []string, rows ...[]string) *Table {
 	t := &Table{
 		Headers: headers,
-		Rows: nil,
+		Rows:    nil,
 	}
 	for _, r := range rows {
 		t.AddRow(r)
@@ -23,7 +23,7 @@ func NewTable(headers []string, rows ...[]string) *Table {
 	return t
 }
 
-func (t *Table)AddRow(row []string) {
+func (t *Table) AddRow(row []string) {
 	if len(row) != len(t.Headers) {
 		panic(errors.Errorf("len of row doesn't match length of headers (%d vs %d)", len(row), len(t.Headers)))
 	}

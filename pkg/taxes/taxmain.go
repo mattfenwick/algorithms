@@ -17,7 +17,7 @@ func RunTaxes() {
 			Year:   2024,
 			Status: FilingStatusSingle,
 			IncomeSources: []*IncomeSource{
-				{Description: "job1", IncomeType: IncomeTypeW2, Amount: 25_000},
+				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 25_000},
 				{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 250_000},
 			},
 			Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
@@ -26,7 +26,7 @@ func RunTaxes() {
 			Year:   2024,
 			Status: FilingStatusSingle,
 			IncomeSources: []*IncomeSource{
-				{Description: "job1", IncomeType: IncomeTypeW2, Amount: 250_000},
+				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 250_000},
 				{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 25_000},
 			},
 			Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
