@@ -35,7 +35,7 @@ func RunBracketTests() {
 		b2 := Bracket{
 			RawBracket: &RawBracket{
 				Rate: Rate10Percent,
-				Max:  math.MaxInt,
+				Max:  math.MaxInt64,
 			},
 			Start: 5000,
 			End:   nil,
@@ -54,7 +54,7 @@ func RunBracketTests() {
 		ltcgBrackets := NewStatusBrackets([]*RawBracket{
 			{Rate_0Percent, 94050},
 			{Rate15Percent, 583750},
-			{Rate20Percent, math.MaxInt},
+			{Rate20Percent, math.MaxInt64},
 		}).GetBrackets()
 		It("0K/0K", func() {
 			gomega.Expect(ltcgBrackets[0].GetLongTermCapitalGainsTax(0, 0)).To(gomega.BeEquivalentTo(&BracketTax{0, 0}))

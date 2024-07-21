@@ -87,7 +87,7 @@ func (b *StatusBrackets) GetBrackets() []*Bracket {
 			Start:      start,
 			End:        nil,
 		}
-		if r.Max < math.MaxInt {
+		if r.Max < math.MaxInt64 {
 			end := r.Max
 			b.End = &end
 			start = end
