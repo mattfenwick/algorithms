@@ -18,6 +18,7 @@ type TaxEstimate struct {
 	StatusConstants      *TaxStatusConstants
 	OrdinaryTaxes        []*TaxEstimateBracket
 	Medicare             *MedicareTax
+	SocialSecurity       []*SocialSecurityTax
 	TotalIncome          int
 	IncomeAfterDeduction int
 }
@@ -48,10 +49,6 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 		bracketTaxes = append(bracketTaxes, &TaxEstimateBracket{b.GetTax(incomeAfterDeduction), b})
 	}
 
-	// social security
-	//   https://www.ssa.gov/oact/cola/cbb.html#:~:text=For%20earnings%20in%202024%2C%20this,for%20employees%20and%20employers%2C%20each.
-	//   https://www.irs.gov/taxtopics/tc751
-
 	// TODO LTCG
 
 	return &TaxEstimate{
@@ -60,6 +57,7 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 		StatusConstants:      statusConstants,
 		OrdinaryTaxes:        bracketTaxes,
 		Medicare:             EstimateMedicareTax(income),
+		SocialSecurity:       EstimateSocialSecurityTax(income),
 		TotalIncome:          totalIncome,
 		IncomeAfterDeduction: incomeAfterDeduction,
 	}
@@ -91,8 +89,19 @@ func (e *TaxEstimate) PrettyPrint() {
 	fmt.Printf(" - NIIT tax: %d\n", e.Medicare.NiitTax)
 	fmt.Printf(" - additional income: %d\n", e.Medicare.AdditionalWageIncome)
 	fmt.Printf(" - additional tax: %d\n", e.Medicare.AdditionalWageTax)
+	fmt.Printf("\n\n")
 
-	// TODO social security
+	// social security
+	socialSecurityTable := NewTable([]string{"Job", "Income", "Taxable amount", "Tax"})
+	for _, t := range e.SocialSecurity {
+		socialSecurityTable.AddRow([]string{
+			t.Description,
+			fmt.Sprintf("%d", t.WageIncome),
+			fmt.Sprintf("%d", t.TaxableAmount),
+			fmt.Sprintf("%d", t.Tax),
+		})
+	}
+	fmt.Printf("social security tax:\n%s\n", socialSecurityTable.ToFormattedTable())
 
 	// TODO LTCG
 
