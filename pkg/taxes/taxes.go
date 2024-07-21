@@ -84,7 +84,7 @@ func (e *TaxEstimate) PrettyPrint() {
 		}
 		ordinaryTaxTable.AddRow([]string{
 			fmt.Sprintf("%6d - %s", t.Bracket.Start, end),
-			fmt.Sprintf("%d", t.Bracket.RawBracket.Rate),
+			fmt.Sprintf("%.0f%%", t.Bracket.RawBracket.Rate.ToDebugPercentage()),
 			fmt.Sprintf("%d", t.BracketTax.TaxableAmount),
 			fmt.Sprintf("%d", t.BracketTax.Tax),
 		})
@@ -123,7 +123,7 @@ func (e *TaxEstimate) PrettyPrint() {
 		}
 		ltcgTaxTable.AddRow([]string{
 			fmt.Sprintf("%6d - %s", t.Bracket.Start, end),
-			fmt.Sprintf("%d", t.Bracket.RawBracket.Rate),
+			fmt.Sprintf("%.0f%%", t.Bracket.RawBracket.Rate.ToDebugPercentage()),
 			fmt.Sprintf("%d", t.BracketTax.TaxableAmount),
 			fmt.Sprintf("%d", t.BracketTax.Tax),
 		})
