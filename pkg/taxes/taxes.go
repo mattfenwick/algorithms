@@ -17,6 +17,7 @@ type TaxEstimate struct {
 	TaxYearConstants     *TaxYearConstants
 	StatusConstants      *TaxStatusConstants
 	OrdinaryTaxes        []*TaxEstimateBracket
+	LTCGTaxes            []*TaxEstimateBracket
 	Medicare             *MedicareTax
 	SocialSecurity       []*SocialSecurityTax
 	TotalIncome          int
@@ -44,18 +45,26 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 
 	incomeAfterDeduction := totalIncome - income.Deduction
 
-	var bracketTaxes []*TaxEstimateBracket
+	// TODO drop LTCG from ordinary taxable income
+	var ordinaryTaxes []*TaxEstimateBracket
 	for _, b := range statusConstants.OrdinaryIncomeBrackets.GetBrackets() {
-		bracketTaxes = append(bracketTaxes, &TaxEstimateBracket{b.GetTax(incomeAfterDeduction), b})
+		ordinaryTaxes = append(ordinaryTaxes, &TaxEstimateBracket{b.GetTax(incomeAfterDeduction), b})
 	}
 
-	// TODO LTCG
+	// LTCG
+	//   TODO question -- how does LTCG interact with deduction?
+	var ltcgTaxes []*TaxEstimateBracket
+	for _, b := range statusConstants.LTCGIncomeBrackets.GetBrackets() {
+		ltcgTaxes = append(ltcgTaxes,
+			&TaxEstimateBracket{b.GetLongTermCapitalGainsTax(0, incomeAfterDeduction), b})
+	}
 
 	return &TaxEstimate{
 		Income:               income,
 		TaxYearConstants:     yearConstants,
 		StatusConstants:      statusConstants,
-		OrdinaryTaxes:        bracketTaxes,
+		OrdinaryTaxes:        ordinaryTaxes,
+		LTCGTaxes:            ltcgTaxes,
 		Medicare:             EstimateMedicareTax(income),
 		SocialSecurity:       EstimateSocialSecurityTax(income),
 		TotalIncome:          totalIncome,
@@ -103,7 +112,21 @@ func (e *TaxEstimate) PrettyPrint() {
 	}
 	fmt.Printf("social security tax:\n%s\n", socialSecurityTable.ToFormattedTable())
 
-	// TODO LTCG
+	// LTCG
+	ltcgTaxTable := NewTable([]string{"Range", "Rate", "Taxable amount", "Tax"})
+	for _, t := range e.LTCGTaxes {
+		end := "<none>"
+		if t.Bracket.End != nil {
+			end = fmt.Sprintf("%6d", *t.Bracket.End)
+		}
+		ltcgTaxTable.AddRow([]string{
+			fmt.Sprintf("%6d - %s", t.Bracket.Start, end),
+			fmt.Sprintf("%d", t.Bracket.RawBracket.Rate),
+			fmt.Sprintf("%d", t.BracketTax.TaxableAmount),
+			fmt.Sprintf("%d", t.BracketTax.Tax),
+		})
+	}
+	fmt.Printf("ltcg tax:\n%s\n\n", ltcgTaxTable.ToFormattedTable())
 
 	// TODO income calcs
 

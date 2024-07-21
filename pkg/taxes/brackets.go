@@ -36,6 +36,32 @@ func (b *Bracket) GetTax(income int) *BracketTax {
 	return &BracketTax{amount, amount * b.RawBracket.Rate / 100}
 }
 
+func (b *Bracket) GetLongTermCapitalGainsTax(wageAndShortTermIncome int, totalIncome int) *BracketTax {
+	// goal: determine how much LTCG income falls in this bracket
+	// step 1: determine starting point -- the higher of wage+STCG vs. bracket start
+	start := builtin.Max(wageAndShortTermIncome, b.Start)
+	// step 2: income is too low for this bracket
+	if totalIncome <= start {
+		return &BracketTax{0, 0}
+	}
+	// now figure LTCG in this bracket, in two steps
+	// step 3: find LTCG from start -- that is, chop wage+STCG or start off of front of total income
+	//   example: 200K total, 180K wage,  20K LTCG, start 100K =>  20K
+	//   example: 200K total,  20K wage, 180K LTCG, start 100K => 100K
+	ltcgIncome := totalIncome - wageAndShortTermIncome
+	amount := builtin.Min(ltcgIncome, totalIncome-start)
+	// step 4: find LTCG to end -- how much space is in this bracket?
+	//   example: start 100K, end 150K => space 50K
+	//   example: start 180K, end 150K => space  0K
+	if b.End != nil {
+		end := *b.End
+		amount = builtin.Min(amount, end-start)
+	}
+	amount = builtin.Max(amount, 0)
+	// TODO probably doesn't round right
+	return &BracketTax{amount, amount * b.RawBracket.Rate / 100}
+}
+
 type StatusBrackets struct {
 	RawBrackets []*RawBracket
 }
