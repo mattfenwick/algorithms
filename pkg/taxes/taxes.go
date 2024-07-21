@@ -20,7 +20,7 @@ type TaxEstimate struct {
 	LTCGTaxes        []*TaxEstimateBracket
 	Medicare         *MedicareTax
 	SocialSecurity   []*SocialSecurityTax
-	TotalIncome      int
+	TotalIncome      int64
 	// IncomeAfterDeduction int
 }
 
@@ -32,7 +32,7 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 	statusConstants := yearConstants.ByStatus[income.Status]
 
 	ordinaryIncome := income.WageIncome() + income.ShortTermCapitalGainIncome()
-	totalIncome := slice.Sum(slice.Map(func(i *IncomeSource) int { return i.Amount }, income.IncomeSources))
+	totalIncome := slice.Sum(slice.Map(func(i *IncomeSource) int64 { return i.Amount }, income.IncomeSources))
 	// capitalGains := slice.Sum(
 	// 	slice.Map(func(i *IncomeSource) int { return i.Amount },
 	// 		slice.Filter(func(i *IncomeSource) bool {

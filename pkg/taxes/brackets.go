@@ -8,22 +8,22 @@ import (
 )
 
 type RawBracket struct {
-	Rate int
-	Max  int
+	Rate *TaxRate
+	Max  int64
 }
 
 type Bracket struct {
 	RawBracket *RawBracket
-	Start      int
-	End        *int
+	Start      int64
+	End        *int64
 }
 
 type BracketTax struct {
-	TaxableAmount int
-	Tax           int
+	TaxableAmount int64
+	Tax           int64
 }
 
-func (b *Bracket) GetTax(income int) *BracketTax {
+func (b *Bracket) GetTax(income int64) *BracketTax {
 	if income <= b.Start {
 		return &BracketTax{0, 0}
 	}
@@ -32,11 +32,10 @@ func (b *Bracket) GetTax(income int) *BracketTax {
 		end := *b.End
 		amount = builtin.Min(end-b.Start, income-b.Start)
 	}
-	// TODO probably doesn't round right
-	return &BracketTax{amount, amount * b.RawBracket.Rate / 100}
+	return &BracketTax{amount, b.RawBracket.Rate.GetTax(amount)}
 }
 
-func (b *Bracket) GetLongTermCapitalGainsTax(totalIncomeAfterDeduction int, ordinaryIncomeAfterDeduction int) *BracketTax {
+func (b *Bracket) GetLongTermCapitalGainsTax(totalIncomeAfterDeduction int64, ordinaryIncomeAfterDeduction int64) *BracketTax {
 	// goal: determine how much LTCG income falls in this bracket
 	// step 1: determine starting point -- the higher of wage+STCG vs. bracket start
 	start := builtin.Max(ordinaryIncomeAfterDeduction, b.Start)
@@ -59,7 +58,7 @@ func (b *Bracket) GetLongTermCapitalGainsTax(totalIncomeAfterDeduction int, ordi
 	}
 	amount = builtin.Max(amount, 0)
 	// TODO probably doesn't round right
-	return &BracketTax{amount, amount * b.RawBracket.Rate / 100}
+	return &BracketTax{amount, b.RawBracket.Rate.GetTax(amount)}
 }
 
 type StatusBrackets struct {
@@ -80,7 +79,7 @@ func NewStatusBrackets(rawBrackets []*RawBracket) *StatusBrackets {
 }
 
 func (b *StatusBrackets) GetBrackets() []*Bracket {
-	start := 0
+	start := int64(0)
 	var out []*Bracket
 	for _, r := range b.RawBrackets {
 		b := &Bracket{

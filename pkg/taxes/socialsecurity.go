@@ -14,7 +14,7 @@ func EstimateSocialSecurityTax(income *Income) []*SocialSecurityTax {
 	for _, i := range income.IncomeSources {
 		if i.IncomeType == IncomeTypeWage {
 			taxableAmount := builtin.Min(i.Amount, yearConstants.SocialSecurityLimit)
-			tax := int(float32(taxableAmount) * yearConstants.SocialSecurityRate)
+			tax := yearConstants.SocialSecurityRate.GetTax(taxableAmount)
 			out = append(out, &SocialSecurityTax{
 				Description:   i.Description,
 				WageIncome:    i.Amount,
@@ -28,7 +28,7 @@ func EstimateSocialSecurityTax(income *Income) []*SocialSecurityTax {
 
 type SocialSecurityTax struct {
 	Description   string
-	WageIncome    int
-	TaxableAmount int
-	Tax           int
+	WageIncome    int64
+	TaxableAmount int64
+	Tax           int64
 }

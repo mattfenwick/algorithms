@@ -31,18 +31,17 @@ func EstimateMedicareTax(income *Income) *MedicareTax {
 	statusConstants := yearConstants.ByStatus[income.Status]
 
 	baseWageIncome := builtin.Min(statusConstants.MedicareAdditionalThreshold, wageIncome)
-	baseWageTax := int(yearConstants.MedicareBaseRate * float32(baseWageIncome))
+	baseWageTax := yearConstants.MedicareBaseRate.GetTax(int64(baseWageIncome))
 
 	// NIIT income -- investments go "on top"
 	// so start by figuring out how much income is over the threshold
 	niitIncome := builtin.Max(0, wageIncome+capitalGains-statusConstants.MedicareAdditionalThreshold)
 	// then figure out how much over-the-threshold is investment income
 	niitIncome = builtin.Min(niitIncome, capitalGains)
-	niitTax := int(yearConstants.NetInvestmentTaxRate * float32(niitIncome))
+	niitTax := yearConstants.NetInvestmentTaxRate.GetTax(niitIncome)
 
 	additionalWageIncome := builtin.Max(0, wageIncome-statusConstants.MedicareAdditionalThreshold)
-	additionalRate := yearConstants.MedicareBaseRate + yearConstants.MedicareAdditionalRate
-	additionalWageTax := int(additionalRate * float32(additionalWageIncome))
+	additionalWageTax := yearConstants.MedicareBaseRate.GetTax(additionalWageIncome) + yearConstants.MedicareAdditionalRate.GetTax(additionalWageIncome)
 
 	return &MedicareTax{
 		BaseWageIncome:       baseWageIncome,
@@ -55,10 +54,10 @@ func EstimateMedicareTax(income *Income) *MedicareTax {
 }
 
 type MedicareTax struct {
-	BaseWageIncome       int
-	BaseWageTax          int
-	AdditionalWageIncome int
-	AdditionalWageTax    int
-	NiitIncome           int
-	NiitTax              int
+	BaseWageIncome       int64
+	BaseWageTax          int64
+	AdditionalWageIncome int64
+	AdditionalWageTax    int64
+	NiitIncome           int64
+	NiitTax              int64
 }

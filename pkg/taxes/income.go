@@ -40,17 +40,17 @@ const (
 type IncomeSource struct {
 	Description string
 	IncomeType  IncomeType
-	Amount      int
+	Amount      int64
 }
 
 type Income struct {
 	Year          int
 	Status        FilingStatus
 	IncomeSources []*IncomeSource
-	Deduction     *int
+	Deduction     *int64
 }
 
-func (i *Income) GetDeduction() int {
+func (i *Income) GetDeduction() int64 {
 	standardDeduction := TaxYears[i.Year].ByStatus[i.Status].StandardDeduction
 	if i.Deduction != nil {
 		deduction := *i.Deduction
@@ -62,8 +62,8 @@ func (i *Income) GetDeduction() int {
 	return standardDeduction
 }
 
-func (i *Income) WageIncome() int {
-	out := 0
+func (i *Income) WageIncome() int64 {
+	out := int64(0)
 	for _, s := range i.IncomeSources {
 		if s.IncomeType == IncomeTypeWage {
 			out += s.Amount
@@ -72,8 +72,8 @@ func (i *Income) WageIncome() int {
 	return out
 }
 
-func (i *Income) ShortTermCapitalGainIncome() int {
-	out := 0
+func (i *Income) ShortTermCapitalGainIncome() int64 {
+	out := int64(0)
 	for _, s := range i.IncomeSources {
 		if s.IncomeType == IncomeTypeShortTerm {
 			out += s.Amount
@@ -82,8 +82,8 @@ func (i *Income) ShortTermCapitalGainIncome() int {
 	return out
 }
 
-func (i *Income) LongTermCapitalGainIncome() int {
-	out := 0
+func (i *Income) LongTermCapitalGainIncome() int64 {
+	out := int64(0)
 	for _, s := range i.IncomeSources {
 		if s.IncomeType == IncomeTypeLongTerm {
 			out += s.Amount
@@ -92,8 +92,8 @@ func (i *Income) LongTermCapitalGainIncome() int {
 	return out
 }
 
-func (i *Income) InvestmentIncome() int {
-	out := 0
+func (i *Income) InvestmentIncome() int64 {
+	out := int64(0)
 	for _, s := range i.IncomeSources {
 		if s.IncomeType == IncomeTypeShortTerm || s.IncomeType == IncomeTypeLongTerm {
 			out += s.Amount
