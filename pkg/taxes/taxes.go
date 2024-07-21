@@ -43,7 +43,7 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 	// 			}
 	// 		}, income.IncomeSources)))
 
-	incomeAfterDeduction := totalIncome - income.Deduction
+	incomeAfterDeduction := totalIncome - income.GetDeduction()
 
 	// TODO drop LTCG from ordinary taxable income
 	var ordinaryTaxes []*TaxEstimateBracket

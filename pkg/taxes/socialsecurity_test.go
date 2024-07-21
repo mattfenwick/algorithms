@@ -14,7 +14,7 @@ func RunSocialSecurityTests() {
 				IncomeSources: []*IncomeSource{
 					{Description: "job1", IncomeType: IncomeTypeWage, Amount: 50_000},
 				},
-				Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
+				Deduction: nil,
 			}
 			o := []*SocialSecurityTax{
 				{Description: "job1", WageIncome: 50_000, TaxableAmount: 50_000, Tax: 3100},
@@ -28,7 +28,7 @@ func RunSocialSecurityTests() {
 				IncomeSources: []*IncomeSource{
 					{Description: "job1", IncomeType: IncomeTypeWage, Amount: 250_000},
 				},
-				Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
+				Deduction: nil,
 			}
 			o := []*SocialSecurityTax{
 				{Description: "job1", WageIncome: 250_000, TaxableAmount: 168_600, Tax: 10453},
@@ -42,7 +42,7 @@ func RunSocialSecurityTests() {
 				IncomeSources: []*IncomeSource{
 					{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 50_000},
 				},
-				Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
+				Deduction: nil,
 			}
 			gomega.Expect(EstimateSocialSecurityTax(i)).To(gomega.BeEmpty())
 		})
@@ -54,7 +54,7 @@ func RunSocialSecurityTests() {
 					{Description: "job1", IncomeType: IncomeTypeWage, Amount: 50_000},
 					{Description: "job2", IncomeType: IncomeTypeWage, Amount: 250_000},
 				},
-				Deduction: TaxYear2024.ByStatus[FilingStatusMarriedJointly].StandardDeduction,
+				Deduction: nil,
 			}
 			o := []*SocialSecurityTax{
 				{Description: "job1", WageIncome: 50_000, TaxableAmount: 50_000, Tax: 3100},

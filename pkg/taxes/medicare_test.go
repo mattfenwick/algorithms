@@ -14,7 +14,7 @@ func RunMedicareTests() {
 				IncomeSources: []*IncomeSource{
 					{Description: "job1", IncomeType: IncomeTypeWage, Amount: 50_000},
 				},
-				Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
+				Deduction: nil,
 			}
 			o := &MedicareTax{
 				BaseWageIncome: 50_000,
@@ -29,7 +29,7 @@ func RunMedicareTests() {
 				IncomeSources: []*IncomeSource{
 					{Description: "job1", IncomeType: IncomeTypeWage, Amount: 250_000},
 				},
-				Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
+				Deduction: nil,
 			}
 			o := &MedicareTax{
 				BaseWageIncome:       200_000,
@@ -46,7 +46,7 @@ func RunMedicareTests() {
 				IncomeSources: []*IncomeSource{
 					{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 50_000},
 				},
-				Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
+				Deduction: nil,
 			}
 			o := &MedicareTax{}
 			gomega.Expect(EstimateMedicareTax(i)).To(gomega.BeEquivalentTo(o))
@@ -58,7 +58,7 @@ func RunMedicareTests() {
 				IncomeSources: []*IncomeSource{
 					{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 250_000},
 				},
-				Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
+				Deduction: nil,
 			}
 			o := &MedicareTax{
 				NiitIncome: 50_000,
@@ -74,7 +74,7 @@ func RunMedicareTests() {
 					{Description: "job1", IncomeType: IncomeTypeWage, Amount: 50_000},
 					{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 50_000},
 				},
-				Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
+				Deduction: nil,
 			}
 			o := &MedicareTax{
 				BaseWageIncome: 50_000,
@@ -90,7 +90,7 @@ func RunMedicareTests() {
 					{Description: "job1", IncomeType: IncomeTypeWage, Amount: 250_000},
 					{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 250_000},
 				},
-				Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
+				Deduction: nil,
 			}
 			o := &MedicareTax{
 				BaseWageIncome:       200_000,

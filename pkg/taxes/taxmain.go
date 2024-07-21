@@ -20,7 +20,7 @@ func RunTaxes() {
 				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 25_000},
 				{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 250_000},
 			},
-			Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
+			Deduction: nil,
 		},
 		{
 			Year:   2024,
@@ -29,7 +29,7 @@ func RunTaxes() {
 				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 250_000},
 				{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 25_000},
 			},
-			Deduction: TaxYear2024.ByStatus[FilingStatusSingle].StandardDeduction,
+			Deduction: nil,
 		},
 	}
 	for _, inc := range incomes {

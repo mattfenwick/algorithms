@@ -1,6 +1,9 @@
 package taxes
 
-import "github.com/pkg/errors"
+import (
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
+)
 
 type FilingStatus string
 
@@ -44,7 +47,19 @@ type Income struct {
 	Year          int
 	Status        FilingStatus
 	IncomeSources []*IncomeSource
-	Deduction     int
+	Deduction     *int
+}
+
+func (i *Income) GetDeduction() int {
+	standardDeduction := TaxYears[i.Year].ByStatus[i.Status].StandardDeduction
+	if i.Deduction != nil {
+		deduction := *i.Deduction
+		if deduction < standardDeduction {
+			logrus.Warningf("nonsenical deduction -- claimed deduction is less than standard deduction (%d < %d)", deduction, standardDeduction)
+		}
+		return deduction
+	}
+	return standardDeduction
 }
 
 func (i *Income) WageIncome() int {
