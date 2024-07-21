@@ -13,15 +13,15 @@ type TaxEstimateBracket struct {
 }
 
 type TaxEstimate struct {
-	Income               *Income
-	TaxYearConstants     *TaxYearConstants
-	StatusConstants      *TaxStatusConstants
-	OrdinaryTaxes        []*TaxEstimateBracket
-	LTCGTaxes            []*TaxEstimateBracket
-	Medicare             *MedicareTax
-	SocialSecurity       []*SocialSecurityTax
-	TotalIncome          int
-	IncomeAfterDeduction int
+	Income           *Income
+	TaxYearConstants *TaxYearConstants
+	StatusConstants  *TaxStatusConstants
+	OrdinaryTaxes    []*TaxEstimateBracket
+	LTCGTaxes        []*TaxEstimateBracket
+	Medicare         *MedicareTax
+	SocialSecurity   []*SocialSecurityTax
+	TotalIncome      int
+	// IncomeAfterDeduction int
 }
 
 func EstimateTaxes(income *Income) *TaxEstimate {
@@ -31,6 +31,7 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 	}
 	statusConstants := yearConstants.ByStatus[income.Status]
 
+	ordinaryIncome := income.WageIncome() + income.ShortTermCapitalGainIncome()
 	totalIncome := slice.Sum(slice.Map(func(i *IncomeSource) int { return i.Amount }, income.IncomeSources))
 	// capitalGains := slice.Sum(
 	// 	slice.Map(func(i *IncomeSource) int { return i.Amount },
@@ -43,32 +44,33 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 	// 			}
 	// 		}, income.IncomeSources)))
 
-	incomeAfterDeduction := totalIncome - income.GetDeduction()
-
-	// TODO drop LTCG from ordinary taxable income
+	ordinaryIncomeAfterDeducion := ordinaryIncome - income.GetDeduction()
 	var ordinaryTaxes []*TaxEstimateBracket
 	for _, b := range statusConstants.OrdinaryIncomeBrackets.GetBrackets() {
-		ordinaryTaxes = append(ordinaryTaxes, &TaxEstimateBracket{b.GetTax(incomeAfterDeduction), b})
+		ordinaryTaxes = append(ordinaryTaxes, &TaxEstimateBracket{b.GetTax(ordinaryIncomeAfterDeducion), b})
 	}
 
 	// LTCG
 	//   TODO question -- how does LTCG interact with deduction?
+	totalIncomeAfterDeduction := totalIncome - income.GetDeduction()
 	var ltcgTaxes []*TaxEstimateBracket
 	for _, b := range statusConstants.LTCGIncomeBrackets.GetBrackets() {
 		ltcgTaxes = append(ltcgTaxes,
-			&TaxEstimateBracket{b.GetLongTermCapitalGainsTax(0, incomeAfterDeduction), b})
+			&TaxEstimateBracket{
+				b.GetLongTermCapitalGainsTax(ordinaryIncomeAfterDeducion, totalIncomeAfterDeduction),
+				b})
 	}
 
 	return &TaxEstimate{
-		Income:               income,
-		TaxYearConstants:     yearConstants,
-		StatusConstants:      statusConstants,
-		OrdinaryTaxes:        ordinaryTaxes,
-		LTCGTaxes:            ltcgTaxes,
-		Medicare:             EstimateMedicareTax(income),
-		SocialSecurity:       EstimateSocialSecurityTax(income),
-		TotalIncome:          totalIncome,
-		IncomeAfterDeduction: incomeAfterDeduction,
+		Income:           income,
+		TaxYearConstants: yearConstants,
+		StatusConstants:  statusConstants,
+		OrdinaryTaxes:    ordinaryTaxes,
+		LTCGTaxes:        ltcgTaxes,
+		Medicare:         EstimateMedicareTax(income),
+		SocialSecurity:   EstimateSocialSecurityTax(income),
+		TotalIncome:      totalIncome,
+		// IncomeAfterDeduction: incomeAfterDeduction,
 	}
 }
 

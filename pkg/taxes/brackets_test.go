@@ -8,7 +8,7 @@ import (
 )
 
 func RunBracketTests() {
-	Describe("GetTax", func() {
+	Describe("GetTax -- ordinary income", func() {
 		tenK := 10000
 		b := Bracket{
 			RawBracket: &RawBracket{
@@ -48,7 +48,9 @@ func RunBracketTests() {
 			gomega.Expect(b2.GetTax(10_000)).To(gomega.BeEquivalentTo(&BracketTax{5000, 500}))
 			gomega.Expect(b2.GetTax(100_000)).To(gomega.BeEquivalentTo(&BracketTax{95000, 9500}))
 		})
+	})
 
+	Describe("GetLongTermCapitalGainsTax", func() {
 		ltcgBrackets := NewStatusBrackets([]*RawBracket{
 			{0, 94050},
 			{15, 583750},

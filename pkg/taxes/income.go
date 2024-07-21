@@ -72,6 +72,26 @@ func (i *Income) WageIncome() int {
 	return out
 }
 
+func (i *Income) ShortTermCapitalGainIncome() int {
+	out := 0
+	for _, s := range i.IncomeSources {
+		if s.IncomeType == IncomeTypeShortTerm {
+			out += s.Amount
+		}
+	}
+	return out
+}
+
+func (i *Income) LongTermCapitalGainIncome() int {
+	out := 0
+	for _, s := range i.IncomeSources {
+		if s.IncomeType == IncomeTypeLongTerm {
+			out += s.Amount
+		}
+	}
+	return out
+}
+
 func (i *Income) InvestmentIncome() int {
 	out := 0
 	for _, s := range i.IncomeSources {

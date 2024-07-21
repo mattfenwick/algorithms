@@ -31,6 +31,40 @@ func RunTaxes() {
 			},
 			Deduction: nil,
 		},
+		{
+			Year:   2024,
+			Status: FilingStatusSingle,
+			IncomeSources: []*IncomeSource{
+				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 30_000},
+			},
+			Deduction: nil,
+		},
+		{
+			Year:   2024,
+			Status: FilingStatusSingle,
+			IncomeSources: []*IncomeSource{
+				{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 30_000},
+			},
+			Deduction: nil,
+		},
+		{
+			Year:   2024,
+			Status: FilingStatusSingle,
+			IncomeSources: []*IncomeSource{
+				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 25_000},
+				{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 25_000},
+			},
+			Deduction: nil,
+		},
+		{
+			Year:   2024,
+			Status: FilingStatusSingle,
+			IncomeSources: []*IncomeSource{
+				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 5_000},
+				{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 25_000},
+			},
+			Deduction: nil,
+		},
 	}
 	for _, inc := range incomes {
 		estimate := EstimateTaxes(inc)
