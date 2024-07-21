@@ -12,6 +12,7 @@ func TestTaxes(t *testing.T) {
 
 	RunBracketTests()
 	RunMedicareTests()
+	RunSocialSecurityTests()
 
 	RunSpecs(t, "taxes suite")
 }

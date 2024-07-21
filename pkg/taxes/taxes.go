@@ -12,11 +12,6 @@ type TaxEstimateBracket struct {
 	Bracket    *Bracket
 }
 
-type SocialSecurityTax struct {
-	Income int
-	Tax    int
-}
-
 type TaxEstimate struct {
 	Income               *Income
 	TaxYearConstants     *TaxYearConstants
