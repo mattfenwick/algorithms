@@ -78,12 +78,16 @@ func RunTaxes(incomes []*Income) {
 	fmt.Printf("\nlong term capital gains:\n")
 	HackPrintLTCGIncomeBrackets()
 
+	var estimates []*TaxEstimate
 	for _, inc := range incomes {
 		estimate := EstimateTaxes(inc)
 		// fmt.Printf("estimate: \n%s\n\n", json.MustMarshalToString(estimate))
 		fmt.Println("estimate:")
 		estimate.PrettyPrint()
+		estimates = append(estimates, estimate)
 	}
+
+	PrettyPrintComparison(estimates)
 }
 
 func HackPrintOrdinaryIncomeBrackets() {

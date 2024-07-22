@@ -94,14 +94,15 @@ func (i *Income) SocialSecurityIncome() []int64 {
 	return out
 }
 
-func (i *Income) GetTotalIncome() int64 {
+func (i *Income) GetGrossIncome() int64 {
 	return slice.Sum(slice.Map(func(is *IncomeSource) int64 {
+		// TODO is this adjustment right?
 		return builtin.Max(0, is.Amount-is.NonTaxableWages)
 	}, i.IncomeSources))
 }
 
 func (i *Income) GetAdjustedGrossIncome() int64 {
-	return i.GetTotalIncome() - i.Adjustments
+	return i.GetGrossIncome() - i.Adjustments
 }
 
 func (i *Income) GetTaxableIncome() int64 {

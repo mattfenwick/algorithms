@@ -6,7 +6,6 @@ import (
 	"github.com/mattfenwick/collections/pkg/builtin"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
-	"golang.org/x/exp/constraints"
 )
 
 type TaxEstimateBracket struct {
@@ -71,17 +70,17 @@ func (e *TaxEstimate) PrettyPrint() {
 	medicareBase, medicareAddnl, medicareNiit := e.Income.MedicareIncome()
 	e.Income.GetAdjustedGrossIncome()
 	e.Income.GetTaxableIncome()
-	e.Income.GetTotalIncome()
+	e.Income.GetGrossIncome()
 	inputTable := NewTable([]string{"Key", "Value"},
 		[]string{"Status", e.Income.Status.ToString()},
-		[]string{"Year", fmt.Sprintf("%d", e.Income.Year)},
-		[]string{"Wages", fmt.Sprintf("%d", e.Income.WageIncome())},
-		[]string{"Short term", fmt.Sprintf("%d", e.Income.ShortTermCapitalGainIncome())},
-		[]string{"Long term", fmt.Sprintf("%d", e.Income.LongTermCapitalGainIncome())},
-		[]string{"Total income", intToString(e.Income.GetTotalIncome())},
+		[]string{"Year", intToString(e.Income.Year)},
+		[]string{"Wages", intToString(e.Income.WageIncome())},
+		[]string{"Short term", intToString(e.Income.ShortTermCapitalGainIncome())},
+		[]string{"Long term", intToString(e.Income.LongTermCapitalGainIncome())},
+		[]string{"Gross income", intToString(e.Income.GetGrossIncome())},
 		[]string{"Adjustments", intToString(e.Income.Adjustments)},
 		[]string{"AGI", intToString(e.Income.GetAdjustedGrossIncome())},
-		[]string{"Deduction", fmt.Sprintf("%d", e.Income.GetDeduction())},
+		[]string{"Deduction", intToString(e.Income.GetDeduction())},
 		[]string{"Taxable income", intToString(e.Income.GetTaxableIncome())},
 		[]string{"Medicare base", intToString(medicareBase)},
 		[]string{"Medicare additional", intToString(medicareAddnl)},
@@ -135,8 +134,8 @@ func (e *TaxEstimate) PrettyPrint() {
 		taxTable.AddRow([]string{
 			fmt.Sprintf("Ordinary: %6d - %s", t.Bracket.Start, end),
 			fmt.Sprintf("%.0f", t.Bracket.RawBracket.Rate.ToDebugPercentage()),
-			fmt.Sprintf("%d", t.BracketTax.TaxableAmount),
-			fmt.Sprintf("%d", t.BracketTax.Tax),
+			intToString(t.BracketTax.TaxableAmount),
+			intToString(t.BracketTax.Tax),
 		})
 		ordinaryTotal += t.BracketTax.Tax
 		if t.BracketTax.TaxableAmount > 0 {
@@ -155,8 +154,8 @@ func (e *TaxEstimate) PrettyPrint() {
 		taxTable.AddRow([]string{
 			fmt.Sprintf("LTCG: %6d - %s", t.Bracket.Start, end),
 			fmt.Sprintf("%.0f", t.Bracket.RawBracket.Rate.ToDebugPercentage()),
-			fmt.Sprintf("%d", t.BracketTax.TaxableAmount),
-			fmt.Sprintf("%d", t.BracketTax.Tax),
+			intToString(t.BracketTax.TaxableAmount),
+			intToString(t.BracketTax.Tax),
 		})
 		ltcgTotal += t.BracketTax.Tax
 		if t.BracketTax.TaxableAmount > 0 {
@@ -192,8 +191,4 @@ func (e *TaxEstimate) PrettyPrint() {
 	fmt.Printf("totals:\n%s\n\n", taxTotalTable.ToFormattedTable())
 
 	fmt.Printf("\n\n")
-}
-
-func intToString[A constraints.Integer](a A) string {
-	return fmt.Sprintf("%d", a)
 }
