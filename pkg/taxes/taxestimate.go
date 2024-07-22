@@ -99,7 +99,6 @@ func (e *TaxEstimate) PrettyPrint() {
 
 	// taxes
 	taxTable := NewTable([]string{"Description", "Rate (%)", "Taxable amount", "Tax"})
-	taxTotalTable := NewTable([]string{"Description", "Tax"})
 
 	// medicare tax
 	taxTable.AddRow([]string{"Medicare base wage",
@@ -129,6 +128,7 @@ func (e *TaxEstimate) PrettyPrint() {
 
 	// ordinary tax
 	ordinaryTotal := int64(0)
+	ordinaryMarginalRate := Rate_0Percent
 	for _, t := range e.OrdinaryTaxes {
 		end := "<none>"
 		if t.Bracket.End != nil {
@@ -141,10 +141,14 @@ func (e *TaxEstimate) PrettyPrint() {
 			fmt.Sprintf("%d", t.BracketTax.Tax),
 		})
 		ordinaryTotal += t.BracketTax.Tax
+		if t.BracketTax.TaxableAmount > 0 {
+			ordinaryMarginalRate = t.Bracket.RawBracket.Rate
+		}
 	}
 
 	// LTCG tax
 	ltcgTotal := int64(0)
+	ltcgMarginalRate := Rate_0Percent
 	for _, t := range e.LTCGTaxes {
 		end := "<none>"
 		if t.Bracket.End != nil {
@@ -157,14 +161,34 @@ func (e *TaxEstimate) PrettyPrint() {
 			fmt.Sprintf("%d", t.BracketTax.Tax),
 		})
 		ltcgTotal += t.BracketTax.Tax
+		if t.BracketTax.TaxableAmount > 0 {
+			ltcgMarginalRate = t.Bracket.RawBracket.Rate
+		}
 	}
 
 	medicareTotal := e.Medicare.BaseWageTax + e.Medicare.AdditionalWageTax + e.Medicare.NiitTax
-	taxTotalTable.AddRow([]string{"Medicare", intToString(medicareTotal)})
-	taxTotalTable.AddRow([]string{"Social security", intToString(ssTotal)})
-	taxTotalTable.AddRow([]string{"Ordinary", intToString(ordinaryTotal)})
-	taxTotalTable.AddRow([]string{"LTCG", intToString(ltcgTotal)})
-	taxTotalTable.AddRow([]string{"Grand total", intToString(medicareTotal + ssTotal + ordinaryTotal + ltcgTotal)})
+	grandTotal := medicareTotal + ssTotal + ordinaryTotal + ltcgTotal
+	taxTotalTable := NewTable([]string{"Description", "Tax", "Marginal rate", "Effective rate"})
+	taxTotalTable.AddRow([]string{"Medicare",
+		intToString(medicareTotal),
+		fmt.Sprintf("%.2f", e.Medicare.MarginalRate.ToDebugPercentage()),
+		fmt.Sprintf("%.2f", 100*float32(medicareTotal)/float32(e.TotalIncome))})
+	taxTotalTable.AddRow([]string{"Social security",
+		intToString(ssTotal),
+		"?",
+		fmt.Sprintf("%.2f", 100*float32(ssTotal)/float32(e.TotalIncome))})
+	taxTotalTable.AddRow([]string{"Ordinary",
+		intToString(ordinaryTotal),
+		fmt.Sprintf("%.2f", ordinaryMarginalRate.ToDebugPercentage()),
+		fmt.Sprintf("%.2f", 100*float32(ordinaryTotal)/float32(e.TotalIncome))})
+	taxTotalTable.AddRow([]string{"LTCG",
+		intToString(ltcgTotal),
+		fmt.Sprintf("%.2f", ltcgMarginalRate.ToDebugPercentage()),
+		fmt.Sprintf("%.2f", 100*float32(ltcgTotal)/float32(e.TotalIncome))})
+	taxTotalTable.AddRow([]string{"Grand total",
+		intToString(grandTotal),
+		"?",
+		fmt.Sprintf("%.2f", 100*float32(grandTotal)/float32(e.TotalIncome))})
 
 	fmt.Printf("tax breakdown:\n%s\n\n", taxTable.ToFormattedTable())
 	fmt.Printf("totals:\n%s\n\n", taxTotalTable.ToFormattedTable())
