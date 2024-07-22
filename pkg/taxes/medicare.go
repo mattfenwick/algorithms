@@ -1,7 +1,5 @@
 package taxes
 
-import "github.com/mattfenwick/collections/pkg/builtin"
-
 // EstimateMedicareTax takes into account:
 //
 //   - filing status
@@ -25,31 +23,16 @@ import "github.com/mattfenwick/collections/pkg/builtin"
 //
 //   - https://www.irs.gov/taxtopics/tc559
 func EstimateMedicareTax(income *Income) *MedicareTax {
-	wageIncome, capitalGains := income.WageIncome(), income.InvestmentIncome()
-
-	yearConstants := TaxYears[income.Year]
-	statusConstants := yearConstants.ByStatus[income.Status]
-
-	baseWageIncome := builtin.Min(statusConstants.MedicareAdditionalThreshold, wageIncome)
-	baseWageTax := yearConstants.MedicareBaseRate.GetTax(int64(baseWageIncome))
-
-	// NIIT income -- investments go "on top"
-	// so start by figuring out how much income is over the threshold
-	niitIncome := builtin.Max(0, wageIncome+capitalGains-statusConstants.MedicareAdditionalThreshold)
-	// then figure out how much over-the-threshold is investment income
-	niitIncome = builtin.Min(niitIncome, capitalGains)
-	niitTax := yearConstants.NetInvestmentTaxRate.GetTax(niitIncome)
-
-	additionalWageIncome := builtin.Max(0, wageIncome-statusConstants.MedicareAdditionalThreshold)
-	additionalWageTax := yearConstants.MedicareBaseRate.GetTax(additionalWageIncome) + yearConstants.MedicareAdditionalRate.GetTax(additionalWageIncome)
+	baseWageIncome, additionalWageIncome, niitIncome := income.MedicareIncome()
+	yearConstants, _ := income.GetTaxConstants()
 
 	return &MedicareTax{
 		BaseWageIncome:       baseWageIncome,
-		BaseWageTax:          baseWageTax,
+		BaseWageTax:          yearConstants.MedicareBaseRate.GetTax(baseWageIncome),
 		AdditionalWageIncome: additionalWageIncome,
-		AdditionalWageTax:    additionalWageTax,
+		AdditionalWageTax:    yearConstants.MedicareAdditionalRate.GetTax(additionalWageIncome),
 		NiitIncome:           niitIncome,
-		NiitTax:              niitTax,
+		NiitTax:              yearConstants.NetInvestmentTaxRate.GetTax(niitIncome),
 	}
 }
 

@@ -53,9 +53,26 @@ type Income struct {
 	Deduction     *int64
 }
 
-func (i *Income) MedicareBaseIncome() int64 {
-	// TODO is this even useful?  since the medicare taxes are so complicated
-	return i.WageIncome()
+func (i *Income) GetTaxConstants() (*TaxYearConstants, *TaxStatusConstants) {
+	yearConstants := TaxYears[i.Year]
+	statusConstants := yearConstants.ByStatus[i.Status]
+	return yearConstants, statusConstants
+}
+
+func (i *Income) MedicareIncome() (int64, int64, int64) {
+	wageIncome, capitalGains := i.WageIncome(), i.InvestmentIncome()
+
+	_, statusConstants := i.GetTaxConstants()
+	baseWageIncome := builtin.Min(statusConstants.MedicareAdditionalThreshold, wageIncome)
+
+	// NIIT income -- investments go "on top"
+	// so start by figuring out how much income is over the threshold
+	niitIncome := builtin.Max(0, wageIncome+capitalGains-statusConstants.MedicareAdditionalThreshold)
+	// then figure out how much over-the-threshold is investment income
+	niitIncome = builtin.Min(niitIncome, capitalGains)
+
+	additionalWageIncome := builtin.Max(0, wageIncome-statusConstants.MedicareAdditionalThreshold)
+	return baseWageIncome, additionalWageIncome, niitIncome
 }
 
 func (i *Income) SocialSecurityIncome() []int64 {
@@ -76,8 +93,8 @@ func (i *Income) GetAdjustedGrossIncome() int64 {
 	return i.GetTotalIncome() - i.Adjustments
 }
 
-func (i*Income)GetTaxableIncome() int64 {
-	return builtin.Max(0, i.GetAdjustedGrossIncome() - i.GetDeduction())
+func (i *Income) GetTaxableIncome() int64 {
+	return builtin.Max(0, i.GetAdjustedGrossIncome()-i.GetDeduction())
 }
 
 func (i *Income) GetDeduction() int64 {

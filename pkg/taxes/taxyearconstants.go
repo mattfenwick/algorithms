@@ -15,7 +15,7 @@ type TaxStatusConstants struct {
 // - half of social security is typically paid by the employer
 // - the social security limit is per-person
 // - half of medicare is typically paid by the employer
-// - the medicare threshold limit is per-person according to https://www.irs.gov/taxtopics/tc751
+// - the medicare threshold limit is per-person according to https://www.irs.gov/taxtopics/tc751 -- but TODO, am I misunderstanding that?
 type TaxYearConstants struct {
 	SocialSecurityLimit    int64
 	SocialSecurityRate     *TaxRate
@@ -28,10 +28,10 @@ type TaxYearConstants struct {
 var (
 	TaxYear2023 = &TaxYearConstants{
 		SocialSecurityLimit:    160_200,
-		SocialSecurityRate:     &TaxRate{Rate: 62, Divisor: 1000},   // .062 = 6.2%
+		SocialSecurityRate:     &TaxRate{Rate: 62, Divisor: 1000},   // .062  = 6.2%
 		MedicareBaseRate:       &TaxRate{Rate: 145, Divisor: 10000}, // .0145 = 1.45%
-		MedicareAdditionalRate: &TaxRate{Rate: 9, Divisor: 1000},    // .009 = .9%
-		NetInvestmentTaxRate:   &TaxRate{Rate: 38, Divisor: 1000},   // .038 = 3.8%
+		MedicareAdditionalRate: &TaxRate{Rate: 235, Divisor: 10000}, // .0235 = 2.35%
+		NetInvestmentTaxRate:   &TaxRate{Rate: 38, Divisor: 1000},   // .038  = 3.8%
 		ByStatus: map[FilingStatus]*TaxStatusConstants{
 			FilingStatusSingle: {
 				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
@@ -110,10 +110,10 @@ var (
 
 	TaxYear2024 = &TaxYearConstants{
 		SocialSecurityLimit:    168_600,
-		SocialSecurityRate:     &TaxRate{Rate: 62, Divisor: 1000},   // .062 = 6.2%
+		SocialSecurityRate:     &TaxRate{Rate: 62, Divisor: 1000},   // .062  = 6.2%
 		MedicareBaseRate:       &TaxRate{Rate: 145, Divisor: 10000}, // .0145 = 1.45%
-		MedicareAdditionalRate: &TaxRate{Rate: 9, Divisor: 1000},    // .009 = .9%
-		NetInvestmentTaxRate:   &TaxRate{Rate: 38, Divisor: 1000},   // .038 = 3.8%
+		MedicareAdditionalRate: &TaxRate{Rate: 235, Divisor: 10000}, // .0235 = 2.35%
+		NetInvestmentTaxRate:   &TaxRate{Rate: 38, Divisor: 1000},   // .038  = 3.8%
 		ByStatus: map[FilingStatus]*TaxStatusConstants{
 			FilingStatusSingle: {
 				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{

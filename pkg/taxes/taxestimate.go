@@ -3,6 +3,7 @@ package taxes
 import (
 	"fmt"
 
+	"github.com/mattfenwick/collections/pkg/builtin"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
 	"golang.org/x/exp/constraints"
@@ -14,15 +15,17 @@ type TaxEstimateBracket struct {
 }
 
 type TaxEstimate struct {
-	Income           *Income
-	TaxYearConstants *TaxYearConstants
-	StatusConstants  *TaxStatusConstants
-	OrdinaryTaxes    []*TaxEstimateBracket
-	LTCGTaxes        []*TaxEstimateBracket
-	Medicare         *MedicareTax
-	SocialSecurity   []*SocialSecurityTax
-	TotalIncome      int64
-	// IncomeAfterDeduction int
+	Income               *Income
+	TaxYearConstants     *TaxYearConstants
+	StatusConstants      *TaxStatusConstants
+	OrdinaryTaxes        []*TaxEstimateBracket
+	LTCGTaxes            []*TaxEstimateBracket
+	Medicare             *MedicareTax
+	SocialSecurity       []*SocialSecurityTax
+	TotalIncome          int64
+	MedicareIncome       int64
+	SocialSecurityIncome int64
+	AdjustedGrossIncome  int64
 }
 
 func EstimateTaxes(income *Income) *TaxEstimate {
@@ -67,14 +70,31 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 
 func (e *TaxEstimate) PrettyPrint() {
 	// income/input table
+	medicareBase, medicareAddnl, medicareNiit := e.Income.MedicareIncome()
+	e.Income.GetAdjustedGrossIncome()
+	e.Income.GetTaxableIncome()
+	e.Income.GetTotalIncome()
 	inputTable := NewTable([]string{"Key", "Value"},
 		[]string{"Status", e.Income.Status.ToString()},
 		[]string{"Year", fmt.Sprintf("%d", e.Income.Year)},
-		[]string{"Deduction", fmt.Sprintf("%d", e.Income.GetDeduction())},
 		[]string{"Wages", fmt.Sprintf("%d", e.Income.WageIncome())},
 		[]string{"Short term", fmt.Sprintf("%d", e.Income.ShortTermCapitalGainIncome())},
 		[]string{"Long term", fmt.Sprintf("%d", e.Income.LongTermCapitalGainIncome())},
+		[]string{"Total income", intToString(e.Income.GetTotalIncome())},
+		[]string{"Adjustments", intToString(e.Income.Adjustments)},
+		[]string{"AGI", intToString(e.Income.GetAdjustedGrossIncome())},
+		[]string{"Deduction", fmt.Sprintf("%d", e.Income.GetDeduction())},
+		[]string{"Taxable income", intToString(e.Income.GetTaxableIncome())},
+		[]string{"Medicare base", intToString(medicareBase)},
+		[]string{"Medicare additional", intToString(medicareAddnl)},
+		[]string{"Medicare NIIT", intToString(medicareNiit)},
 	)
+	for _, s := range e.Income.IncomeSources {
+		if s.IncomeType != IncomeTypeWage {
+			continue
+		}
+		inputTable.AddRow([]string{fmt.Sprintf("Social security %s", s.Description), intToString(builtin.Min(e.TaxYearConstants.SocialSecurityLimit, s.Amount))})
+	}
 	fmt.Printf("income/input: \n%s\n\n", inputTable.ToFormattedTable())
 
 	// ordinary tax
@@ -101,9 +121,7 @@ func (e *TaxEstimate) PrettyPrint() {
 			intToString(e.Medicare.BaseWageTax)},
 		[]string{"Addnl wage",
 			intToString(e.Medicare.AdditionalWageIncome),
-			fmt.Sprintf("%.2f + %.2f",
-				e.TaxYearConstants.MedicareBaseRate.ToDebugPercentage(),
-				e.TaxYearConstants.MedicareAdditionalRate.ToDebugPercentage()),
+			fmt.Sprintf("%.2f", e.TaxYearConstants.MedicareAdditionalRate.ToDebugPercentage()),
 			intToString(e.Medicare.AdditionalWageTax)},
 		[]string{"NIIT",
 			intToString(e.Medicare.NiitIncome),

@@ -35,7 +35,7 @@ func (t *Table) ToFormattedTable() string {
 	table := tablewriter.NewWriter(tableString)
 	table.SetAutoWrapText(false)
 	table.SetRowLine(true)
-	table.SetAutoMergeCells(true)
+	// table.SetAutoMergeCells(true)
 
 	table.SetHeader(t.Headers)
 	table.AppendBulk(t.Rows)
