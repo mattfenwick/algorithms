@@ -1,6 +1,7 @@
 package taxes
 
 import (
+	"github.com/mattfenwick/collections/pkg/json"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -54,7 +55,15 @@ func SetupEstimateCommand() *cobra.Command {
 }
 
 func RunEstimate(args *EstimateArgs) {
-	RunTaxes()
+	var incomes []*Income
+	if args.ConfigPath != "" {
+		incomesP, err := json.ParseFile[[]*Income](args.ConfigPath)
+		Die(err)
+		incomes = *incomesP
+	} else {
+		incomes = defaultIncomes
+	}
+	RunTaxes(incomes)
 }
 
 func SetUpLogger(logLevelStr string) error {

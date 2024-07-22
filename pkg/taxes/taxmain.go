@@ -6,13 +6,8 @@ import (
 	"github.com/mattfenwick/collections/pkg/slice"
 )
 
-func RunTaxes() {
-	fmt.Println("ordinary income:")
-	HackPrintOrdinaryIncomeBrackets()
-	fmt.Printf("\nlong term capital gains:\n")
-	HackPrintLTCGIncomeBrackets()
-
-	incomes := []*Income{
+var (
+	defaultIncomes = []*Income{
 		{
 			Year:   2024,
 			Status: FilingStatusSingle,
@@ -75,6 +70,14 @@ func RunTaxes() {
 			Deduction: nil,
 		},
 	}
+)
+
+func RunTaxes(incomes []*Income) {
+	fmt.Println("ordinary income:")
+	HackPrintOrdinaryIncomeBrackets()
+	fmt.Printf("\nlong term capital gains:\n")
+	HackPrintLTCGIncomeBrackets()
+
 	for _, inc := range incomes {
 		estimate := EstimateTaxes(inc)
 		// fmt.Printf("estimate: \n%s\n\n", json.MustMarshalToString(estimate))
