@@ -35,23 +35,21 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 	}
 	statusConstants := yearConstants.ByStatus[income.Status]
 
-	ordinaryIncome := income.WageIncome() + income.ShortTermCapitalGainIncome()
+	ordinaryIncome := income.GetTaxableIncome() - income.LongTermCapitalGainIncome()
 	totalIncome := slice.Sum(slice.Map(func(i *IncomeSource) int64 { return i.Amount }, income.IncomeSources))
 
-	ordinaryIncomeAfterDeducion := ordinaryIncome - income.GetDeduction()
 	var ordinaryTaxes []*TaxEstimateBracket
 	for _, b := range statusConstants.OrdinaryIncomeBrackets.GetBrackets() {
-		ordinaryTaxes = append(ordinaryTaxes, &TaxEstimateBracket{b.GetTax(ordinaryIncomeAfterDeducion), b})
+		ordinaryTaxes = append(ordinaryTaxes, &TaxEstimateBracket{b.GetTax(ordinaryIncome), b})
 	}
 
 	// LTCG
 	//   TODO question -- how does LTCG interact with deduction?
-	totalIncomeAfterDeduction := totalIncome - income.GetDeduction()
 	var ltcgTaxes []*TaxEstimateBracket
 	for _, b := range statusConstants.LTCGIncomeBrackets.GetBrackets() {
 		ltcgTaxes = append(ltcgTaxes,
 			&TaxEstimateBracket{
-				b.GetLongTermCapitalGainsTax(totalIncomeAfterDeduction, ordinaryIncomeAfterDeducion),
+				b.GetLongTermCapitalGainsTax(income.GetTaxableIncome(), ordinaryIncome),
 				b})
 	}
 

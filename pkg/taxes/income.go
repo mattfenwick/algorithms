@@ -40,9 +40,11 @@ const (
 )
 
 type IncomeSource struct {
-	Description string
-	IncomeType  IncomeType
-	Amount      int64
+	Description       string
+	IncomeType        IncomeType
+	Amount            int64
+	NonTaxableWages   int64
+	NonTaxablePayroll int64
 }
 
 type Income struct {
@@ -60,7 +62,14 @@ func (i *Income) GetTaxConstants() (*TaxYearConstants, *TaxStatusConstants) {
 }
 
 func (i *Income) MedicareIncome() (int64, int64, int64) {
-	wageIncome, capitalGains := i.WageIncome(), i.InvestmentIncome()
+	wageIncome := int64(0)
+	for _, s := range i.IncomeSources {
+		if s.IncomeType != IncomeTypeWage {
+			continue
+		}
+		wageIncome += builtin.Max(0, s.Amount-s.NonTaxablePayroll)
+	}
+	capitalGains := i.InvestmentIncome()
 
 	_, statusConstants := i.GetTaxConstants()
 	baseWageIncome := builtin.Min(statusConstants.MedicareAdditionalThreshold, wageIncome)
@@ -86,7 +95,9 @@ func (i *Income) SocialSecurityIncome() []int64 {
 }
 
 func (i *Income) GetTotalIncome() int64 {
-	return slice.Sum(slice.Map(func(is *IncomeSource) int64 { return is.Amount }, i.IncomeSources))
+	return slice.Sum(slice.Map(func(is *IncomeSource) int64 {
+		return builtin.Max(0, is.Amount-is.NonTaxableWages)
+	}, i.IncomeSources))
 }
 
 func (i *Income) GetAdjustedGrossIncome() int64 {
@@ -113,7 +124,7 @@ func (i *Income) WageIncome() int64 {
 	out := int64(0)
 	for _, s := range i.IncomeSources {
 		if s.IncomeType == IncomeTypeWage {
-			out += s.Amount
+			out += builtin.Max(0, s.Amount-s.NonTaxableWages)
 		}
 	}
 	return out
