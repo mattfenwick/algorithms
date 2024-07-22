@@ -19,6 +19,7 @@ func RunMedicareTests() {
 			o := &MedicareTax{
 				BaseWageIncome: 50_000,
 				BaseWageTax:    725,
+				MarginalRate:   TaxYear2024.MedicareBaseRate,
 			}
 			gomega.Expect(EstimateMedicareTax(i)).To(gomega.BeEquivalentTo(o))
 		})
@@ -36,6 +37,7 @@ func RunMedicareTests() {
 				BaseWageTax:          2900,
 				AdditionalWageIncome: 50_000,
 				AdditionalWageTax:    1175,
+				MarginalRate:         TaxYear2024.MedicareAdditionalRate,
 			}
 			gomega.Expect(EstimateMedicareTax(i)).To(gomega.BeEquivalentTo(o))
 		})
@@ -48,7 +50,9 @@ func RunMedicareTests() {
 				},
 				Deduction: nil,
 			}
-			o := &MedicareTax{}
+			o := &MedicareTax{
+				MarginalRate: Rate_0Percent,
+			}
 			gomega.Expect(EstimateMedicareTax(i)).To(gomega.BeEquivalentTo(o))
 		})
 		It("over limit -- investment", func() {
@@ -61,8 +65,9 @@ func RunMedicareTests() {
 				Deduction: nil,
 			}
 			o := &MedicareTax{
-				NiitIncome: 50_000,
-				NiitTax:    1900,
+				NiitIncome:   50_000,
+				NiitTax:      1900,
+				MarginalRate: TaxYear2024.NetInvestmentTaxRate,
 			}
 			gomega.Expect(EstimateMedicareTax(i)).To(gomega.BeEquivalentTo(o))
 		})
@@ -79,6 +84,7 @@ func RunMedicareTests() {
 			o := &MedicareTax{
 				BaseWageIncome: 50_000,
 				BaseWageTax:    725,
+				MarginalRate:   TaxYear2024.MedicareBaseRate,
 			}
 			gomega.Expect(EstimateMedicareTax(i)).To(gomega.BeEquivalentTo(o))
 		})
@@ -99,6 +105,7 @@ func RunMedicareTests() {
 				AdditionalWageTax:    1175,
 				NiitIncome:           250_000,
 				NiitTax:              9500,
+				MarginalRate:         TaxYear2024.NetInvestmentTaxRate,
 			}
 			gomega.Expect(EstimateMedicareTax(i)).To(gomega.BeEquivalentTo(o))
 		})

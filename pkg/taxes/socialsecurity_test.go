@@ -17,7 +17,7 @@ func RunSocialSecurityTests() {
 				Deduction: nil,
 			}
 			o := []*SocialSecurityTax{
-				{Description: "job1", WageIncome: 50_000, TaxableAmount: 50_000, Tax: 3100},
+				{Description: "job1", WageIncome: 50_000, TaxableAmount: 50_000, Tax: 3100, MarginalRate: TaxYear2024.SocialSecurityRate},
 			}
 			gomega.Expect(EstimateSocialSecurityTax(i)).To(gomega.BeEquivalentTo(o))
 		})
@@ -31,7 +31,7 @@ func RunSocialSecurityTests() {
 				Deduction: nil,
 			}
 			o := []*SocialSecurityTax{
-				{Description: "job1", WageIncome: 250_000, TaxableAmount: 168_600, Tax: 10453},
+				{Description: "job1", WageIncome: 250_000, TaxableAmount: 168_600, Tax: 10453, MarginalRate: Rate_0Percent},
 			}
 			gomega.Expect(EstimateSocialSecurityTax(i)).To(gomega.BeEquivalentTo(o))
 		})
@@ -57,8 +57,8 @@ func RunSocialSecurityTests() {
 				Deduction: nil,
 			}
 			o := []*SocialSecurityTax{
-				{Description: "job1", WageIncome: 50_000, TaxableAmount: 50_000, Tax: 3100},
-				{Description: "job2", WageIncome: 250_000, TaxableAmount: 168_600, Tax: 10453},
+				{Description: "job1", WageIncome: 50_000, TaxableAmount: 50_000, Tax: 3100, MarginalRate: TaxYear2024.SocialSecurityRate},
+				{Description: "job2", WageIncome: 250_000, TaxableAmount: 168_600, Tax: 10453, MarginalRate: Rate_0Percent},
 			}
 			gomega.Expect(EstimateSocialSecurityTax(i)).To(gomega.BeEquivalentTo(o))
 		})

@@ -26,11 +26,13 @@ func EstimateMedicareTax(income *Income) *MedicareTax {
 	baseWageIncome, additionalWageIncome, niitIncome := income.MedicareIncome()
 	yearConstants, _ := income.GetTaxConstants()
 
-	marginalRate := yearConstants.MedicareBaseRate
+	marginalRate := Rate_0Percent
 	if niitIncome > 0 {
 		marginalRate = yearConstants.NetInvestmentTaxRate
 	} else if additionalWageIncome > 0 {
 		marginalRate = yearConstants.MedicareAdditionalRate
+	} else if baseWageIncome > 0 {
+		marginalRate = yearConstants.MedicareBaseRate
 	}
 	return &MedicareTax{
 		BaseWageIncome:       baseWageIncome,
