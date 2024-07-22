@@ -34,16 +34,6 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 
 	ordinaryIncome := income.WageIncome() + income.ShortTermCapitalGainIncome()
 	totalIncome := slice.Sum(slice.Map(func(i *IncomeSource) int64 { return i.Amount }, income.IncomeSources))
-	// capitalGains := slice.Sum(
-	// 	slice.Map(func(i *IncomeSource) int { return i.Amount },
-	// 		slice.Filter(func(i *IncomeSource) bool {
-	// 			switch i.IncomeType {
-	// 			case IncomeTypeWage:
-	// 				return false
-	// 			default:
-	// 				return true
-	// 			}
-	// 		}, income.IncomeSources)))
 
 	ordinaryIncomeAfterDeducion := ordinaryIncome - income.GetDeduction()
 	var ordinaryTaxes []*TaxEstimateBracket

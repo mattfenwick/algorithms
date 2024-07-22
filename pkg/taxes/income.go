@@ -1,6 +1,8 @@
 package taxes
 
 import (
+	"github.com/mattfenwick/collections/pkg/builtin"
+	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
@@ -47,7 +49,35 @@ type Income struct {
 	Year          int
 	Status        FilingStatus
 	IncomeSources []*IncomeSource
+	Adjustments   int64 // see https://www.irs.gov/pub/irs-pdf/f1040s1.pdf => 401K, HSA, etc.
 	Deduction     *int64
+}
+
+func (i *Income) MedicareBaseIncome() int64 {
+	// TODO is this even useful?  since the medicare taxes are so complicated
+	return i.WageIncome()
+}
+
+func (i *Income) SocialSecurityIncome() []int64 {
+	var out []int64
+	for _, s := range i.IncomeSources {
+		if s.IncomeType == IncomeTypeWage {
+			out = append(out, builtin.Min(s.Amount, TaxYears[i.Year].SocialSecurityLimit))
+		}
+	}
+	return out
+}
+
+func (i *Income) GetTotalIncome() int64 {
+	return slice.Sum(slice.Map(func(is *IncomeSource) int64 { return is.Amount }, i.IncomeSources))
+}
+
+func (i *Income) GetAdjustedGrossIncome() int64 {
+	return i.GetTotalIncome() - i.Adjustments
+}
+
+func (i*Income)GetTaxableIncome() int64 {
+	return builtin.Max(0, i.GetAdjustedGrossIncome() - i.GetDeduction())
 }
 
 func (i *Income) GetDeduction() int64 {
@@ -55,7 +85,7 @@ func (i *Income) GetDeduction() int64 {
 	if i.Deduction != nil {
 		deduction := *i.Deduction
 		if deduction < standardDeduction {
-			logrus.Warningf("nonsenical deduction -- claimed deduction is less than standard deduction (%d < %d)", deduction, standardDeduction)
+			logrus.Warningf("nonsensical deduction -- claimed deduction is less than standard deduction (%d < %d)", deduction, standardDeduction)
 		}
 		return deduction
 	}
