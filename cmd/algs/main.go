@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mattfenwick/algorithms/pkg"
+	"github.com/mattfenwick/algorithms/pkg/algs"
 )
 
 func main() {
@@ -15,31 +15,31 @@ func main() {
 	}
 	switch mode {
 	case "logs":
-		pkg.LogsMain()
+		algs.LogsMain()
 	case "binary-search":
-		pkg.BinarySearchMain()
+		algs.BinarySearchMain()
 	case "ugh":
-		pkg.UghMain()
+		algs.UghMain()
 	case "kth-factor":
-		pkg.KthFactorMain()
+		algs.KthFactorMain()
 	case "count-complete-tree-nodes":
-		pkg.CountNodes()
+		algs.CountNodes()
 	case "count-negatives":
-		pkg.CountNegativesMain()
+		algs.CountNegativesMain()
 	case "find-target-indices":
-		pkg.FindTargetIndicesMain()
+		algs.FindTargetIndicesMain()
 	case "k-weakest-rows":
-		pkg.KWeakestRowsMain()
+		algs.KWeakestRowsMain()
 	case "maximum-count":
-		pkg.MaximumCountMain()
+		algs.MaximumCountMain()
 	case "find-distance-value":
-		pkg.FindDistanceValueMain()
+		algs.FindDistanceValueMain()
 	case "ship-within-days":
-		pkg.ShipWithinDaysMain()
+		algs.ShipWithinDaysMain()
 	case "max-consecutive-answers":
-		pkg.MaxConsecutiveAnswersMain()
+		algs.MaxConsecutiveAnswersMain()
 	case "search-suggestions":
-		pkg.SuggestedProductsMain()
+		algs.SuggestedProductsMain()
 	default:
 		panic("missed case")
 	}

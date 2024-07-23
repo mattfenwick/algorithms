@@ -1,4 +1,4 @@
-package pkg
+package algs
 
 // type Trie struct {
 // 	Char     string
