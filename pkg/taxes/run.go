@@ -82,7 +82,7 @@ func RunTaxes(incomes []*Income) {
 	for _, inc := range incomes {
 		estimate := EstimateTaxes(inc)
 		// fmt.Printf("estimate: \n%s\n\n", json.MustMarshalToString(estimate))
-		fmt.Println("estimate:")
+		fmt.Printf("estimate for %s:\n", inc.Description)
 		estimate.PrettyPrint()
 		estimates = append(estimates, estimate)
 	}
@@ -94,6 +94,11 @@ func RunTaxes(incomes []*Income) {
 func HackPrintOrdinaryIncomeBrackets() {
 	statuses := []FilingStatus{FilingStatusSingle, FilingStatusMarriedJointly, FilingStatusMarriedSeparately, FilingStatusHeadOfHouseHold}
 	rows := [][]string{}
+	var rateRow []string
+	for _, b := range TaxYear2024.ByStatus[FilingStatusMarriedJointly].OrdinaryIncomeBrackets.GetBrackets() {
+		rateRow = append(rateRow, fmt.Sprintf("%.0f", b.RawBracket.Rate.ToDebugPercentage()))
+	}
+	rows = append(rows, rateRow)
 	for _, status := range statuses {
 		row := []string{}
 		for _, b := range TaxYear2024.ByStatus[status].OrdinaryIncomeBrackets.GetBrackets() {
@@ -107,7 +112,7 @@ func HackPrintOrdinaryIncomeBrackets() {
 		rows = append(rows, row)
 	}
 	table := &Table{
-		Headers: slice.Map(func(f FilingStatus) string { return f.ToString() }, statuses),
+		Headers: slice.Cons("Rate %", slice.Map(func(f FilingStatus) string { return f.ToString() }, statuses)),
 		Rows:    Transpose(rows),
 	}
 	fmt.Printf("%s\n", table.ToFormattedTable())
@@ -116,6 +121,11 @@ func HackPrintOrdinaryIncomeBrackets() {
 func HackPrintLTCGIncomeBrackets() {
 	statuses := []FilingStatus{FilingStatusSingle, FilingStatusMarriedJointly, FilingStatusMarriedSeparately, FilingStatusHeadOfHouseHold}
 	rows := [][]string{}
+	var rateRow []string
+	for _, b := range TaxYear2024.ByStatus[FilingStatusMarriedJointly].LTCGIncomeBrackets.GetBrackets() {
+		rateRow = append(rateRow, fmt.Sprintf("%.0f", b.RawBracket.Rate.ToDebugPercentage()))
+	}
+	rows = append(rows, rateRow)
 	for _, status := range statuses {
 		row := []string{}
 		for _, b := range TaxYear2024.ByStatus[status].LTCGIncomeBrackets.GetBrackets() {
@@ -129,7 +139,7 @@ func HackPrintLTCGIncomeBrackets() {
 		rows = append(rows, row)
 	}
 	table := &Table{
-		Headers: slice.Map(func(f FilingStatus) string { return f.ToString() }, statuses),
+		Headers: slice.Cons("Rate %", slice.Map(func(f FilingStatus) string { return f.ToString() }, statuses)),
 		Rows:    Transpose(rows),
 	}
 	fmt.Printf("%s\n", table.ToFormattedTable())
