@@ -53,82 +53,39 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 	inputTable := NewTable(inputHeader, Transpose(inputColumns)...)
 	fmt.Printf("income/input: \n%s\n\n", inputTable.ToFormattedTable())
 
-	// // taxes
-	// taxHeader := []string{""}
-	// taxColumns := []string{
-	// 	"Medicare base wage",
-	// 	"Medicare addnl wage",
-	// 	"Medicare NIIT",
-	// 	"Social security",
-	// 	// TODO what if brackets change year to year?
-	// }
-	// taxTable := NewTable([]string{"Description", "Tax"})
+	breakdownHeader := []string{""}
+	breakdownColumns := [][]string{
+		{"Medicare base wage", "Medicare addnl wage", "Medicare NIIT",
+			"Social security",
+			"Ordinary 10%", "Ordinary 12%", "Ordinary 22%", "Ordinary 24%", "Ordinary 32%", "Ordinary 35%", "Ordinary 37%",
+			"LTCG 0%", "LTCG 15%", "LTCG 20%",
+		},
+	}
+	for _, e := range estimates {
+		// medicare tax
+		row := []string{
+			fmt.Sprintf("%d - %d", e.Medicare.BaseWageIncome, e.Medicare.BaseWageTax),
+			fmt.Sprintf("%d - %d", e.Medicare.AdditionalWageIncome, e.Medicare.AdditionalWageTax),
+			fmt.Sprintf("%d - %d", e.Medicare.NiitIncome, e.Medicare.NiitTax),
+			strings.Join(slice.Map(func(s *SocialSecurityTax) string {
+				return fmt.Sprintf("%d - %d", s.TaxableAmount, s.Tax)
+			}, e.SocialSecurity), "\n"),
+		}
 
-	// // medicare tax
-	// taxTable.AddRow([]string{"Medicare base wage",
-	// 	fmt.Sprintf("%.2f", e.TaxYearConstants.MedicareBaseRate.ToDebugPercentage()),
-	// 	intToString(e.Medicare.BaseWageIncome),
-	// 	intToString(e.Medicare.BaseWageTax)})
-	// taxTable.AddRow([]string{"Medicare addnl wage",
-	// 	fmt.Sprintf("%.2f", e.TaxYearConstants.MedicareAdditionalRate.ToDebugPercentage()),
-	// 	intToString(e.Medicare.AdditionalWageIncome),
-	// 	intToString(e.Medicare.AdditionalWageTax)})
-	// taxTable.AddRow([]string{"Medicare NIIT",
-	// 	fmt.Sprintf("%.2f", e.TaxYearConstants.NetInvestmentTaxRate.ToDebugPercentage()),
-	// 	intToString(e.Medicare.NiitIncome),
-	// 	intToString(e.Medicare.NiitTax)})
+		// ordinary tax
+		for _, t := range e.OrdinaryTaxes {
+			row = append(row, fmt.Sprintf("%d - %d", t.BracketTax.TaxableAmount, t.BracketTax.Tax))
+		}
 
-	// // social security tax
-	// ssTotal := int64(0)
-	// for _, t := range e.SocialSecurity {
-	// 	taxTable.AddRow([]string{
-	// 		fmt.Sprintf("Social security %s", t.Description),
-	// 		fmt.Sprintf("%.1f", e.TaxYearConstants.SocialSecurityRate.ToDebugPercentage()),
-	// 		intToString(t.TaxableAmount),
-	// 		intToString(t.Tax),
-	// 	})
-	// 	ssTotal += t.Tax
-	// }
-
-	// // ordinary tax
-	// ordinaryTotal := int64(0)
-	// ordinaryMarginalRate := Rate_0Percent
-	// for _, t := range e.OrdinaryTaxes {
-	// 	end := "<none>"
-	// 	if t.Bracket.End != nil {
-	// 		end = fmt.Sprintf("%6d", *t.Bracket.End)
-	// 	}
-	// 	taxTable.AddRow([]string{
-	// 		fmt.Sprintf("Ordinary: %6d - %s", t.Bracket.Start, end),
-	// 		fmt.Sprintf("%.0f", t.Bracket.RawBracket.Rate.ToDebugPercentage()),
-	// 		intToString(t.BracketTax.TaxableAmount),
-	// 		intToString(t.BracketTax.Tax),
-	// 	})
-	// 	ordinaryTotal += t.BracketTax.Tax
-	// 	if t.BracketTax.TaxableAmount > 0 {
-	// 		ordinaryMarginalRate = t.Bracket.RawBracket.Rate
-	// 	}
-	// }
-
-	// // LTCG tax
-	// ltcgTotal := int64(0)
-	// ltcgMarginalRate := Rate_0Percent
-	// for _, t := range e.LTCGTaxes {
-	// 	end := "<none>"
-	// 	if t.Bracket.End != nil {
-	// 		end = fmt.Sprintf("%6d", *t.Bracket.End)
-	// 	}
-	// 	taxTable.AddRow([]string{
-	// 		fmt.Sprintf("LTCG: %6d - %s", t.Bracket.Start, end),
-	// 		fmt.Sprintf("%.0f", t.Bracket.RawBracket.Rate.ToDebugPercentage()),
-	// 		intToString(t.BracketTax.TaxableAmount),
-	// 		intToString(t.BracketTax.Tax),
-	// 	})
-	// 	ltcgTotal += t.BracketTax.Tax
-	// 	if t.BracketTax.TaxableAmount > 0 {
-	// 		ltcgMarginalRate = t.Bracket.RawBracket.Rate
-	// 	}
-	// }
+		// LTCG tax
+		for _, t := range e.LTCGTaxes {
+			row = append(row, fmt.Sprintf("%d - %d", t.BracketTax.TaxableAmount, t.BracketTax.Tax))
+		}
+		breakdownColumns = append(breakdownColumns, row)
+		breakdownHeader = append(breakdownHeader, e.Income.Description)
+	}
+	breakdownTable := NewTable(breakdownHeader, Transpose(breakdownColumns)...)
+	fmt.Printf("bracket breakdown: \n%s\n\n", breakdownTable.ToFormattedTable())
 
 	totalHeader := []string{""}
 	totalColumns := [][]string{
