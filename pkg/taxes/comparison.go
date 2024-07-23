@@ -58,13 +58,19 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 	inputTable := NewTable(inputHeader, Transpose(inputColumns)...)
 	fmt.Printf("income/input: \n%s\n\n", inputTable.ToFormattedTable())
 
-	breakdownHeader := []string{""}
+	breakdownHeader := []string{"", ""}
 	breakdownColumns := [][]string{
 		{
-			"Medicare base wage", "Medicare addnl wage", "Medicare NIIT",
+			"Medicare", "Medicare", "Medicare",
 			"Social security",
-			"Ordinary 10%", "Ordinary 12%", "Ordinary 22%", "Ordinary 24%", "Ordinary 32%", "Ordinary 35%", "Ordinary 37%",
-			"LTCG 0%", "LTCG 15%", "LTCG 20%",
+			"Ordinary", "Ordinary", "Ordinary", "Ordinary", "Ordinary", "Ordinary", "Ordinary",
+			"LTCG", "LTCG", "LTCG",
+		},
+		{
+			"Base wage", "Addnl wage", "NIIT",
+			"",
+			"10%", "12%", "22%", "24%", "32%", "35%", "37%",
+			"0%", "15%", "20%",
 		},
 	}
 	for _, e := range estimates {

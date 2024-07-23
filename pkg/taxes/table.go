@@ -35,6 +35,7 @@ func (t *Table) ToFormattedTable() string {
 	table := tablewriter.NewWriter(tableString)
 	table.SetAutoWrapText(false)
 	table.SetRowLine(true)
+	table.SetAutoMergeCellsByColumnIndex([]int{0})
 	// table.SetAutoMergeCells(true)
 
 	table.SetHeader(t.Headers)
@@ -43,3 +44,22 @@ func (t *Table) ToFormattedTable() string {
 	table.Render()
 	return tableString.String()
 }
+
+/*
+func (t *Table) ToFormattedTable(format *func(t *tablewriter.Table)) string {
+	tableString := &strings.Builder{}
+	table := tablewriter.NewWriter(tableString)
+	table.SetAutoWrapText(false)
+	table.SetRowLine(true)
+	if format != nil {
+		(*format)(table)
+	}
+	// table.SetAutoMergeCells(true)
+
+	table.SetHeader(t.Headers)
+	table.AppendBulk(t.Rows)
+
+	table.Render()
+	return tableString.String()
+}
+*/

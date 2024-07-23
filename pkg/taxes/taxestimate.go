@@ -101,18 +101,18 @@ func (e *TaxEstimate) PrettyPrint() {
 	fmt.Printf("income/input: \n%s\n\n", inputTable.ToFormattedTable())
 
 	// taxes
-	taxTable := NewTable([]string{"Description", "Rate (%)", "Taxable amount", "Tax"})
+	taxTable := NewTable([]string{"Tax", "Description", "Rate (%)", "Taxable amount", "Tax"})
 
 	// medicare tax
-	taxTable.AddRow([]string{"Medicare base wage",
+	taxTable.AddRow([]string{"Medicare", "Base wage",
 		fmt.Sprintf("%.2f", e.TaxYearConstants.MedicareBaseRate.ToDebugPercentage()),
 		intToString(e.Medicare.BaseWageIncome),
 		intToString(e.Medicare.BaseWageTax)})
-	taxTable.AddRow([]string{"Medicare addnl wage",
+	taxTable.AddRow([]string{"Medicare", "Addnl wage",
 		fmt.Sprintf("%.2f", e.TaxYearConstants.MedicareAdditionalRate.ToDebugPercentage()),
 		intToString(e.Medicare.AdditionalWageIncome),
 		intToString(e.Medicare.AdditionalWageTax)})
-	taxTable.AddRow([]string{"Medicare NIIT",
+	taxTable.AddRow([]string{"Medicare", "NIIT",
 		fmt.Sprintf("%.2f", e.TaxYearConstants.NetInvestmentTaxRate.ToDebugPercentage()),
 		intToString(e.Medicare.NiitIncome),
 		intToString(e.Medicare.NiitTax)})
@@ -121,7 +121,7 @@ func (e *TaxEstimate) PrettyPrint() {
 	ssTotal := int64(0)
 	for _, t := range e.SocialSecurity {
 		taxTable.AddRow([]string{
-			fmt.Sprintf("Social security %s", t.Description),
+			"Social security", t.Description,
 			fmt.Sprintf("%.1f", e.TaxYearConstants.SocialSecurityRate.ToDebugPercentage()),
 			intToString(t.TaxableAmount),
 			intToString(t.Tax),
@@ -138,7 +138,8 @@ func (e *TaxEstimate) PrettyPrint() {
 			end = fmt.Sprintf("%6d", *t.Bracket.End)
 		}
 		taxTable.AddRow([]string{
-			fmt.Sprintf("Ordinary: %6d - %s", t.Bracket.Start, end),
+			"Ordinary",
+			fmt.Sprintf("%6d - %s", t.Bracket.Start, end),
 			fmt.Sprintf("%.0f", t.Bracket.RawBracket.Rate.ToDebugPercentage()),
 			intToString(t.BracketTax.TaxableAmount),
 			intToString(t.BracketTax.Tax),
@@ -158,7 +159,8 @@ func (e *TaxEstimate) PrettyPrint() {
 			end = fmt.Sprintf("%6d", *t.Bracket.End)
 		}
 		taxTable.AddRow([]string{
-			fmt.Sprintf("LTCG: %6d - %s", t.Bracket.Start, end),
+			"LTCG",
+			fmt.Sprintf("%6d - %s", t.Bracket.Start, end),
 			fmt.Sprintf("%.0f", t.Bracket.RawBracket.Rate.ToDebugPercentage()),
 			intToString(t.BracketTax.TaxableAmount),
 			intToString(t.BracketTax.Tax),
