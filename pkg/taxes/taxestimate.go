@@ -2,6 +2,7 @@ package taxes
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/mattfenwick/collections/pkg/builtin"
 	"github.com/mattfenwick/collections/pkg/slice"
@@ -68,28 +69,35 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 func (e *TaxEstimate) PrettyPrint() {
 	// income/input table
 	medicareBase, medicareAddnl, medicareNiit := e.Income.MedicareIncome()
-	inputTable := NewTable([]string{"Key", "Value"},
-		[]string{"Status", e.Income.Status.ToString()},
-		[]string{"Year", intToString(e.Income.Year)},
-		[]string{"Wages", intToString(e.Income.WageIncome())},
-		[]string{"Short term", intToString(e.Income.ShortTermCapitalGainIncome())},
-		[]string{"Long term", intToString(e.Income.LongTermCapitalGainIncome())},
-		[]string{"Gross", intToString(e.Income.GetGrossIncome())},
-		[]string{"Gross less nontaxable", intToString(e.Income.GetGrossIncomeLessNonTaxable())},
-		[]string{"Adjustments", intToString(e.Income.Adjustments)},
-		[]string{"AGI", intToString(e.Income.GetAdjustedGrossIncome())},
-		[]string{"Deduction", intToString(e.Income.GetDeduction())},
-		[]string{"Taxable income", intToString(e.Income.GetTaxableIncome())},
-		[]string{"Medicare base", intToString(medicareBase)},
-		[]string{"Medicare additional", intToString(medicareAddnl)},
-		[]string{"Medicare NIIT", intToString(medicareNiit)},
-	)
+	var socialSecurity, wages, nonTaxableWages, nonTaxablePayroll []int64
 	for _, s := range e.Income.IncomeSources {
 		if s.IncomeType != IncomeTypeWage {
 			continue
 		}
-		inputTable.AddRow([]string{fmt.Sprintf("Social security %s", s.Description), intToString(builtin.Min(e.TaxYearConstants.SocialSecurityLimit, s.Amount))})
+		socialSecurity = append(socialSecurity, builtin.Min(e.TaxYearConstants.SocialSecurityLimit, s.Amount))
+		wages = append(wages, s.Amount)
+		nonTaxableWages = append(nonTaxableWages, s.NonTaxableWages)
+		nonTaxablePayroll = append(nonTaxablePayroll, s.NonTaxablePayroll)
 	}
+	inputTable := NewTable([]string{"Key", "Value"},
+		[]string{"Status", e.Income.Status.ToString()},
+		[]string{"Year", intToString(e.Income.Year)},
+		[]string{"Wages", strings.Join(slice.Map(intToString, wages), "\n")},
+		[]string{"Nontaxable wages", strings.Join(slice.Map(intToString, nonTaxableWages), "\n")},
+		[]string{"Nontaxable payroll", strings.Join(slice.Map(intToString, nonTaxablePayroll), "\n")},
+		[]string{"Short term", intToString(e.Income.ShortTermCapitalGainIncome())},
+		[]string{"Long term", intToString(e.Income.LongTermCapitalGainIncome())},
+		[]string{"Gross", intToString(e.Income.GetGrossIncome())},
+		[]string{"Gross less nontaxable", intToString(e.Income.GetGrossIncomeLessNonTaxable())},
+		[]string{"Medicare base", intToString(medicareBase)},
+		[]string{"Medicare additional", intToString(medicareAddnl)},
+		[]string{"Medicare NIIT", intToString(medicareNiit)},
+		[]string{"Social security", strings.Join(slice.Map(intToString, socialSecurity), "\n")},
+		[]string{"Adjustments", intToString(e.Income.Adjustments)},
+		[]string{"AGI", intToString(e.Income.GetAdjustedGrossIncome())},
+		[]string{"Deduction", intToString(e.Income.GetDeduction())},
+		[]string{"Taxable income", intToString(e.Income.GetTaxableIncome())},
+	)
 	fmt.Printf("income/input: \n%s\n\n", inputTable.ToFormattedTable())
 
 	// taxes

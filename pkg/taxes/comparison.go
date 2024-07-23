@@ -12,28 +12,28 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 	// income/input table
 	inputHeader := []string{""}
 	inputColumns := [][]string{
-		{"Status", "Year", "Wages", "Short term", "Long term", "Gross", "Gross less nontaxable", "Medicare base", "Medicare additional", "Medicare NIIT", "Social security", "Adjustments", "AGI", "Deduction", "Taxable income"},
+		{"Status", "Year", "Wages", "Nontaxable wages", "Nontaxable payroll", "Short term", "Long term", "Gross", "Gross less nontaxable", "Medicare base", "Medicare additional", "Medicare NIIT", "Social security", "Adjustments", "AGI", "Deduction", "Taxable income"},
 	}
 
 	for _, e := range estimates {
 		medicareBase, medicareAddnl, medicareNiit := e.Income.MedicareIncome()
-		var socialSecurity []int64
+		var socialSecurity, wages, nonTaxableWages, nonTaxablePayroll []int64
 		for _, s := range e.Income.IncomeSources {
 			if s.IncomeType != IncomeTypeWage {
 				continue
 			}
 			socialSecurity = append(socialSecurity, builtin.Min(e.TaxYearConstants.SocialSecurityLimit, s.Amount))
+			wages = append(wages, s.Amount)
+			nonTaxableWages = append(nonTaxableWages, s.NonTaxableWages)
+			nonTaxablePayroll = append(nonTaxablePayroll, s.NonTaxablePayroll)
 		}
 		socialSecurityString := strings.Join(slice.Map(intToString, socialSecurity), "\n")
-		wageString := strings.Join(
-			slice.Map(
-				func(i *IncomeSource) string { return intToString(i.Amount) },
-				slice.Filter(func(i *IncomeSource) bool { return i.IncomeType == IncomeTypeWage }, e.Income.IncomeSources)),
-			"\n")
 		column := []string{
 			e.Income.Status.ToString(),
 			intToString(e.Income.Year),
-			wageString,
+			strings.Join(slice.Map(intToString, wages), "\n"),
+			strings.Join(slice.Map(intToString, nonTaxableWages), "\n"),
+			strings.Join(slice.Map(intToString, nonTaxablePayroll), "\n"),
 			intToString(e.Income.ShortTermCapitalGainIncome()),
 			intToString(e.Income.LongTermCapitalGainIncome()),
 			intToString(e.Income.GetGrossIncome()),
