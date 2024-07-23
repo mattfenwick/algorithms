@@ -12,14 +12,11 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 	// income/input table
 	inputHeader := []string{""}
 	inputColumns := [][]string{
-		{"Status", "Year", "Wages", "Short term", "Long term", "Gross", "Medicare base", "Medicare additional", "Medicare NIIT", "Social security", "Adjustments", "AGI", "Deduction", "Taxable income"},
+		{"Status", "Year", "Wages", "Short term", "Long term", "Gross", "Gross less nontaxable", "Medicare base", "Medicare additional", "Medicare NIIT", "Social security", "Adjustments", "AGI", "Deduction", "Taxable income"},
 	}
 
-	for ix, e := range estimates {
+	for _, e := range estimates {
 		medicareBase, medicareAddnl, medicareNiit := e.Income.MedicareIncome()
-		e.Income.GetAdjustedGrossIncome()
-		e.Income.GetTaxableIncome()
-		e.Income.GetGrossIncome()
 		var socialSecurity []int64
 		for _, s := range e.Income.IncomeSources {
 			if s.IncomeType != IncomeTypeWage {
@@ -28,14 +25,19 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 			socialSecurity = append(socialSecurity, builtin.Min(e.TaxYearConstants.SocialSecurityLimit, s.Amount))
 		}
 		socialSecurityString := strings.Join(slice.Map(intToString, socialSecurity), "\n")
-
+		wageString := strings.Join(
+			slice.Map(
+				func(i *IncomeSource) string { return intToString(i.Amount) },
+				slice.Filter(func(i *IncomeSource) bool { return i.IncomeType == IncomeTypeWage }, e.Income.IncomeSources)),
+			"\n")
 		column := []string{
 			e.Income.Status.ToString(),
 			intToString(e.Income.Year),
-			intToString(e.Income.WageIncome()),
+			wageString,
 			intToString(e.Income.ShortTermCapitalGainIncome()),
 			intToString(e.Income.LongTermCapitalGainIncome()),
 			intToString(e.Income.GetGrossIncome()),
+			intToString(e.Income.GetGrossIncomeLessNonTaxable()),
 			intToString(medicareBase),
 			intToString(medicareAddnl),
 			intToString(medicareNiit),
@@ -46,7 +48,7 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 			intToString(e.Income.GetTaxableIncome()),
 		}
 		inputColumns = append(inputColumns, column)
-		inputHeader = append(inputHeader, intToString(ix+1))
+		inputHeader = append(inputHeader, e.Income.Description)
 	}
 	inputTable := NewTable(inputHeader, Transpose(inputColumns)...)
 	fmt.Printf("income/input: \n%s\n\n", inputTable.ToFormattedTable())
@@ -130,9 +132,9 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 
 	totalHeader := []string{""}
 	totalColumns := [][]string{
-		{"Medicare", "Social security", "Ordinary", "LTCG", "Gross income", "Total tax", "Effective rate"},
+		{"Medicare", "Social security", "Ordinary", "LTCG", "Total tax", "Effective rate"},
 	}
-	for ix, e := range estimates {
+	for _, e := range estimates {
 		ssTotal := slice.Sum(slice.Map(func(s *SocialSecurityTax) int64 { return s.Tax }, e.SocialSecurity))
 		ordinaryTotal := slice.Sum(slice.Map(func(t *TaxEstimateBracket) int64 { return t.BracketTax.Tax }, e.OrdinaryTaxes))
 		ltcgTotal := slice.Sum(slice.Map(func(t *TaxEstimateBracket) int64 { return t.BracketTax.Tax }, e.LTCGTaxes))
@@ -144,11 +146,10 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 			intToString(ssTotal),
 			intToString(ordinaryTotal),
 			intToString(ltcgTotal),
-			intToString(e.Income.GetGrossIncome()),
 			intToString(grandTotal),
 			fmt.Sprintf("%.2f", 100*float32(grandTotal)/float32(e.Income.GetGrossIncome())),
 		})
-		totalHeader = append(totalHeader, intToString(ix))
+		totalHeader = append(totalHeader, e.Income.Description)
 	}
 	totalTable := NewTable(totalHeader, Transpose(totalColumns)...)
 	fmt.Printf("totals:\n%s\n\n", totalTable.ToFormattedTable())

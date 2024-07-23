@@ -48,6 +48,7 @@ type IncomeSource struct {
 }
 
 type Income struct {
+	Description   string
 	Year          int
 	Status        FilingStatus
 	IncomeSources []*IncomeSource
@@ -96,13 +97,19 @@ func (i *Income) SocialSecurityIncome() []int64 {
 
 func (i *Income) GetGrossIncome() int64 {
 	return slice.Sum(slice.Map(func(is *IncomeSource) int64 {
+		return is.Amount
+	}, i.IncomeSources))
+}
+
+func (i *Income) GetGrossIncomeLessNonTaxable() int64 {
+	return slice.Sum(slice.Map(func(is *IncomeSource) int64 {
 		// TODO is this adjustment right?
 		return builtin.Max(0, is.Amount-is.NonTaxableWages)
 	}, i.IncomeSources))
 }
 
 func (i *Income) GetAdjustedGrossIncome() int64 {
-	return i.GetGrossIncome() - i.Adjustments
+	return i.GetGrossIncomeLessNonTaxable() - i.Adjustments
 }
 
 func (i *Income) GetTaxableIncome() int64 {

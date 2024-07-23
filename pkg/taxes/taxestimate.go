@@ -68,16 +68,14 @@ func EstimateTaxes(income *Income) *TaxEstimate {
 func (e *TaxEstimate) PrettyPrint() {
 	// income/input table
 	medicareBase, medicareAddnl, medicareNiit := e.Income.MedicareIncome()
-	e.Income.GetAdjustedGrossIncome()
-	e.Income.GetTaxableIncome()
-	e.Income.GetGrossIncome()
 	inputTable := NewTable([]string{"Key", "Value"},
 		[]string{"Status", e.Income.Status.ToString()},
 		[]string{"Year", intToString(e.Income.Year)},
 		[]string{"Wages", intToString(e.Income.WageIncome())},
 		[]string{"Short term", intToString(e.Income.ShortTermCapitalGainIncome())},
 		[]string{"Long term", intToString(e.Income.LongTermCapitalGainIncome())},
-		[]string{"Gross income", intToString(e.Income.GetGrossIncome())},
+		[]string{"Gross", intToString(e.Income.GetGrossIncome())},
+		[]string{"Gross less nontaxable", intToString(e.Income.GetGrossIncomeLessNonTaxable())},
 		[]string{"Adjustments", intToString(e.Income.Adjustments)},
 		[]string{"AGI", intToString(e.Income.GetAdjustedGrossIncome())},
 		[]string{"Deduction", intToString(e.Income.GetDeduction())},

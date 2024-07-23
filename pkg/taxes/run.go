@@ -87,6 +87,7 @@ func RunTaxes(incomes []*Income) {
 		estimates = append(estimates, estimate)
 	}
 
+	fmt.Printf("comparison:\n")
 	PrettyPrintComparison(estimates)
 }
 
