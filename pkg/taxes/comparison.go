@@ -12,7 +12,12 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 	// income/input table
 	inputHeader := []string{""}
 	inputColumns := [][]string{
-		{"Status", "Year", "Wages", "Nontaxable wages", "Nontaxable payroll", "Short term", "Long term", "Gross", "Gross less nontaxable", "Medicare base", "Medicare additional", "Medicare NIIT", "Social security", "Adjustments", "AGI", "Deduction", "Taxable income"},
+		{
+			"Status", "Year", "Wages", "Nontaxable wages",
+			"Short term", "Long term", "Gross", "Gross less nontaxable",
+			"Adjustments", "AGI", "Deduction", "Taxable income",
+			"Nontaxable payroll", "Medicare base", "Medicare additional", "Medicare NIIT", "Social security",
+		},
 	}
 
 	for _, e := range estimates {
@@ -33,19 +38,19 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 			intToString(e.Income.Year),
 			strings.Join(slice.Map(intToString, wages), "\n"),
 			strings.Join(slice.Map(intToString, nonTaxableWages), "\n"),
-			strings.Join(slice.Map(intToString, nonTaxablePayroll), "\n"),
 			intToString(e.Income.ShortTermCapitalGainIncome()),
 			intToString(e.Income.LongTermCapitalGainIncome()),
 			intToString(e.Income.GetGrossIncome()),
 			intToString(e.Income.GetGrossIncomeLessNonTaxable()),
-			intToString(medicareBase),
-			intToString(medicareAddnl),
-			intToString(medicareNiit),
-			socialSecurityString,
 			intToString(e.Income.Adjustments),
 			intToString(e.Income.GetAdjustedGrossIncome()),
 			intToString(e.Income.GetDeduction()),
 			intToString(e.Income.GetTaxableIncome()),
+			strings.Join(slice.Map(intToString, nonTaxablePayroll), "\n"),
+			intToString(medicareBase),
+			intToString(medicareAddnl),
+			intToString(medicareNiit),
+			socialSecurityString,
 		}
 		inputColumns = append(inputColumns, column)
 		inputHeader = append(inputHeader, e.Income.Description)
@@ -55,7 +60,8 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 
 	breakdownHeader := []string{""}
 	breakdownColumns := [][]string{
-		{"Medicare base wage", "Medicare addnl wage", "Medicare NIIT",
+		{
+			"Medicare base wage", "Medicare addnl wage", "Medicare NIIT",
 			"Social security",
 			"Ordinary 10%", "Ordinary 12%", "Ordinary 22%", "Ordinary 24%", "Ordinary 32%", "Ordinary 35%", "Ordinary 37%",
 			"LTCG 0%", "LTCG 15%", "LTCG 20%",
