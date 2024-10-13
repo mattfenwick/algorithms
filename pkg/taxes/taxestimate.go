@@ -31,9 +31,12 @@ type TaxEstimate struct {
 func EstimateTaxes(income *Income) *TaxEstimate {
 	yearConstants, ok := TaxYears[income.Year]
 	if !ok {
-		panic(errors.Errorf("no tax constant info for year %d", income.Year))
+		panic(errors.Errorf("no tax constant info for year '%d'", income.Year))
 	}
-	statusConstants := yearConstants.ByStatus[income.Status]
+	statusConstants, ok := yearConstants.ByStatus[income.Status]
+	if !ok {
+		panic(errors.Errorf("no tax status info for year '%d', status '%s'", income.Year, income.Status))
+	}
 
 	ordinaryIncome := income.GetTaxableIncome() - income.LongTermCapitalGainIncome()
 	totalIncome := slice.Sum(slice.Map(func(i *IncomeSource) int64 { return i.Amount }, income.IncomeSources))
