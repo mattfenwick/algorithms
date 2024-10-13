@@ -1,0 +1,29 @@
+[
+    {
+        "Description": "example1",
+        "Year": 2024,
+        "Status": "FilingStatusMarriedJointly",
+        "IncomeSources": [
+            {
+                "Description": "Elmer Fudd",
+                "IncomeType": "IncomeTypeWage",
+                "Amount": 90000,
+                "NonTaxableWages": 1000,
+                "NonTaxablePayroll": 1000
+            },
+            {
+                "Description": "Bugs Bunny",
+                "IncomeType": "IncomeTypeWage",
+                "Amount": 60000,
+                "NonTaxableWages": 10000,
+                "NonTaxablePayroll": 5000
+            },
+            {
+                "Description": "Oil money",
+                "IncomeType": "IncomeTypeLongTerm",
+                "Amount": 10000
+            }
+        ],
+        "Adjustments": 23500
+    }
+]
