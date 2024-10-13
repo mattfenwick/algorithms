@@ -190,8 +190,95 @@ var (
 		},
 	}
 
+	// TODO as of Oct 2024, these are not yet official.
+	//   So verify these on the IRS website once they're officially released.
+	TaxYear2025 = &TaxYearConstants{
+		// TODO social/med taxes all need to be updated
+		SocialSecurityLimit:    176_100,
+		SocialSecurityRate:     &TaxRate{Rate: 62, Divisor: 1000},   // .062  = 6.2%
+		MedicareBaseRate:       &TaxRate{Rate: 145, Divisor: 10000}, // .0145 = 1.45%
+		MedicareAdditionalRate: &TaxRate{Rate: 235, Divisor: 10000}, // .0235 = 2.35%
+		NetInvestmentTaxRate:   &TaxRate{Rate: 38, Divisor: 1000},   // .038  = 3.8%
+		// end TODO social/med
+		ByStatus: map[FilingStatus]*TaxStatusConstants{
+			FilingStatusSingle: {
+				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
+					{Rate10Percent, 11925},
+					{Rate12Percent, 48475},
+					{Rate22Percent, 103350},
+					{Rate24Percent, 197300},
+					{Rate32Percent, 250525},
+					{Rate35Percent, 626350},
+					{Rate37Percent, math.MaxInt64},
+				}),
+				LTCGIncomeBrackets: NewStatusBrackets([]*RawBracket{
+					{Rate_0Percent, 48350},
+					{Rate15Percent, 533400},
+					{Rate20Percent, math.MaxInt64},
+				}),
+				StandardDeduction:           15000,
+				MedicareAdditionalThreshold: 200_000,
+			},
+			FilingStatusMarriedJointly: {
+				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
+					{Rate10Percent, 23850},
+					{Rate12Percent, 96950},
+					{Rate22Percent, 206700},
+					{Rate24Percent, 394600},
+					{Rate32Percent, 501050},
+					{Rate35Percent, 751600},
+					{Rate37Percent, math.MaxInt64},
+				}),
+				LTCGIncomeBrackets: NewStatusBrackets([]*RawBracket{
+					{Rate_0Percent, 96700},
+					{Rate15Percent, 600_050},
+					{Rate20Percent, math.MaxInt64},
+				}),
+				StandardDeduction:           30000,
+				MedicareAdditionalThreshold: 250_000,
+			},
+			FilingStatusMarriedSeparately: {
+				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
+					{Rate10Percent, 11925},
+					{Rate12Percent, 48475},
+					{Rate22Percent, 103350},
+					{Rate24Percent, 197300},
+					{Rate32Percent, 250525},
+					{Rate35Percent, 375800},
+					{Rate37Percent, math.MaxInt64},
+				}),
+				LTCGIncomeBrackets: NewStatusBrackets([]*RawBracket{
+					{Rate_0Percent, 48350},
+					{Rate15Percent, 300_000},
+					{Rate20Percent, math.MaxInt64},
+				}),
+				StandardDeduction:           15000,
+				MedicareAdditionalThreshold: 125_000,
+			},
+			FilingStatusHeadOfHouseHold: {
+				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
+					{Rate10Percent, 17000},
+					{Rate12Percent, 64850},
+					{Rate22Percent, 103350},
+					{Rate24Percent, 197300},
+					{Rate32Percent, 250500},
+					{Rate35Percent, 626350},
+					{Rate37Percent, math.MaxInt64},
+				}),
+				LTCGIncomeBrackets: NewStatusBrackets([]*RawBracket{
+					{Rate_0Percent, 64750},
+					{Rate15Percent, 566700},
+					{Rate20Percent, math.MaxInt64},
+				}),
+				StandardDeduction:           22500,
+				MedicareAdditionalThreshold: 200_000,
+			},
+		},
+	}
+
 	TaxYears = map[int]*TaxYearConstants{
 		2023: TaxYear2023,
 		2024: TaxYear2024,
+		2025: TaxYear2025,
 	}
 )
