@@ -90,7 +90,7 @@ var (
 			FilingStatusHeadOfHouseHold: {
 				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
 					{Rate10Percent, 15_700},
-					{Rate12Percent, 59_63100850},
+					{Rate12Percent, 59_850},
 					{Rate22Percent, 95_350},
 					{Rate24Percent, 182_100},
 					{Rate32Percent, 231_250},
