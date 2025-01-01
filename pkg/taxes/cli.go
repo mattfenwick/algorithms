@@ -29,6 +29,7 @@ func SetupRootCommand() *cobra.Command {
 	command.PersistentFlags().StringVarP(&flags.Verbosity, "verbosity", "v", "info", "log level; one of [info, debug, trace, warn, error, fatal, panic]")
 
 	command.AddCommand(SetupEstimateCommand())
+	command.AddCommand(SetupBracketsCommand())
 
 	return command
 }
@@ -83,4 +84,25 @@ func Die(err error) {
 	if err != nil {
 		logrus.Fatalf("%+v", err)
 	}
+}
+
+type BracketsArgs struct {
+	Years []int
+}
+
+func SetupBracketsCommand() *cobra.Command {
+	args := &BracketsArgs{}
+
+	command := &cobra.Command{
+		Use:   "brackets",
+		Short: "print tax brackets",
+		Args:  cobra.ExactArgs(0),
+		Run: func(cmd *cobra.Command, as []string) {
+			RunBrackets(args.Years)
+		},
+	}
+
+	command.Flags().IntSliceVar(&args.Years, "year", []int{2023, 2024, 2025}, "years for which to print brackets")
+
+	return command
 }

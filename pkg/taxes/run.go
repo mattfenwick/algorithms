@@ -72,12 +72,22 @@ var (
 	}
 )
 
-func RunTaxes(incomes []*Income) {
-	fmt.Println("ordinary income:")
-	HackPrintOrdinaryIncomeBrackets()
-	fmt.Printf("\nlong term capital gains:\n")
-	HackPrintLTCGIncomeBrackets()
+func RunBrackets(taxYear []int) {
+	for _, year := range taxYear {
+		taxYear, ok := TaxYears[year]
+		if !ok {
+			fmt.Printf("tax year constants not found for <%d>\n", year)
+			continue
+		}
+		fmt.Printf("tax year %d ordinary income:\n", year)
+		PrintOrdinaryIncomeBrackets(taxYear)
+		fmt.Printf("\nlong term %d capital gains:\n", year)
+		PrintLTCGIncomeBrackets(taxYear)
+		fmt.Printf("\n\n")
+	}
+}
 
+func RunTaxes(incomes []*Income) {
 	var estimates []*TaxEstimate
 	for _, inc := range incomes {
 		estimate := EstimateTaxes(inc)
@@ -91,17 +101,17 @@ func RunTaxes(incomes []*Income) {
 	PrettyPrintComparison(estimates)
 }
 
-func HackPrintOrdinaryIncomeBrackets() {
+func PrintOrdinaryIncomeBrackets(taxYear *TaxYearConstants) {
 	statuses := []FilingStatus{FilingStatusSingle, FilingStatusMarriedJointly, FilingStatusMarriedSeparately, FilingStatusHeadOfHouseHold}
 	rows := [][]string{}
 	var rateRow []string
-	for _, b := range TaxYear2024.ByStatus[FilingStatusMarriedJointly].OrdinaryIncomeBrackets.GetBrackets() {
+	for _, b := range taxYear.ByStatus[FilingStatusMarriedJointly].OrdinaryIncomeBrackets.GetBrackets() {
 		rateRow = append(rateRow, fmt.Sprintf("%.0f", b.RawBracket.Rate.ToDebugPercentage()))
 	}
 	rows = append(rows, rateRow)
 	for _, status := range statuses {
 		row := []string{}
-		for _, b := range TaxYear2024.ByStatus[status].OrdinaryIncomeBrackets.GetBrackets() {
+		for _, b := range taxYear.ByStatus[status].OrdinaryIncomeBrackets.GetBrackets() {
 			end := b.End
 			if end == nil {
 				row = append(row, fmt.Sprintf("%7d -  <none>", b.Start))
@@ -118,17 +128,17 @@ func HackPrintOrdinaryIncomeBrackets() {
 	fmt.Printf("%s\n", table.ToFormattedTable())
 }
 
-func HackPrintLTCGIncomeBrackets() {
+func PrintLTCGIncomeBrackets(taxYear *TaxYearConstants) {
 	statuses := []FilingStatus{FilingStatusSingle, FilingStatusMarriedJointly, FilingStatusMarriedSeparately, FilingStatusHeadOfHouseHold}
 	rows := [][]string{}
 	var rateRow []string
-	for _, b := range TaxYear2024.ByStatus[FilingStatusMarriedJointly].LTCGIncomeBrackets.GetBrackets() {
+	for _, b := range taxYear.ByStatus[FilingStatusMarriedJointly].LTCGIncomeBrackets.GetBrackets() {
 		rateRow = append(rateRow, fmt.Sprintf("%.0f", b.RawBracket.Rate.ToDebugPercentage()))
 	}
 	rows = append(rows, rateRow)
 	for _, status := range statuses {
 		row := []string{}
-		for _, b := range TaxYear2024.ByStatus[status].LTCGIncomeBrackets.GetBrackets() {
+		for _, b := range taxYear.ByStatus[status].LTCGIncomeBrackets.GetBrackets() {
 			end := b.End
 			if end == nil {
 				row = append(row, fmt.Sprintf("%7d -  <none>", b.Start))
