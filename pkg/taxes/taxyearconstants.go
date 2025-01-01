@@ -190,16 +190,12 @@ var (
 		},
 	}
 
-	// TODO as of Oct 2024, these are not yet official.
-	//   So verify these on the IRS website once they're officially released.
 	TaxYear2025 = &TaxYearConstants{
-		// TODO social/med taxes all need to be updated
 		SocialSecurityLimit:    176_100,
 		SocialSecurityRate:     &TaxRate{Rate: 62, Divisor: 1000},   // .062  = 6.2%
 		MedicareBaseRate:       &TaxRate{Rate: 145, Divisor: 10000}, // .0145 = 1.45%
 		MedicareAdditionalRate: &TaxRate{Rate: 235, Divisor: 10000}, // .0235 = 2.35%
 		NetInvestmentTaxRate:   &TaxRate{Rate: 38, Divisor: 1000},   // .038  = 3.8%
-		// end TODO social/med
 		ByStatus: map[FilingStatus]*TaxStatusConstants{
 			FilingStatusSingle: {
 				OrdinaryIncomeBrackets: NewStatusBrackets([]*RawBracket{
