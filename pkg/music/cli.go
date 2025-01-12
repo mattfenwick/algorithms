@@ -55,7 +55,8 @@ func SetupScalesCommand() *cobra.Command {
 
 func RunScales(args *ScalesArgs) {
 	for _, start := range args.Scales {
-		for _, n := range MajorScale(start) {
+		key := NoteToKey[Note(start)]
+		for _, n := range key.MajorScale() {
 			fmt.Println(n)
 		}
 		fmt.Println()
