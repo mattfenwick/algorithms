@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/mattfenwick/collections/pkg/builtin"
 	"github.com/mattfenwick/collections/pkg/slice"
 )
@@ -55,7 +56,7 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 		inputColumns = append(inputColumns, column)
 		inputHeader = append(inputHeader, e.Income.Description)
 	}
-	inputTable := NewTable(inputHeader, Transpose(inputColumns)...)
+	inputTable := utils.NewTable(inputHeader, Transpose(inputColumns)...)
 	fmt.Printf("income/input: \n%s\n\n", inputTable.ToFormattedTable())
 
 	breakdownHeader := []string{"", ""}
@@ -96,7 +97,7 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 		breakdownColumns = append(breakdownColumns, row)
 		breakdownHeader = append(breakdownHeader, e.Income.Description)
 	}
-	breakdownTable := NewTable(breakdownHeader, Transpose(breakdownColumns)...)
+	breakdownTable := utils.NewTable(breakdownHeader, Transpose(breakdownColumns)...)
 	fmt.Printf("bracket breakdown: \n%s\n\n", breakdownTable.ToFormattedTable())
 
 	totalHeader := []string{""}
@@ -120,7 +121,7 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 		})
 		totalHeader = append(totalHeader, e.Income.Description)
 	}
-	totalTable := NewTable(totalHeader, Transpose(totalColumns)...)
+	totalTable := utils.NewTable(totalHeader, Transpose(totalColumns)...)
 	fmt.Printf("totals:\n%s\n\n", totalTable.ToFormattedTable())
 
 	fmt.Printf("\n\n")

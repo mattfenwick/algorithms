@@ -3,6 +3,7 @@ package taxes
 import (
 	"fmt"
 
+	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/mattfenwick/collections/pkg/slice"
 )
 
@@ -131,7 +132,7 @@ func PrintOrdinaryIncomeBrackets(taxYear *TaxYearConstants) {
 		}
 		rows = append(rows, row)
 	}
-	table := &Table{
+	table := &utils.Table{
 		Headers: slice.Cons("Rate %", slice.Map(func(f FilingStatus) string { return f.ToString() }, statuses)),
 		Rows:    Transpose(rows),
 	}
@@ -158,7 +159,7 @@ func PrintLTCGIncomeBrackets(taxYear *TaxYearConstants) {
 		}
 		rows = append(rows, row)
 	}
-	table := &Table{
+	table := &utils.Table{
 		Headers: slice.Cons("Rate %", slice.Map(func(f FilingStatus) string { return f.ToString() }, statuses)),
 		Rows:    Transpose(rows),
 	}

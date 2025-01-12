@@ -32,6 +32,18 @@ const (
 	BSharp Note = "B♯"
 )
 
+var naturals = []Note{
+	C,
+	D,
+	E,
+	F,
+	G,
+	A,
+	B,
+}
+
+var naturalToIndex = map[Note]int{}
+
 var notes = [][]Note{
 	{BSharp, C},
 	{CSharp, DFlat},
@@ -53,7 +65,7 @@ func (n Note) Index() int {
 	return noteToIndex[n]
 }
 
-func (n Note) Step(size int, useFlats bool) Note {
+func (n Note) Step(size int) Note {
 	startIndex := noteToIndex[n]
 	endIndex := startIndex + size
 	var potentialNotes []Note
@@ -64,25 +76,33 @@ func (n Note) Step(size int, useFlats bool) Note {
 	} else {
 		potentialNotes = notes[endIndex]
 	}
-	if len(potentialNotes) == 2 && useFlats {
-		return potentialNotes[1]
+	nextNatural := n.NextNatural()
+	for _, p := range potentialNotes {
+		if p.Natural() == nextNatural {
+			return p
+		}
 	}
-	return potentialNotes[0]
+	panic(errors.Errorf("no natural match found for %s (from %s, %d), looking in %+v", nextNatural, n, size, potentialNotes))
+}
+
+func (n Note) NextNatural() Note {
+	index := naturalToIndex[n.Natural()] + 1
+	return naturals[index%len(naturals)]
 }
 
 func (n Note) Natural() Note {
 	switch n {
 	case A, AFlat, ASharp:
 		return A
-	case B, BFlat:
+	case B, BFlat, BSharp:
 		return B
-	case C, CSharp:
+	case C, CFlat, CSharp:
 		return C
 	case D, DFlat, DSharp:
 		return D
-	case E, EFlat:
+	case E, EFlat, ESharp:
 		return E
-	case F, FSharp:
+	case F, FFlat, FSharp:
 		return F
 	case G, GFlat, GSharp:
 		return G
@@ -121,19 +141,29 @@ var KeySignatures = []*Key{
 
 var NoteToKey = map[Note]*Key{}
 
-var MajorSteps = []int{2, 2, 1, 2, 2, 2, 1}
+var (
+	MajorSteps = []int{2, 2, 1, 2, 2, 2, 1}
+	MinorSteps = []int{2, 1, 2, 2, 1, 2, 2}
+)
 
-func (k *Key) MajorScale() []Note {
+func (k *Key) getScale(steps []int) []Note {
 	logrus.Infof("looking at key of %s", k.Start)
-	useFlats := k.Flats > 0
 	out := []Note{k.Start}
 	curr := k.Start
-	for _, step := range MajorSteps {
-		next := curr.Step(step, useFlats)
+	for _, step := range steps {
+		next := curr.Step(step)
 		out = append(out, next)
 		curr = next
 	}
 	return out
+}
+
+func (k *Key) MajorScale() []Note {
+	return k.getScale(MajorSteps)
+}
+
+func (k *Key) MinorScale() []Note {
+	return k.getScale(MinorSteps)
 }
 
 func init() {
@@ -144,5 +174,8 @@ func init() {
 	}
 	for _, k := range KeySignatures {
 		NoteToKey[k.Start] = k
+	}
+	for i, n := range naturals {
+		naturalToIndex[n] = i
 	}
 }

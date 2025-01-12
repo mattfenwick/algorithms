@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/mattfenwick/collections/pkg/builtin"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
@@ -82,7 +83,7 @@ func (e *TaxEstimate) PrettyPrint() {
 		nonTaxableWages = append(nonTaxableWages, s.NonTaxableWages)
 		nonTaxablePayroll = append(nonTaxablePayroll, s.NonTaxablePayroll)
 	}
-	inputTable := NewTable([]string{"Key", "Value"},
+	inputTable := utils.NewTable([]string{"Key", "Value"},
 		[]string{"Status", e.Income.Status.ToString()},
 		[]string{"Year", intToString(e.Income.Year)},
 		[]string{"Wages", strings.Join(slice.Map(intToString, wages), "\n")},
@@ -104,7 +105,7 @@ func (e *TaxEstimate) PrettyPrint() {
 	fmt.Printf("income/input: \n%s\n\n", inputTable.ToFormattedTable())
 
 	// taxes
-	taxTable := NewTable([]string{"Tax", "Description", "Rate (%)", "Taxable amount", "Tax"})
+	taxTable := utils.NewTable([]string{"Tax", "Description", "Rate (%)", "Taxable amount", "Tax"})
 
 	// medicare tax
 	taxTable.AddRow([]string{"Medicare", "Base wage",
@@ -176,7 +177,7 @@ func (e *TaxEstimate) PrettyPrint() {
 
 	medicareTotal := e.Medicare.BaseWageTax + e.Medicare.AdditionalWageTax + e.Medicare.NiitTax
 	grandTotal := medicareTotal + ssTotal + ordinaryTotal + ltcgTotal
-	taxTotalTable := NewTable([]string{"Description", "Tax", "Marginal rate", "Effective rate"})
+	taxTotalTable := utils.NewTable([]string{"Description", "Tax", "Marginal rate", "Effective rate"})
 	taxTotalTable.AddRow([]string{"Medicare",
 		intToString(medicareTotal),
 		fmt.Sprintf("%.2f", e.Medicare.MarginalRate.ToDebugPercentage()),
