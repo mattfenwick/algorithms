@@ -84,6 +84,16 @@ func RunBrackets(taxYear []int) {
 		fmt.Printf("\nlong term %d capital gains:\n", year)
 		PrintLTCGIncomeBrackets(taxYear)
 		fmt.Printf("\n\n")
+
+		// // TODO med
+		// taxYear.MedicareAdditionalRate
+		// taxYear.MedicareBaseRate
+		// taxYear.NetInvestmentTaxRate
+		// // TODO social
+		// taxYear.SocialSecurityLimit
+		// taxYear.SocialSecurityRate
+		// // TODO deduction
+		// taxYear.ByStatus[FilingStatusMarriedJointly].StandardDeduction
 	}
 }
 
