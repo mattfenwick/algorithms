@@ -6,7 +6,6 @@ import (
 	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -57,7 +56,10 @@ func SetupScalesCommand() *cobra.Command {
 
 func RunScales(args *ScalesArgs) {
 	for _, start := range args.Scales {
-		key := NoteToKey[Note(start)]
+		key, ok := StringToKey[start]
+		if !ok {
+			Die(errors.Errorf("invalid key: %s", start))
+		}
 		for _, n := range key.MajorScale() {
 			fmt.Println(n)
 		}
@@ -70,38 +72,15 @@ func RunScales(args *ScalesArgs) {
 
 	var majorRows, minorRows [][]string
 	for _, k := range KeySignatures {
-		majorRows = append(majorRows, slice.Map(func(n Note) string { return string(n) }, k.MajorScale()))
-		switch k.Start {
-		case DFlat, GFlat:
-			logrus.Infof("skipping minor, can't handle double flats or sharps for now")
-		default:
-			logrus.Infof("starting minor key %s", k.Start)
-			minorRows = append(minorRows, slice.Map(func(n Note) string { return string(n) }, k.MinorScale()))
-		}
+		majorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(func(n *KeyNote) string { return n.String() }, k.MajorScale()))
+		majorRows = append(majorRows, majorRow)
+		minorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(func(n *KeyNote) string { return n.String() }, k.MinorScale()))
+		minorRows = append(minorRows, minorRow)
 	}
 	fmt.Println("major scales:")
-	majorTable := utils.NewTable([]string{"1", "2", "3", "4", "5", "6", "7", "8"}, majorRows...)
+	majorTable := utils.NewTable([]string{"", "1", "2", "3", "4", "5", "6", "7", "8"}, majorRows...)
 	fmt.Println(majorTable.ToFormattedTable())
 	fmt.Println("minor scales:")
-	minorTable := utils.NewTable([]string{"1", "2", "3", "4", "5", "6", "7", "8"}, minorRows...)
+	minorTable := utils.NewTable([]string{"", "1", "2", "3", "4", "5", "6", "7", "8"}, minorRows...)
 	fmt.Println(minorTable.ToFormattedTable())
-}
-
-func SetUpLogger(logLevelStr string) error {
-	logLevel, err := logrus.ParseLevel(logLevelStr)
-	if err != nil {
-		return errors.Wrapf(err, "unable to parse the specified log level: '%s'", logLevel)
-	}
-	logrus.SetLevel(logLevel)
-	logrus.SetFormatter(&logrus.TextFormatter{
-		FullTimestamp: true,
-	})
-	logrus.Infof("log level set to '%s'", logrus.GetLevel())
-	return nil
-}
-
-func Die(err error) {
-	if err != nil {
-		logrus.Fatalf("%+v", err)
-	}
 }
