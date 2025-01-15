@@ -1,4 +1,4 @@
-package music
+package cli
 
 import (
 	"github.com/pkg/errors"

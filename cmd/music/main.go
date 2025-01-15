@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mattfenwick/algorithms/pkg/music"
+	"github.com/mattfenwick/algorithms/pkg/music/cli"
 )
 
 func main() {
 	fmt.Printf("args: %+v\n", os.Args)
-	music.RunRootCommand()
+	cli.RunRootCommand()
 }

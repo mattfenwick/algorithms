@@ -1,8 +1,9 @@
-package music
+package cli
 
 import (
 	"fmt"
 
+	"github.com/mattfenwick/algorithms/pkg/music"
 	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
@@ -56,7 +57,7 @@ func SetupScalesCommand() *cobra.Command {
 
 func RunScales(args *ScalesArgs) {
 	for _, start := range args.Scales {
-		key, ok := StringToKey[start]
+		key, ok := music.StringToKey[start]
 		if !ok {
 			Die(errors.Errorf("invalid key: %s", start))
 		}
@@ -71,10 +72,10 @@ func RunScales(args *ScalesArgs) {
 	}
 
 	var majorRows, minorRows [][]string
-	for _, k := range KeySignatures {
-		majorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(func(n *KeyNote) string { return n.String() }, k.MajorScale()))
+	for _, k := range music.KeySignatures {
+		majorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(func(n *music.Note) string { return n.String() }, k.MajorScale()))
 		majorRows = append(majorRows, majorRow)
-		minorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(func(n *KeyNote) string { return n.String() }, k.MinorScale()))
+		minorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(func(n *music.Note) string { return n.String() }, k.MinorScale()))
 		minorRows = append(minorRows, minorRow)
 	}
 	fmt.Println("major scales:")
