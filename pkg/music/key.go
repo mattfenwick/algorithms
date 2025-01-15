@@ -28,22 +28,46 @@ var KeySignatures = []*Key{
 var StringToKey = map[string]*Key{}
 
 var (
-	MajorSteps = []int{2, 2, 1, 2, 2, 2, 1}
-	MinorSteps = []int{2, 1, 2, 2, 1, 2, 2}
+	MajorSteps = []*Step{
+		NewStep(0, 0),
+		NewStep(2, 1),
+		NewStep(4, 2),
+		NewStep(5, 3),
+		NewStep(7, 4),
+		NewStep(9, 5),
+		NewStep(11, 6),
+		NewStep(12, 7),
+	}
+	MinorSteps = []*Step{
+		{0, 0},
+		{2, 1},
+		{3, 2},
+		{5, 3},
+		{7, 4},
+		{8, 5},
+		{10, 6},
+		{12, 7},
+	}
+
+// ChromaticSteps = []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 )
 
-func (k *Key) getScale(steps []int) []*Note {
+func (k *Key) getScale(steps []*Step) []*Note {
 	logrus.Debugf("looking at key of %s", k.Start)
-	out := []*Note{k.Start}
-	curr := k.Start.BaseNote()
+	out := []*Note{}
+	base := k.Start.BaseNote()
 	natural := k.Start.Natural
 	for _, step := range steps {
-		next := curr.Step(step)
-		natural = natural.Next()
-		out = append(out, next.KeyNote(natural))
-		curr = next
+		nextBase := base.Next(step.Base)
+		nextNatural := natural.Next(step.Natural)
+		out = append(out, nextBase.KeyNote(nextNatural))
 	}
 	return out
+}
+
+func (k *Key) ChromaticScale() []*Note {
+	// TODO what naturals to use?
+	panic("TODO")
 }
 
 func (k *Key) MajorScale() []*Note {

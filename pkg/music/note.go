@@ -14,7 +14,7 @@ type Note struct {
 }
 
 func (k *Note) BaseNote() BaseNote {
-	return k.Natural.BaseNote().Step(k.SharpsFlats)
+	return k.Natural.BaseNote().Next(k.SharpsFlats)
 }
 
 func (k *Note) Sharps() int {

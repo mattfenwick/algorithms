@@ -32,7 +32,7 @@ func (n BaseNote) KeyNote(natural Natural) *Note {
 	return &Note{Natural: natural, SharpsFlats: diff}
 }
 
-func (n BaseNote) Step(size int) BaseNote {
+func (n BaseNote) Next(size int) BaseNote {
 	end := int(n) + size
 	if end < 0 {
 		end = end + 12

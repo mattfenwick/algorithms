@@ -16,10 +16,12 @@ func (n Natural) BaseNote() BaseNote {
 	return naturalToBase[n]
 }
 
-func (n Natural) Next() Natural {
-	index := naturalToIndex[n] + 1
+func (n Natural) Next(size int) Natural {
+	index := naturalToIndex[n] + size
 	if index >= len(naturals) {
 		index -= len(naturals)
+	} else if index < 0 {
+		index += len(naturals)
 	}
 	return naturals[index]
 }
