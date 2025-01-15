@@ -200,7 +200,7 @@ var (
 )
 
 func (k *Key) getScale(steps []int) []*KeyNote {
-	logrus.Infof("looking at key of %s", k.Start)
+	logrus.Debugf("looking at key of %s", k.Start)
 	out := []*KeyNote{k.Start}
 	curr := k.Start.BaseNote()
 	natural := k.Start.Natural
