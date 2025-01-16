@@ -78,6 +78,19 @@ func (k *Key) MinorScale() []*Note {
 	return k.getScale(MinorSteps)
 }
 
+func (k *Key)Chords() []*Chord {
+	return []*Chord{
+		// TODO figure out how to raise these chords
+		ChordMajorTriad, // 0
+		ChordMinorTriad, // 1
+		ChordMinorTriad, // 2
+		ChordMajorTriad, // 3
+		ChordMajorTriad, // 4
+		ChordMinorTriad, // 5
+		ChordDiminishedTriad, // 6
+	}
+}
+
 func init() {
 	for _, k := range KeySignatures {
 		StringToKey[k.Start.String()] = k

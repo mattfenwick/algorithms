@@ -87,11 +87,29 @@ func RunScales(args *ScalesArgs) {
 
 	for _, k := range music.KeySignatures {
 		var rows [][]string
-		for _, c := range []*music.Chord{music.ChordMajorTriad, music.ChordMinorTriad, music.ChordAugmentedTriad, music.ChordDiminishedTriad} {
-			rows = append(rows, slice.Cons(c.Name, slice.Map(noteToString, c.Apply(k))))
+		for _, c := range []*music.Chord{
+			music.ChordMajorTriad,
+			music.ChordMinorTriad,
+			music.ChordAugmentedTriad,
+			music.ChordDiminishedTriad,
+			music.ChordSuspendedSecond,
+			music.ChordSuspendedFourth,
+			music.ChordMajorSeventh,
+			music.ChordMinorSeventh,
+			music.ChordSeventh,
+		} {
+			row := slice.Cons(c.Name, slice.Map(noteToString, c.Apply(k)))
+			for len(row) < 5 {
+				row = append(row, "")
+			}
+			rows = append(rows, row)
 		}
-		fmt.Println(utils.NewTable([]string{k.Start.String(), "1st", "3rd", "5th"}, rows...).ToFormattedTable())
+		fmt.Println(utils.NewTable([]string{k.Start.String(), "", "", "", ""}, rows...).ToFormattedTable())
 	}
+
+	// TODO print out all the triads in each key
+	// 1-3-5, 2-4-6, 3-5-7, 4-6-1, 5-7-2, 6-1-3, 7-2-4
+	// the hard part will be: 1) what are the notes called, and 2) what are the chords called
 }
 
 func noteToString(n *music.Note) string {

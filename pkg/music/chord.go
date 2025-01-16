@@ -26,11 +26,16 @@ func (c *Chord) Apply(key *Key) []*Note {
 
 var (
 	StepFirst           = &Step{0, 0}
-	StepMajorThird      = &Step{4, 2}
+	StepSecond          = &Step{2, 1}
 	StepMinorThird      = &Step{3, 2}
+	StepMajorThird      = &Step{4, 2}
+	StepFourth          = &Step{5, 3}
+	StepDiminishedFifth = &Step{6, 4}
 	StepPerfectFifth    = &Step{7, 4}
 	StepAugmentedFifth  = &Step{8, 4}
-	StepDiminishedFifth = &Step{6, 4}
+	StepSixth           = &Step{9, 5}
+	StepMinorSeventh    = &Step{10, 6}
+	StepMajorSeventh    = &Step{11, 6}
 )
 
 var (
@@ -49,5 +54,37 @@ var (
 	ChordDiminishedTriad = &Chord{
 		Steps: []*Step{StepFirst, StepMinorThird, StepDiminishedFifth},
 		Name:  "Diminished triad",
+	}
+	ChordSuspendedSecond = &Chord{
+		Steps: []*Step{StepFirst, StepSecond, StepPerfectFifth},
+		Name:  "Suspended second",
+	}
+	ChordSuspendedFourth = &Chord{
+		Steps: []*Step{StepFirst, StepFourth, StepPerfectFifth},
+		Name:  "Suspended fourth",
+	}
+	ChordFlatFifth = &Chord{
+		Steps: []*Step{StepFirst, StepMajorThird, StepDiminishedFifth},
+		Name:  "Flat fifth",
+	}
+	ChordMajorSixth = &Chord{
+		Steps: []*Step{StepFirst, StepMajorThird, StepPerfectFifth, StepSixth},
+		Name:  "Major sixth",
+	}
+	ChordMinorSixth = &Chord{
+		Steps: []*Step{StepFirst, StepMinorThird, StepPerfectFifth, StepSixth},
+		Name:  "Minor sixth",
+	}
+	ChordMajorSeventh = &Chord{
+		Steps: []*Step{StepFirst, StepMajorThird, StepPerfectFifth, StepMajorSeventh},
+		Name:  "Major seventh",
+	}
+	ChordSeventh = &Chord{
+		Steps: []*Step{StepFirst, StepMajorThird, StepPerfectFifth, StepMinorSeventh},
+		Name:  "Seventh",
+	}
+	ChordMinorSeventh = &Chord{
+		Steps: []*Step{StepFirst, StepMinorThird, StepPerfectFifth, StepMinorSeventh},
+		Name:  "Minor seventh",
 	}
 )
