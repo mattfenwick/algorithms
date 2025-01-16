@@ -73,9 +73,9 @@ func RunScales(args *ScalesArgs) {
 
 	var majorRows, minorRows [][]string
 	for _, k := range music.KeySignatures {
-		majorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(func(n *music.Note) string { return n.String() }, k.MajorScale()))
+		majorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(noteToString, k.MajorScale()))
 		majorRows = append(majorRows, majorRow)
-		minorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(func(n *music.Note) string { return n.String() }, k.MinorScale()))
+		minorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(noteToString, k.MinorScale()))
 		minorRows = append(minorRows, minorRow)
 	}
 	fmt.Println("major scales:")
@@ -84,4 +84,16 @@ func RunScales(args *ScalesArgs) {
 	fmt.Println("minor scales:")
 	minorTable := utils.NewTable([]string{"", "1", "2", "3", "4", "5", "6", "7", "8"}, minorRows...)
 	fmt.Println(minorTable.ToFormattedTable())
+
+	for _, k := range music.KeySignatures {
+		var rows [][]string
+		for _, c := range []*music.Chord{music.ChordMajorTriad, music.ChordMinorTriad, music.ChordAugmentedTriad, music.ChordDiminishedTriad} {
+			rows = append(rows, slice.Cons(c.Name, slice.Map(noteToString, c.Apply(k))))
+		}
+		fmt.Println(utils.NewTable([]string{k.Start.String(), "1st", "3rd", "5th"}, rows...).ToFormattedTable())
+	}
+}
+
+func noteToString(n *music.Note) string {
+	return n.String()
 }

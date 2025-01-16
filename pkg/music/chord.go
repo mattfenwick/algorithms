@@ -47,7 +47,7 @@ var (
 		Name:  "Augmented triad",
 	}
 	ChordDiminishedTriad = &Chord{
-		Steps: []*Step{StepFirst, StepMajorThird, StepDiminishedFifth},
+		Steps: []*Step{StepFirst, StepMinorThird, StepDiminishedFifth},
 		Name:  "Diminished triad",
 	}
 )
