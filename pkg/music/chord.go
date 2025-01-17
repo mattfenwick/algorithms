@@ -1,11 +1,5 @@
 package music
 
-// major
-// minor
-// augmented
-// diminished
-// suspended
-
 type Step struct {
 	Base    int
 	Natural int
@@ -25,19 +19,22 @@ func (c *Chord) Apply(key *Key) []*Note {
 }
 
 var (
-	StepFirst           = &Step{0, 0}
-	StepSecond          = &Step{2, 1}
-	StepMinorThird      = &Step{3, 2}
-	StepMajorThird      = &Step{4, 2}
-	StepFourth          = &Step{5, 3}
-	StepDiminishedFifth = &Step{6, 4}
-	StepPerfectFifth    = &Step{7, 4}
-	StepAugmentedFifth  = &Step{8, 4}
-	StepSixth           = &Step{9, 5}
-	StepMinorSeventh    = &Step{10, 6}
-	StepMajorSeventh    = &Step{11, 6}
+	StepFirst             = &Step{0, 0}
+	StepMinorSecond       = &Step{1, 1}
+	StepMajorSecond       = &Step{2, 1}
+	StepMinorThird        = &Step{3, 2}
+	StepMajorThird        = &Step{4, 2}
+	StepFourth            = &Step{5, 3}
+	StepDiminishedFifth   = &Step{6, 4}
+	StepPerfectFifth      = &Step{7, 4}
+	StepAugmentedFifth    = &Step{8, 4}
+	StepSixth             = &Step{9, 5}
+	StepDiminishedSeventh = &Step{9, 5}
+	StepMinorSeventh      = &Step{10, 6}
+	StepMajorSeventh      = &Step{11, 6}
 )
 
+// see https://en.wikipedia.org/wiki/Chord_(music)#Examples
 var (
 	ChordMajorTriad = &Chord{
 		Steps: []*Step{StepFirst, StepMajorThird, StepPerfectFifth},
@@ -56,7 +53,7 @@ var (
 		Name:  "Diminished triad",
 	}
 	ChordSuspendedSecond = &Chord{
-		Steps: []*Step{StepFirst, StepSecond, StepPerfectFifth},
+		Steps: []*Step{StepFirst, StepMajorSecond, StepPerfectFifth},
 		Name:  "Suspended second",
 	}
 	ChordSuspendedFourth = &Chord{
@@ -86,5 +83,21 @@ var (
 	ChordMinorSeventh = &Chord{
 		Steps: []*Step{StepFirst, StepMinorThird, StepPerfectFifth, StepMinorSeventh},
 		Name:  "Minor seventh",
+	}
+	ChordAugmentedSeventh = &Chord{
+		Steps: []*Step{StepFirst, StepMajorThird, StepAugmentedFifth, StepMinorSeventh},
+		Name:  "Augmented seventh",
+	}
+	ChordMinorMajorSeventh = &Chord{
+		Steps: []*Step{StepFirst, StepMinorThird, StepPerfectFifth, StepMajorSeventh},
+		Name:  "Minor/major seventh",
+	}
+	ChordDiminishedSeventh = &Chord{
+		Steps: []*Step{StepFirst, StepMinorThird, StepDiminishedFifth, StepDiminishedSeventh},
+		Name:  "Diminished seventh",
+	}
+	ChordHalfDiminishedSeventh = &Chord{
+		Steps: []*Step{StepFirst, StepMinorThird, StepDiminishedFifth, StepMinorSeventh},
+		Name:  "Half-diminished seventh",
 	}
 )
