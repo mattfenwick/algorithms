@@ -22,7 +22,7 @@ var (
 	StepPerfectFifth      = &Step{7, 4}
 	StepAugmentedFifth    = &Step{8, 4}
 	StepSixth             = &Step{9, 5}
-	StepDiminishedSeventh = &Step{9, 5}
+	StepDiminishedSeventh = &Step{9, 6}
 	StepMinorSeventh      = &Step{10, 6}
 	StepMajorSeventh      = &Step{11, 6}
 )
