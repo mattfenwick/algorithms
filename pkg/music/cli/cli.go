@@ -146,7 +146,7 @@ func generateMarkdownForKey(key *music.Key) string {
 		row = append(row, c.Name)
 		chordRows = append(chordRows, row)
 	}
-	chords := utils.NewTable([]string{"Name", "", "", "", "", "Description"}, chordRows...).ToFormattedTable()
+	chords := utils.NewTable([]string{"Name", "", "", "", "", "Description"}, chordRows...).ToMarkdown()
 
 	progressionTables := []string{}
 	for _, progression := range music.Progressions {
@@ -155,7 +155,7 @@ func generateMarkdownForKey(key *music.Key) string {
 		for i, notes := range progressionNotes {
 			progressionTable.AddRow(slice.Cons(progression.Chords[i].Name(), slice.Map(noteToString, notes)))
 		}
-		progressionTables = append(progressionTables, progressionTable.ToFormattedTable())
+		progressionTables = append(progressionTables, progressionTable.ToMarkdown())
 	}
 	progressions := strings.Join(progressionTables, "\n\n")
 
