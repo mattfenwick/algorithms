@@ -87,27 +87,18 @@ func RunScales(args *ScalesArgs) {
 
 	for _, k := range music.KeySignatures {
 		var rows [][]string
-		for _, c := range []*music.Chord{
-			music.ChordMajorTriad,
-			music.ChordMinorTriad,
-			music.ChordAugmentedTriad,
-			music.ChordDiminishedTriad,
-			music.ChordSuspendedSecond,
-			music.ChordSuspendedFourth,
-			music.ChordMajorSeventh,
-			music.ChordMinorSeventh,
-			music.ChordSeventh,
-		} {
-			row := slice.Cons(c.Name, slice.Map(noteToString, c.Apply(k)))
-			for len(row) < 5 {
+		for _, c := range music.Chords {
+			prefix := []string{c.Symbol(k.Start), c.Name}
+			row := append(prefix, slice.Map(noteToString, c.Apply(k))...)
+			for len(row) < 6 {
 				row = append(row, "")
 			}
 			rows = append(rows, row)
 		}
-		fmt.Println(utils.NewTable([]string{k.Start.String(), "", "", "", ""}, rows...).ToFormattedTable())
+		fmt.Println(utils.NewTable([]string{k.Start.String(), "", "", "", "", ""}, rows...).ToFormattedTable())
 
 		for _, progression := range []*music.Progression{music.Progression1645, music.ProgressMajorChords} {
-			progressionTable := utils.NewTable([]string{"", "", "", ""})
+			progressionTable := utils.NewTable([]string{progression.Name, "", "", ""})
 			progressionNotes := progression.Apply(k)
 			for i, notes := range progressionNotes {
 				progressionTable.AddRow(slice.Cons(progression.Chords[i].Name(), slice.Map(noteToString, notes)))
@@ -115,10 +106,6 @@ func RunScales(args *ScalesArgs) {
 			fmt.Println(progressionTable.ToFormattedTable())
 		}
 	}
-
-	// TODO print out all the triads in each key
-	// 1-3-5, 2-4-6, 3-5-7, 4-6-1, 5-7-2, 6-1-3, 7-2-4
-	// the hard part will be: 1) what are the notes called, and 2) what are the chords called
 }
 
 func noteToString(n *music.Note) string {
