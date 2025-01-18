@@ -54,15 +54,7 @@ var (
 
 func (k *Key) getScale(steps []*Step) []*Note {
 	logrus.Debugf("looking at key of %s", k.Start)
-	out := []*Note{}
-	base := k.Start.BaseNote()
-	natural := k.Start.Natural
-	for _, step := range steps {
-		nextBase := base.Next(step.Base)
-		nextNatural := natural.Next(step.Natural)
-		out = append(out, nextBase.KeyNote(nextNatural))
-	}
-	return out
+	return getNotesFrom(k.Start, steps)
 }
 
 func (k *Key) ChromaticScale() []*Note {
@@ -78,15 +70,15 @@ func (k *Key) MinorScale() []*Note {
 	return k.getScale(MinorSteps)
 }
 
-func (k *Key)Chords() []*Chord {
+func (k *Key) Chords() []*Chord {
 	return []*Chord{
 		// TODO figure out how to raise these chords
-		ChordMajorTriad, // 0
-		ChordMinorTriad, // 1
-		ChordMinorTriad, // 2
-		ChordMajorTriad, // 3
-		ChordMajorTriad, // 4
-		ChordMinorTriad, // 5
+		ChordMajorTriad,      // 0
+		ChordMinorTriad,      // 1
+		ChordMinorTriad,      // 2
+		ChordMajorTriad,      // 3
+		ChordMajorTriad,      // 4
+		ChordMinorTriad,      // 5
 		ChordDiminishedTriad, // 6
 	}
 }

@@ -18,6 +18,10 @@ func (c *Chord) Apply(key *Key) []*Note {
 	return key.getScale(c.Steps)
 }
 
+func (c *Chord) ApplyOn(note *Note) []*Note {
+	return getNotesFrom(note, c.Steps)
+}
+
 var (
 	StepFirst             = &Step{0, 0}
 	StepMinorSecond       = &Step{1, 1}
