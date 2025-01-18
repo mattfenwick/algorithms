@@ -106,12 +106,14 @@ func RunScales(args *ScalesArgs) {
 		}
 		fmt.Println(utils.NewTable([]string{k.Start.String(), "", "", "", ""}, rows...).ToFormattedTable())
 
-		progressionTable := utils.NewTable([]string{"", "", "", ""})
-		progressionNotes := music.Progression1645.Apply(k)
-		for i, notes := range progressionNotes {
-			progressionTable.AddRow(slice.Cons(music.Progression1645.Chords[i].Name(), slice.Map(noteToString, notes)))
+		for _, progression := range []*music.Progression{music.Progression1645, music.ProgressMajorChords} {
+			progressionTable := utils.NewTable([]string{"", "", "", ""})
+			progressionNotes := progression.Apply(k)
+			for i, notes := range progressionNotes {
+				progressionTable.AddRow(slice.Cons(progression.Chords[i].Name(), slice.Map(noteToString, notes)))
+			}
+			fmt.Println(progressionTable.ToFormattedTable())
 		}
-		fmt.Println(progressionTable.ToFormattedTable())
 	}
 
 	// TODO print out all the triads in each key

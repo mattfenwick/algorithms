@@ -37,4 +37,16 @@ var (
 			{5, ChordMajorTriad},
 		},
 	}
+
+	ProgressMajorChords = &Progression{
+		Chords: []*RootedChord{
+			{1, ChordMajorTriad},
+			{2, ChordMinorTriad},
+			{3, ChordMinorTriad},
+			{4, ChordMajorTriad},
+			{5, ChordMajorTriad},
+			{6, ChordMinorTriad},
+			{7, ChordDiminishedTriad},
+		},
+	}
 )
