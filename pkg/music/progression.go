@@ -40,7 +40,7 @@ var (
 		Name: "I-vi-IV-V",
 	}
 
-	ProgressMajorChords = &Progression{
+	ProgressionMajorChords = &Progression{
 		Chords: []*RootedChord{
 			{1, ChordMajorTriad},
 			{2, ChordMinorTriad},
@@ -51,5 +51,12 @@ var (
 			{7, ChordDiminishedTriad},
 		},
 		Name: "Major chords",
+	}
+)
+
+var (
+	Progressions = []*Progression{
+		Progression1645,
+		ProgressionMajorChords,
 	}
 )

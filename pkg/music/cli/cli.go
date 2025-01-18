@@ -99,7 +99,7 @@ func RunScales(args *ScalesArgs) {
 		}
 		fmt.Println(utils.NewTable([]string{k.Start.String(), "", "", "", "", ""}, rows...).ToFormattedTable())
 
-		for _, progression := range []*music.Progression{music.Progression1645, music.ProgressMajorChords} {
+		for _, progression := range music.Progressions {
 			progressionTable := utils.NewTable([]string{progression.Name, "", "", ""})
 			progressionNotes := progression.Apply(k)
 			for i, notes := range progressionNotes {
@@ -148,18 +148,30 @@ func generateMarkdownForKey(key *music.Key) string {
 	}
 	chords := utils.NewTable([]string{"Name", "", "", "", "", "Description"}, chordRows...).ToFormattedTable()
 
-	progressions := ""
+	progressionTables := []string{}
+	for _, progression := range music.Progressions {
+		progressionTable := utils.NewTable([]string{progression.Name, "", "", ""})
+		progressionNotes := progression.Apply(key)
+		for i, notes := range progressionNotes {
+			progressionTable.AddRow(slice.Cons(progression.Chords[i].Name(), slice.Map(noteToString, notes)))
+		}
+		progressionTables = append(progressionTables, progressionTable.ToFormattedTable())
+	}
+	progressions := strings.Join(progressionTables, "\n\n")
 
 	return fmt.Sprintf(`# %s
 
 Key signature: %s
 
-Scales:
+## Scales
+
 %s
 
-Chords:
+## Chords
+
 %s
 
-Progressions:
+## Progressions
+
 %s`, key.Start.String(), key.Signature(), scales, chords, progressions)
 }
