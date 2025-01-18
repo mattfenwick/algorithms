@@ -1,8 +1,10 @@
 package utils
 
 import (
+	"fmt"
 	"strings"
 
+	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/olekukonko/tablewriter"
 	"github.com/pkg/errors"
 )
@@ -43,6 +45,21 @@ func (t *Table) ToFormattedTable() string {
 
 	table.Render()
 	return tableString.String()
+}
+
+func (t *Table) ToMarkdown() string {
+	rowLength := len(t.Headers)
+	lines := []string{
+		markdownTableLine(t.Headers),
+		markdownTableLine(slice.Replicate(rowLength, "-"))}
+	for _, row := range t.Rows {
+		lines = append(lines, markdownTableLine(row))
+	}
+	return strings.Join(lines, "\n")
+}
+
+func markdownTableLine(elems []string) string {
+	return fmt.Sprintf("| %s |", strings.Join(elems, " | "))
 }
 
 /*

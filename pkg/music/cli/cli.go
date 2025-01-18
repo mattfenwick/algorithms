@@ -132,7 +132,9 @@ func RunGenerateMarkdown() {
 }
 
 func generateMarkdownForKey(key *music.Key) string {
-	scales := ""
+	scales := utils.NewTable([]string{"", "1", "2", "3", "4", "5", "6", "7", "8"},
+		slice.Cons("Major", slice.Map(noteToString, key.MajorScale())),
+		slice.Cons("Minor", slice.Map(noteToString, key.MinorScale()))).ToMarkdown()
 	chords := ""
 	progressions := ""
 	return fmt.Sprintf(`# %s
