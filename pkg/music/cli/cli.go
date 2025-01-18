@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/mattfenwick/algorithms/pkg/music"
 	"github.com/mattfenwick/algorithms/pkg/utils"
@@ -31,6 +32,7 @@ func SetupRootCommand() *cobra.Command {
 	command.PersistentFlags().StringVarP(&flags.Verbosity, "verbosity", "v", "info", "log level; one of [info, debug, trace, warn, error, fatal, panic]")
 
 	command.AddCommand(SetupScalesCommand())
+	command.AddCommand(SetupGenerateMarkdownCommand())
 
 	return command
 }
@@ -72,7 +74,7 @@ func RunScales(args *ScalesArgs) {
 	}
 
 	var majorRows, minorRows [][]string
-	for _, k := range music.KeySignatures {
+	for _, k := range music.Keys {
 		majorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(noteToString, k.MajorScale()))
 		majorRows = append(majorRows, majorRow)
 		minorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(noteToString, k.MinorScale()))
@@ -85,7 +87,7 @@ func RunScales(args *ScalesArgs) {
 	minorTable := utils.NewTable([]string{"", "1", "2", "3", "4", "5", "6", "7", "8"}, minorRows...)
 	fmt.Println(minorTable.ToFormattedTable())
 
-	for _, k := range music.KeySignatures {
+	for _, k := range music.Keys {
 		var rows [][]string
 		for _, c := range music.Chords {
 			prefix := []string{c.Symbol(k.Start), c.Name}
@@ -110,4 +112,39 @@ func RunScales(args *ScalesArgs) {
 
 func noteToString(n *music.Note) string {
 	return n.String()
+}
+
+func SetupGenerateMarkdownCommand() *cobra.Command {
+	command := &cobra.Command{
+		Use:  "markdown",
+		Args: cobra.ExactArgs(0),
+		Run: func(cmd *cobra.Command, as []string) {
+			RunGenerateMarkdown()
+		},
+	}
+
+	return command
+}
+
+func RunGenerateMarkdown() {
+	output := strings.Join(slice.Map(generateMarkdownForKey, music.Keys), "\n")
+	fmt.Println(output)
+}
+
+func generateMarkdownForKey(key *music.Key) string {
+	scales := ""
+	chords := ""
+	progressions := ""
+	return fmt.Sprintf(`# %s
+
+Key signature: %s
+
+Scales:
+%s
+
+Chords:
+%s
+
+Progressions:
+%s`, key.Start.String(), key.Signature(), scales, chords, progressions)
 }
