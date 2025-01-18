@@ -28,7 +28,7 @@ Key signature: ♭♭♭♭♭♭
 | G♭m7 | G♭ | B♭♭ | D♭ | F♭ | Minor seventh |
 | G♭+7 | G♭ | B♭ | D | F♭ | Augmented seventh |
 | G♭m/M7 | G♭ | B♭♭ | D♭ | F | Minor/major seventh |
-| G♭ᵒ7 | G♭ | B♭♭ | D♭♭ | E♭ | Diminished seventh |
+| G♭ᵒ7 | G♭ | B♭♭ | D♭♭ | F♭♭ | Diminished seventh |
 | G♭ø7 | G♭ | B♭♭ | D♭♭ | F♭ | Half-diminished seventh |
 
 ## Progressions
@@ -79,7 +79,7 @@ Key signature: ♭♭♭♭♭
 | D♭m7 | D♭ | F♭ | A♭ | C♭ | Minor seventh |
 | D♭+7 | D♭ | F | A | C♭ | Augmented seventh |
 | D♭m/M7 | D♭ | F♭ | A♭ | C | Minor/major seventh |
-| D♭ᵒ7 | D♭ | F♭ | A♭♭ | B♭ | Diminished seventh |
+| D♭ᵒ7 | D♭ | F♭ | A♭♭ | C♭♭ | Diminished seventh |
 | D♭ø7 | D♭ | F♭ | A♭♭ | C♭ | Half-diminished seventh |
 
 ## Progressions
@@ -130,7 +130,7 @@ Key signature: ♭♭♭♭
 | A♭m7 | A♭ | C♭ | E♭ | G♭ | Minor seventh |
 | A♭+7 | A♭ | C | E | G♭ | Augmented seventh |
 | A♭m/M7 | A♭ | C♭ | E♭ | G | Minor/major seventh |
-| A♭ᵒ7 | A♭ | C♭ | E♭♭ | F | Diminished seventh |
+| A♭ᵒ7 | A♭ | C♭ | E♭♭ | G♭♭ | Diminished seventh |
 | A♭ø7 | A♭ | C♭ | E♭♭ | G♭ | Half-diminished seventh |
 
 ## Progressions
@@ -181,7 +181,7 @@ Key signature: ♭♭♭
 | E♭m7 | E♭ | G♭ | B♭ | D♭ | Minor seventh |
 | E♭+7 | E♭ | G | B | D♭ | Augmented seventh |
 | E♭m/M7 | E♭ | G♭ | B♭ | D | Minor/major seventh |
-| E♭ᵒ7 | E♭ | G♭ | B♭♭ | C | Diminished seventh |
+| E♭ᵒ7 | E♭ | G♭ | B♭♭ | D♭♭ | Diminished seventh |
 | E♭ø7 | E♭ | G♭ | B♭♭ | D♭ | Half-diminished seventh |
 
 ## Progressions
@@ -232,7 +232,7 @@ Key signature: ♭♭
 | B♭m7 | B♭ | D♭ | F | A♭ | Minor seventh |
 | B♭+7 | B♭ | D | F♯ | A♭ | Augmented seventh |
 | B♭m/M7 | B♭ | D♭ | F | A | Minor/major seventh |
-| B♭ᵒ7 | B♭ | D♭ | F♭ | G | Diminished seventh |
+| B♭ᵒ7 | B♭ | D♭ | F♭ | A♭♭ | Diminished seventh |
 | B♭ø7 | B♭ | D♭ | F♭ | A♭ | Half-diminished seventh |
 
 ## Progressions
@@ -283,7 +283,7 @@ Key signature: ♭
 | Fm7 | F | A♭ | C | E♭ | Minor seventh |
 | F+7 | F | A | C♯ | E♭ | Augmented seventh |
 | Fm/M7 | F | A♭ | C | E | Minor/major seventh |
-| Fᵒ7 | F | A♭ | C♭ | D | Diminished seventh |
+| Fᵒ7 | F | A♭ | C♭ | E♭♭ | Diminished seventh |
 | Fø7 | F | A♭ | C♭ | E♭ | Half-diminished seventh |
 
 ## Progressions
@@ -334,7 +334,7 @@ Key signature:
 | Cm7 | C | E♭ | G | B♭ | Minor seventh |
 | C+7 | C | E | G♯ | B♭ | Augmented seventh |
 | Cm/M7 | C | E♭ | G | B | Minor/major seventh |
-| Cᵒ7 | C | E♭ | G♭ | A | Diminished seventh |
+| Cᵒ7 | C | E♭ | G♭ | B♭♭ | Diminished seventh |
 | Cø7 | C | E♭ | G♭ | B♭ | Half-diminished seventh |
 
 ## Progressions
@@ -385,7 +385,7 @@ Key signature: ♯
 | Gm7 | G | B♭ | D | F | Minor seventh |
 | G+7 | G | B | D♯ | F | Augmented seventh |
 | Gm/M7 | G | B♭ | D | F♯ | Minor/major seventh |
-| Gᵒ7 | G | B♭ | D♭ | E | Diminished seventh |
+| Gᵒ7 | G | B♭ | D♭ | F♭ | Diminished seventh |
 | Gø7 | G | B♭ | D♭ | F | Half-diminished seventh |
 
 ## Progressions
@@ -436,7 +436,7 @@ Key signature: ♯♯
 | Dm7 | D | F | A | C | Minor seventh |
 | D+7 | D | F♯ | A♯ | C | Augmented seventh |
 | Dm/M7 | D | F | A | C♯ | Minor/major seventh |
-| Dᵒ7 | D | F | A♭ | B | Diminished seventh |
+| Dᵒ7 | D | F | A♭ | C♭ | Diminished seventh |
 | Dø7 | D | F | A♭ | C | Half-diminished seventh |
 
 ## Progressions
@@ -487,7 +487,7 @@ Key signature: ♯♯♯
 | Am7 | A | C | E | G | Minor seventh |
 | A+7 | A | C♯ | E♯ | G | Augmented seventh |
 | Am/M7 | A | C | E | G♯ | Minor/major seventh |
-| Aᵒ7 | A | C | E♭ | F♯ | Diminished seventh |
+| Aᵒ7 | A | C | E♭ | G♭ | Diminished seventh |
 | Aø7 | A | C | E♭ | G | Half-diminished seventh |
 
 ## Progressions
@@ -538,7 +538,7 @@ Key signature: ♯♯♯♯
 | Em7 | E | G | B | D | Minor seventh |
 | E+7 | E | G♯ | B♯ | D | Augmented seventh |
 | Em/M7 | E | G | B | D♯ | Minor/major seventh |
-| Eᵒ7 | E | G | B♭ | C♯ | Diminished seventh |
+| Eᵒ7 | E | G | B♭ | D♭ | Diminished seventh |
 | Eø7 | E | G | B♭ | D | Half-diminished seventh |
 
 ## Progressions
@@ -589,7 +589,7 @@ Key signature: ♯♯♯♯♯
 | Bm7 | B | D | F♯ | A | Minor seventh |
 | B+7 | B | D♯ | F♯♯ | A | Augmented seventh |
 | Bm/M7 | B | D | F♯ | A♯ | Minor/major seventh |
-| Bᵒ7 | B | D | F | G♯ | Diminished seventh |
+| Bᵒ7 | B | D | F | A♭ | Diminished seventh |
 | Bø7 | B | D | F | A | Half-diminished seventh |
 
 ## Progressions
@@ -640,7 +640,7 @@ Key signature: ♯♯♯♯♯♯
 | F♯m7 | F♯ | A | C♯ | E | Minor seventh |
 | F♯+7 | F♯ | A♯ | C♯♯ | E | Augmented seventh |
 | F♯m/M7 | F♯ | A | C♯ | E♯ | Minor/major seventh |
-| F♯ᵒ7 | F♯ | A | C | D♯ | Diminished seventh |
+| F♯ᵒ7 | F♯ | A | C | E♭ | Diminished seventh |
 | F♯ø7 | F♯ | A | C | E | Half-diminished seventh |
 
 ## Progressions
@@ -691,7 +691,7 @@ Key signature: ♯♯♯♯♯♯♯
 | C♯m7 | C♯ | E | G♯ | B | Minor seventh |
 | C♯+7 | C♯ | E♯ | G♯♯ | B | Augmented seventh |
 | C♯m/M7 | C♯ | E | G♯ | B♯ | Minor/major seventh |
-| C♯ᵒ7 | C♯ | E | G | A♯ | Diminished seventh |
+| C♯ᵒ7 | C♯ | E | G | B♭ | Diminished seventh |
 | C♯ø7 | C♯ | E | G | B | Half-diminished seventh |
 
 ## Progressions
