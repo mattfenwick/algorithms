@@ -51,6 +51,14 @@ var (
 		NewStep(9, 5),
 		NewStep(12, 7),
 	)
+	ScalePentatonicMinor = NewScale("Pentatonic minor",
+		NewStep(0, 0),
+		NewStep(3, 2),
+		NewStep(5, 3),
+		NewStep(7, 4),
+		NewStep(10, 6),
+		NewStep(12, 7),
+	)
 
 // ChromaticSteps = []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 )
@@ -61,5 +69,6 @@ var (
 		ScaleMinor,
 		ScaleBlues,
 		ScalePentatonic,
+		ScalePentatonicMinor,
 	}
 )
