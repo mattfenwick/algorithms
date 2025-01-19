@@ -11,6 +11,8 @@ Key signature:
 | Major | C | D | E | F | G | A | B | C |
 | Minor | C | D | E♭ | F | G | A♭ | B♭ | C |
 | Blues | C | E♭ | F | F♯ | G | B♭ | C |  |
+| Pentatonic | C | D | E | G | A | C |  |  |
+| Pentatonic minor | C | E♭ | F | G | B♭ | C |  |  |
 
 ## Chords
 
@@ -80,6 +82,8 @@ Key signature: ♯
 | Major | G | A | B | C | D | E | F♯ | G |
 | Minor | G | A | B♭ | C | D | E♭ | F | G |
 | Blues | G | B♭ | C | C♯ | D | F | G |  |
+| Pentatonic | G | A | B | D | E | G |  |  |
+| Pentatonic minor | G | B♭ | C | D | F | G |  |  |
 
 ## Chords
 
@@ -149,6 +153,8 @@ Key signature: ♯♯
 | Major | D | E | F♯ | G | A | B | C♯ | D |
 | Minor | D | E | F | G | A | B♭ | C | D |
 | Blues | D | F | G | G♯ | A | C | D |  |
+| Pentatonic | D | E | F♯ | A | B | D |  |  |
+| Pentatonic minor | D | F | G | A | C | D |  |  |
 
 ## Chords
 
@@ -218,6 +224,8 @@ Key signature: ♯♯♯
 | Major | A | B | C♯ | D | E | F♯ | G♯ | A |
 | Minor | A | B | C | D | E | F | G | A |
 | Blues | A | C | D | D♯ | E | G | A |  |
+| Pentatonic | A | B | C♯ | E | F♯ | A |  |  |
+| Pentatonic minor | A | C | D | E | G | A |  |  |
 
 ## Chords
 
@@ -287,6 +295,8 @@ Key signature: ♯♯♯♯
 | Major | E | F♯ | G♯ | A | B | C♯ | D♯ | E |
 | Minor | E | F♯ | G | A | B | C | D | E |
 | Blues | E | G | A | A♯ | B | D | E |  |
+| Pentatonic | E | F♯ | G♯ | B | C♯ | E |  |  |
+| Pentatonic minor | E | G | A | B | D | E |  |  |
 
 ## Chords
 
@@ -356,6 +366,8 @@ Key signature: ♯♯♯♯♯
 | Major | B | C♯ | D♯ | E | F♯ | G♯ | A♯ | B |
 | Minor | B | C♯ | D | E | F♯ | G | A | B |
 | Blues | B | D | E | E♯ | F♯ | A | B |  |
+| Pentatonic | B | C♯ | D♯ | F♯ | G♯ | B |  |  |
+| Pentatonic minor | B | D | E | F♯ | A | B |  |  |
 
 ## Chords
 
@@ -425,6 +437,8 @@ Key signature: ♭♭♭♭♭♭
 | Major | G♭ | A♭ | B♭ | C♭ | D♭ | E♭ | F | G♭ |
 | Minor | G♭ | A♭ | B♭♭ | C♭ | D♭ | E♭♭ | F♭ | G♭ |
 | Blues | G♭ | B♭♭ | C♭ | C | D♭ | F♭ | G♭ |  |
+| Pentatonic | G♭ | A♭ | B♭ | D♭ | E♭ | G♭ |  |  |
+| Pentatonic minor | G♭ | B♭♭ | C♭ | D♭ | F♭ | G♭ |  |  |
 
 ## Chords
 
@@ -494,6 +508,8 @@ Key signature: ♯♯♯♯♯♯
 | Major | F♯ | G♯ | A♯ | B | C♯ | D♯ | E♯ | F♯ |
 | Minor | F♯ | G♯ | A | B | C♯ | D | E | F♯ |
 | Blues | F♯ | A | B | B♯ | C♯ | E | F♯ |  |
+| Pentatonic | F♯ | G♯ | A♯ | C♯ | D♯ | F♯ |  |  |
+| Pentatonic minor | F♯ | A | B | C♯ | E | F♯ |  |  |
 
 ## Chords
 
@@ -563,6 +579,8 @@ Key signature: ♭♭♭♭♭
 | Major | D♭ | E♭ | F | G♭ | A♭ | B♭ | C | D♭ |
 | Minor | D♭ | E♭ | F♭ | G♭ | A♭ | B♭♭ | C♭ | D♭ |
 | Blues | D♭ | F♭ | G♭ | G | A♭ | C♭ | D♭ |  |
+| Pentatonic | D♭ | E♭ | F | A♭ | B♭ | D♭ |  |  |
+| Pentatonic minor | D♭ | F♭ | G♭ | A♭ | C♭ | D♭ |  |  |
 
 ## Chords
 
@@ -632,6 +650,8 @@ Key signature: ♯♯♯♯♯♯♯
 | Major | C♯ | D♯ | E♯ | F♯ | G♯ | A♯ | B♯ | C♯ |
 | Minor | C♯ | D♯ | E | F♯ | G♯ | A | B | C♯ |
 | Blues | C♯ | E | F♯ | F♯♯ | G♯ | B | C♯ |  |
+| Pentatonic | C♯ | D♯ | E♯ | G♯ | A♯ | C♯ |  |  |
+| Pentatonic minor | C♯ | E | F♯ | G♯ | B | C♯ |  |  |
 
 ## Chords
 
@@ -701,6 +721,8 @@ Key signature: ♭♭♭♭
 | Major | A♭ | B♭ | C | D♭ | E♭ | F | G | A♭ |
 | Minor | A♭ | B♭ | C♭ | D♭ | E♭ | F♭ | G♭ | A♭ |
 | Blues | A♭ | C♭ | D♭ | D | E♭ | G♭ | A♭ |  |
+| Pentatonic | A♭ | B♭ | C | E♭ | F | A♭ |  |  |
+| Pentatonic minor | A♭ | C♭ | D♭ | E♭ | G♭ | A♭ |  |  |
 
 ## Chords
 
@@ -770,6 +792,8 @@ Key signature: ♭♭♭
 | Major | E♭ | F | G | A♭ | B♭ | C | D | E♭ |
 | Minor | E♭ | F | G♭ | A♭ | B♭ | C♭ | D♭ | E♭ |
 | Blues | E♭ | G♭ | A♭ | A | B♭ | D♭ | E♭ |  |
+| Pentatonic | E♭ | F | G | B♭ | C | E♭ |  |  |
+| Pentatonic minor | E♭ | G♭ | A♭ | B♭ | D♭ | E♭ |  |  |
 
 ## Chords
 
@@ -839,6 +863,8 @@ Key signature: ♭♭
 | Major | B♭ | C | D | E♭ | F | G | A | B♭ |
 | Minor | B♭ | C | D♭ | E♭ | F | G♭ | A♭ | B♭ |
 | Blues | B♭ | D♭ | E♭ | E | F | A♭ | B♭ |  |
+| Pentatonic | B♭ | C | D | F | G | B♭ |  |  |
+| Pentatonic minor | B♭ | D♭ | E♭ | F | A♭ | B♭ |  |  |
 
 ## Chords
 
@@ -908,6 +934,8 @@ Key signature: ♭
 | Major | F | G | A | B♭ | C | D | E | F |
 | Minor | F | G | A♭ | B♭ | C | D♭ | E♭ | F |
 | Blues | F | A♭ | B♭ | B | C | E♭ | F |  |
+| Pentatonic | F | G | A | C | D | F |  |  |
+| Pentatonic minor | F | A♭ | B♭ | C | E♭ | F |  |  |
 
 ## Chords
 
