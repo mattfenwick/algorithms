@@ -103,7 +103,7 @@ func RunScales(args *ScalesArgs) {
 			progressionTable := utils.NewTable([]string{progression.Name, "", "", ""})
 			progressionNotes := progression.Apply(k)
 			for i, notes := range progressionNotes {
-				progressionTable.AddRow(slice.Cons(progression.Chords[i].Name(), slice.Map(noteToString, notes)))
+				progressionTable.AddRow(slice.Cons(progression.Chords[i].Name(k), slice.Map(noteToString, notes)))
 			}
 			fmt.Println(progressionTable.ToFormattedTable())
 		}
@@ -155,7 +155,7 @@ func generateMarkdownForKey(key *music.Key) string {
 		progressionTable := utils.NewTable(header)
 		progressionNotes := progression.Apply(key)
 		for i, notes := range progressionNotes {
-			row := slice.Cons(progression.Chords[i].Name(), slice.Map(noteToString, notes))
+			row := slice.Cons(progression.Chords[i].Name(key), slice.Map(noteToString, notes))
 			for len(row) < len(header) {
 				row = append(row, "")
 			}

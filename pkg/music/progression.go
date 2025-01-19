@@ -1,8 +1,6 @@
 package music
 
 import (
-	"fmt"
-
 	"github.com/mattfenwick/collections/pkg/slice"
 )
 
@@ -11,8 +9,8 @@ type RootedChord struct {
 	Chord *Chord
 }
 
-func (r *RootedChord) Name() string {
-	return fmt.Sprintf("%d: %s", r.Start, r.Chord.Name)
+func (r *RootedChord) Name(key *Key) string {
+	return r.Chord.Symbol(key.MajorScale()[r.Start-1])
 }
 
 func (r *RootedChord) Apply(key *Key) []*Note {
