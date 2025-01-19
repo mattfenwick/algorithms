@@ -34,7 +34,7 @@ var (
 		NewStep(10, 6),
 		NewStep(12, 7),
 	)
-	ScaleBlues = NewScale("Blues",
+	ScaleBluesMinor = NewScale("Blues minor",
 		NewStep(0, 0),
 		NewStep(3, 2),
 		NewStep(5, 3),
@@ -43,7 +43,16 @@ var (
 		NewStep(10, 6),
 		NewStep(12, 7),
 	)
-	ScalePentatonic = NewScale("Pentatonic",
+	ScaleBluesMajor = NewScale("Blues major",
+		NewStep(0, 0),
+		NewStep(2, 1),
+		NewStep(3, 2),
+		NewStep(4, 2),
+		NewStep(7, 4),
+		NewStep(9, 5),
+		NewStep(12, 7),
+	)
+	ScalePentatonicMajor = NewScale("Pentatonic major",
 		NewStep(0, 0),
 		NewStep(2, 1),
 		NewStep(4, 2),
@@ -67,8 +76,9 @@ var (
 	Scales = []*Scale{
 		ScaleMajor,
 		ScaleMinor,
-		ScaleBlues,
-		ScalePentatonic,
+		ScaleBluesMajor,
+		ScalePentatonicMajor,
+		ScaleBluesMinor,
 		ScalePentatonicMinor,
 	}
 )
