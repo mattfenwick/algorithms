@@ -10,11 +10,11 @@ type RootedChord struct {
 }
 
 func (r *RootedChord) Name(key *Key) string {
-	return r.Chord.Symbol(key.MajorScale()[r.Start-1])
+	return r.Chord.Symbol(ScaleMajor.Apply(key)[r.Start-1])
 }
 
 func (r *RootedChord) Apply(key *Key) []*Note {
-	return r.Chord.ApplyOn(key.MajorScale()[r.Start-1])
+	return r.Chord.ApplyOn(ScaleMajor.Apply(key)[r.Start-1])
 }
 
 // e.g. 1-6-4-5

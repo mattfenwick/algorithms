@@ -3,8 +3,6 @@ package music
 import (
 	"fmt"
 	"strings"
-
-	"github.com/sirupsen/logrus"
 )
 
 type Key struct {
@@ -15,62 +13,6 @@ type Key struct {
 
 func (k *Key) Signature() string {
 	return fmt.Sprintf("%s%s", strings.Repeat(SharpString, k.Sharps), strings.Repeat(FlatString, k.Flats))
-}
-
-var (
-	MajorSteps = []*Step{
-		NewStep(0, 0),
-		NewStep(2, 1),
-		NewStep(4, 2),
-		NewStep(5, 3),
-		NewStep(7, 4),
-		NewStep(9, 5),
-		NewStep(11, 6),
-		NewStep(12, 7),
-	}
-	MinorSteps = []*Step{
-		{0, 0},
-		{2, 1},
-		{3, 2},
-		{5, 3},
-		{7, 4},
-		{8, 5},
-		{10, 6},
-		{12, 7},
-	}
-	BluesSteps = []*Step{
-		{0, 0},
-		{3, 2},
-		{5, 3},
-		{6, 3},
-		{7, 4},
-		{10, 6},
-		{12, 7},
-	}
-
-// ChromaticSteps = []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-)
-
-func (k *Key) getScale(steps []*Step) []*Note {
-	logrus.Debugf("looking at key of %s", k.Start)
-	return getNotesFrom(k.Start, steps)
-}
-
-// func (k *Key) ChromaticScale() []*Note {
-// 	// TODO what naturals to use?
-// 	panic("TODO")
-// }
-
-func (k *Key) MajorScale() []*Note {
-	return k.getScale(MajorSteps)
-}
-
-func (k *Key) MinorScale() []*Note {
-	return k.getScale(MinorSteps)
-}
-
-func (k *Key) BluesScale() []*Note {
-	return k.getScale(BluesSteps)
 }
 
 var Keys = []*Key{

@@ -34,7 +34,7 @@ type Chord struct {
 }
 
 func (c *Chord) Apply(key *Key) []*Note {
-	return key.getScale(c.Steps)
+	return c.ApplyOn(key.Start)
 }
 
 func (c *Chord) ApplyOn(note *Note) []*Note {

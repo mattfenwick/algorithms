@@ -63,11 +63,11 @@ func RunScales(args *ScalesArgs) {
 		if !ok {
 			Die(errors.Errorf("invalid key: %s", start))
 		}
-		for _, n := range key.MajorScale() {
+		for _, n := range music.ScaleMajor.Apply(key) {
 			fmt.Println(n)
 		}
 		fmt.Println()
-		for _, n := range key.MinorScale() {
+		for _, n := range music.ScaleMinor.Apply(key) {
 			fmt.Println(n)
 		}
 		fmt.Println()
@@ -75,9 +75,9 @@ func RunScales(args *ScalesArgs) {
 
 	var majorRows, minorRows [][]string
 	for _, k := range music.Keys {
-		majorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(noteToString, k.MajorScale()))
+		majorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(noteToString, music.ScaleMajor.Apply(k)))
 		majorRows = append(majorRows, majorRow)
-		minorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(noteToString, k.MinorScale()))
+		minorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(noteToString, music.ScaleMinor.Apply(k)))
 		minorRows = append(minorRows, minorRow)
 	}
 	fmt.Println("major scales:")
@@ -132,11 +132,16 @@ func RunGenerateMarkdown() {
 }
 
 func generateMarkdownForKey(key *music.Key) string {
-	scales := utils.NewTable([]string{"", "1", "2", "3", "4", "5", "6", "7", "8"},
-		slice.Cons("Major", slice.Map(noteToString, key.MajorScale())),
-		slice.Cons("Minor", slice.Map(noteToString, key.MinorScale())),
-		append(slice.Cons("Blues", slice.Map(noteToString, key.BluesScale())), ""),
-	).ToMarkdown()
+	scaleHeader := []string{"", "1", "2", "3", "4", "5", "6", "7", "8"}
+	var scaleRows [][]string
+	for _, scale := range music.Scales {
+		row := slice.Cons(scale.Name, slice.Map(noteToString, scale.Apply(key)))
+		for len(row) < len(scaleHeader) {
+			row = append(row, "")
+		}
+		scaleRows = append(scaleRows, row)
+	}
+	scales := utils.NewTable(scaleHeader, scaleRows...).ToMarkdown()
 
 	var chordRows [][]string
 	for _, c := range music.Chords {
