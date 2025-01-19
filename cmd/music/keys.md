@@ -38,35 +38,35 @@ Key signature:
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | C | E | G |  |
-| 6: Minor triad | A | C | E |  |
-| 4: Major triad | F | A | C |  |
-| 5: Major triad | G | B | D |  |
+| C | C | E | G |  |
+| Am | A | C | E |  |
+| F | F | A | C |  |
+| G | G | B | D |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | C | E | G |  |
-| 2: Minor triad | D | F | A |  |
-| 3: Minor triad | E | G | B |  |
-| 4: Major triad | F | A | C |  |
-| 5: Major triad | G | B | D |  |
-| 6: Minor triad | A | C | E |  |
-| 7: Diminished triad | B | D | F |  |
+| C | C | E | G |  |
+| Dm | D | F | A |  |
+| Em | E | G | B |  |
+| F | F | A | C |  |
+| G | G | B | D |  |
+| Am | A | C | E |  |
+| Bᵒ | B | D | F |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | C | E | G | B♭ |
-| 1: Seventh | C | E | G | B♭ |
-| 1: Seventh | C | E | G | B♭ |
-| 1: Seventh | C | E | G | B♭ |
-| 4: Seventh | F | A | C | E♭ |
-| 4: Seventh | F | A | C | E♭ |
-| 1: Seventh | C | E | G | B♭ |
-| 1: Seventh | C | E | G | B♭ |
-| 5: Seventh | G | B | D | F |
-| 4: Seventh | F | A | C | E♭ |
-| 1: Seventh | C | E | G | B♭ |
-| 5: Seventh | G | B | D | F |
+| C7 | C | E | G | B♭ |
+| C7 | C | E | G | B♭ |
+| C7 | C | E | G | B♭ |
+| C7 | C | E | G | B♭ |
+| F7 | F | A | C | E♭ |
+| F7 | F | A | C | E♭ |
+| C7 | C | E | G | B♭ |
+| C7 | C | E | G | B♭ |
+| G7 | G | B | D | F |
+| F7 | F | A | C | E♭ |
+| C7 | C | E | G | B♭ |
+| G7 | G | B | D | F |
 
 
 # G
@@ -107,35 +107,35 @@ Key signature: ♯
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | G | B | D |  |
-| 6: Minor triad | E | G | B |  |
-| 4: Major triad | C | E | G |  |
-| 5: Major triad | D | F♯ | A |  |
+| G | G | B | D |  |
+| Em | E | G | B |  |
+| C | C | E | G |  |
+| D | D | F♯ | A |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | G | B | D |  |
-| 2: Minor triad | A | C | E |  |
-| 3: Minor triad | B | D | F♯ |  |
-| 4: Major triad | C | E | G |  |
-| 5: Major triad | D | F♯ | A |  |
-| 6: Minor triad | E | G | B |  |
-| 7: Diminished triad | F♯ | A | C |  |
+| G | G | B | D |  |
+| Am | A | C | E |  |
+| Bm | B | D | F♯ |  |
+| C | C | E | G |  |
+| D | D | F♯ | A |  |
+| Em | E | G | B |  |
+| F♯ᵒ | F♯ | A | C |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | G | B | D | F |
-| 1: Seventh | G | B | D | F |
-| 1: Seventh | G | B | D | F |
-| 1: Seventh | G | B | D | F |
-| 4: Seventh | C | E | G | B♭ |
-| 4: Seventh | C | E | G | B♭ |
-| 1: Seventh | G | B | D | F |
-| 1: Seventh | G | B | D | F |
-| 5: Seventh | D | F♯ | A | C |
-| 4: Seventh | C | E | G | B♭ |
-| 1: Seventh | G | B | D | F |
-| 5: Seventh | D | F♯ | A | C |
+| G7 | G | B | D | F |
+| G7 | G | B | D | F |
+| G7 | G | B | D | F |
+| G7 | G | B | D | F |
+| C7 | C | E | G | B♭ |
+| C7 | C | E | G | B♭ |
+| G7 | G | B | D | F |
+| G7 | G | B | D | F |
+| D7 | D | F♯ | A | C |
+| C7 | C | E | G | B♭ |
+| G7 | G | B | D | F |
+| D7 | D | F♯ | A | C |
 
 
 # D
@@ -176,35 +176,35 @@ Key signature: ♯♯
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | D | F♯ | A |  |
-| 6: Minor triad | B | D | F♯ |  |
-| 4: Major triad | G | B | D |  |
-| 5: Major triad | A | C♯ | E |  |
+| D | D | F♯ | A |  |
+| Bm | B | D | F♯ |  |
+| G | G | B | D |  |
+| A | A | C♯ | E |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | D | F♯ | A |  |
-| 2: Minor triad | E | G | B |  |
-| 3: Minor triad | F♯ | A | C♯ |  |
-| 4: Major triad | G | B | D |  |
-| 5: Major triad | A | C♯ | E |  |
-| 6: Minor triad | B | D | F♯ |  |
-| 7: Diminished triad | C♯ | E | G |  |
+| D | D | F♯ | A |  |
+| Em | E | G | B |  |
+| F♯m | F♯ | A | C♯ |  |
+| G | G | B | D |  |
+| A | A | C♯ | E |  |
+| Bm | B | D | F♯ |  |
+| C♯ᵒ | C♯ | E | G |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | D | F♯ | A | C |
-| 1: Seventh | D | F♯ | A | C |
-| 1: Seventh | D | F♯ | A | C |
-| 1: Seventh | D | F♯ | A | C |
-| 4: Seventh | G | B | D | F |
-| 4: Seventh | G | B | D | F |
-| 1: Seventh | D | F♯ | A | C |
-| 1: Seventh | D | F♯ | A | C |
-| 5: Seventh | A | C♯ | E | G |
-| 4: Seventh | G | B | D | F |
-| 1: Seventh | D | F♯ | A | C |
-| 5: Seventh | A | C♯ | E | G |
+| D7 | D | F♯ | A | C |
+| D7 | D | F♯ | A | C |
+| D7 | D | F♯ | A | C |
+| D7 | D | F♯ | A | C |
+| G7 | G | B | D | F |
+| G7 | G | B | D | F |
+| D7 | D | F♯ | A | C |
+| D7 | D | F♯ | A | C |
+| A7 | A | C♯ | E | G |
+| G7 | G | B | D | F |
+| D7 | D | F♯ | A | C |
+| A7 | A | C♯ | E | G |
 
 
 # A
@@ -245,35 +245,35 @@ Key signature: ♯♯♯
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | A | C♯ | E |  |
-| 6: Minor triad | F♯ | A | C♯ |  |
-| 4: Major triad | D | F♯ | A |  |
-| 5: Major triad | E | G♯ | B |  |
+| A | A | C♯ | E |  |
+| F♯m | F♯ | A | C♯ |  |
+| D | D | F♯ | A |  |
+| E | E | G♯ | B |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | A | C♯ | E |  |
-| 2: Minor triad | B | D | F♯ |  |
-| 3: Minor triad | C♯ | E | G♯ |  |
-| 4: Major triad | D | F♯ | A |  |
-| 5: Major triad | E | G♯ | B |  |
-| 6: Minor triad | F♯ | A | C♯ |  |
-| 7: Diminished triad | G♯ | B | D |  |
+| A | A | C♯ | E |  |
+| Bm | B | D | F♯ |  |
+| C♯m | C♯ | E | G♯ |  |
+| D | D | F♯ | A |  |
+| E | E | G♯ | B |  |
+| F♯m | F♯ | A | C♯ |  |
+| G♯ᵒ | G♯ | B | D |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | A | C♯ | E | G |
-| 1: Seventh | A | C♯ | E | G |
-| 1: Seventh | A | C♯ | E | G |
-| 1: Seventh | A | C♯ | E | G |
-| 4: Seventh | D | F♯ | A | C |
-| 4: Seventh | D | F♯ | A | C |
-| 1: Seventh | A | C♯ | E | G |
-| 1: Seventh | A | C♯ | E | G |
-| 5: Seventh | E | G♯ | B | D |
-| 4: Seventh | D | F♯ | A | C |
-| 1: Seventh | A | C♯ | E | G |
-| 5: Seventh | E | G♯ | B | D |
+| A7 | A | C♯ | E | G |
+| A7 | A | C♯ | E | G |
+| A7 | A | C♯ | E | G |
+| A7 | A | C♯ | E | G |
+| D7 | D | F♯ | A | C |
+| D7 | D | F♯ | A | C |
+| A7 | A | C♯ | E | G |
+| A7 | A | C♯ | E | G |
+| E7 | E | G♯ | B | D |
+| D7 | D | F♯ | A | C |
+| A7 | A | C♯ | E | G |
+| E7 | E | G♯ | B | D |
 
 
 # E
@@ -314,35 +314,35 @@ Key signature: ♯♯♯♯
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | E | G♯ | B |  |
-| 6: Minor triad | C♯ | E | G♯ |  |
-| 4: Major triad | A | C♯ | E |  |
-| 5: Major triad | B | D♯ | F♯ |  |
+| E | E | G♯ | B |  |
+| C♯m | C♯ | E | G♯ |  |
+| A | A | C♯ | E |  |
+| B | B | D♯ | F♯ |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | E | G♯ | B |  |
-| 2: Minor triad | F♯ | A | C♯ |  |
-| 3: Minor triad | G♯ | B | D♯ |  |
-| 4: Major triad | A | C♯ | E |  |
-| 5: Major triad | B | D♯ | F♯ |  |
-| 6: Minor triad | C♯ | E | G♯ |  |
-| 7: Diminished triad | D♯ | F♯ | A |  |
+| E | E | G♯ | B |  |
+| F♯m | F♯ | A | C♯ |  |
+| G♯m | G♯ | B | D♯ |  |
+| A | A | C♯ | E |  |
+| B | B | D♯ | F♯ |  |
+| C♯m | C♯ | E | G♯ |  |
+| D♯ᵒ | D♯ | F♯ | A |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | E | G♯ | B | D |
-| 1: Seventh | E | G♯ | B | D |
-| 1: Seventh | E | G♯ | B | D |
-| 1: Seventh | E | G♯ | B | D |
-| 4: Seventh | A | C♯ | E | G |
-| 4: Seventh | A | C♯ | E | G |
-| 1: Seventh | E | G♯ | B | D |
-| 1: Seventh | E | G♯ | B | D |
-| 5: Seventh | B | D♯ | F♯ | A |
-| 4: Seventh | A | C♯ | E | G |
-| 1: Seventh | E | G♯ | B | D |
-| 5: Seventh | B | D♯ | F♯ | A |
+| E7 | E | G♯ | B | D |
+| E7 | E | G♯ | B | D |
+| E7 | E | G♯ | B | D |
+| E7 | E | G♯ | B | D |
+| A7 | A | C♯ | E | G |
+| A7 | A | C♯ | E | G |
+| E7 | E | G♯ | B | D |
+| E7 | E | G♯ | B | D |
+| B7 | B | D♯ | F♯ | A |
+| A7 | A | C♯ | E | G |
+| E7 | E | G♯ | B | D |
+| B7 | B | D♯ | F♯ | A |
 
 
 # B
@@ -383,35 +383,35 @@ Key signature: ♯♯♯♯♯
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | B | D♯ | F♯ |  |
-| 6: Minor triad | G♯ | B | D♯ |  |
-| 4: Major triad | E | G♯ | B |  |
-| 5: Major triad | F♯ | A♯ | C♯ |  |
+| B | B | D♯ | F♯ |  |
+| G♯m | G♯ | B | D♯ |  |
+| E | E | G♯ | B |  |
+| F♯ | F♯ | A♯ | C♯ |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | B | D♯ | F♯ |  |
-| 2: Minor triad | C♯ | E | G♯ |  |
-| 3: Minor triad | D♯ | F♯ | A♯ |  |
-| 4: Major triad | E | G♯ | B |  |
-| 5: Major triad | F♯ | A♯ | C♯ |  |
-| 6: Minor triad | G♯ | B | D♯ |  |
-| 7: Diminished triad | A♯ | C♯ | E |  |
+| B | B | D♯ | F♯ |  |
+| C♯m | C♯ | E | G♯ |  |
+| D♯m | D♯ | F♯ | A♯ |  |
+| E | E | G♯ | B |  |
+| F♯ | F♯ | A♯ | C♯ |  |
+| G♯m | G♯ | B | D♯ |  |
+| A♯ᵒ | A♯ | C♯ | E |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | B | D♯ | F♯ | A |
-| 1: Seventh | B | D♯ | F♯ | A |
-| 1: Seventh | B | D♯ | F♯ | A |
-| 1: Seventh | B | D♯ | F♯ | A |
-| 4: Seventh | E | G♯ | B | D |
-| 4: Seventh | E | G♯ | B | D |
-| 1: Seventh | B | D♯ | F♯ | A |
-| 1: Seventh | B | D♯ | F♯ | A |
-| 5: Seventh | F♯ | A♯ | C♯ | E |
-| 4: Seventh | E | G♯ | B | D |
-| 1: Seventh | B | D♯ | F♯ | A |
-| 5: Seventh | F♯ | A♯ | C♯ | E |
+| B7 | B | D♯ | F♯ | A |
+| B7 | B | D♯ | F♯ | A |
+| B7 | B | D♯ | F♯ | A |
+| B7 | B | D♯ | F♯ | A |
+| E7 | E | G♯ | B | D |
+| E7 | E | G♯ | B | D |
+| B7 | B | D♯ | F♯ | A |
+| B7 | B | D♯ | F♯ | A |
+| F♯7 | F♯ | A♯ | C♯ | E |
+| E7 | E | G♯ | B | D |
+| B7 | B | D♯ | F♯ | A |
+| F♯7 | F♯ | A♯ | C♯ | E |
 
 
 # G♭
@@ -452,35 +452,35 @@ Key signature: ♭♭♭♭♭♭
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | G♭ | B♭ | D♭ |  |
-| 6: Minor triad | E♭ | G♭ | B♭ |  |
-| 4: Major triad | C♭ | E♭ | G♭ |  |
-| 5: Major triad | D♭ | F | A♭ |  |
+| G♭ | G♭ | B♭ | D♭ |  |
+| E♭m | E♭ | G♭ | B♭ |  |
+| C♭ | C♭ | E♭ | G♭ |  |
+| D♭ | D♭ | F | A♭ |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | G♭ | B♭ | D♭ |  |
-| 2: Minor triad | A♭ | C♭ | E♭ |  |
-| 3: Minor triad | B♭ | D♭ | F |  |
-| 4: Major triad | C♭ | E♭ | G♭ |  |
-| 5: Major triad | D♭ | F | A♭ |  |
-| 6: Minor triad | E♭ | G♭ | B♭ |  |
-| 7: Diminished triad | F | A♭ | C♭ |  |
+| G♭ | G♭ | B♭ | D♭ |  |
+| A♭m | A♭ | C♭ | E♭ |  |
+| B♭m | B♭ | D♭ | F |  |
+| C♭ | C♭ | E♭ | G♭ |  |
+| D♭ | D♭ | F | A♭ |  |
+| E♭m | E♭ | G♭ | B♭ |  |
+| Fᵒ | F | A♭ | C♭ |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | G♭ | B♭ | D♭ | F♭ |
-| 1: Seventh | G♭ | B♭ | D♭ | F♭ |
-| 1: Seventh | G♭ | B♭ | D♭ | F♭ |
-| 1: Seventh | G♭ | B♭ | D♭ | F♭ |
-| 4: Seventh | C♭ | E♭ | G♭ | B♭♭ |
-| 4: Seventh | C♭ | E♭ | G♭ | B♭♭ |
-| 1: Seventh | G♭ | B♭ | D♭ | F♭ |
-| 1: Seventh | G♭ | B♭ | D♭ | F♭ |
-| 5: Seventh | D♭ | F | A♭ | C♭ |
-| 4: Seventh | C♭ | E♭ | G♭ | B♭♭ |
-| 1: Seventh | G♭ | B♭ | D♭ | F♭ |
-| 5: Seventh | D♭ | F | A♭ | C♭ |
+| G♭7 | G♭ | B♭ | D♭ | F♭ |
+| G♭7 | G♭ | B♭ | D♭ | F♭ |
+| G♭7 | G♭ | B♭ | D♭ | F♭ |
+| G♭7 | G♭ | B♭ | D♭ | F♭ |
+| C♭7 | C♭ | E♭ | G♭ | B♭♭ |
+| C♭7 | C♭ | E♭ | G♭ | B♭♭ |
+| G♭7 | G♭ | B♭ | D♭ | F♭ |
+| G♭7 | G♭ | B♭ | D♭ | F♭ |
+| D♭7 | D♭ | F | A♭ | C♭ |
+| C♭7 | C♭ | E♭ | G♭ | B♭♭ |
+| G♭7 | G♭ | B♭ | D♭ | F♭ |
+| D♭7 | D♭ | F | A♭ | C♭ |
 
 
 # F♯
@@ -521,35 +521,35 @@ Key signature: ♯♯♯♯♯♯
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | F♯ | A♯ | C♯ |  |
-| 6: Minor triad | D♯ | F♯ | A♯ |  |
-| 4: Major triad | B | D♯ | F♯ |  |
-| 5: Major triad | C♯ | E♯ | G♯ |  |
+| F♯ | F♯ | A♯ | C♯ |  |
+| D♯m | D♯ | F♯ | A♯ |  |
+| B | B | D♯ | F♯ |  |
+| C♯ | C♯ | E♯ | G♯ |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | F♯ | A♯ | C♯ |  |
-| 2: Minor triad | G♯ | B | D♯ |  |
-| 3: Minor triad | A♯ | C♯ | E♯ |  |
-| 4: Major triad | B | D♯ | F♯ |  |
-| 5: Major triad | C♯ | E♯ | G♯ |  |
-| 6: Minor triad | D♯ | F♯ | A♯ |  |
-| 7: Diminished triad | E♯ | G♯ | B |  |
+| F♯ | F♯ | A♯ | C♯ |  |
+| G♯m | G♯ | B | D♯ |  |
+| A♯m | A♯ | C♯ | E♯ |  |
+| B | B | D♯ | F♯ |  |
+| C♯ | C♯ | E♯ | G♯ |  |
+| D♯m | D♯ | F♯ | A♯ |  |
+| E♯ᵒ | E♯ | G♯ | B |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | F♯ | A♯ | C♯ | E |
-| 1: Seventh | F♯ | A♯ | C♯ | E |
-| 1: Seventh | F♯ | A♯ | C♯ | E |
-| 1: Seventh | F♯ | A♯ | C♯ | E |
-| 4: Seventh | B | D♯ | F♯ | A |
-| 4: Seventh | B | D♯ | F♯ | A |
-| 1: Seventh | F♯ | A♯ | C♯ | E |
-| 1: Seventh | F♯ | A♯ | C♯ | E |
-| 5: Seventh | C♯ | E♯ | G♯ | B |
-| 4: Seventh | B | D♯ | F♯ | A |
-| 1: Seventh | F♯ | A♯ | C♯ | E |
-| 5: Seventh | C♯ | E♯ | G♯ | B |
+| F♯7 | F♯ | A♯ | C♯ | E |
+| F♯7 | F♯ | A♯ | C♯ | E |
+| F♯7 | F♯ | A♯ | C♯ | E |
+| F♯7 | F♯ | A♯ | C♯ | E |
+| B7 | B | D♯ | F♯ | A |
+| B7 | B | D♯ | F♯ | A |
+| F♯7 | F♯ | A♯ | C♯ | E |
+| F♯7 | F♯ | A♯ | C♯ | E |
+| C♯7 | C♯ | E♯ | G♯ | B |
+| B7 | B | D♯ | F♯ | A |
+| F♯7 | F♯ | A♯ | C♯ | E |
+| C♯7 | C♯ | E♯ | G♯ | B |
 
 
 # D♭
@@ -590,35 +590,35 @@ Key signature: ♭♭♭♭♭
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | D♭ | F | A♭ |  |
-| 6: Minor triad | B♭ | D♭ | F |  |
-| 4: Major triad | G♭ | B♭ | D♭ |  |
-| 5: Major triad | A♭ | C | E♭ |  |
+| D♭ | D♭ | F | A♭ |  |
+| B♭m | B♭ | D♭ | F |  |
+| G♭ | G♭ | B♭ | D♭ |  |
+| A♭ | A♭ | C | E♭ |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | D♭ | F | A♭ |  |
-| 2: Minor triad | E♭ | G♭ | B♭ |  |
-| 3: Minor triad | F | A♭ | C |  |
-| 4: Major triad | G♭ | B♭ | D♭ |  |
-| 5: Major triad | A♭ | C | E♭ |  |
-| 6: Minor triad | B♭ | D♭ | F |  |
-| 7: Diminished triad | C | E♭ | G♭ |  |
+| D♭ | D♭ | F | A♭ |  |
+| E♭m | E♭ | G♭ | B♭ |  |
+| Fm | F | A♭ | C |  |
+| G♭ | G♭ | B♭ | D♭ |  |
+| A♭ | A♭ | C | E♭ |  |
+| B♭m | B♭ | D♭ | F |  |
+| Cᵒ | C | E♭ | G♭ |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | D♭ | F | A♭ | C♭ |
-| 1: Seventh | D♭ | F | A♭ | C♭ |
-| 1: Seventh | D♭ | F | A♭ | C♭ |
-| 1: Seventh | D♭ | F | A♭ | C♭ |
-| 4: Seventh | G♭ | B♭ | D♭ | F♭ |
-| 4: Seventh | G♭ | B♭ | D♭ | F♭ |
-| 1: Seventh | D♭ | F | A♭ | C♭ |
-| 1: Seventh | D♭ | F | A♭ | C♭ |
-| 5: Seventh | A♭ | C | E♭ | G♭ |
-| 4: Seventh | G♭ | B♭ | D♭ | F♭ |
-| 1: Seventh | D♭ | F | A♭ | C♭ |
-| 5: Seventh | A♭ | C | E♭ | G♭ |
+| D♭7 | D♭ | F | A♭ | C♭ |
+| D♭7 | D♭ | F | A♭ | C♭ |
+| D♭7 | D♭ | F | A♭ | C♭ |
+| D♭7 | D♭ | F | A♭ | C♭ |
+| G♭7 | G♭ | B♭ | D♭ | F♭ |
+| G♭7 | G♭ | B♭ | D♭ | F♭ |
+| D♭7 | D♭ | F | A♭ | C♭ |
+| D♭7 | D♭ | F | A♭ | C♭ |
+| A♭7 | A♭ | C | E♭ | G♭ |
+| G♭7 | G♭ | B♭ | D♭ | F♭ |
+| D♭7 | D♭ | F | A♭ | C♭ |
+| A♭7 | A♭ | C | E♭ | G♭ |
 
 
 # C♯
@@ -659,35 +659,35 @@ Key signature: ♯♯♯♯♯♯♯
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | C♯ | E♯ | G♯ |  |
-| 6: Minor triad | A♯ | C♯ | E♯ |  |
-| 4: Major triad | F♯ | A♯ | C♯ |  |
-| 5: Major triad | G♯ | B♯ | D♯ |  |
+| C♯ | C♯ | E♯ | G♯ |  |
+| A♯m | A♯ | C♯ | E♯ |  |
+| F♯ | F♯ | A♯ | C♯ |  |
+| G♯ | G♯ | B♯ | D♯ |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | C♯ | E♯ | G♯ |  |
-| 2: Minor triad | D♯ | F♯ | A♯ |  |
-| 3: Minor triad | E♯ | G♯ | B♯ |  |
-| 4: Major triad | F♯ | A♯ | C♯ |  |
-| 5: Major triad | G♯ | B♯ | D♯ |  |
-| 6: Minor triad | A♯ | C♯ | E♯ |  |
-| 7: Diminished triad | B♯ | D♯ | F♯ |  |
+| C♯ | C♯ | E♯ | G♯ |  |
+| D♯m | D♯ | F♯ | A♯ |  |
+| E♯m | E♯ | G♯ | B♯ |  |
+| F♯ | F♯ | A♯ | C♯ |  |
+| G♯ | G♯ | B♯ | D♯ |  |
+| A♯m | A♯ | C♯ | E♯ |  |
+| B♯ᵒ | B♯ | D♯ | F♯ |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | C♯ | E♯ | G♯ | B |
-| 1: Seventh | C♯ | E♯ | G♯ | B |
-| 1: Seventh | C♯ | E♯ | G♯ | B |
-| 1: Seventh | C♯ | E♯ | G♯ | B |
-| 4: Seventh | F♯ | A♯ | C♯ | E |
-| 4: Seventh | F♯ | A♯ | C♯ | E |
-| 1: Seventh | C♯ | E♯ | G♯ | B |
-| 1: Seventh | C♯ | E♯ | G♯ | B |
-| 5: Seventh | G♯ | B♯ | D♯ | F♯ |
-| 4: Seventh | F♯ | A♯ | C♯ | E |
-| 1: Seventh | C♯ | E♯ | G♯ | B |
-| 5: Seventh | G♯ | B♯ | D♯ | F♯ |
+| C♯7 | C♯ | E♯ | G♯ | B |
+| C♯7 | C♯ | E♯ | G♯ | B |
+| C♯7 | C♯ | E♯ | G♯ | B |
+| C♯7 | C♯ | E♯ | G♯ | B |
+| F♯7 | F♯ | A♯ | C♯ | E |
+| F♯7 | F♯ | A♯ | C♯ | E |
+| C♯7 | C♯ | E♯ | G♯ | B |
+| C♯7 | C♯ | E♯ | G♯ | B |
+| G♯7 | G♯ | B♯ | D♯ | F♯ |
+| F♯7 | F♯ | A♯ | C♯ | E |
+| C♯7 | C♯ | E♯ | G♯ | B |
+| G♯7 | G♯ | B♯ | D♯ | F♯ |
 
 
 # A♭
@@ -728,35 +728,35 @@ Key signature: ♭♭♭♭
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | A♭ | C | E♭ |  |
-| 6: Minor triad | F | A♭ | C |  |
-| 4: Major triad | D♭ | F | A♭ |  |
-| 5: Major triad | E♭ | G | B♭ |  |
+| A♭ | A♭ | C | E♭ |  |
+| Fm | F | A♭ | C |  |
+| D♭ | D♭ | F | A♭ |  |
+| E♭ | E♭ | G | B♭ |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | A♭ | C | E♭ |  |
-| 2: Minor triad | B♭ | D♭ | F |  |
-| 3: Minor triad | C | E♭ | G |  |
-| 4: Major triad | D♭ | F | A♭ |  |
-| 5: Major triad | E♭ | G | B♭ |  |
-| 6: Minor triad | F | A♭ | C |  |
-| 7: Diminished triad | G | B♭ | D♭ |  |
+| A♭ | A♭ | C | E♭ |  |
+| B♭m | B♭ | D♭ | F |  |
+| Cm | C | E♭ | G |  |
+| D♭ | D♭ | F | A♭ |  |
+| E♭ | E♭ | G | B♭ |  |
+| Fm | F | A♭ | C |  |
+| Gᵒ | G | B♭ | D♭ |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | A♭ | C | E♭ | G♭ |
-| 1: Seventh | A♭ | C | E♭ | G♭ |
-| 1: Seventh | A♭ | C | E♭ | G♭ |
-| 1: Seventh | A♭ | C | E♭ | G♭ |
-| 4: Seventh | D♭ | F | A♭ | C♭ |
-| 4: Seventh | D♭ | F | A♭ | C♭ |
-| 1: Seventh | A♭ | C | E♭ | G♭ |
-| 1: Seventh | A♭ | C | E♭ | G♭ |
-| 5: Seventh | E♭ | G | B♭ | D♭ |
-| 4: Seventh | D♭ | F | A♭ | C♭ |
-| 1: Seventh | A♭ | C | E♭ | G♭ |
-| 5: Seventh | E♭ | G | B♭ | D♭ |
+| A♭7 | A♭ | C | E♭ | G♭ |
+| A♭7 | A♭ | C | E♭ | G♭ |
+| A♭7 | A♭ | C | E♭ | G♭ |
+| A♭7 | A♭ | C | E♭ | G♭ |
+| D♭7 | D♭ | F | A♭ | C♭ |
+| D♭7 | D♭ | F | A♭ | C♭ |
+| A♭7 | A♭ | C | E♭ | G♭ |
+| A♭7 | A♭ | C | E♭ | G♭ |
+| E♭7 | E♭ | G | B♭ | D♭ |
+| D♭7 | D♭ | F | A♭ | C♭ |
+| A♭7 | A♭ | C | E♭ | G♭ |
+| E♭7 | E♭ | G | B♭ | D♭ |
 
 
 # E♭
@@ -797,35 +797,35 @@ Key signature: ♭♭♭
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | E♭ | G | B♭ |  |
-| 6: Minor triad | C | E♭ | G |  |
-| 4: Major triad | A♭ | C | E♭ |  |
-| 5: Major triad | B♭ | D | F |  |
+| E♭ | E♭ | G | B♭ |  |
+| Cm | C | E♭ | G |  |
+| A♭ | A♭ | C | E♭ |  |
+| B♭ | B♭ | D | F |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | E♭ | G | B♭ |  |
-| 2: Minor triad | F | A♭ | C |  |
-| 3: Minor triad | G | B♭ | D |  |
-| 4: Major triad | A♭ | C | E♭ |  |
-| 5: Major triad | B♭ | D | F |  |
-| 6: Minor triad | C | E♭ | G |  |
-| 7: Diminished triad | D | F | A♭ |  |
+| E♭ | E♭ | G | B♭ |  |
+| Fm | F | A♭ | C |  |
+| Gm | G | B♭ | D |  |
+| A♭ | A♭ | C | E♭ |  |
+| B♭ | B♭ | D | F |  |
+| Cm | C | E♭ | G |  |
+| Dᵒ | D | F | A♭ |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | E♭ | G | B♭ | D♭ |
-| 1: Seventh | E♭ | G | B♭ | D♭ |
-| 1: Seventh | E♭ | G | B♭ | D♭ |
-| 1: Seventh | E♭ | G | B♭ | D♭ |
-| 4: Seventh | A♭ | C | E♭ | G♭ |
-| 4: Seventh | A♭ | C | E♭ | G♭ |
-| 1: Seventh | E♭ | G | B♭ | D♭ |
-| 1: Seventh | E♭ | G | B♭ | D♭ |
-| 5: Seventh | B♭ | D | F | A♭ |
-| 4: Seventh | A♭ | C | E♭ | G♭ |
-| 1: Seventh | E♭ | G | B♭ | D♭ |
-| 5: Seventh | B♭ | D | F | A♭ |
+| E♭7 | E♭ | G | B♭ | D♭ |
+| E♭7 | E♭ | G | B♭ | D♭ |
+| E♭7 | E♭ | G | B♭ | D♭ |
+| E♭7 | E♭ | G | B♭ | D♭ |
+| A♭7 | A♭ | C | E♭ | G♭ |
+| A♭7 | A♭ | C | E♭ | G♭ |
+| E♭7 | E♭ | G | B♭ | D♭ |
+| E♭7 | E♭ | G | B♭ | D♭ |
+| B♭7 | B♭ | D | F | A♭ |
+| A♭7 | A♭ | C | E♭ | G♭ |
+| E♭7 | E♭ | G | B♭ | D♭ |
+| B♭7 | B♭ | D | F | A♭ |
 
 
 # B♭
@@ -866,35 +866,35 @@ Key signature: ♭♭
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | B♭ | D | F |  |
-| 6: Minor triad | G | B♭ | D |  |
-| 4: Major triad | E♭ | G | B♭ |  |
-| 5: Major triad | F | A | C |  |
+| B♭ | B♭ | D | F |  |
+| Gm | G | B♭ | D |  |
+| E♭ | E♭ | G | B♭ |  |
+| F | F | A | C |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | B♭ | D | F |  |
-| 2: Minor triad | C | E♭ | G |  |
-| 3: Minor triad | D | F | A |  |
-| 4: Major triad | E♭ | G | B♭ |  |
-| 5: Major triad | F | A | C |  |
-| 6: Minor triad | G | B♭ | D |  |
-| 7: Diminished triad | A | C | E♭ |  |
+| B♭ | B♭ | D | F |  |
+| Cm | C | E♭ | G |  |
+| Dm | D | F | A |  |
+| E♭ | E♭ | G | B♭ |  |
+| F | F | A | C |  |
+| Gm | G | B♭ | D |  |
+| Aᵒ | A | C | E♭ |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | B♭ | D | F | A♭ |
-| 1: Seventh | B♭ | D | F | A♭ |
-| 1: Seventh | B♭ | D | F | A♭ |
-| 1: Seventh | B♭ | D | F | A♭ |
-| 4: Seventh | E♭ | G | B♭ | D♭ |
-| 4: Seventh | E♭ | G | B♭ | D♭ |
-| 1: Seventh | B♭ | D | F | A♭ |
-| 1: Seventh | B♭ | D | F | A♭ |
-| 5: Seventh | F | A | C | E♭ |
-| 4: Seventh | E♭ | G | B♭ | D♭ |
-| 1: Seventh | B♭ | D | F | A♭ |
-| 5: Seventh | F | A | C | E♭ |
+| B♭7 | B♭ | D | F | A♭ |
+| B♭7 | B♭ | D | F | A♭ |
+| B♭7 | B♭ | D | F | A♭ |
+| B♭7 | B♭ | D | F | A♭ |
+| E♭7 | E♭ | G | B♭ | D♭ |
+| E♭7 | E♭ | G | B♭ | D♭ |
+| B♭7 | B♭ | D | F | A♭ |
+| B♭7 | B♭ | D | F | A♭ |
+| F7 | F | A | C | E♭ |
+| E♭7 | E♭ | G | B♭ | D♭ |
+| B♭7 | B♭ | D | F | A♭ |
+| F7 | F | A | C | E♭ |
 
 
 # F
@@ -935,32 +935,32 @@ Key signature: ♭
 
 | I-vi-IV-V |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | F | A | C |  |
-| 6: Minor triad | D | F | A |  |
-| 4: Major triad | B♭ | D | F |  |
-| 5: Major triad | C | E | G |  |
+| F | F | A | C |  |
+| Dm | D | F | A |  |
+| B♭ | B♭ | D | F |  |
+| C | C | E | G |  |
 
 | Major chords |  |  |  |  |
 | - | - | - | - | - |
-| 1: Major triad | F | A | C |  |
-| 2: Minor triad | G | B♭ | D |  |
-| 3: Minor triad | A | C | E |  |
-| 4: Major triad | B♭ | D | F |  |
-| 5: Major triad | C | E | G |  |
-| 6: Minor triad | D | F | A |  |
-| 7: Diminished triad | E | G | B♭ |  |
+| F | F | A | C |  |
+| Gm | G | B♭ | D |  |
+| Am | A | C | E |  |
+| B♭ | B♭ | D | F |  |
+| C | C | E | G |  |
+| Dm | D | F | A |  |
+| Eᵒ | E | G | B♭ |  |
 
 | 12 bar blues |  |  |  |  |
 | - | - | - | - | - |
-| 1: Seventh | F | A | C | E♭ |
-| 1: Seventh | F | A | C | E♭ |
-| 1: Seventh | F | A | C | E♭ |
-| 1: Seventh | F | A | C | E♭ |
-| 4: Seventh | B♭ | D | F | A♭ |
-| 4: Seventh | B♭ | D | F | A♭ |
-| 1: Seventh | F | A | C | E♭ |
-| 1: Seventh | F | A | C | E♭ |
-| 5: Seventh | C | E | G | B♭ |
-| 4: Seventh | B♭ | D | F | A♭ |
-| 1: Seventh | F | A | C | E♭ |
-| 5: Seventh | C | E | G | B♭ |
+| F7 | F | A | C | E♭ |
+| F7 | F | A | C | E♭ |
+| F7 | F | A | C | E♭ |
+| F7 | F | A | C | E♭ |
+| B♭7 | B♭ | D | F | A♭ |
+| B♭7 | B♭ | D | F | A♭ |
+| F7 | F | A | C | E♭ |
+| F7 | F | A | C | E♭ |
+| C7 | C | E | G | B♭ |
+| B♭7 | B♭ | D | F | A♭ |
+| F7 | F | A | C | E♭ |
+| C7 | C | E | G | B♭ |
