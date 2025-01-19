@@ -25,12 +25,12 @@ Key signature:
 | Csus2 | C | D | G |  | Suspended second |
 | Csus4 | C | F | G |  | Suspended fourth |
 | C♭5 | C | E | G♭ |  | Flat fifth |
-| C7♭5 | C | E | G♭ | B♭ | Dominant seventh flat fifth |
 | C6 | C | E | G | A | Major sixth |
 | Cm6 | C | E♭ | G | A | Minor sixth |
 | CM7 | C | E | G | B | Major seventh |
 | C7 | C | E | G | B♭ | Seventh |
 | Cm7 | C | E♭ | G | B♭ | Minor seventh |
+| C7♭5 | C | E | G♭ | B♭ | Dominant seventh flat fifth |
 | C+7 | C | E | G♯ | B♭ | Augmented seventh |
 | Cm/M7 | C | E♭ | G | B | Minor/major seventh |
 | Cᵒ7 | C | E♭ | G♭ | B♭♭ | Diminished seventh |
@@ -96,12 +96,12 @@ Key signature: ♯
 | Gsus2 | G | A | D |  | Suspended second |
 | Gsus4 | G | C | D |  | Suspended fourth |
 | G♭5 | G | B | D♭ |  | Flat fifth |
-| G7♭5 | G | B | D♭ | F | Dominant seventh flat fifth |
 | G6 | G | B | D | E | Major sixth |
 | Gm6 | G | B♭ | D | E | Minor sixth |
 | GM7 | G | B | D | F♯ | Major seventh |
 | G7 | G | B | D | F | Seventh |
 | Gm7 | G | B♭ | D | F | Minor seventh |
+| G7♭5 | G | B | D♭ | F | Dominant seventh flat fifth |
 | G+7 | G | B | D♯ | F | Augmented seventh |
 | Gm/M7 | G | B♭ | D | F♯ | Minor/major seventh |
 | Gᵒ7 | G | B♭ | D♭ | F♭ | Diminished seventh |
@@ -167,12 +167,12 @@ Key signature: ♯♯
 | Dsus2 | D | E | A |  | Suspended second |
 | Dsus4 | D | G | A |  | Suspended fourth |
 | D♭5 | D | F♯ | A♭ |  | Flat fifth |
-| D7♭5 | D | F♯ | A♭ | C | Dominant seventh flat fifth |
 | D6 | D | F♯ | A | B | Major sixth |
 | Dm6 | D | F | A | B | Minor sixth |
 | DM7 | D | F♯ | A | C♯ | Major seventh |
 | D7 | D | F♯ | A | C | Seventh |
 | Dm7 | D | F | A | C | Minor seventh |
+| D7♭5 | D | F♯ | A♭ | C | Dominant seventh flat fifth |
 | D+7 | D | F♯ | A♯ | C | Augmented seventh |
 | Dm/M7 | D | F | A | C♯ | Minor/major seventh |
 | Dᵒ7 | D | F | A♭ | C♭ | Diminished seventh |
@@ -238,12 +238,12 @@ Key signature: ♯♯♯
 | Asus2 | A | B | E |  | Suspended second |
 | Asus4 | A | D | E |  | Suspended fourth |
 | A♭5 | A | C♯ | E♭ |  | Flat fifth |
-| A7♭5 | A | C♯ | E♭ | G | Dominant seventh flat fifth |
 | A6 | A | C♯ | E | F♯ | Major sixth |
 | Am6 | A | C | E | F♯ | Minor sixth |
 | AM7 | A | C♯ | E | G♯ | Major seventh |
 | A7 | A | C♯ | E | G | Seventh |
 | Am7 | A | C | E | G | Minor seventh |
+| A7♭5 | A | C♯ | E♭ | G | Dominant seventh flat fifth |
 | A+7 | A | C♯ | E♯ | G | Augmented seventh |
 | Am/M7 | A | C | E | G♯ | Minor/major seventh |
 | Aᵒ7 | A | C | E♭ | G♭ | Diminished seventh |
@@ -309,12 +309,12 @@ Key signature: ♯♯♯♯
 | Esus2 | E | F♯ | B |  | Suspended second |
 | Esus4 | E | A | B |  | Suspended fourth |
 | E♭5 | E | G♯ | B♭ |  | Flat fifth |
-| E7♭5 | E | G♯ | B♭ | D | Dominant seventh flat fifth |
 | E6 | E | G♯ | B | C♯ | Major sixth |
 | Em6 | E | G | B | C♯ | Minor sixth |
 | EM7 | E | G♯ | B | D♯ | Major seventh |
 | E7 | E | G♯ | B | D | Seventh |
 | Em7 | E | G | B | D | Minor seventh |
+| E7♭5 | E | G♯ | B♭ | D | Dominant seventh flat fifth |
 | E+7 | E | G♯ | B♯ | D | Augmented seventh |
 | Em/M7 | E | G | B | D♯ | Minor/major seventh |
 | Eᵒ7 | E | G | B♭ | D♭ | Diminished seventh |
@@ -380,12 +380,12 @@ Key signature: ♯♯♯♯♯
 | Bsus2 | B | C♯ | F♯ |  | Suspended second |
 | Bsus4 | B | E | F♯ |  | Suspended fourth |
 | B♭5 | B | D♯ | F |  | Flat fifth |
-| B7♭5 | B | D♯ | F | A | Dominant seventh flat fifth |
 | B6 | B | D♯ | F♯ | G♯ | Major sixth |
 | Bm6 | B | D | F♯ | G♯ | Minor sixth |
 | BM7 | B | D♯ | F♯ | A♯ | Major seventh |
 | B7 | B | D♯ | F♯ | A | Seventh |
 | Bm7 | B | D | F♯ | A | Minor seventh |
+| B7♭5 | B | D♯ | F | A | Dominant seventh flat fifth |
 | B+7 | B | D♯ | F♯♯ | A | Augmented seventh |
 | Bm/M7 | B | D | F♯ | A♯ | Minor/major seventh |
 | Bᵒ7 | B | D | F | A♭ | Diminished seventh |
@@ -451,12 +451,12 @@ Key signature: ♭♭♭♭♭♭
 | G♭sus2 | G♭ | A♭ | D♭ |  | Suspended second |
 | G♭sus4 | G♭ | C♭ | D♭ |  | Suspended fourth |
 | G♭♭5 | G♭ | B♭ | D♭♭ |  | Flat fifth |
-| G♭7♭5 | G♭ | B♭ | D♭♭ | F♭ | Dominant seventh flat fifth |
 | G♭6 | G♭ | B♭ | D♭ | E♭ | Major sixth |
 | G♭m6 | G♭ | B♭♭ | D♭ | E♭ | Minor sixth |
 | G♭M7 | G♭ | B♭ | D♭ | F | Major seventh |
 | G♭7 | G♭ | B♭ | D♭ | F♭ | Seventh |
 | G♭m7 | G♭ | B♭♭ | D♭ | F♭ | Minor seventh |
+| G♭7♭5 | G♭ | B♭ | D♭♭ | F♭ | Dominant seventh flat fifth |
 | G♭+7 | G♭ | B♭ | D | F♭ | Augmented seventh |
 | G♭m/M7 | G♭ | B♭♭ | D♭ | F | Minor/major seventh |
 | G♭ᵒ7 | G♭ | B♭♭ | D♭♭ | F♭♭ | Diminished seventh |
@@ -522,12 +522,12 @@ Key signature: ♯♯♯♯♯♯
 | F♯sus2 | F♯ | G♯ | C♯ |  | Suspended second |
 | F♯sus4 | F♯ | B | C♯ |  | Suspended fourth |
 | F♯♭5 | F♯ | A♯ | C |  | Flat fifth |
-| F♯7♭5 | F♯ | A♯ | C | E | Dominant seventh flat fifth |
 | F♯6 | F♯ | A♯ | C♯ | D♯ | Major sixth |
 | F♯m6 | F♯ | A | C♯ | D♯ | Minor sixth |
 | F♯M7 | F♯ | A♯ | C♯ | E♯ | Major seventh |
 | F♯7 | F♯ | A♯ | C♯ | E | Seventh |
 | F♯m7 | F♯ | A | C♯ | E | Minor seventh |
+| F♯7♭5 | F♯ | A♯ | C | E | Dominant seventh flat fifth |
 | F♯+7 | F♯ | A♯ | C♯♯ | E | Augmented seventh |
 | F♯m/M7 | F♯ | A | C♯ | E♯ | Minor/major seventh |
 | F♯ᵒ7 | F♯ | A | C | E♭ | Diminished seventh |
@@ -593,12 +593,12 @@ Key signature: ♭♭♭♭♭
 | D♭sus2 | D♭ | E♭ | A♭ |  | Suspended second |
 | D♭sus4 | D♭ | G♭ | A♭ |  | Suspended fourth |
 | D♭♭5 | D♭ | F | A♭♭ |  | Flat fifth |
-| D♭7♭5 | D♭ | F | A♭♭ | C♭ | Dominant seventh flat fifth |
 | D♭6 | D♭ | F | A♭ | B♭ | Major sixth |
 | D♭m6 | D♭ | F♭ | A♭ | B♭ | Minor sixth |
 | D♭M7 | D♭ | F | A♭ | C | Major seventh |
 | D♭7 | D♭ | F | A♭ | C♭ | Seventh |
 | D♭m7 | D♭ | F♭ | A♭ | C♭ | Minor seventh |
+| D♭7♭5 | D♭ | F | A♭♭ | C♭ | Dominant seventh flat fifth |
 | D♭+7 | D♭ | F | A | C♭ | Augmented seventh |
 | D♭m/M7 | D♭ | F♭ | A♭ | C | Minor/major seventh |
 | D♭ᵒ7 | D♭ | F♭ | A♭♭ | C♭♭ | Diminished seventh |
@@ -664,12 +664,12 @@ Key signature: ♯♯♯♯♯♯♯
 | C♯sus2 | C♯ | D♯ | G♯ |  | Suspended second |
 | C♯sus4 | C♯ | F♯ | G♯ |  | Suspended fourth |
 | C♯♭5 | C♯ | E♯ | G |  | Flat fifth |
-| C♯7♭5 | C♯ | E♯ | G | B | Dominant seventh flat fifth |
 | C♯6 | C♯ | E♯ | G♯ | A♯ | Major sixth |
 | C♯m6 | C♯ | E | G♯ | A♯ | Minor sixth |
 | C♯M7 | C♯ | E♯ | G♯ | B♯ | Major seventh |
 | C♯7 | C♯ | E♯ | G♯ | B | Seventh |
 | C♯m7 | C♯ | E | G♯ | B | Minor seventh |
+| C♯7♭5 | C♯ | E♯ | G | B | Dominant seventh flat fifth |
 | C♯+7 | C♯ | E♯ | G♯♯ | B | Augmented seventh |
 | C♯m/M7 | C♯ | E | G♯ | B♯ | Minor/major seventh |
 | C♯ᵒ7 | C♯ | E | G | B♭ | Diminished seventh |
@@ -735,12 +735,12 @@ Key signature: ♭♭♭♭
 | A♭sus2 | A♭ | B♭ | E♭ |  | Suspended second |
 | A♭sus4 | A♭ | D♭ | E♭ |  | Suspended fourth |
 | A♭♭5 | A♭ | C | E♭♭ |  | Flat fifth |
-| A♭7♭5 | A♭ | C | E♭♭ | G♭ | Dominant seventh flat fifth |
 | A♭6 | A♭ | C | E♭ | F | Major sixth |
 | A♭m6 | A♭ | C♭ | E♭ | F | Minor sixth |
 | A♭M7 | A♭ | C | E♭ | G | Major seventh |
 | A♭7 | A♭ | C | E♭ | G♭ | Seventh |
 | A♭m7 | A♭ | C♭ | E♭ | G♭ | Minor seventh |
+| A♭7♭5 | A♭ | C | E♭♭ | G♭ | Dominant seventh flat fifth |
 | A♭+7 | A♭ | C | E | G♭ | Augmented seventh |
 | A♭m/M7 | A♭ | C♭ | E♭ | G | Minor/major seventh |
 | A♭ᵒ7 | A♭ | C♭ | E♭♭ | G♭♭ | Diminished seventh |
@@ -806,12 +806,12 @@ Key signature: ♭♭♭
 | E♭sus2 | E♭ | F | B♭ |  | Suspended second |
 | E♭sus4 | E♭ | A♭ | B♭ |  | Suspended fourth |
 | E♭♭5 | E♭ | G | B♭♭ |  | Flat fifth |
-| E♭7♭5 | E♭ | G | B♭♭ | D♭ | Dominant seventh flat fifth |
 | E♭6 | E♭ | G | B♭ | C | Major sixth |
 | E♭m6 | E♭ | G♭ | B♭ | C | Minor sixth |
 | E♭M7 | E♭ | G | B♭ | D | Major seventh |
 | E♭7 | E♭ | G | B♭ | D♭ | Seventh |
 | E♭m7 | E♭ | G♭ | B♭ | D♭ | Minor seventh |
+| E♭7♭5 | E♭ | G | B♭♭ | D♭ | Dominant seventh flat fifth |
 | E♭+7 | E♭ | G | B | D♭ | Augmented seventh |
 | E♭m/M7 | E♭ | G♭ | B♭ | D | Minor/major seventh |
 | E♭ᵒ7 | E♭ | G♭ | B♭♭ | D♭♭ | Diminished seventh |
@@ -877,12 +877,12 @@ Key signature: ♭♭
 | B♭sus2 | B♭ | C | F |  | Suspended second |
 | B♭sus4 | B♭ | E♭ | F |  | Suspended fourth |
 | B♭♭5 | B♭ | D | F♭ |  | Flat fifth |
-| B♭7♭5 | B♭ | D | F♭ | A♭ | Dominant seventh flat fifth |
 | B♭6 | B♭ | D | F | G | Major sixth |
 | B♭m6 | B♭ | D♭ | F | G | Minor sixth |
 | B♭M7 | B♭ | D | F | A | Major seventh |
 | B♭7 | B♭ | D | F | A♭ | Seventh |
 | B♭m7 | B♭ | D♭ | F | A♭ | Minor seventh |
+| B♭7♭5 | B♭ | D | F♭ | A♭ | Dominant seventh flat fifth |
 | B♭+7 | B♭ | D | F♯ | A♭ | Augmented seventh |
 | B♭m/M7 | B♭ | D♭ | F | A | Minor/major seventh |
 | B♭ᵒ7 | B♭ | D♭ | F♭ | A♭♭ | Diminished seventh |
@@ -948,12 +948,12 @@ Key signature: ♭
 | Fsus2 | F | G | C |  | Suspended second |
 | Fsus4 | F | B♭ | C |  | Suspended fourth |
 | F♭5 | F | A | C♭ |  | Flat fifth |
-| F7♭5 | F | A | C♭ | E♭ | Dominant seventh flat fifth |
 | F6 | F | A | C | D | Major sixth |
 | Fm6 | F | A♭ | C | D | Minor sixth |
 | FM7 | F | A | C | E | Major seventh |
 | F7 | F | A | C | E♭ | Seventh |
 | Fm7 | F | A♭ | C | E♭ | Minor seventh |
+| F7♭5 | F | A | C♭ | E♭ | Dominant seventh flat fifth |
 | F+7 | F | A | C♯ | E♭ | Augmented seventh |
 | Fm/M7 | F | A♭ | C | E | Minor/major seventh |
 | Fᵒ7 | F | A♭ | C♭ | E♭♭ | Diminished seventh |
