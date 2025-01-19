@@ -10,7 +10,7 @@ Key signature: ♭♭♭♭♭♭
 | - | - | - | - | - | - | - | - | - |
 | Major | G♭ | A♭ | B♭ | C♭ | D♭ | E♭ | F | G♭ |
 | Minor | G♭ | A♭ | B♭♭ | C♭ | D♭ | E♭♭ | F♭ | G♭ |
-| Blues | G♭ | B♭♭ | C♭♭ | C♭ | D♭♭ | F♭♭ | G♭ |  |
+| Blues | G♭ | B♭♭ | C♭ | C | D♭ | F♭ | G♭ |  |
 
 ## Chords
 
@@ -79,7 +79,7 @@ Key signature: ♭♭♭♭♭
 | - | - | - | - | - | - | - | - | - |
 | Major | D♭ | E♭ | F | G♭ | A♭ | B♭ | C | D♭ |
 | Minor | D♭ | E♭ | F♭ | G♭ | A♭ | B♭♭ | C♭ | D♭ |
-| Blues | D♭ | F♭ | G♭♭ | G♭ | A♭♭ | C♭♭ | D♭ |  |
+| Blues | D♭ | F♭ | G♭ | G | A♭ | C♭ | D♭ |  |
 
 ## Chords
 
@@ -148,7 +148,7 @@ Key signature: ♭♭♭♭
 | - | - | - | - | - | - | - | - | - |
 | Major | A♭ | B♭ | C | D♭ | E♭ | F | G | A♭ |
 | Minor | A♭ | B♭ | C♭ | D♭ | E♭ | F♭ | G♭ | A♭ |
-| Blues | A♭ | C♭ | D♭♭ | D♭ | E♭♭ | G♭♭ | A♭ |  |
+| Blues | A♭ | C♭ | D♭ | D | E♭ | G♭ | A♭ |  |
 
 ## Chords
 
@@ -217,7 +217,7 @@ Key signature: ♭♭♭
 | - | - | - | - | - | - | - | - | - |
 | Major | E♭ | F | G | A♭ | B♭ | C | D | E♭ |
 | Minor | E♭ | F | G♭ | A♭ | B♭ | C♭ | D♭ | E♭ |
-| Blues | E♭ | G♭ | A♭♭ | A♭ | B♭♭ | D♭♭ | E♭ |  |
+| Blues | E♭ | G♭ | A♭ | A | B♭ | D♭ | E♭ |  |
 
 ## Chords
 
@@ -286,7 +286,7 @@ Key signature: ♭♭
 | - | - | - | - | - | - | - | - | - |
 | Major | B♭ | C | D | E♭ | F | G | A | B♭ |
 | Minor | B♭ | C | D♭ | E♭ | F | G♭ | A♭ | B♭ |
-| Blues | B♭ | D♭ | E♭♭ | E♭ | F♭ | A♭♭ | B♭ |  |
+| Blues | B♭ | D♭ | E♭ | E | F | A♭ | B♭ |  |
 
 ## Chords
 
@@ -355,7 +355,7 @@ Key signature: ♭
 | - | - | - | - | - | - | - | - | - |
 | Major | F | G | A | B♭ | C | D | E | F |
 | Minor | F | G | A♭ | B♭ | C | D♭ | E♭ | F |
-| Blues | F | A♭ | B♭♭ | B♭ | C♭ | E♭♭ | F |  |
+| Blues | F | A♭ | B♭ | B | C | E♭ | F |  |
 
 ## Chords
 
@@ -424,7 +424,7 @@ Key signature:
 | - | - | - | - | - | - | - | - | - |
 | Major | C | D | E | F | G | A | B | C |
 | Minor | C | D | E♭ | F | G | A♭ | B♭ | C |
-| Blues | C | E♭ | F♭ | F | G♭ | B♭♭ | C |  |
+| Blues | C | E♭ | F | F♯ | G | B♭ | C |  |
 
 ## Chords
 
@@ -493,7 +493,7 @@ Key signature: ♯
 | - | - | - | - | - | - | - | - | - |
 | Major | G | A | B | C | D | E | F♯ | G |
 | Minor | G | A | B♭ | C | D | E♭ | F | G |
-| Blues | G | B♭ | C♭ | C | D♭ | F♭ | G |  |
+| Blues | G | B♭ | C | C♯ | D | F | G |  |
 
 ## Chords
 
@@ -562,7 +562,7 @@ Key signature: ♯♯
 | - | - | - | - | - | - | - | - | - |
 | Major | D | E | F♯ | G | A | B | C♯ | D |
 | Minor | D | E | F | G | A | B♭ | C | D |
-| Blues | D | F | G♭ | G | A♭ | C♭ | D |  |
+| Blues | D | F | G | G♯ | A | C | D |  |
 
 ## Chords
 
@@ -631,7 +631,7 @@ Key signature: ♯♯♯
 | - | - | - | - | - | - | - | - | - |
 | Major | A | B | C♯ | D | E | F♯ | G♯ | A |
 | Minor | A | B | C | D | E | F | G | A |
-| Blues | A | C | D♭ | D | E♭ | G♭ | A |  |
+| Blues | A | C | D | D♯ | E | G | A |  |
 
 ## Chords
 
@@ -700,7 +700,7 @@ Key signature: ♯♯♯♯
 | - | - | - | - | - | - | - | - | - |
 | Major | E | F♯ | G♯ | A | B | C♯ | D♯ | E |
 | Minor | E | F♯ | G | A | B | C | D | E |
-| Blues | E | G | A♭ | A | B♭ | D♭ | E |  |
+| Blues | E | G | A | A♯ | B | D | E |  |
 
 ## Chords
 
@@ -769,7 +769,7 @@ Key signature: ♯♯♯♯♯
 | - | - | - | - | - | - | - | - | - |
 | Major | B | C♯ | D♯ | E | F♯ | G♯ | A♯ | B |
 | Minor | B | C♯ | D | E | F♯ | G | A | B |
-| Blues | B | D | E♭ | E | F | A♭ | B |  |
+| Blues | B | D | E | E♯ | F♯ | A | B |  |
 
 ## Chords
 
@@ -838,7 +838,7 @@ Key signature: ♯♯♯♯♯♯
 | - | - | - | - | - | - | - | - | - |
 | Major | F♯ | G♯ | A♯ | B | C♯ | D♯ | E♯ | F♯ |
 | Minor | F♯ | G♯ | A | B | C♯ | D | E | F♯ |
-| Blues | F♯ | A | B♭ | B | C | E♭ | F♯ |  |
+| Blues | F♯ | A | B | B♯ | C♯ | E | F♯ |  |
 
 ## Chords
 
@@ -907,7 +907,7 @@ Key signature: ♯♯♯♯♯♯♯
 | - | - | - | - | - | - | - | - | - |
 | Major | C♯ | D♯ | E♯ | F♯ | G♯ | A♯ | B♯ | C♯ |
 | Minor | C♯ | D♯ | E | F♯ | G♯ | A | B | C♯ |
-| Blues | C♯ | E | F | F♯ | G | B♭ | C♯ |  |
+| Blues | C♯ | E | F♯ | F♯♯ | G♯ | B | C♯ |  |
 
 ## Chords
 
