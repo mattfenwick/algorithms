@@ -22,7 +22,7 @@ func (r *RootedChord) Apply(key *Key) []*Note {
 // e.g. 1-6-4-5
 type Progression struct {
 	Chords []*RootedChord
-	Name string
+	Name   string
 }
 
 func (p *Progression) Apply(key *Key) [][]*Note {
@@ -52,11 +52,30 @@ var (
 		},
 		Name: "Major chords",
 	}
+
+	Progression12BarBlues = &Progression{
+		Chords: []*RootedChord{
+			{1, ChordSeventh},
+			{1, ChordSeventh},
+			{1, ChordSeventh},
+			{1, ChordSeventh},
+			{4, ChordSeventh},
+			{4, ChordSeventh},
+			{1, ChordSeventh},
+			{1, ChordSeventh},
+			{5, ChordSeventh},
+			{4, ChordSeventh},
+			{1, ChordSeventh},
+			{5, ChordSeventh},
+		},
+		Name: "12 bar blues",
+	}
 )
 
 var (
 	Progressions = []*Progression{
 		Progression1645,
 		ProgressionMajorChords,
+		Progression12BarBlues,
 	}
 )

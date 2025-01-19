@@ -38,6 +38,15 @@ var (
 		{10, 6},
 		{12, 7},
 	}
+	BluesSteps = []*Step{
+		{0, 0},
+		{3, 2},
+		{4, 3},
+		{5, 3},
+		{6, 4},
+		{9, 6},
+		{12, 7},
+	}
 
 // ChromaticSteps = []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 )
@@ -58,6 +67,10 @@ func (k *Key) MajorScale() []*Note {
 
 func (k *Key) MinorScale() []*Note {
 	return k.getScale(MinorSteps)
+}
+
+func (k *Key)BluesScale() []*Note {
+	return k.getScale(BluesSteps)
 }
 
 var Keys = []*Key{
