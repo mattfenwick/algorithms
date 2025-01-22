@@ -5,29 +5,30 @@ import "fmt"
 type Step struct {
 	Base    int
 	Natural int
+	Name    string
 }
 
-func NewStep(b, n int) *Step {
-	return &Step{Base: b, Natural: n}
+func NewStep(b, n int, name string) *Step {
+	return &Step{Base: b, Natural: n, Name: name}
 }
 
 var (
-	StepFirst             = NewStep(0, 0)
-	StepMinorSecond       = NewStep(1, 1)
-	StepMajorSecond       = NewStep(2, 1)
-	StepMinorThird        = NewStep(3, 2)
-	StepMajorThird        = NewStep(4, 2)
-	StepFourth            = NewStep(5, 3)
-	StepSharpFourth       = NewStep(6, 3)
-	StepDiminishedFifth   = NewStep(6, 4)
-	StepPerfectFifth      = NewStep(7, 4)
-	StepAugmentedFifth    = NewStep(8, 4)
-	StepFlatSixth         = NewStep(8, 5)
-	StepSixth             = NewStep(9, 5)
-	StepDiminishedSeventh = NewStep(9, 6)
-	StepMinorSeventh      = NewStep(10, 6)
-	StepMajorSeventh      = NewStep(11, 6)
-	StepEighth            = NewStep(12, 7)
+	StepFirst             = NewStep(0, 0, "1")
+	StepMinorSecond       = NewStep(1, 1, "♭2")
+	StepMajorSecond       = NewStep(2, 1, "3")
+	StepMinorThird        = NewStep(3, 2, "♭3")
+	StepMajorThird        = NewStep(4, 2, "3")
+	StepFourth            = NewStep(5, 3, "4")
+	StepSharpFourth       = NewStep(6, 3, "♯4")
+	StepDiminishedFifth   = NewStep(6, 4, "♭5")
+	StepPerfectFifth      = NewStep(7, 4, "5")
+	StepAugmentedFifth    = NewStep(8, 4, "♯5")
+	StepFlatSixth         = NewStep(8, 5, "♭6")
+	StepSixth             = NewStep(9, 5, "6")
+	StepDiminishedSeventh = NewStep(9, 6, "♭♭7")
+	StepMinorSeventh      = NewStep(10, 6, "♭7")
+	StepMajorSeventh      = NewStep(11, 6, "7")
+	StepEighth            = NewStep(12, 7, "8")
 )
 
 type Chord struct {

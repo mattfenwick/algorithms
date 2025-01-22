@@ -32,7 +32,8 @@ func SetupRootCommand() *cobra.Command {
 	command.PersistentFlags().StringVarP(&flags.Verbosity, "verbosity", "v", "info", "log level; one of [info, debug, trace, warn, error, fatal, panic]")
 
 	command.AddCommand(SetupScalesCommand())
-	command.AddCommand(SetupGenerateMarkdownCommand())
+	command.AddCommand(SetupGenerateScalesAndChordsMarkdownCommand())
+	command.AddCommand(SetupGenerateKeysMarkdownCommand())
 
 	return command
 }
@@ -114,19 +115,59 @@ func noteToString(n *music.Note) string {
 	return n.String()
 }
 
-func SetupGenerateMarkdownCommand() *cobra.Command {
+func SetupGenerateScalesAndChordsMarkdownCommand() *cobra.Command {
 	command := &cobra.Command{
-		Use:  "markdown",
+		Use:  "scalesandchords",
 		Args: cobra.ExactArgs(0),
 		Run: func(cmd *cobra.Command, as []string) {
-			RunGenerateMarkdown()
+			RunGenerateScalesAndChordsMarkdown()
 		},
 	}
 
 	return command
 }
 
-func RunGenerateMarkdown() {
+func RunGenerateScalesAndChordsMarkdown() {
+	header := slice.Replicate(5, "")
+	var rows [][]string
+	for _, chord := range music.Chords {
+		row := slice.Cons(chord.Name, slice.Map(func(s *music.Step) string { return s.Name }, chord.Steps))
+		for len(row) < len(header) {
+			row = append(row, "")
+		}
+		rows = append(rows, row)
+	}
+	chordTable := utils.NewTable(header, rows...)
+	fmt.Printf("\n\n")
+	fmt.Println(chordTable.ToMarkdown())
+
+	scaleHeader := slice.Replicate(9, "")
+	var scaleRows [][]string
+	for _, scale := range music.Scales {
+		row := slice.Cons(scale.Name, slice.Map(func(s *music.Step) string { return s.Name }, scale.Steps))
+		for len(row) < len(scaleHeader) {
+			row = append(row, "")
+		}
+		scaleRows = append(scaleRows, row)
+	}
+	scaleTable := utils.NewTable(scaleHeader, scaleRows...)
+	fmt.Printf("\n\n")
+	fmt.Println(scaleTable.ToMarkdown())
+}
+
+func SetupGenerateKeysMarkdownCommand() *cobra.Command {
+	command := &cobra.Command{
+		Use:  "keys",
+		Args: cobra.ExactArgs(0),
+		Run: func(cmd *cobra.Command, as []string) {
+			RunGenerateKeysMarkdown()
+		},
+	}
+
+	return command
+}
+
+func RunGenerateKeysMarkdown() {
 	output := strings.Join(slice.Map(generateMarkdownForKey, music.Keys), "\n")
 	fmt.Println(output)
 }
