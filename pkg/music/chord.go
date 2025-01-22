@@ -15,7 +15,7 @@ func NewStep(b, n int, name string) *Step {
 var (
 	StepFirst             = NewStep(0, 0, "1")
 	StepMinorSecond       = NewStep(1, 1, "♭2")
-	StepMajorSecond       = NewStep(2, 1, "3")
+	StepMajorSecond       = NewStep(2, 1, "2")
 	StepMinorThird        = NewStep(3, 2, "♭3")
 	StepMajorThird        = NewStep(4, 2, "3")
 	StepFourth            = NewStep(5, 3, "4")
