@@ -12,19 +12,22 @@ func NewStep(b, n int) *Step {
 }
 
 var (
-	StepFirst             = &Step{0, 0}
-	StepMinorSecond       = &Step{1, 1}
-	StepMajorSecond       = &Step{2, 1}
-	StepMinorThird        = &Step{3, 2}
-	StepMajorThird        = &Step{4, 2}
-	StepFourth            = &Step{5, 3}
-	StepDiminishedFifth   = &Step{6, 4}
-	StepPerfectFifth      = &Step{7, 4}
-	StepAugmentedFifth    = &Step{8, 4}
-	StepSixth             = &Step{9, 5}
-	StepDiminishedSeventh = &Step{9, 6}
-	StepMinorSeventh      = &Step{10, 6}
-	StepMajorSeventh      = &Step{11, 6}
+	StepFirst             = NewStep(0, 0)
+	StepMinorSecond       = NewStep(1, 1)
+	StepMajorSecond       = NewStep(2, 1)
+	StepMinorThird        = NewStep(3, 2)
+	StepMajorThird        = NewStep(4, 2)
+	StepFourth            = NewStep(5, 3)
+	StepSharpFourth       = NewStep(6, 3)
+	StepDiminishedFifth   = NewStep(6, 4)
+	StepPerfectFifth      = NewStep(7, 4)
+	StepAugmentedFifth    = NewStep(8, 4)
+	StepFlatSixth         = NewStep(8, 5)
+	StepSixth             = NewStep(9, 5)
+	StepDiminishedSeventh = NewStep(9, 6)
+	StepMinorSeventh      = NewStep(10, 6)
+	StepMajorSeventh      = NewStep(11, 6)
+	StepEighth            = NewStep(12, 7)
 )
 
 type Chord struct {
