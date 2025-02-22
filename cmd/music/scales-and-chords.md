@@ -6,8 +6,8 @@
 | Xm | 1 | ♭3 | 5 |  | Minor triad |
 | X+ | 1 | 3 | ♯5 |  | Augmented triad |
 | Xᵒ | 1 | ♭3 | ♭5 |  | Diminished triad |
-| Xsus2 | 1 | 2 | 5 |  | Suspended second |
-| Xsus4 | 1 | 4 | 5 |  | Suspended fourth |
+| X<sup>sus2</sup> | 1 | 2 | 5 |  | Suspended second |
+| Xˢᵘˢ⁴ | 1 | 4 | 5 |  | Suspended fourth |
 | X♭⁵ | 1 | 3 | ♭5 |  | Flat fifth |
 | X⁶ | 1 | 3 | 5 | 6 | Major sixth |
 | Xm⁶ | 1 | ♭3 | 5 | 6 | Minor sixth |

@@ -23,8 +23,8 @@ Key signature:
 | Cm | C | E♭ | G |  | Minor triad |
 | C+ | C | E | G♯ |  | Augmented triad |
 | Cᵒ | C | E♭ | G♭ |  | Diminished triad |
-| Csus2 | C | D | G |  | Suspended second |
-| Csus4 | C | F | G |  | Suspended fourth |
+| C<sup>sus2</sup> | C | D | G |  | Suspended second |
+| Cˢᵘˢ⁴ | C | F | G |  | Suspended fourth |
 | C♭⁵ | C | E | G♭ |  | Flat fifth |
 | C⁶ | C | E | G | A | Major sixth |
 | Cm⁶ | C | E♭ | G | A | Minor sixth |
@@ -95,8 +95,8 @@ Key signature: ♯
 | Gm | G | B♭ | D |  | Minor triad |
 | G+ | G | B | D♯ |  | Augmented triad |
 | Gᵒ | G | B♭ | D♭ |  | Diminished triad |
-| Gsus2 | G | A | D |  | Suspended second |
-| Gsus4 | G | C | D |  | Suspended fourth |
+| G<sup>sus2</sup> | G | A | D |  | Suspended second |
+| Gˢᵘˢ⁴ | G | C | D |  | Suspended fourth |
 | G♭⁵ | G | B | D♭ |  | Flat fifth |
 | G⁶ | G | B | D | E | Major sixth |
 | Gm⁶ | G | B♭ | D | E | Minor sixth |
@@ -167,8 +167,8 @@ Key signature: ♯♯
 | Dm | D | F | A |  | Minor triad |
 | D+ | D | F♯ | A♯ |  | Augmented triad |
 | Dᵒ | D | F | A♭ |  | Diminished triad |
-| Dsus2 | D | E | A |  | Suspended second |
-| Dsus4 | D | G | A |  | Suspended fourth |
+| D<sup>sus2</sup> | D | E | A |  | Suspended second |
+| Dˢᵘˢ⁴ | D | G | A |  | Suspended fourth |
 | D♭⁵ | D | F♯ | A♭ |  | Flat fifth |
 | D⁶ | D | F♯ | A | B | Major sixth |
 | Dm⁶ | D | F | A | B | Minor sixth |
@@ -239,8 +239,8 @@ Key signature: ♯♯♯
 | Am | A | C | E |  | Minor triad |
 | A+ | A | C♯ | E♯ |  | Augmented triad |
 | Aᵒ | A | C | E♭ |  | Diminished triad |
-| Asus2 | A | B | E |  | Suspended second |
-| Asus4 | A | D | E |  | Suspended fourth |
+| A<sup>sus2</sup> | A | B | E |  | Suspended second |
+| Aˢᵘˢ⁴ | A | D | E |  | Suspended fourth |
 | A♭⁵ | A | C♯ | E♭ |  | Flat fifth |
 | A⁶ | A | C♯ | E | F♯ | Major sixth |
 | Am⁶ | A | C | E | F♯ | Minor sixth |
@@ -311,8 +311,8 @@ Key signature: ♯♯♯♯
 | Em | E | G | B |  | Minor triad |
 | E+ | E | G♯ | B♯ |  | Augmented triad |
 | Eᵒ | E | G | B♭ |  | Diminished triad |
-| Esus2 | E | F♯ | B |  | Suspended second |
-| Esus4 | E | A | B |  | Suspended fourth |
+| E<sup>sus2</sup> | E | F♯ | B |  | Suspended second |
+| Eˢᵘˢ⁴ | E | A | B |  | Suspended fourth |
 | E♭⁵ | E | G♯ | B♭ |  | Flat fifth |
 | E⁶ | E | G♯ | B | C♯ | Major sixth |
 | Em⁶ | E | G | B | C♯ | Minor sixth |
@@ -383,8 +383,8 @@ Key signature: ♯♯♯♯♯
 | Bm | B | D | F♯ |  | Minor triad |
 | B+ | B | D♯ | F♯♯ |  | Augmented triad |
 | Bᵒ | B | D | F |  | Diminished triad |
-| Bsus2 | B | C♯ | F♯ |  | Suspended second |
-| Bsus4 | B | E | F♯ |  | Suspended fourth |
+| B<sup>sus2</sup> | B | C♯ | F♯ |  | Suspended second |
+| Bˢᵘˢ⁴ | B | E | F♯ |  | Suspended fourth |
 | B♭⁵ | B | D♯ | F |  | Flat fifth |
 | B⁶ | B | D♯ | F♯ | G♯ | Major sixth |
 | Bm⁶ | B | D | F♯ | G♯ | Minor sixth |
@@ -455,8 +455,8 @@ Key signature: ♭♭♭♭♭♭
 | G♭m | G♭ | B♭♭ | D♭ |  | Minor triad |
 | G♭+ | G♭ | B♭ | D |  | Augmented triad |
 | G♭ᵒ | G♭ | B♭♭ | D♭♭ |  | Diminished triad |
-| G♭sus2 | G♭ | A♭ | D♭ |  | Suspended second |
-| G♭sus4 | G♭ | C♭ | D♭ |  | Suspended fourth |
+| G♭<sup>sus2</sup> | G♭ | A♭ | D♭ |  | Suspended second |
+| G♭ˢᵘˢ⁴ | G♭ | C♭ | D♭ |  | Suspended fourth |
 | G♭♭⁵ | G♭ | B♭ | D♭♭ |  | Flat fifth |
 | G♭⁶ | G♭ | B♭ | D♭ | E♭ | Major sixth |
 | G♭m⁶ | G♭ | B♭♭ | D♭ | E♭ | Minor sixth |
@@ -527,8 +527,8 @@ Key signature: ♯♯♯♯♯♯
 | F♯m | F♯ | A | C♯ |  | Minor triad |
 | F♯+ | F♯ | A♯ | C♯♯ |  | Augmented triad |
 | F♯ᵒ | F♯ | A | C |  | Diminished triad |
-| F♯sus2 | F♯ | G♯ | C♯ |  | Suspended second |
-| F♯sus4 | F♯ | B | C♯ |  | Suspended fourth |
+| F♯<sup>sus2</sup> | F♯ | G♯ | C♯ |  | Suspended second |
+| F♯ˢᵘˢ⁴ | F♯ | B | C♯ |  | Suspended fourth |
 | F♯♭⁵ | F♯ | A♯ | C |  | Flat fifth |
 | F♯⁶ | F♯ | A♯ | C♯ | D♯ | Major sixth |
 | F♯m⁶ | F♯ | A | C♯ | D♯ | Minor sixth |
@@ -599,8 +599,8 @@ Key signature: ♭♭♭♭♭
 | D♭m | D♭ | F♭ | A♭ |  | Minor triad |
 | D♭+ | D♭ | F | A |  | Augmented triad |
 | D♭ᵒ | D♭ | F♭ | A♭♭ |  | Diminished triad |
-| D♭sus2 | D♭ | E♭ | A♭ |  | Suspended second |
-| D♭sus4 | D♭ | G♭ | A♭ |  | Suspended fourth |
+| D♭<sup>sus2</sup> | D♭ | E♭ | A♭ |  | Suspended second |
+| D♭ˢᵘˢ⁴ | D♭ | G♭ | A♭ |  | Suspended fourth |
 | D♭♭⁵ | D♭ | F | A♭♭ |  | Flat fifth |
 | D♭⁶ | D♭ | F | A♭ | B♭ | Major sixth |
 | D♭m⁶ | D♭ | F♭ | A♭ | B♭ | Minor sixth |
@@ -671,8 +671,8 @@ Key signature: ♯♯♯♯♯♯♯
 | C♯m | C♯ | E | G♯ |  | Minor triad |
 | C♯+ | C♯ | E♯ | G♯♯ |  | Augmented triad |
 | C♯ᵒ | C♯ | E | G |  | Diminished triad |
-| C♯sus2 | C♯ | D♯ | G♯ |  | Suspended second |
-| C♯sus4 | C♯ | F♯ | G♯ |  | Suspended fourth |
+| C♯<sup>sus2</sup> | C♯ | D♯ | G♯ |  | Suspended second |
+| C♯ˢᵘˢ⁴ | C♯ | F♯ | G♯ |  | Suspended fourth |
 | C♯♭⁵ | C♯ | E♯ | G |  | Flat fifth |
 | C♯⁶ | C♯ | E♯ | G♯ | A♯ | Major sixth |
 | C♯m⁶ | C♯ | E | G♯ | A♯ | Minor sixth |
@@ -743,8 +743,8 @@ Key signature: ♭♭♭♭
 | A♭m | A♭ | C♭ | E♭ |  | Minor triad |
 | A♭+ | A♭ | C | E |  | Augmented triad |
 | A♭ᵒ | A♭ | C♭ | E♭♭ |  | Diminished triad |
-| A♭sus2 | A♭ | B♭ | E♭ |  | Suspended second |
-| A♭sus4 | A♭ | D♭ | E♭ |  | Suspended fourth |
+| A♭<sup>sus2</sup> | A♭ | B♭ | E♭ |  | Suspended second |
+| A♭ˢᵘˢ⁴ | A♭ | D♭ | E♭ |  | Suspended fourth |
 | A♭♭⁵ | A♭ | C | E♭♭ |  | Flat fifth |
 | A♭⁶ | A♭ | C | E♭ | F | Major sixth |
 | A♭m⁶ | A♭ | C♭ | E♭ | F | Minor sixth |
@@ -815,8 +815,8 @@ Key signature: ♭♭♭
 | E♭m | E♭ | G♭ | B♭ |  | Minor triad |
 | E♭+ | E♭ | G | B |  | Augmented triad |
 | E♭ᵒ | E♭ | G♭ | B♭♭ |  | Diminished triad |
-| E♭sus2 | E♭ | F | B♭ |  | Suspended second |
-| E♭sus4 | E♭ | A♭ | B♭ |  | Suspended fourth |
+| E♭<sup>sus2</sup> | E♭ | F | B♭ |  | Suspended second |
+| E♭ˢᵘˢ⁴ | E♭ | A♭ | B♭ |  | Suspended fourth |
 | E♭♭⁵ | E♭ | G | B♭♭ |  | Flat fifth |
 | E♭⁶ | E♭ | G | B♭ | C | Major sixth |
 | E♭m⁶ | E♭ | G♭ | B♭ | C | Minor sixth |
@@ -887,8 +887,8 @@ Key signature: ♭♭
 | B♭m | B♭ | D♭ | F |  | Minor triad |
 | B♭+ | B♭ | D | F♯ |  | Augmented triad |
 | B♭ᵒ | B♭ | D♭ | F♭ |  | Diminished triad |
-| B♭sus2 | B♭ | C | F |  | Suspended second |
-| B♭sus4 | B♭ | E♭ | F |  | Suspended fourth |
+| B♭<sup>sus2</sup> | B♭ | C | F |  | Suspended second |
+| B♭ˢᵘˢ⁴ | B♭ | E♭ | F |  | Suspended fourth |
 | B♭♭⁵ | B♭ | D | F♭ |  | Flat fifth |
 | B♭⁶ | B♭ | D | F | G | Major sixth |
 | B♭m⁶ | B♭ | D♭ | F | G | Minor sixth |
@@ -959,8 +959,8 @@ Key signature: ♭
 | Fm | F | A♭ | C |  | Minor triad |
 | F+ | F | A | C♯ |  | Augmented triad |
 | Fᵒ | F | A♭ | C♭ |  | Diminished triad |
-| Fsus2 | F | G | C |  | Suspended second |
-| Fsus4 | F | B♭ | C |  | Suspended fourth |
+| F<sup>sus2</sup> | F | G | C |  | Suspended second |
+| Fˢᵘˢ⁴ | F | B♭ | C |  | Suspended fourth |
 | F♭⁵ | F | A | C♭ |  | Flat fifth |
 | F⁶ | F | A | C | D | Major sixth |
 | Fm⁶ | F | A♭ | C | D | Minor sixth |
