@@ -49,7 +49,7 @@ func SetupScalesCommand() *cobra.Command {
 		Use:  "scales",
 		Args: cobra.ExactArgs(0),
 		Run: func(cmd *cobra.Command, as []string) {
-			RunScales(args)
+			RunScalesDeprecated(args)
 		},
 	}
 
@@ -58,7 +58,7 @@ func SetupScalesCommand() *cobra.Command {
 	return command
 }
 
-func RunScales(args *ScalesArgs) {
+func RunScalesDeprecated(args *ScalesArgs) {
 	for _, start := range args.Scales {
 		key, ok := music.StringToKey[start]
 		if !ok {
