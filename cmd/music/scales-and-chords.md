@@ -1,4 +1,11 @@
+# Table of contents
 
+1. [Chords](#chords)
+2. [Scales](#scalesref)
+3. [Scales 2](#scales)
+4. [Broken](#broken)
+
+# Chords
 
 | Chord |  |  |  |  | Description |
 | - | - | - | - | - | - |
@@ -20,6 +27,7 @@
 | X<sup>o7</sup> | 1 | ♭3 | ♭5 | ♭♭7 | Diminished seventh |
 | X<sup>ø7</sup> | 1 | ♭3 | ♭5 | ♭7 | Half-diminished seventh |
 
+# Scales <a href="scalesref"></a>
 
 | Scale |  |  |  |  |  |  |  |  |
 | - | - | - | - | - | - | - | - | - |
