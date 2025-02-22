@@ -27,7 +27,7 @@
 | X<sup>o7</sup> | 1 | ♭3 | ♭5 | ♭♭7 | Diminished seventh |
 | X<sup>ø7</sup> | 1 | ♭3 | ♭5 | ♭7 | Half-diminished seventh |
 
-# Scales <a href="scalesref"></a>
+# Scales <a name="scalesref"></a>
 
 | Scale |  |  |  |  |  |  |  |  |
 | - | - | - | - | - | - | - | - | - |
