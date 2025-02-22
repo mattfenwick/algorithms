@@ -128,7 +128,7 @@ func SetupGenerateScalesAndChordsMarkdownCommand() *cobra.Command {
 }
 
 func RunGenerateScalesAndChordsMarkdown() {
-	header := []string{"Name", "", "", "", "", "Description"}
+	header := []string{"Chord", "", "", "", "", "Description"}
 	var rows [][]string
 	for _, chord := range music.Chords {
 		row := slice.Cons("X" + chord.BaseSymbol, slice.Map(func(s *music.Step) string { return s.Name }, chord.Steps))
@@ -141,7 +141,7 @@ func RunGenerateScalesAndChordsMarkdown() {
 	chordTable := utils.NewTable(header, rows...)
 	fmt.Printf("\n\n%s\n", chordTable.ToMarkdown())
 
-	scaleHeader := slice.Replicate(9, "")
+	scaleHeader := slice.Cons("Scale", slice.Replicate(8, ""))
 	var scaleRows [][]string
 	for _, scale := range music.Scales {
 		row := slice.Cons(scale.Name, slice.Map(func(s *music.Step) string { return s.Name }, scale.Steps))

@@ -1,6 +1,6 @@
 
 
-| Name |  |  |  |  | Description |
+| Chord |  |  |  |  | Description |
 | - | - | - | - | - | - |
 | X | 1 | 3 | 5 |  | Major triad |
 | Xm | 1 | ♭3 | 5 |  | Minor triad |
@@ -21,7 +21,7 @@
 | X<sup>ø7</sup> | 1 | ♭3 | ♭5 | ♭7 | Half-diminished seventh |
 
 
-|  |  |  |  |  |  |  |  |  |
+| Scale |  |  |  |  |  |  |  |  |
 | - | - | - | - | - | - | - | - | - |
 | Major | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 | Minor | 1 | 2 | ♭3 | 4 | 5 | ♭6 | ♭7 | 8 |
