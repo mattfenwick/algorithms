@@ -74,67 +74,67 @@ var (
 	ChordSuspendedSecond = &Chord{
 		Steps:      []*Step{StepFirst, StepMajorSecond, StepPerfectFifth},
 		Name:       "Suspended second",
-		BaseSymbol: "sus2",
+		BaseSymbol: "<sup>sus2</sup>",
 	}
 	ChordSuspendedFourth = &Chord{
 		Steps:      []*Step{StepFirst, StepFourth, StepPerfectFifth},
 		Name:       "Suspended fourth",
-		BaseSymbol: "sus4",
+		BaseSymbol: "<sup>sus4</sup>",
 	}
 	ChordFlatFifth = &Chord{
 		Steps:      []*Step{StepFirst, StepMajorThird, StepDiminishedFifth},
 		Name:       "Flat fifth",
-		BaseSymbol: "♭5",
+		BaseSymbol: "<sup>♭5</sup>",
 	}
 	ChordDominantSeventhFlatFifth = &Chord{
 		Steps:      []*Step{StepFirst, StepMajorThird, StepDiminishedFifth, StepMinorSeventh},
 		Name:       "Dominant seventh flat fifth",
-		BaseSymbol: "7♭5",
+		BaseSymbol: "<sup>7♭5</sup>",
 	}
 	ChordMajorSixth = &Chord{
 		Steps:      []*Step{StepFirst, StepMajorThird, StepPerfectFifth, StepSixth},
 		Name:       "Major sixth",
-		BaseSymbol: "6",
+		BaseSymbol: "<sup>6</sup>",
 	}
 	ChordMinorSixth = &Chord{
 		Steps:      []*Step{StepFirst, StepMinorThird, StepPerfectFifth, StepSixth},
 		Name:       "Minor sixth",
-		BaseSymbol: "m6",
+		BaseSymbol: "m<sup>6</sup>",
 	}
 	ChordMajorSeventh = &Chord{
 		Steps:      []*Step{StepFirst, StepMajorThird, StepPerfectFifth, StepMajorSeventh},
 		Name:       "Major seventh",
-		BaseSymbol: "M7",
+		BaseSymbol: "M<sup>7</sup>",
 	}
 	ChordSeventh = &Chord{
 		Steps:      []*Step{StepFirst, StepMajorThird, StepPerfectFifth, StepMinorSeventh},
 		Name:       "Seventh",
-		BaseSymbol: "7",
+		BaseSymbol: "<sup>7</sup>",
 	}
 	ChordMinorSeventh = &Chord{
 		Steps:      []*Step{StepFirst, StepMinorThird, StepPerfectFifth, StepMinorSeventh},
 		Name:       "Minor seventh",
-		BaseSymbol: "m7",
+		BaseSymbol: "m<sup>7</sup>",
 	}
 	ChordAugmentedSeventh = &Chord{
 		Steps:      []*Step{StepFirst, StepMajorThird, StepAugmentedFifth, StepMinorSeventh},
 		Name:       "Augmented seventh",
-		BaseSymbol: "+7",
+		BaseSymbol: "+<sup>7</sup>",
 	}
 	ChordMinorMajorSeventh = &Chord{
 		Steps:      []*Step{StepFirst, StepMinorThird, StepPerfectFifth, StepMajorSeventh},
 		Name:       "Minor/major seventh",
-		BaseSymbol: "m/M7",
+		BaseSymbol: "m/M<sup>7</sup>",
 	}
 	ChordDiminishedSeventh = &Chord{
 		Steps:      []*Step{StepFirst, StepMinorThird, StepDiminishedFifth, StepDiminishedSeventh},
 		Name:       "Diminished seventh",
-		BaseSymbol: "ᵒ7",
+		BaseSymbol: "<sup>o7</sup>",
 	}
 	ChordHalfDiminishedSeventh = &Chord{
 		Steps:      []*Step{StepFirst, StepMinorThird, StepDiminishedFifth, StepMinorSeventh},
 		Name:       "Half-diminished seventh",
-		BaseSymbol: "ø7",
+		BaseSymbol: "<sup>ø7</sup>",
 	}
 )
 

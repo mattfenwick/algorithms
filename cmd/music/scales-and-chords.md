@@ -7,18 +7,18 @@
 | X+ | 1 | 3 | ♯5 |  | Augmented triad |
 | Xᵒ | 1 | ♭3 | ♭5 |  | Diminished triad |
 | X<sup>sus2</sup> | 1 | 2 | 5 |  | Suspended second |
-| Xˢᵘˢ⁴ | 1 | 4 | 5 |  | Suspended fourth |
-| X♭⁵ | 1 | 3 | ♭5 |  | Flat fifth |
-| X⁶ | 1 | 3 | 5 | 6 | Major sixth |
-| Xm⁶ | 1 | ♭3 | 5 | 6 | Minor sixth |
-| XM⁷ | 1 | 3 | 5 | 7 | Major seventh |
-| X⁷ | 1 | 3 | 5 | ♭7 | Seventh |
-| Xm⁷ | 1 | ♭3 | 5 | ♭7 | Minor seventh |
-| X⁷♭⁵ | 1 | 3 | ♭5 | ♭7 | Dominant seventh flat fifth |
-| X+⁷ | 1 | 3 | ♯5 | ♭7 | Augmented seventh |
-| Xm/M⁷ | 1 | ♭3 | 5 | 7 | Minor/major seventh |
-| Xᵒ⁷ | 1 | ♭3 | ♭5 | ♭♭7 | Diminished seventh |
-| Xø⁷ | 1 | ♭3 | ♭5 | ♭7 | Half-diminished seventh |
+| X<sup>sus4</sup> | 1 | 4 | 5 |  | Suspended fourth |
+| X<sup>♭5</sup> | 1 | 3 | ♭5 |  | Flat fifth |
+| X<sup>6</sup> | 1 | 3 | 5 | 6 | Major sixth |
+| Xm<sup>6</sup> | 1 | ♭3 | 5 | 6 | Minor sixth |
+| XM<sup>7</sup> | 1 | 3 | 5 | 7 | Major seventh |
+| X<sup>7</sup> | 1 | 3 | 5 | ♭7 | Seventh |
+| Xm<sup>7</sup> | 1 | ♭3 | 5 | ♭7 | Minor seventh |
+| X<sup>7♭5</sup> | 1 | 3 | ♭5 | ♭7 | Dominant seventh flat fifth |
+| X+<sup>7</sup> | 1 | 3 | ♯5 | ♭7 | Augmented seventh |
+| Xm/M<sup>7</sup> | 1 | ♭3 | 5 | 7 | Minor/major seventh |
+| X<sup>o7</sup> | 1 | ♭3 | ♭5 | ♭♭7 | Diminished seventh |
+| X<sup>ø7</sup> | 1 | ♭3 | ♭5 | ♭7 | Half-diminished seventh |
 
 
 |  |  |  |  |  |  |  |  |  |
