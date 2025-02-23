@@ -20,14 +20,17 @@ var (
 	KeyCSharp = &Key{NewNote(NaturalC, 1, 0), 7, 0}
 	KeyDFlat  = &Key{NewNote(NaturalD, 0, 1), 0, 5}
 	KeyD      = &Key{NewNote(NaturalD, 0, 0), 2, 0}
+	KeyDSharp = &Key{NewNote(NaturalD, 1, 0), 9, 0}
 	KeyEFlat  = &Key{NewNote(NaturalE, 0, 1), 0, 3}
 	KeyE      = &Key{NewNote(NaturalE, 0, 0), 4, 0}
 	KeyF      = &Key{NewNote(NaturalF, 0, 0), 0, 1}
 	KeyFSharp = &Key{NewNote(NaturalF, 1, 0), 6, 0}
 	KeyGFlat  = &Key{NewNote(NaturalG, 0, 1), 0, 6}
 	KeyG      = &Key{NewNote(NaturalG, 0, 0), 1, 0}
+	KeyGSharp = &Key{NewNote(NaturalG, 1, 0), 8, 0}
 	KeyAFlat  = &Key{NewNote(NaturalA, 0, 1), 0, 4}
 	KeyA      = &Key{NewNote(NaturalA, 0, 0), 3, 0}
+	KeyASharp = &Key{NewNote(NaturalA, 1, 0), 10, 0}
 	KeyBFlat  = &Key{NewNote(NaturalB, 0, 1), 0, 2}
 	KeyB      = &Key{NewNote(NaturalB, 0, 0), 5, 0}
 )
@@ -58,21 +61,21 @@ func init() {
 }
 
 var KeysChromatic = []*Key{
-	{NewNote(NaturalC, 0, 0), 0, 0},
-	{NewNote(NaturalC, 1, 0), 7, 0},
-	{NewNote(NaturalD, 0, 1), 0, 5},
-	{NewNote(NaturalD, 0, 0), 2, 0},
-	{NewNote(NaturalD, 1, 0), 9, 0},
-	{NewNote(NaturalE, 0, 1), 0, 3},
-	{NewNote(NaturalE, 0, 0), 4, 0},
-	{NewNote(NaturalF, 0, 0), 0, 1},
-	{NewNote(NaturalF, 1, 0), 6, 0},
-	{NewNote(NaturalG, 0, 1), 0, 6},
-	{NewNote(NaturalG, 0, 0), 1, 0},
-	{NewNote(NaturalG, 1, 0), 8, 0},
-	{NewNote(NaturalA, 0, 1), 0, 4},
-	{NewNote(NaturalA, 0, 0), 3, 0},
-	{NewNote(NaturalA, 1, 0), 10, 0},
-	{NewNote(NaturalB, 0, 1), 0, 2},
-	{NewNote(NaturalB, 0, 0), 5, 0},
+	KeyC,
+	KeyCSharp,
+	KeyDFlat,
+	KeyD,
+	KeyDSharp,
+	KeyEFlat,
+	KeyE,
+	KeyF,
+	KeyFSharp,
+	KeyGFlat,
+	KeyG,
+	KeyGSharp,
+	KeyAFlat,
+	KeyA,
+	KeyASharp,
+	KeyBFlat,
+	KeyB,
 }

@@ -15,14 +15,14 @@ const (
 	FirstRune = '¹'
 	// unicode: 178 and 179
 	SecondRune = '²'
-	ThirdRune = '³'
+	ThirdRune  = '³'
 	// unicode: 8308-8313
-	FourthRune = '⁴'
+	FourthRune  = '⁴'
 	FifthRune   = '⁵'
 	SixthRune   = '⁶'
 	SeventhRune = '⁷'
-	EighthRune = '⁸'
-	NinthRune = '⁹'
+	EighthRune  = '⁸'
+	NinthRune   = '⁹'
 	// unicode: 738
 	SRune = 'ˢ'
 	// unicode: 7512
