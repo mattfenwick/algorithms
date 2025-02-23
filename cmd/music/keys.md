@@ -2,7 +2,7 @@
 # Table of Contents
 
 1. [C](#C)
-2. [G](#G)
+2. [G](#GZZZ)
 3. [D](#D)
 4. [A](#A)
 5. [E](#E)
@@ -90,7 +90,7 @@ Key signature:
 | G<sup>7</sup> | G | B | D | F |
 
 
-# G <a name="G"></a>
+# G <a name="GZZZ"></a>
 
 Key signature: ♯
 
