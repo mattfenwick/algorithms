@@ -1,6 +1,24 @@
 
+# Table of Contents
 
-# C
+1. [C](#C)
+2. [G](#G)
+3. [D](#D)
+4. [A](#A)
+5. [E](#E)
+6. [B](#B)
+7. [G♭](#G♭)
+8. [F♯](#F♯)
+9. [D♭](#D♭)
+10. [C♯](#C♯)
+11. [A♭](#A♭)
+12. [E♭](#E♭)
+13. [B♭](#B♭)
+14. [F](#F)
+
+
+
+# C <a name="C"></a>
 
 Key signature: 
 
@@ -72,7 +90,7 @@ Key signature:
 | G<sup>7</sup> | G | B | D | F |
 
 
-# G
+# G <a name="G"></a>
 
 Key signature: ♯
 
@@ -144,7 +162,7 @@ Key signature: ♯
 | D<sup>7</sup> | D | F♯ | A | C |
 
 
-# D
+# D <a name="D"></a>
 
 Key signature: ♯♯
 
@@ -216,7 +234,7 @@ Key signature: ♯♯
 | A<sup>7</sup> | A | C♯ | E | G |
 
 
-# A
+# A <a name="A"></a>
 
 Key signature: ♯♯♯
 
@@ -288,7 +306,7 @@ Key signature: ♯♯♯
 | E<sup>7</sup> | E | G♯ | B | D |
 
 
-# E
+# E <a name="E"></a>
 
 Key signature: ♯♯♯♯
 
@@ -360,7 +378,7 @@ Key signature: ♯♯♯♯
 | B<sup>7</sup> | B | D♯ | F♯ | A |
 
 
-# B
+# B <a name="B"></a>
 
 Key signature: ♯♯♯♯♯
 
@@ -432,7 +450,7 @@ Key signature: ♯♯♯♯♯
 | F♯<sup>7</sup> | F♯ | A♯ | C♯ | E |
 
 
-# G♭
+# G♭ <a name="G♭"></a>
 
 Key signature: ♭♭♭♭♭♭
 
@@ -504,7 +522,7 @@ Key signature: ♭♭♭♭♭♭
 | D♭<sup>7</sup> | D♭ | F | A♭ | C♭ |
 
 
-# F♯
+# F♯ <a name="F♯"></a>
 
 Key signature: ♯♯♯♯♯♯
 
@@ -576,7 +594,7 @@ Key signature: ♯♯♯♯♯♯
 | C♯<sup>7</sup> | C♯ | E♯ | G♯ | B |
 
 
-# D♭
+# D♭ <a name="D♭"></a>
 
 Key signature: ♭♭♭♭♭
 
@@ -648,7 +666,7 @@ Key signature: ♭♭♭♭♭
 | A♭<sup>7</sup> | A♭ | C | E♭ | G♭ |
 
 
-# C♯
+# C♯ <a name="C♯"></a>
 
 Key signature: ♯♯♯♯♯♯♯
 
@@ -720,7 +738,7 @@ Key signature: ♯♯♯♯♯♯♯
 | G♯<sup>7</sup> | G♯ | B♯ | D♯ | F♯ |
 
 
-# A♭
+# A♭ <a name="A♭"></a>
 
 Key signature: ♭♭♭♭
 
@@ -792,7 +810,7 @@ Key signature: ♭♭♭♭
 | E♭<sup>7</sup> | E♭ | G | B♭ | D♭ |
 
 
-# E♭
+# E♭ <a name="E♭"></a>
 
 Key signature: ♭♭♭
 
@@ -864,7 +882,7 @@ Key signature: ♭♭♭
 | B♭<sup>7</sup> | B♭ | D | F | A♭ |
 
 
-# B♭
+# B♭ <a name="B♭"></a>
 
 Key signature: ♭♭
 
@@ -936,7 +954,7 @@ Key signature: ♭♭
 | F<sup>7</sup> | F | A | C | E♭ |
 
 
-# F
+# F <a name="F"></a>
 
 Key signature: ♭
 

@@ -180,8 +180,19 @@ func RunGenerateKeysMarkdown(order string) {
 	default:
 		Die(errors.Errorf("invalid order: %s", order))
 	}
-	output := strings.Join(slice.Map(generateMarkdownForKey, keys), "\n")
-	fmt.Println(output)
+	toc := []string{}
+	for i, key := range keys {
+		name := key.Start.String()
+		toc = append(toc, fmt.Sprintf("%d. [%s](#%s)", i+1, name, name))
+	}
+	sections := strings.Join(slice.Map(generateMarkdownForKey, keys), "\n")
+	fmt.Printf(`
+# Table of Contents
+
+%s
+
+%s
+`, strings.Join(toc, "\n"), sections)
 }
 
 func generateMarkdownForKey(key *music.Key) string {
@@ -225,7 +236,7 @@ func generateMarkdownForKey(key *music.Key) string {
 
 	return fmt.Sprintf(`
 
-# %s
+# %s <a name="%s"></a>
 
 Key signature: %s
 
@@ -239,5 +250,5 @@ Key signature: %s
 
 ## Progressions
 
-%s`, key.Start.String(), key.Signature(), scales, chords, progressions)
+%s`, key.Start.String(), key.Start.String(), key.Signature(), scales, chords, progressions)
 }
