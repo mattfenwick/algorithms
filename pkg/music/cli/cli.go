@@ -75,7 +75,7 @@ func RunScalesDeprecated(args *ScalesArgs) {
 	}
 
 	var majorRows, minorRows [][]string
-	for _, k := range music.Keys {
+	for _, k := range music.KeysByFifths {
 		majorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(noteToString, music.ScaleMajor.Apply(k)))
 		majorRows = append(majorRows, majorRow)
 		minorRow := slice.Cons(fmt.Sprintf("key: %s", k.Start.String()), slice.Map(noteToString, music.ScaleMinor.Apply(k)))
@@ -88,7 +88,7 @@ func RunScalesDeprecated(args *ScalesArgs) {
 	minorTable := utils.NewTable([]string{"", "1", "2", "3", "4", "5", "6", "7", "8"}, minorRows...)
 	fmt.Println(minorTable.ToFormattedTable())
 
-	for _, k := range music.Keys {
+	for _, k := range music.KeysByFifths {
 		var rows [][]string
 		for _, c := range music.Chords {
 			prefix := []string{c.Symbol(k.Start), c.Name}
@@ -131,7 +131,7 @@ func RunGenerateScalesAndChordsMarkdown() {
 	header := []string{"Chord", "", "", "", "", "Description"}
 	var rows [][]string
 	for _, chord := range music.Chords {
-		row := slice.Cons("X" + chord.BaseSymbol, slice.Map(func(s *music.Step) string { return s.Name }, chord.Steps))
+		row := slice.Cons("X"+chord.BaseSymbol, slice.Map(func(s *music.Step) string { return s.Name }, chord.Steps))
 		for len(row) < 5 {
 			row = append(row, "")
 		}
@@ -156,19 +156,31 @@ func RunGenerateScalesAndChordsMarkdown() {
 }
 
 func SetupGenerateKeysMarkdownCommand() *cobra.Command {
+	var order string
 	command := &cobra.Command{
 		Use:  "keys",
 		Args: cobra.ExactArgs(0),
 		Run: func(cmd *cobra.Command, as []string) {
-			RunGenerateKeysMarkdown()
+			RunGenerateKeysMarkdown(order)
 		},
 	}
+
+	command.Flags().StringVar(&order, "order", "fifths", "fifths|chromatic")
 
 	return command
 }
 
-func RunGenerateKeysMarkdown() {
-	output := strings.Join(slice.Map(generateMarkdownForKey, music.Keys), "\n")
+func RunGenerateKeysMarkdown(order string) {
+	var keys []*music.Key
+	switch order {
+	case "fifths":
+		keys = music.KeysByFifths
+	case "chromatic":
+		keys = music.KeysChromatic
+	default:
+		Die(errors.Errorf("invalid order: %s", order))
+	}
+	output := strings.Join(slice.Map(generateMarkdownForKey, keys), "\n")
 	fmt.Println(output)
 }
 
