@@ -2,6 +2,7 @@ package webuis
 
 import (
 	"context"
+	"encoding/json"
 
 	"database/sql"
 
@@ -58,8 +59,8 @@ func init() {
 		schemaResult := utils.Die(db.ExecContext(context.TODO(), schema))
 		logrus.Infof("schema result: %+v", schemaResult)
 
-		logrus.Infof("created %+v", createChord("a", "bcd"))
-		logrus.Infof("created %+v", createChord("b", "bbb"))
+		logrus.Infof("created %+v", createChord("a", []string{"b", "c", "d"}))
+		logrus.Infof("created %+v", createChord("b", []string{"b", "b", "b"}))
 	}
 	logrus.Infof("tables? %d, %d", tables["chords"], tables["boards"])
 }
@@ -67,7 +68,7 @@ func init() {
 type Chord struct {
 	Id    string
 	Name  string
-	Notes string // TODO []string
+	Notes []string
 }
 
 func getChords() []*Chord {
@@ -81,16 +82,18 @@ func getChords() []*Chord {
 	return chords
 }
 
-func createChord(name string, notes string) *Chord {
+func createChord(name string, notes []string) *Chord {
 	result := utils.Die(dbHandle.ExecContext(context.TODO(),
 		`insert into chords (id, name, notes) values (?, ?, ?)`,
 		uuid.New().String(),
 		name,
-		notes))
+		string(utils.Die(json.Marshal(notes)))))
 	// TODO this part isn't necessary but it's a nice example of how to use sqlite
 	lastInsertId := utils.Die(result.LastInsertId())
 	row := dbHandle.QueryRowContext(context.TODO(), `select id, name, notes from chords where rowid = ?`, lastInsertId)
 	var c Chord
-	utils.Die0(row.Scan(&c.Id, &c.Name, &c.Notes))
+	var notesFromDb string
+	utils.Die0(row.Scan(&c.Id, &c.Name, &notesFromDb))
+	utils.Die0(json.Unmarshal([]byte(notesFromDb), &c.Notes))
 	return &c
 }
