@@ -21,20 +21,20 @@ const (
 <table class="table delete-row-example">
     <thead>
       <tr>
+        <th>Id</th>
         <th>Name</th>
-        <th>Category</th>
-        <th>Cost</th>
+        <th>Notes</th>
         <th></th>
       </tr>
     </thead>
     <tbody hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
 	  {{ range . }}
       <tr>
-	    <td>{{ .Name }}</td>
-		<td>{{ .Category }}</td>
-		<td>{{ .Cost }}</td>
+	    <td>{{ .Id }}</td>
+		<td>{{ .Name }}</td>
+		<td>{{ .Notes }}</td>
         <td>
-            <button class="btn danger" hx-delete="/tool/{{ .Name }}">
+            <button class="btn danger" hx-delete="/chord/{{ .Id }}">
               Delete
             </button>
         </td>
@@ -52,34 +52,24 @@ var (
 	rootTemplate = template.Must(template.New("root").Parse(rootTemplateText))
 )
 
-type Tool struct {
-	Name     string
-	Category string
-	Cost     string
-}
-
 func Server() {
-	tools := []*Tool{
-		{"Hammer", "Banging", "$10"},
-		{"Pliers", "Gripping", "$5"},
-		{"Saw", "Cutting", "$15"},
-	}
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		logrus.Infof("handling %s to %s", r.Method, r.URL.Path)
-		rootTemplate.Execute(w, tools)
-	})
-	http.HandleFunc("/tool/{name}", func(w http.ResponseWriter, r *http.Request) {
-		rows := getChords()
-		logrus.Infof("found %d rows", len(rows))
-		logrus.Infof("handling %s to %s", r.Method, r.URL.Path)
-		name := r.PathValue("name")
-		for i := 0; i < len(tools); i++ {
-			if tools[i].Name == name {
-				tools = append(tools[:i], tools[i+1:]...)
-				return
-			}
+		logrus.Infof("/ handling %s to %s", r.Method, r.URL.Path)
+		if r.URL.Path != "/" {
+			logrus.Errorf("not found -- %s to %s", r.Method, r.URL.Path)
+			w.WriteHeader(http.StatusNotFound)
+			return
 		}
-		w.WriteHeader(http.StatusNotFound)
+		chords := getChords()
+		rootTemplate.Execute(w, chords)
+	})
+	http.HandleFunc("/chord/{id}", func(w http.ResponseWriter, r *http.Request) {
+		logrus.Infof("/chord/ handling %s to %s", r.Method, r.URL.Path)
+		if deleteChord(r.PathValue("id")) {
+			return
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+		}
 	})
 
 	logrus.Info("starting server on :8081")

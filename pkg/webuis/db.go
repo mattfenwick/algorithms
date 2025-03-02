@@ -71,13 +71,27 @@ type Chord struct {
 	Notes []string
 }
 
+func scanChord(rows *sql.Rows) *Chord {
+	var c Chord
+	var notesFromDb string
+	utils.Die0(rows.Scan(&c.Id, &c.Name, &notesFromDb))
+	utils.Die0(json.Unmarshal([]byte(notesFromDb), &c.Notes))
+	return &c
+}
+
+func scanOneChord(rows *sql.Row) *Chord {
+	var c Chord
+	var notesFromDb string
+	utils.Die0(rows.Scan(&c.Id, &c.Name, &notesFromDb))
+	utils.Die0(json.Unmarshal([]byte(notesFromDb), &c.Notes))
+	return &c
+}
+
 func getChords() []*Chord {
 	rows := utils.Die(dbHandle.QueryContext(context.TODO(), "select * from chords"))
 	var chords []*Chord
 	for rows.Next() {
-		var c Chord
-		utils.Die0(rows.Scan(&c.Id, &c.Name, &c.Notes))
-		chords = append(chords, &c)
+		chords = append(chords, scanChord(rows))
 	}
 	return chords
 }
@@ -91,9 +105,10 @@ func createChord(name string, notes []string) *Chord {
 	// TODO this part isn't necessary but it's a nice example of how to use sqlite
 	lastInsertId := utils.Die(result.LastInsertId())
 	row := dbHandle.QueryRowContext(context.TODO(), `select id, name, notes from chords where rowid = ?`, lastInsertId)
-	var c Chord
-	var notesFromDb string
-	utils.Die0(row.Scan(&c.Id, &c.Name, &notesFromDb))
-	utils.Die0(json.Unmarshal([]byte(notesFromDb), &c.Notes))
-	return &c
+	return scanOneChord(row)
+}
+
+func deleteChord(id string) bool {
+	result := utils.Die(dbHandle.ExecContext(context.TODO(), `delete from chords where id = ?`, id))
+	return utils.Die(result.RowsAffected()) == 1
 }
