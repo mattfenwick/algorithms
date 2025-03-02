@@ -1,49 +1,13 @@
 package webuis
 
 import (
-	"context"
 	"html/template"
 	"net/http"
 
-	"database/sql"
-
-	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/sirupsen/logrus"
 
 	_ "modernc.org/sqlite"
 )
-
-const (
-	dbFilePath = "database.sql"
-)
-
-var (
-	dbHandle *sql.DB
-)
-
-func init() {
-	logrus.Infof("opening sqlite %s", dbFilePath)
-	db := utils.Die(sql.Open("sqlite", dbFilePath))
-	logrus.Infof("opened sqlite %s", dbFilePath)
-	dbHandle = db
-}
-
-type Chord struct {
-	Id    string
-	Name  string
-	Notes string // TODO []string
-}
-
-func getChords() []*Chord {
-	rows := utils.Die(dbHandle.QueryContext(context.TODO(), "select * from chords"))
-	var chords []*Chord
-	for rows.Next() {
-		var c Chord
-		utils.Die0(rows.Scan(&c.Id, &c.Name, &c.Notes))
-		chords = append(chords, &c)
-	}
-	return chords
-}
 
 const (
 	rootTemplateText = `
