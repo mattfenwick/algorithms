@@ -9,6 +9,7 @@ require github.com/olekukonko/tablewriter v0.0.5
 require github.com/mattfenwick/collections v0.3.3
 
 require (
+	github.com/google/uuid v1.6.0
 	github.com/onsi/ginkgo/v2 v2.12.0
 	github.com/onsi/gomega v1.27.10
 	github.com/sirupsen/logrus v1.9.3
@@ -23,7 +24,6 @@ require (
 	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/pprof v0.0.0-20240409012703-83162a5b38cd // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.9 // indirect
