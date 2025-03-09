@@ -8,6 +8,14 @@
             "mode": "auto",
             "program": "${workspaceFolder}/cmd/music/main.go",
             "args": ["scales", "--start", "G♭"]
+        },
+        {
+            "name": "pratt",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/misc/main.go",
+            "args": ["pratt"]
         }
     ]
 }
