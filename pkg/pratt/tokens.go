@@ -44,7 +44,13 @@ func Tokenize(s string) ([]*Token, error) {
 		}
 
 		// operator
-		if _, ok := Precedences[field]; ok {
+		// prefix op
+		if _, ok := Prefix[field]; ok {
+			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
+			continue
+		}
+		// binop
+		if _, ok := Binary[field]; ok {
 			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
 			continue
 		}
