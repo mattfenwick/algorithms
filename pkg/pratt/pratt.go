@@ -83,7 +83,7 @@ func IsRightAssociative(op string, opType string) bool {
 		}
 		return BinaryOps[op].IsRightAssociative
 	default:
-		panic(errors.Errorf("invalid argCount for %s: %s", op, OpTypeBinary))
+		panic(errors.Errorf("invalid optype for %s: %s", op, opType))
 	}
 }
 
