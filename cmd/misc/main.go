@@ -9,6 +9,6 @@ import (
 func main() {
 	switch os.Args[1] {
 	case "pratt":
-		pratt.Run()
+		pratt.Run(os.Args[2])
 	}
 }
