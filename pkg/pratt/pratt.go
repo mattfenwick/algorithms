@@ -89,7 +89,7 @@ func IsRightAssociative(op string, argCount int) bool {
 }
 
 func Parse(tokens []*Token) (Node, error) {
-	stack := []Node{}
+	stack := []*OpNode{}
 	for i := 0; ; {
 		// 1. throw any prefix unary operators on to the stack
 		for i < len(tokens) {
@@ -104,6 +104,7 @@ func Parse(tokens []*Token) (Node, error) {
 			}
 			i++
 		}
+
 		// 2. find a num
 		arg := tokens[i]
 		switch arg.Type {
@@ -112,22 +113,26 @@ func Parse(tokens []*Token) (Node, error) {
 			return nil, errors.Errorf("expected num at %d, found %+v", i, arg)
 		}
 		i++
+
+		// 3. process any postfix operators
+		// TODO
+		var newNode Node = Num(arg.Value)
+
 		// no more tokens => done, so it's time to unwind the stack
 		if i >= len(tokens) {
-			// throw the last number on top of the stack
-			stack = append(stack, Num(arg.Value))
 			// get the stack down to one completed expression
-			for len(stack) > 1 {
+			for len(stack) > 0 {
 				// pop the stack, and add top of stack as arg to next highest
 				// this assumes there's only OpNodes on the stack (other than the initial top)
 				top := stack[len(stack)-1]
-				second := stack[len(stack)-2].(*OpNode)
-				second.Args = append(second.Args, top)
+				top.Args = append(top.Args, newNode)
+				newNode = top
 				stack = stack[:len(stack)-1]
 			}
-			break
+			return newNode, nil
 		}
-		// 3. process a binary operator
+
+		// 4. process a binary operator
 		op := tokens[i]
 		switch op.Type {
 		case TokenTypeOp:
@@ -135,12 +140,11 @@ func Parse(tokens []*Token) (Node, error) {
 				return nil, errors.Errorf("expected binary operator, found %s at %d", op.Value, i)
 			}
 			if len(stack) == 0 {
-				stack = append(stack, Op(op.Value, 2, Num(arg.Value)))
+				stack = append(stack, Op(op.Value, 2, newNode))
 				break
 			}
-			var newNode Node = Num(arg.Value)
 			for len(stack) > 0 {
-				top := stack[len(stack)-1].(*OpNode)
+				top := stack[len(stack)-1]
 				topPrec, isTopRightAssociative := GetPrecedence(top.Op, top.ExpectedArgCount), IsRightAssociative(top.Op, top.ExpectedArgCount)
 				if GetPrecedence(op.Value, 2) > topPrec {
 					// next operator is higher precedence?  stop poppin'
@@ -168,10 +172,6 @@ func Parse(tokens []*Token) (Node, error) {
 		}
 		i++
 	}
-	if len(stack) != 1 {
-		panic(errors.Errorf("expected stack of size 1, found %d (%+v)", len(stack), stack))
-	}
-	return stack[0], nil
 }
 
 func ParseString(s string) (Node, error) {
