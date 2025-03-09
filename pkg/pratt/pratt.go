@@ -2,6 +2,7 @@ package pratt
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -94,7 +95,8 @@ func GetPrecedence(op string) int {
 - note: multiple things happened in this step
 */
 
-type Node interface { /* TODO */
+type Node interface {
+	NodeString() string
 }
 
 func NodeString(node Node) string {
@@ -122,9 +124,25 @@ type NumNode struct {
 	Value string
 }
 
+func (n *NumNode) NodeString() string {
+	return n.Value
+}
+
+func NewNumNode(val string) *NumNode {
+	return &NumNode{Value: val}
+}
+
 type OpNode struct {
 	Op   string
 	Args []Node
+}
+
+func (o *OpNode) NodeString() string {
+	return o.Op
+}
+
+func NewOpNode(op string, args []Node) *OpNode {
+	return &OpNode{Op: op, Args: args}
 }
 
 type Stack struct {
@@ -142,9 +160,9 @@ func (s *Stack) PushExpr(node Node) {
 	}
 	top := s.Nodes[len(s.Nodes)-1]
 	switch topNode := top.(type) {
-	case OpNode:
+	case *OpNode:
 		if len(topNode.Args) != 1 {
-			panic(errors.Errorf("expected top node to have 1 arg already, found %d (%+v)", len(topNode.Args)))
+			panic(errors.Errorf("expected top node to have 1 arg already, found %d (%+v)", len(topNode.Args), topNode.Args))
 		}
 
 	default:
@@ -163,7 +181,7 @@ func Parse(tokens []*Token) Node {
 		}
 		i++
 		if i >= len(tokens) {
-			stack = append(stack, &NumNode{Value: arg.Value})
+			stack = append(stack, NewNumNode(arg.Value))
 			// unwind the stack
 			for len(stack) > 1 {
 				// pop the stack, and add top of stack as arg to next highest
@@ -179,10 +197,10 @@ func Parse(tokens []*Token) Node {
 		switch op.Type {
 		case TokenTypeOp:
 			if len(stack) == 0 {
-				stack = append(stack, &OpNode{Op: op.Value, Args: []Node{&NumNode{Value: arg.Value}}})
+				stack = append(stack, NewOpNode(op.Value, []Node{NewNumNode(arg.Value)}))
 				break
 			}
-			var newNode Node = &NumNode{Value: arg.Value}
+			var newNode Node = NewNumNode(arg.Value)
 			for len(stack) > 0 {
 				top := stack[len(stack)-1].(*OpNode)
 				if GetPrecedence(op.Value) > GetPrecedence(top.Op) {
@@ -192,7 +210,7 @@ func Parse(tokens []*Token) Node {
 				top.Args = append(top.Args, newNode)
 				newNode = top
 			}
-			stack = append(stack, &OpNode{Op: op.Value, Args: []Node{newNode}})
+			stack = append(stack, NewOpNode(op.Value, []Node{newNode}))
 		default:
 			panic(errors.Errorf("expected op at %d, found %+v", i, op))
 		}
@@ -202,6 +220,52 @@ func Parse(tokens []*Token) Node {
 		panic(errors.Errorf("expected stack of size 1, found %d (%+v)", len(stack), stack))
 	}
 	return stack[0]
+}
+
+var (
+	digits = map[byte]bool{
+		'0': true,
+		'1': true,
+		'2': true,
+		'3': true,
+		'4': true,
+		'5': true,
+		'6': true,
+		'7': true,
+		'8': true,
+		'9': true,
+	}
+)
+
+func Tokenize(s string) ([]*Token, error) {
+	var tokens []*Token
+	for _, field := range strings.Fields(s) {
+		if len(field) == 0 {
+			return nil, errors.Errorf("invalid empty token")
+		}
+
+		// operator
+		if _, ok := Precedences[field]; ok {
+			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
+			continue
+		}
+
+		// number
+		if _, ok := digits[field[0]]; !ok {
+			return nil, errors.Errorf("invalid num literal: '%s'", field)
+		}
+		val, err := strconv.ParseInt(field, 10, 32)
+		if err != nil {
+			return nil, errors.Wrapf(err, "invalid num literal '%s'", field)
+		}
+		logrus.Warnf("TODO: don't throw away the int token value %d", val)
+		tokens = append(tokens, &Token{Type: TokenTypeNum, Value: field})
+	}
+	return tokens, nil
+}
+
+func ParseString(s string) Node {
+	return Parse(Must(Tokenize(s)))
 }
 
 func Must0(err error) {
