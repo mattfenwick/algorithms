@@ -19,12 +19,12 @@ func parensHelper(node Node) []string {
 	switch v := node.(type) {
 	case *OpNode:
 		// TODO uncomment this line to get the number of expected args, can be handy sanity check
-//		out := []string{"(", fmt.Sprintf("%s[%d]", v.Op, v.ExpectedArgCount)}
+		//		out := []string{"(", fmt.Sprintf("%s[%d]", v.Op, v.ExpectedArgCount)}
 		out := []string{"(", v.Op}
 		for _, a := range v.Args {
 			out = append(out, parensHelper(a)...)
 		}
-		return append(out,")")
+		return append(out, ")")
 	case *NumNode:
 		return []string{v.Value}
 	default:
