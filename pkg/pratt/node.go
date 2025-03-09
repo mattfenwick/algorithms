@@ -15,16 +15,36 @@ func Parens(node Node) string {
 	return strings.Join(parensHelper(node), " ")
 }
 
+func validateArgCount(expected int, args []Node) {
+	if len(args) != expected {
+		panic(errors.Errorf("expected %d args, got %d", expected, len(args)))
+	}
+}
+
 func parensHelper(node Node) []string {
 	switch v := node.(type) {
 	case *OpNode:
-		// TODO uncomment this line to get the number of expected args, can be handy sanity check
-		//		out := []string{"(", fmt.Sprintf("%s[%d]", v.Op, v.ExpectedArgCount)}
-		out := []string{"(", v.Op}
-		for _, a := range v.Args {
-			out = append(out, parensHelper(a)...)
+		switch v.Type {
+		case OpTypePrefix:
+			validateArgCount(1, v.Args)
+			out := []string{"(", v.Op}
+			out = append(out, parensHelper(v.Args[0])...)
+			return append(out, ")")
+		case OpTypeBinary:
+			validateArgCount(2, v.Args)
+			out := []string{"("}
+			out = append(out, parensHelper(v.Args[0])...)
+			out = append(out, v.Op)
+			out = append(out, parensHelper(v.Args[1])...)
+			return append(out, ")")
+		case OpTypePostfix:
+			validateArgCount(1, v.Args)
+			out := []string{"("}
+			out = append(out, parensHelper(v.Args[0])...)
+			return append(out, v.Op, ")")
+		default:
+			panic(errors.Errorf("invalid op type %s", v.Type))
 		}
-		return append(out, ")")
 	case *NumNode:
 		return []string{v.Value}
 	default:
@@ -65,16 +85,30 @@ func Num(val string) *NumNode {
 	return &NumNode{Value: val}
 }
 
+const (
+	OpTypePrefix  = "OpTypePrefix"
+	OpTypePostfix = "OpTypePostfix"
+	OpTypeBinary  = "OpTypeBinary"
+)
+
 type OpNode struct {
-	Op               string
-	ExpectedArgCount int
-	Args             []Node
+	Op   string
+	Type string
+	Args []Node
 }
 
 func (o *OpNode) NodeString() string {
 	return o.Op
 }
 
-func Op(op string, expectedArgCount int, args ...Node) *OpNode {
-	return &OpNode{Op: op, ExpectedArgCount: expectedArgCount, Args: args}
+func Prefix(op string) *OpNode {
+	return &OpNode{Op: op, Type: OpTypePrefix, Args: []Node{}}
+}
+
+func Postfix(op string) *OpNode {
+	return &OpNode{Op: op, Type: OpTypePostfix, Args: []Node{}}
+}
+
+func Binary(op string, arg Node) *OpNode {
+	return &OpNode{Op: op, Type: OpTypeBinary, Args: []Node{arg}}
 }

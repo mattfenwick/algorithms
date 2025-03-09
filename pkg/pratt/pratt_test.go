@@ -12,10 +12,6 @@ func TestPratt(t *testing.T) {
 	RunSpecs(t, "Pratt Suite")
 }
 
-func O(s string, args ...Node) Node {
-	return Op(s, len(args), args...)
-}
-
 type Case struct {
 	Name          string
 	Input         string
@@ -26,35 +22,35 @@ type Case struct {
 var _ = Describe("Operator parsing", func() {
 	cases := []*Case{
 		{"handles number", "3", "", "3"},
-		{"handles binop", "3 + 4", "", "( + 3 4 )"},
-		{"handles increasing precedence", "3 + 4 * 5", "", "( + 3 ( * 4 5 ) )"},
-		{"handles decreasing precedence", "3 * 4 + 5", "", "( + ( * 3 4 ) 5 )"},
+		{"handles binop", "3 + 4", "", "( 3 + 4 )"},
+		{"handles increasing precedence", "3 + 4 * 5", "", "( 3 + ( 4 * 5 ) )"},
+		{"handles decreasing precedence", "3 * 4 + 5", "", "( ( 3 * 4 ) + 5 )"},
 		{"handles increasing and decreasing precedence (part 1)",
 			"3 + 4 * 5 ^ 6 * 7",
 			"",
-			"( + 3 ( * ( * 4 ( ^ 5 6 ) ) 7 ) )"},
+			"( 3 + ( ( 4 * ( 5 ^ 6 ) ) * 7 ) )"},
 		{"handles increasing and decreasing precedence (part 2)",
 			"3 + 4 * 5 ^ 6 + 7",
 			"",
-			"( + ( + 3 ( * 4 ( ^ 5 6 ) ) ) 7 )"},
+			"( ( 3 + ( 4 * ( 5 ^ 6 ) ) ) + 7 )"},
 		{"handles left-associativity", "3 + 4 + 5", "",
-			"( + ( + 3 4 ) 5 )"},
+			"( ( 3 + 4 ) + 5 )"},
 		{"handles right-associativity", "3 ** 4 ** 5", "",
-			"( ** 3 ( ** 4 5 ) )"},
+			"( 3 ** ( 4 ** 5 ) )"},
 		{"handles simple prefix", "! 3", "", "( ! 3 )"},
 		{"handles stacked prefix", "! <- ~ 3", "", "( ! ( <- ( ~ 3 ) ) )"},
 		{"distinguishes prefix and binary op of same name", "- 3 - - 4", "",
-			"( - ( - 3 ) ( - 4 ) )"},
+			"( ( - 3 ) - ( - 4 ) )"},
 		{"handles precedence: lower prefix vs higher binary", "pre-low 3 - 4", "",
-			"( pre-low ( - 3 4 ) )"},
+			"( pre-low ( 3 - 4 ) )"},
 		{"handles precedence: higher prefix vs lower binary", "! 3 - 4", "",
-			"( - ( ! 3 ) 4 )"},
+			"( ( ! 3 ) - 4 )"},
 		{"handles precedence: lower to higher prefix vs medium binary", "pre-low ! 3 - 4", "",
-			"( pre-low ( - ( ! 3 ) 4 ) )"},
+			"( pre-low ( ( ! 3 ) - 4 ) )"},
 		{"handles precedence: higher to lower prefix vs medium binary", "! pre-low 3 - 4", "",
-			"( ! ( pre-low ( - 3 4 ) ) )"},
+			"( ! ( pre-low ( 3 - 4 ) ) )"},
 		{"handles prefix vs. binary left-associativity", "pre-mid 3 bin-mid-left 4", "",
-			"( bin-mid-left ( pre-mid 3 ) 4 )"},
+			"( ( pre-mid 3 ) bin-mid-left 4 )"},
 		{"refuses to handle associativity mismatch of prefix vs. binary", "pre-mid 3 bin-mid-right 4",
 			"unable to handle same precedence but different associativity: bin-mid-right vs pre-mid",
 			""},

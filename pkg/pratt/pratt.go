@@ -2,10 +2,9 @@ package pratt
 
 import (
 	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 )
 
-var Prefix = map[string]int{
+var PrefixOps = map[string]int{
 	"!":       100,
 	"+":       100,
 	"-":       100,
@@ -36,38 +35,38 @@ var BinarySlice = []*BinOp{
 	{"**", 70, true},
 }
 
-var Binary = map[string]*BinOp{}
+var BinaryOps = map[string]*BinOp{}
 
 func init() {
 	for _, b := range BinarySlice {
-		if _, ok := Binary[b.Symbol]; ok {
+		if _, ok := BinaryOps[b.Symbol]; ok {
 			panic(errors.Errorf("dupe binary symbol %s", b.Symbol))
 		}
-		Binary[b.Symbol] = b
+		BinaryOps[b.Symbol] = b
 	}
 }
 
-func GetPrecedence(op string, argCount int) int {
-	switch argCount {
-	case 1:
-		if _, ok := Prefix[op]; !ok {
+func GetPrecedence(op string, opType string) int {
+	switch opType {
+	case OpTypePrefix:
+		if _, ok := PrefixOps[op]; !ok {
 			panic(errors.Errorf("invalid prefix op %s", op))
 		}
-		return Prefix[op]
-	case 2:
-		if _, ok := Binary[op]; !ok {
+		return PrefixOps[op]
+	case OpTypeBinary:
+		if _, ok := BinaryOps[op]; !ok {
 			panic(errors.Errorf("invalid binary op %s", op))
 		}
-		return Binary[op].Precedence
+		return BinaryOps[op].Precedence
 	default:
-		panic(errors.Errorf("invalid argCount for %s: %d", op, argCount))
+		panic(errors.Errorf("invalid opType for %s: %s", op, opType))
 	}
 }
 
-func IsRightAssociative(op string, argCount int) bool {
-	switch argCount {
-	case 1:
-		if _, ok := Prefix[op]; !ok {
+func IsRightAssociative(op string, opType string) bool {
+	switch opType {
+	case OpTypePrefix:
+		if _, ok := PrefixOps[op]; !ok {
 			panic(errors.Errorf("invalid prefix op %s", op))
 		}
 		// TODO should we allow specifying associativity of prefix ops?
@@ -78,13 +77,13 @@ func IsRightAssociative(op string, argCount int) bool {
 		// This also means that a prefix operator can't be used with a right-associative
 		// binary operator of the same precedence.
 		return false
-	case 2:
-		if _, ok := Binary[op]; !ok {
+	case OpTypeBinary:
+		if _, ok := BinaryOps[op]; !ok {
 			panic(errors.Errorf("invalid binary op %s", op))
 		}
-		return Binary[op].IsRightAssociative
+		return BinaryOps[op].IsRightAssociative
 	default:
-		panic(errors.Errorf("invalid argCount for %s: %d", op, argCount))
+		panic(errors.Errorf("invalid argCount for %s: %s", op, OpTypeBinary))
 	}
 }
 
@@ -97,8 +96,8 @@ func Parse(tokens []*Token) (Node, error) {
 			if op.Type != TokenTypeOp {
 				break
 			}
-			if _, ok := Prefix[op.Value]; ok {
-				stack = append(stack, Op(op.Value, 1))
+			if _, ok := PrefixOps[op.Value]; ok {
+				stack = append(stack, Prefix(op.Value))
 			} else {
 				return nil, errors.Errorf("expected prefix op at %d, found %+v", i, op)
 			}
@@ -113,10 +112,27 @@ func Parse(tokens []*Token) (Node, error) {
 			return nil, errors.Errorf("expected num at %d, found %+v", i, arg)
 		}
 		i++
+		var newNode Node = Num(arg.Value)
 
 		// 3. process any postfix operators
-		// TODO
-		var newNode Node = Num(arg.Value)
+		// for i < len(tokens) {
+		// 	op := tokens[i]
+		// 	if op.Type != TokenTypeOp {
+		// 		break
+		// 	}
+		// 	if _, ok := Postfix[op.Value]; ok {
+		// 		if GetPrecedence(op, "post") > GetPrecedence(top, top.Type) {
+		// 			newNode = Op(op, 1, newNode)
+		// 		} else if precedence == same {
+		// 			// TODO associativity
+		// 		} else {
+		// 			// keep poppin' in a loop until something has lower precedence?
+		// 		}
+		// 	} else {
+		// 		return nil, errors.Errorf("expected postfix op at %d, found %+v", i, op)
+		// 	}
+		// 	i++
+		// }
 
 		// no more tokens => done, so it's time to unwind the stack
 		if i >= len(tokens) {
@@ -136,23 +152,22 @@ func Parse(tokens []*Token) (Node, error) {
 		op := tokens[i]
 		switch op.Type {
 		case TokenTypeOp:
-			if _, ok := Binary[op.Value]; !ok {
+			if _, ok := BinaryOps[op.Value]; !ok {
 				return nil, errors.Errorf("expected binary operator, found %s at %d", op.Value, i)
 			}
 			if len(stack) == 0 {
-				stack = append(stack, Op(op.Value, 2, newNode))
+				stack = append(stack, Binary(op.Value, newNode))
 				break
 			}
 			for len(stack) > 0 {
 				top := stack[len(stack)-1]
-				topPrec, isTopRightAssociative := GetPrecedence(top.Op, top.ExpectedArgCount), IsRightAssociative(top.Op, top.ExpectedArgCount)
-				if GetPrecedence(op.Value, 2) > topPrec {
+				topPrec, isTopRightAssociative := GetPrecedence(top.Op, top.Type), IsRightAssociative(top.Op, top.Type)
+				if GetPrecedence(op.Value, OpTypeBinary) > topPrec {
 					// next operator is higher precedence?  stop poppin'
 					break
 				}
-				if GetPrecedence(op.Value, 2) == topPrec {
-					logrus.Warnf("assoc: %t vs %t (%s vs %s)", IsRightAssociative(op.Value, 2), isTopRightAssociative, op.Value, top.Op)
-					if IsRightAssociative(op.Value, 2) != isTopRightAssociative {
+				if GetPrecedence(op.Value, OpTypeBinary) == topPrec {
+					if IsRightAssociative(op.Value, OpTypeBinary) != isTopRightAssociative {
 						return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Op)
 					}
 					// same precedence but right-associative?  stop poppin'
@@ -166,7 +181,7 @@ func Parse(tokens []*Token) (Node, error) {
 				top.Args = append(top.Args, newNode)
 				newNode = top
 			}
-			stack = append(stack, Op(op.Value, 2, newNode))
+			stack = append(stack, Binary(op.Value, newNode))
 		default:
 			return nil, errors.Errorf("expected op at %d, found %+v", i, op)
 		}
