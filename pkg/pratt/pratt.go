@@ -65,6 +65,10 @@ type Token struct {
 	Value string
 }
 
+var RightAssociative = map[string]bool{
+	"**": true,
+}
+
 var Precedences = map[string]int{
 	"+":  50,
 	"-":  50,
@@ -141,7 +145,7 @@ func (o *OpNode) NodeString() string {
 	return o.Op
 }
 
-func NewOpNode(op string, args []Node) *OpNode {
+func NewOpNode(op string, args ...Node) *OpNode {
 	return &OpNode{Op: op, Args: args}
 }
 
@@ -197,20 +201,29 @@ func Parse(tokens []*Token) Node {
 		switch op.Type {
 		case TokenTypeOp:
 			if len(stack) == 0 {
-				stack = append(stack, NewOpNode(op.Value, []Node{NewNumNode(arg.Value)}))
+				stack = append(stack, NewOpNode(op.Value, NewNumNode(arg.Value)))
 				break
 			}
 			var newNode Node = NewNumNode(arg.Value)
 			for len(stack) > 0 {
 				top := stack[len(stack)-1].(*OpNode)
 				if GetPrecedence(op.Value) > GetPrecedence(top.Op) {
+					// next operator is higher precedence?  stop poppin'
+					break
+				} else if GetPrecedence(op.Value) == GetPrecedence(top.Op) && RightAssociative[top.Op] {
+					// same precedence but right-associative?  stop poppin'
+					if !RightAssociative[op.Value] == RightAssociative[top.Op] {
+						panic(errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Op))
+					}
 					break
 				}
+				// time to pop: remove the top, and complete it by adding in previous 'newNode' as its next operand.
+				// then set 'newNode' to the popped top
 				stack = stack[:len(stack)-1]
 				top.Args = append(top.Args, newNode)
 				newNode = top
 			}
-			stack = append(stack, NewOpNode(op.Value, []Node{newNode}))
+			stack = append(stack, NewOpNode(op.Value, newNode))
 		default:
 			panic(errors.Errorf("expected op at %d, found %+v", i, op))
 		}
