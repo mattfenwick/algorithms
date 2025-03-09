@@ -142,7 +142,7 @@ func Op(op string, expectedArgCount int, args ...Node) *OpNode {
 	return &OpNode{Op: op, ExpectedArgCount: expectedArgCount, Args: args}
 }
 
-func Parse(tokens []*Token) Node {
+func Parse(tokens []*Token) (Node, error) {
 	stack := []Node{}
 	for i := 0; ; {
 		// 1. throw any prefix unary operators on to the stack
@@ -154,7 +154,7 @@ func Parse(tokens []*Token) Node {
 			if _, ok := Prefix[op.Value]; ok {
 				stack = append(stack, Op(op.Value, 1))
 			} else {
-				panic(errors.Errorf("expected prefix op at %d, found %+v", i, op))
+				return nil, errors.Errorf("expected prefix op at %d, found %+v", i, op)
 			}
 			i++
 		}
@@ -163,7 +163,7 @@ func Parse(tokens []*Token) Node {
 		switch arg.Type {
 		case TokenTypeNum:
 		default:
-			panic(errors.Errorf("expected num at %d, found %+v", i, arg))
+			return nil, errors.Errorf("expected num at %d, found %+v", i, arg)
 		}
 		i++
 		// no more tokens => done, so it's time to unwind the stack
@@ -186,7 +186,7 @@ func Parse(tokens []*Token) Node {
 		switch op.Type {
 		case TokenTypeOp:
 			if _, ok := Binary[op.Value]; !ok {
-				panic(errors.Errorf("expected binary operator, found %s at %d", op.Value, i))
+				return nil, errors.Errorf("expected binary operator, found %s at %d", op.Value, i)
 			}
 			if len(stack) == 0 {
 				stack = append(stack, Op(op.Value, 2, Num(arg.Value)))
@@ -203,7 +203,7 @@ func Parse(tokens []*Token) Node {
 				if GetPrecedence(op.Value, 2) == topPrec {
 					logrus.Warnf("assoc: %t vs %t (%s vs %s)", IsRightAssociative(op.Value, 2), isTopRightAssociative, op.Value, top.Op)
 					if IsRightAssociative(op.Value, 2) != isTopRightAssociative {
-						panic(errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Op))
+						return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Op)
 					}
 					// same precedence but right-associative?  stop poppin'
 					if isTopRightAssociative {
@@ -218,16 +218,16 @@ func Parse(tokens []*Token) Node {
 			}
 			stack = append(stack, Op(op.Value, 2, newNode))
 		default:
-			panic(errors.Errorf("expected op at %d, found %+v", i, op))
+			return nil, errors.Errorf("expected op at %d, found %+v", i, op)
 		}
 		i++
 	}
 	if len(stack) != 1 {
 		panic(errors.Errorf("expected stack of size 1, found %d (%+v)", len(stack), stack))
 	}
-	return stack[0]
+	return stack[0], nil
 }
 
-func ParseString(s string) Node {
+func ParseString(s string) (Node, error) {
 	return Parse(Must(Tokenize(s)))
 }

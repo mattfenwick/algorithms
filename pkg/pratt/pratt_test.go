@@ -132,12 +132,9 @@ var _ = Describe("Parse -- binary precedence", func() {
 				Num("4")),
 		))
 	})
-	// It("handles prefix vs. binary right-associativity", func() {
-	// 	Expect(ParseString("pre-mid 3 bin-mid-right 4")).To(BeEquivalentTo(
-	// 		O("pre-mid",
-	// 			O("bin-mid-right",
-	// 				Num("3"),
-	// 				Num("4"))),
-	// 	))
-	// })
+	It("refuses to handle associativity mismatch of prefix vs. binary", func() {
+		node, err := ParseString("pre-mid 3 bin-mid-right 4")
+		Expect(node).To(BeNil())
+		Expect(err).To(MatchError("unable to handle same precedence but different associativity: bin-mid-right vs pre-mid"))
+	})
 })
