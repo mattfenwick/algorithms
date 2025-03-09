@@ -132,7 +132,7 @@ func (n *NumNode) NodeString() string {
 	return n.Value
 }
 
-func NewNumNode(val string) *NumNode {
+func Num(val string) *NumNode {
 	return &NumNode{Value: val}
 }
 
@@ -145,7 +145,7 @@ func (o *OpNode) NodeString() string {
 	return o.Op
 }
 
-func NewOpNode(op string, args ...Node) *OpNode {
+func Op(op string, args ...Node) *OpNode {
 	return &OpNode{Op: op, Args: args}
 }
 
@@ -185,7 +185,7 @@ func Parse(tokens []*Token) Node {
 		}
 		i++
 		if i >= len(tokens) {
-			stack = append(stack, NewNumNode(arg.Value))
+			stack = append(stack, Num(arg.Value))
 			// unwind the stack
 			for len(stack) > 1 {
 				// pop the stack, and add top of stack as arg to next highest
@@ -201,10 +201,10 @@ func Parse(tokens []*Token) Node {
 		switch op.Type {
 		case TokenTypeOp:
 			if len(stack) == 0 {
-				stack = append(stack, NewOpNode(op.Value, NewNumNode(arg.Value)))
+				stack = append(stack, Op(op.Value, Num(arg.Value)))
 				break
 			}
-			var newNode Node = NewNumNode(arg.Value)
+			var newNode Node = Num(arg.Value)
 			for len(stack) > 0 {
 				top := stack[len(stack)-1].(*OpNode)
 				if GetPrecedence(op.Value) > GetPrecedence(top.Op) {
@@ -223,7 +223,7 @@ func Parse(tokens []*Token) Node {
 				top.Args = append(top.Args, newNode)
 				newNode = top
 			}
-			stack = append(stack, NewOpNode(op.Value, newNode))
+			stack = append(stack, Op(op.Value, newNode))
 		default:
 			panic(errors.Errorf("expected op at %d, found %+v", i, op))
 		}
