@@ -43,12 +43,35 @@ var BinarySlice = []*BinOp{
 
 var BinaryOps = map[string]*BinOp{}
 
+type TernOp struct {
+	Open               string
+	Close              string
+	Precedence         int
+	IsRightAssociative bool
+}
+
+var TernarySlice = []*TernOp{
+	{"?", ":", 0, true},
+	{"if", "else", 0, true},
+}
+
+var TernOpsOpen = map[string]*TernOp{}
+var TernOpsClose = map[string]*TernOp{}
+
 func init() {
 	for _, b := range BinarySlice {
 		if _, ok := BinaryOps[b.Symbol]; ok {
 			panic(errors.Errorf("dupe binary symbol %s", b.Symbol))
 		}
 		BinaryOps[b.Symbol] = b
+	}
+	for _, t := range TernarySlice {
+		if _, ok := TernOpsOpen[t.Open]; ok {
+			panic(errors.Errorf("dupe ternary symbol %s", t.Open))
+		}
+		// TODO is it necessary to validate uniqueness of close symbols?
+		TernOpsOpen[t.Open] = t
+		TernOpsClose[t.Close] = t
 	}
 }
 
@@ -142,13 +165,13 @@ func Parse(tokens []*Token) (Node, error) {
 			}
 			for len(stack) > 0 {
 				top := stack[len(stack)-1]
-				currPrec, topPrec := GetPrecedence(op.Value, OpTypePostfix), GetPrecedence(top.Op, top.Type)
+				currPrec, topPrec := GetPrecedence(op.Value, OpTypePostfix), GetPrecedence(top.Open, top.Type)
 				if currPrec > topPrec {
 					break
 				} else if currPrec == topPrec {
 					currIsRight := IsRightAssociative(op.Value, OpTypePostfix)
-					if currIsRight != IsRightAssociative(top.Op, top.Type) {
-						return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Op)
+					if currIsRight != IsRightAssociative(top.Open, top.Type) {
+						return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Open)
 					}
 					if currIsRight {
 						break
@@ -187,14 +210,14 @@ func Parse(tokens []*Token) (Node, error) {
 			}
 			for len(stack) > 0 {
 				top := stack[len(stack)-1]
-				topPrec, isTopRightAssociative := GetPrecedence(top.Op, top.Type), IsRightAssociative(top.Op, top.Type)
+				topPrec, isTopRightAssociative := GetPrecedence(top.Open, top.Type), IsRightAssociative(top.Open, top.Type)
 				if GetPrecedence(op.Value, OpTypeBinary) > topPrec {
 					// next operator is higher precedence?  stop poppin'
 					break
 				}
 				if GetPrecedence(op.Value, OpTypeBinary) == topPrec {
 					if IsRightAssociative(op.Value, OpTypeBinary) != isTopRightAssociative {
-						return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Op)
+						return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Open)
 					}
 					// same precedence but right-associative?  stop poppin'
 					if isTopRightAssociative {

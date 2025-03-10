@@ -27,21 +27,30 @@ func parensHelper(node Node) []string {
 		switch v.Type {
 		case OpTypePrefix:
 			validateArgCount(1, v.Args)
-			out := []string{"(", v.Op}
+			out := []string{"(", v.Open}
 			out = append(out, parensHelper(v.Args[0])...)
 			return append(out, ")")
 		case OpTypeBinary:
 			validateArgCount(2, v.Args)
 			out := []string{"("}
 			out = append(out, parensHelper(v.Args[0])...)
-			out = append(out, v.Op)
+			out = append(out, v.Open)
 			out = append(out, parensHelper(v.Args[1])...)
 			return append(out, ")")
 		case OpTypePostfix:
 			validateArgCount(1, v.Args)
 			out := []string{"("}
 			out = append(out, parensHelper(v.Args[0])...)
-			return append(out, v.Op, ")")
+			return append(out, v.Open, ")")
+		case OpTypeTernary:
+			validateArgCount(3, v.Args)
+			out := []string{"("}
+			out = append(out, parensHelper(v.Args[0])...)
+			out = append(out, v.Open)
+			out = append(out, parensHelper(v.Args[1])...)
+			out = append(out, v.Close)
+			out = append(out, parensHelper(v.Args[2])...)
+			return append(out, ")")
 		default:
 			panic(errors.Errorf("invalid op type %s", v.Type))
 		}
@@ -61,7 +70,7 @@ func nodeStringHelper(node Node, indent int) []string {
 	val := ""
 	switch v := node.(type) {
 	case *OpNode:
-		val = v.Op
+		val = v.Open
 		for _, arg := range v.Args {
 			args = append(args, nodeStringHelper(arg, indent+1)...)
 		}
@@ -89,29 +98,36 @@ const (
 	OpTypePrefix  = "OpTypePrefix"
 	OpTypePostfix = "OpTypePostfix"
 	OpTypeBinary  = "OpTypeBinary"
+	OpTypeTernary = "OpTypeTernary"
 )
 
 type OpNode struct {
-	Op   string
-	Type string
-	Args []Node
+	Open  string
+	Close string
+	Type  string
+	Args  []Node
 }
 
 func (o *OpNode) NodeString() string {
-	return o.Op
+	return o.Open
 }
 
 func Prefix(op string) *OpNode {
 	// this is an in-progress node
-	return &OpNode{Op: op, Type: OpTypePrefix, Args: []Node{}}
+	return &OpNode{Open: op, Type: OpTypePrefix, Args: []Node{}}
 }
 
 func Postfix(op string, arg Node) *OpNode {
 	// this is a completed node
-	return &OpNode{Op: op, Type: OpTypePostfix, Args: []Node{arg}}
+	return &OpNode{Open: op, Type: OpTypePostfix, Args: []Node{arg}}
 }
 
 func Binary(op string, arg Node) *OpNode {
 	// this is an in-progress node
-	return &OpNode{Op: op, Type: OpTypeBinary, Args: []Node{arg}}
+	return &OpNode{Open: op, Type: OpTypeBinary, Args: []Node{arg}}
+}
+
+func Ternary(open string, arg Node) *OpNode {
+	// this is an in-progress node needing *2* more args
+	return &OpNode{Open: open, Type: OpTypeTernary, Args: []Node{arg}}
 }

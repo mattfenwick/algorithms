@@ -61,6 +61,16 @@ func Tokenize(s string) ([]*Token, error) {
 			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
 			continue
 		}
+		// ternary op -- open
+		if _, ok := TernOpsOpen[field]; ok {
+			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
+			continue
+		}
+		// ternary op -- close
+		if _, ok := TernOpsClose[field]; ok {
+			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
+			continue
+		}
 
 		// number
 		if _, ok := digits[field[0]]; !ok {
