@@ -17,6 +17,12 @@ var PrefixOps = map[string]int{
 	"pre-mid": 50,
 }
 
+var PostfixOps = map[string]int{
+	";":        100,
+	"post-low": 0,
+	"post-mid": 50,
+}
+
 type BinOp struct {
 	Symbol             string
 	Precedence         int
@@ -53,6 +59,11 @@ func GetPrecedence(op string, opType string) int {
 			panic(errors.Errorf("invalid prefix op %s", op))
 		}
 		return PrefixOps[op]
+	case OpTypePostfix:
+		if _, ok := PostfixOps[op]; !ok {
+			panic(errors.Errorf("invalid postfix op %s", op))
+		}
+		return PostfixOps[op]
 	case OpTypeBinary:
 		if _, ok := BinaryOps[op]; !ok {
 			panic(errors.Errorf("invalid binary op %s", op))
@@ -77,6 +88,12 @@ func IsRightAssociative(op string, opType string) bool {
 		// This also means that a prefix operator can't be used with a right-associative
 		// binary operator of the same precedence.
 		return false
+	case OpTypePostfix:
+		if _, ok := PostfixOps[op]; !ok {
+			panic(errors.Errorf("invalid postfix op %s", op))
+		}
+		// TODO same comment as for the prefix above, but decree right associativity.
+		return true
 	case OpTypeBinary:
 		if _, ok := BinaryOps[op]; !ok {
 			panic(errors.Errorf("invalid binary op %s", op))
@@ -115,31 +132,44 @@ func Parse(tokens []*Token) (Node, error) {
 		var newNode Node = Num(arg.Value)
 
 		// 3. process any postfix operators
-		// for i < len(tokens) {
-		// 	op := tokens[i]
-		// 	if op.Type != TokenTypeOp {
-		// 		break
-		// 	}
-		// 	if _, ok := Postfix[op.Value]; ok {
-		// 		if GetPrecedence(op, "post") > GetPrecedence(top, top.Type) {
-		// 			newNode = Op(op, 1, newNode)
-		// 		} else if precedence == same {
-		// 			// TODO associativity
-		// 		} else {
-		// 			// keep poppin' in a loop until something has lower precedence?
-		// 		}
-		// 	} else {
-		// 		return nil, errors.Errorf("expected postfix op at %d, found %+v", i, op)
-		// 	}
-		// 	i++
-		// }
+		for i < len(tokens) {
+			op := tokens[i]
+			if op.Type != TokenTypeOp {
+				break
+			}
+			if _, ok := PostfixOps[op.Value]; !ok {
+				break
+			}
+			for len(stack) > 0 {
+				top := stack[len(stack)-1]
+				currPrec, topPrec := GetPrecedence(op.Value, OpTypePostfix), GetPrecedence(top.Op, top.Type)
+				if currPrec > topPrec {
+					break
+				} else if currPrec == topPrec {
+					currIsRight := IsRightAssociative(op.Value, OpTypePostfix)
+					if currIsRight != IsRightAssociative(top.Op, top.Type) {
+						return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Op)
+					}
+					if currIsRight {
+						break
+					}
+					// left associative => continue loop, b/c top of stack wins
+				}
+				// top of stack wins
+				// keep poppin' until top of stack doesn't win
+				top.Args = append(top.Args, newNode)
+				newNode = top
+				stack = stack[:len(stack)-1]
+			}
+			newNode = Postfix(op.Value, newNode)
+			i++
+		}
 
 		// no more tokens => done, so it's time to unwind the stack
 		if i >= len(tokens) {
 			// get the stack down to one completed expression
 			for len(stack) > 0 {
-				// pop the stack, and add top of stack as arg to next highest
-				// this assumes there's only OpNodes on the stack (other than the initial top)
+				// pop the stack, add newNode as arg to popped top
 				top := stack[len(stack)-1]
 				top.Args = append(top.Args, newNode)
 				newNode = top
@@ -174,6 +204,7 @@ func Parse(tokens []*Token) (Node, error) {
 					if isTopRightAssociative {
 						break
 					}
+					// same precedence but left-associative -- continue loop
 				}
 				// time to pop: remove the top, and complete it by adding in previous 'newNode' as its next operand.
 				// then set 'newNode' to the popped top

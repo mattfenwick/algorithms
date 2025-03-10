@@ -37,6 +37,8 @@ var _ = Describe("Operator parsing", func() {
 			"( ( 3 + 4 ) + 5 )"},
 		{"handles right-associativity", "3 ** 4 ** 5", "",
 			"( 3 ** ( 4 ** 5 ) )"},
+
+		// prefix
 		{"handles simple prefix", "! 3", "", "( ! 3 )"},
 		{"handles stacked prefix", "! <- ~ 3", "", "( ! ( <- ( ~ 3 ) ) )"},
 		{"distinguishes prefix and binary op of same name", "- 3 - - 4", "",
@@ -49,10 +51,32 @@ var _ = Describe("Operator parsing", func() {
 			"( pre-low ( ( ! 3 ) - 4 ) )"},
 		{"handles precedence: higher to lower prefix vs medium binary", "! pre-low 3 - 4", "",
 			"( ! ( pre-low ( 3 - 4 ) ) )"},
-		{"handles prefix vs. binary left-associativity", "pre-mid 3 bin-mid-left 4", "",
+		{"handles prefix vs. binary left-associativity (part 1)", "pre-mid 3 bin-mid-left 4", "",
 			"( ( pre-mid 3 ) bin-mid-left 4 )"},
+		{"handles prefix vs. binary left-associativity (part 2)",
+			"pre-mid pre-mid pre-mid 3 bin-mid-left 4",
+			"",
+			"( ( pre-mid ( pre-mid ( pre-mid 3 ) ) ) bin-mid-left 4 )"},
 		{"refuses to handle associativity mismatch of prefix vs. binary", "pre-mid 3 bin-mid-right 4",
 			"unable to handle same precedence but different associativity: bin-mid-right vs pre-mid",
+			""},
+
+		// postfix
+		{"handles simple postfix", "3 ;", "", "( 3 ; )"},
+		{"handles lower postfix vs. higher binary", "3 + 4 post-low", "", "( ( 3 + 4 ) post-low )"},
+		{"handles higher postfix vs. lower binary", "3 + 4 ;", "", "( 3 + ( 4 ; ) )"},
+		{"handles higher prefix vs. lower postfix", "! 3 post-low", "", "( ( ! 3 ) post-low )"},
+		{"handles lower prefix vs. higher postfix", "pre-low 3 ;", "", "( pre-low ( 3 ; ) )"},
+		{"handles postfix vs. binary right-associativity (part 1)",
+			"3 bin-mid-right 4 post-mid",
+			"",
+			"( 3 bin-mid-right ( 4 post-mid ) )"},
+		{"handles postfix vs. binary right-associativity (part 2)",
+			"3 bin-mid-right 4 post-mid post-mid post-mid",
+			"",
+			"( 3 bin-mid-right ( ( ( 4 post-mid ) post-mid ) post-mid ) )"},
+		{"refuses to handle associativity mismatch of binary vs. postfix", "3 bin-mid-left 4 post-mid",
+			"unable to handle same precedence but different associativity: post-mid vs bin-mid-left",
 			""},
 	}
 

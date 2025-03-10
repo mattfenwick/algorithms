@@ -1,16 +1,21 @@
 package pratt
 
-import "github.com/sirupsen/logrus"
+import (
+	"fmt"
+
+	"github.com/sirupsen/logrus"
+)
 
 func Must0(err error) {
 	if err != nil {
-		logrus.Fatalf("%s", err.Error())
+		logrus.Fatalf("%+v", err)
 	}
 }
 
 func Must[A any](a A, err error) A {
 	if err != nil {
-		logrus.Fatalf("%s", err.Error())
+		fmt.Printf("%+v\n", err)
+		logrus.Fatalf("%+v", err)
 	}
 	return a
 }

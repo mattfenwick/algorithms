@@ -43,13 +43,19 @@ func Tokenize(s string) ([]*Token, error) {
 			return nil, errors.Errorf("invalid empty token")
 		}
 
-		// operator
+		// operator.  we throw away the the operator type information here,
+		//   because we don't need it and it might be inaccurate anyway
+		//   (example: unary - vs. binary -)
 		// prefix op
 		if _, ok := PrefixOps[field]; ok {
 			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
 			continue
 		}
-		// TODO postfix op
+		// postfix op
+		if _, ok := PostfixOps[field]; ok {
+			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
+			continue
+		}
 		// binop
 		if _, ok := BinaryOps[field]; ok {
 			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})

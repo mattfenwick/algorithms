@@ -102,13 +102,16 @@ func (o *OpNode) NodeString() string {
 }
 
 func Prefix(op string) *OpNode {
+	// this is an in-progress node
 	return &OpNode{Op: op, Type: OpTypePrefix, Args: []Node{}}
 }
 
-func Postfix(op string) *OpNode {
-	return &OpNode{Op: op, Type: OpTypePostfix, Args: []Node{}}
+func Postfix(op string, arg Node) *OpNode {
+	// this is a completed node
+	return &OpNode{Op: op, Type: OpTypePostfix, Args: []Node{arg}}
 }
 
 func Binary(op string, arg Node) *OpNode {
+	// this is an in-progress node
 	return &OpNode{Op: op, Type: OpTypeBinary, Args: []Node{arg}}
 }
