@@ -185,10 +185,6 @@ func Parse(tokens []*Token) (Node, error) {
 			if _, ok := BinaryOps[op.Value]; !ok {
 				return nil, errors.Errorf("expected binary operator, found %s at %d", op.Value, i)
 			}
-			if len(stack) == 0 {
-				stack = append(stack, Binary(op.Value, newNode))
-				break
-			}
 			for len(stack) > 0 {
 				top := stack[len(stack)-1]
 				topPrec, isTopRightAssociative := GetPrecedence(top.Op, top.Type), IsRightAssociative(top.Op, top.Type)
