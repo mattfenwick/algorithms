@@ -30,6 +30,7 @@ type BinOp struct {
 }
 
 var BinarySlice = []*BinOp{
+	{"<-0", 0, false},
 	{"+", 40, false},
 	{"-", 40, false},
 	{"bin-mid-left", 50, false},
@@ -53,6 +54,8 @@ type TernOp struct {
 var TernarySlice = []*TernOp{
 	{"?", ":", 0, true},
 	{"if", "else", 0, true},
+	{"<l", "<lb", 0, false},
+	{"<l1", "<l1b", 1, false},
 }
 
 var TernOpsOpen = map[string]*TernOp{}
@@ -75,7 +78,7 @@ func init() {
 	}
 }
 
-func GetPrecedence(op string, opType string) int {
+func GetPrecedence(op string, opType OpType) int {
 	switch opType {
 	case OpTypePrefix:
 		if _, ok := PrefixOps[op]; !ok {
@@ -92,12 +95,18 @@ func GetPrecedence(op string, opType string) int {
 			panic(errors.Errorf("invalid binary op %s", op))
 		}
 		return BinaryOps[op].Precedence
+	case OpTypeTernary:
+		// this is weird, we only look for precedences of ternary opens.  huh
+		if _, ok := TernOpsOpen[op]; !ok {
+			panic(errors.Errorf("invalid ternary op %s", op))
+		}
+		return TernOpsOpen[op].Precedence
 	default:
 		panic(errors.Errorf("invalid opType for %s: %s", op, opType))
 	}
 }
 
-func IsRightAssociative(op string, opType string) bool {
+func IsRightAssociative(op string, opType OpType) bool {
 	switch opType {
 	case OpTypePrefix:
 		if _, ok := PrefixOps[op]; !ok {
@@ -122,6 +131,12 @@ func IsRightAssociative(op string, opType string) bool {
 			panic(errors.Errorf("invalid binary op %s", op))
 		}
 		return BinaryOps[op].IsRightAssociative
+	case OpTypeTernary:
+		// this is weird, we only look for associativity of ternary opens.  huh
+		if _, ok := TernOpsOpen[op]; !ok {
+			panic(errors.Errorf("invalid ternary op %s", op))
+		}
+		return TernOpsOpen[op].IsRightAssociative
 	default:
 		panic(errors.Errorf("invalid optype for %s: %s", op, opType))
 	}
@@ -206,18 +221,43 @@ func Parse(tokens []*Token) (Node, error) {
 		if op.Type != TokenTypeOp {
 			return nil, errors.Errorf("expected op at %d, found %+v", i, op)
 		}
-		if _, ok := BinaryOps[op.Value]; !ok {
-			return nil, errors.Errorf("expected binary operator, found %s at %d", op.Value, i)
+		var finish func(string, Node) *OpNode
+		var opType OpType
+		if _, ok := BinaryOps[op.Value]; ok {
+			finish = Binary
+			opType = OpTypeBinary
+		} else if _, ok := TernOpsOpen[op.Value]; ok {
+			finish = Ternary
+			opType = OpTypeTernary
+		} else if v, ok := TernOpsClose[op.Value]; ok {
+			// pop stack until corresponding open is found
+			for len(stack) > 0 {
+				top := stack[len(stack)-1]
+				top.Args = append(top.Args, newNode)
+				if top.Open == v.Open {
+					top.Close = op.Value
+					break
+				}
+				newNode = top
+				stack = stack[:len(stack)-1]
+			}
+			if len(stack) == 0 {
+				return nil, errors.Errorf("ternary close '%s' found without corresponding open '%s' at %d", op.Value, v.Open, i)
+			}
+			i++
+			continue
+		} else {
+			return nil, errors.Errorf("expected binary or ternary operator, found %s at %d", op.Value, i)
 		}
 		for len(stack) > 0 {
 			top := stack[len(stack)-1]
 			topPrec, isTopRightAssociative := GetPrecedence(top.Open, top.Type), IsRightAssociative(top.Open, top.Type)
-			if GetPrecedence(op.Value, OpTypeBinary) > topPrec {
+			if GetPrecedence(op.Value, opType) > topPrec {
 				// next operator is higher precedence?  stop poppin'
 				break
 			}
-			if GetPrecedence(op.Value, OpTypeBinary) == topPrec {
-				if IsRightAssociative(op.Value, OpTypeBinary) != isTopRightAssociative {
+			if GetPrecedence(op.Value, opType) == topPrec {
+				if IsRightAssociative(op.Value, opType) != isTopRightAssociative {
 					return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Open)
 				}
 				// same precedence but right-associative?  stop poppin'
@@ -232,7 +272,7 @@ func Parse(tokens []*Token) (Node, error) {
 			top.Args = append(top.Args, newNode)
 			newNode = top
 		}
-		stack = append(stack, Binary(op.Value, newNode))
+		stack = append(stack, finish(op.Value, newNode))
 		i++
 	}
 }

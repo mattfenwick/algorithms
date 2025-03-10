@@ -94,17 +94,19 @@ func Num(val string) *NumNode {
 	return &NumNode{Value: val}
 }
 
+type OpType string
+
 const (
-	OpTypePrefix  = "OpTypePrefix"
-	OpTypePostfix = "OpTypePostfix"
-	OpTypeBinary  = "OpTypeBinary"
-	OpTypeTernary = "OpTypeTernary"
+	OpTypePrefix  OpType = "OpTypePrefix"
+	OpTypePostfix OpType = "OpTypePostfix"
+	OpTypeBinary  OpType = "OpTypeBinary"
+	OpTypeTernary OpType = "OpTypeTernary"
 )
 
 type OpNode struct {
 	Open  string
 	Close string
-	Type  string
+	Type  OpType
 	Args  []Node
 }
 
