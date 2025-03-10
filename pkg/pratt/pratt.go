@@ -203,38 +203,36 @@ func Parse(tokens []*Token) (Node, error) {
 
 		// 4. process a binary operator
 		op := tokens[i]
-		switch op.Type {
-		case TokenTypeOp:
-			if _, ok := BinaryOps[op.Value]; !ok {
-				return nil, errors.Errorf("expected binary operator, found %s at %d", op.Value, i)
-			}
-			for len(stack) > 0 {
-				top := stack[len(stack)-1]
-				topPrec, isTopRightAssociative := GetPrecedence(top.Open, top.Type), IsRightAssociative(top.Open, top.Type)
-				if GetPrecedence(op.Value, OpTypeBinary) > topPrec {
-					// next operator is higher precedence?  stop poppin'
-					break
-				}
-				if GetPrecedence(op.Value, OpTypeBinary) == topPrec {
-					if IsRightAssociative(op.Value, OpTypeBinary) != isTopRightAssociative {
-						return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Open)
-					}
-					// same precedence but right-associative?  stop poppin'
-					if isTopRightAssociative {
-						break
-					}
-					// same precedence but left-associative -- continue loop
-				}
-				// time to pop: remove the top, and complete it by adding in previous 'newNode' as its next operand.
-				// then set 'newNode' to the popped top
-				stack = stack[:len(stack)-1]
-				top.Args = append(top.Args, newNode)
-				newNode = top
-			}
-			stack = append(stack, Binary(op.Value, newNode))
-		default:
+		if op.Type != TokenTypeOp {
 			return nil, errors.Errorf("expected op at %d, found %+v", i, op)
 		}
+		if _, ok := BinaryOps[op.Value]; !ok {
+			return nil, errors.Errorf("expected binary operator, found %s at %d", op.Value, i)
+		}
+		for len(stack) > 0 {
+			top := stack[len(stack)-1]
+			topPrec, isTopRightAssociative := GetPrecedence(top.Open, top.Type), IsRightAssociative(top.Open, top.Type)
+			if GetPrecedence(op.Value, OpTypeBinary) > topPrec {
+				// next operator is higher precedence?  stop poppin'
+				break
+			}
+			if GetPrecedence(op.Value, OpTypeBinary) == topPrec {
+				if IsRightAssociative(op.Value, OpTypeBinary) != isTopRightAssociative {
+					return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Open)
+				}
+				// same precedence but right-associative?  stop poppin'
+				if isTopRightAssociative {
+					break
+				}
+				// same precedence but left-associative -- continue loop
+			}
+			// time to pop: remove the top, and complete it by adding in previous 'newNode' as its next operand.
+			// then set 'newNode' to the popped top
+			stack = stack[:len(stack)-1]
+			top.Args = append(top.Args, newNode)
+			newNode = top
+		}
+		stack = append(stack, Binary(op.Value, newNode))
 		i++
 	}
 }
