@@ -36,7 +36,7 @@ var (
 	}
 )
 
-func Tokenize(s string) ([]*Token, error) {
+func (o *Operators) Tokenize(s string) ([]*Token, error) {
 	var tokens []*Token
 	for _, field := range strings.Fields(s) {
 		if len(field) == 0 {
@@ -47,27 +47,27 @@ func Tokenize(s string) ([]*Token, error) {
 		//   because we don't need it and it might be inaccurate anyway
 		//   (example: unary - vs. binary -)
 		// prefix op
-		if _, ok := PrefixOps[field]; ok {
+		if _, ok := o.Prefix[field]; ok {
 			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
 			continue
 		}
 		// postfix op
-		if _, ok := PostfixOps[field]; ok {
+		if _, ok := o.Postfix[field]; ok {
 			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
 			continue
 		}
 		// binop
-		if _, ok := BinaryOps[field]; ok {
+		if _, ok := o.Binary[field]; ok {
 			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
 			continue
 		}
 		// ternary op -- open
-		if _, ok := TernOpsOpen[field]; ok {
+		if _, ok := o.TernaryOpen[field]; ok {
 			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
 			continue
 		}
 		// ternary op -- close
-		if _, ok := TernOpsClose[field]; ok {
+		if _, ok := o.TernaryClose[field]; ok {
 			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
 			continue
 		}

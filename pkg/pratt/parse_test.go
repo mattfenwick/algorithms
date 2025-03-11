@@ -97,7 +97,7 @@ var _ = Describe("Operator parsing", func() {
 
 	for _, c := range cases {
 		It(c.Name, func() {
-			node, err := ParseString(c.Input)
+			node, err := TestOperators.ParseString(c.Input)
 			if c.Error == "" {
 				Expect(err).To(BeNil())
 				parensString := Parens(node)
