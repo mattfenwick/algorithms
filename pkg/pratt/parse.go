@@ -78,7 +78,7 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 			return newNode, nil
 		}
 
-		// 4. process a binary operator
+		// 4. process a binary or ternary operator
 		op := tokens[i]
 		if op.Type != TokenTypeOp {
 			return nil, errors.Errorf("expected op at %d, found %+v", i, op)
