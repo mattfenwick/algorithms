@@ -36,4 +36,7 @@ var TestOperators = NewOperators(
 		{"<l", "<lb", 0, false},
 		{"<l1", "<l1b", 1, false},
 	},
+	map[string]string{
+		"(": ")",
+	},
 )

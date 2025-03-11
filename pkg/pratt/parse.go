@@ -2,6 +2,7 @@ package pratt
 
 import (
 	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 )
 
 func (o *Operators) Parse(tokens []*Token) (Node, error) {
@@ -15,6 +16,8 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 			}
 			if _, ok := o.Prefix[op.Value]; ok {
 				stack = append(stack, Prefix(op.Value))
+			} else if _, ok := o.GroupingOpen[op.Value]; ok {
+				stack = append(stack, Grouping(op.Value))
 			} else {
 				return nil, errors.Errorf("expected prefix op at %d, found %+v", i, op)
 			}
@@ -37,31 +40,51 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 			if op.Type != TokenTypeOp {
 				break
 			}
-			if _, ok := o.Postfix[op.Value]; !ok {
+			if _, ok := o.Postfix[op.Value]; ok {
+				for len(stack) > 0 {
+					top := stack[len(stack)-1]
+					currPrec, topPrec := o.GetPrecedence(op.Value, OpTypePostfix), o.GetPrecedence(top.Open, top.Type)
+					if currPrec > topPrec {
+						break
+					} else if currPrec == topPrec {
+						currIsRight := o.IsRightAssociative(op.Value, OpTypePostfix)
+						if currIsRight != o.IsRightAssociative(top.Open, top.Type) {
+							return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Open)
+						}
+						if currIsRight {
+							break
+						}
+						// left associative => continue loop, b/c top of stack wins
+					}
+					// top of stack wins
+					// keep poppin' until top of stack doesn't win
+					top.Args = append(top.Args, newNode)
+					newNode = top
+					stack = stack[:len(stack)-1]
+				}
+				newNode = Postfix(op.Value, newNode)
+			} else if groupingOpen, ok := o.GroupingClose[op.Value]; ok {
+				// pop the stack looking for the corresponding open
+				found := false
+				for len(stack) > 0 {
+					top := stack[len(stack)-1]
+					top.Args = append(top.Args, newNode)
+					newNode = top
+					stack = stack[:len(stack)-1]
+					if top.Type == OpTypeGrouping && top.Open == groupingOpen {
+						top.Close = op.Value
+						found = true
+						break
+					} else {
+						logrus.Warnf("top op: %+v", top)
+					}
+				}
+				if !found {
+					return nil, errors.Errorf("found grouping close %s, but no matching open %s at %d", op.Value, groupingOpen, i)
+				}
+			} else {
 				break
 			}
-			for len(stack) > 0 {
-				top := stack[len(stack)-1]
-				currPrec, topPrec := o.GetPrecedence(op.Value, OpTypePostfix), o.GetPrecedence(top.Open, top.Type)
-				if currPrec > topPrec {
-					break
-				} else if currPrec == topPrec {
-					currIsRight := o.IsRightAssociative(op.Value, OpTypePostfix)
-					if currIsRight != o.IsRightAssociative(top.Open, top.Type) {
-						return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Open)
-					}
-					if currIsRight {
-						break
-					}
-					// left associative => continue loop, b/c top of stack wins
-				}
-				// top of stack wins
-				// keep poppin' until top of stack doesn't win
-				top.Args = append(top.Args, newNode)
-				newNode = top
-				stack = stack[:len(stack)-1]
-			}
-			newNode = Postfix(op.Value, newNode)
 			i++
 		}
 
@@ -113,12 +136,13 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 		}
 		for len(stack) > 0 {
 			top := stack[len(stack)-1]
-			topPrec, isTopRightAssociative := o.GetPrecedence(top.Open, top.Type), o.IsRightAssociative(top.Open, top.Type)
+			topPrec := o.GetPrecedence(top.Open, top.Type)
 			if o.GetPrecedence(op.Value, opType) > topPrec {
 				// next operator is higher precedence?  stop poppin'
 				break
 			}
 			if o.GetPrecedence(op.Value, opType) == topPrec {
+				isTopRightAssociative := o.IsRightAssociative(top.Open, top.Type)
 				if o.IsRightAssociative(op.Value, opType) != isTopRightAssociative {
 					return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Open)
 				}

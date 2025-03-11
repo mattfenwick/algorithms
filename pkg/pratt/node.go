@@ -51,6 +51,11 @@ func parensHelper(node Node) []string {
 			out = append(out, v.Close)
 			out = append(out, parensHelper(v.Args[2])...)
 			return append(out, ")")
+		case OpTypeGrouping:
+			validateArgCount(1, v.Args)
+			out := []string{"(" + v.Open}
+			out = append(out, parensHelper(v.Args[0])...)
+			return append(out, ")"+v.Close)
 		default:
 			panic(errors.Errorf("invalid op type %s", v.Type))
 		}
@@ -97,10 +102,11 @@ func Num(val string) *NumNode {
 type OpType string
 
 const (
-	OpTypePrefix  OpType = "OpTypePrefix"
-	OpTypePostfix OpType = "OpTypePostfix"
-	OpTypeBinary  OpType = "OpTypeBinary"
-	OpTypeTernary OpType = "OpTypeTernary"
+	OpTypePrefix   OpType = "OpTypePrefix"
+	OpTypePostfix  OpType = "OpTypePostfix"
+	OpTypeBinary   OpType = "OpTypeBinary"
+	OpTypeTernary  OpType = "OpTypeTernary"
+	OpTypeGrouping OpType = "OpTypeGrouping"
 )
 
 type OpNode struct {
@@ -117,6 +123,11 @@ func (o *OpNode) NodeString() string {
 func Prefix(op string) *OpNode {
 	// this is an in-progress node
 	return &OpNode{Open: op, Type: OpTypePrefix, Args: []Node{}}
+}
+
+func Grouping(op string) *OpNode {
+	// this is an in-progress node
+	return &OpNode{Open: op, Type: OpTypeGrouping, Args: []Node{}}
 }
 
 func Postfix(op string, arg Node) *OpNode {

@@ -93,6 +93,18 @@ var _ = Describe("Operator parsing", func() {
 		{"binary/ternary precedence (part 2)", "2 <-0 3 <l1 4 <l1b 5", "", "( 2 <-0 ( 3 <l1 4 <l1b 5 ) )"},
 		{"ternary/binary precedence (part 1)", "3 ? 4 : 5 + 6", "", "( 3 ? 4 : ( 5 + 6 ) )"},
 		{"ternary/binary precedence (part 2)", "3 <l1 4 <l1b 5 <-0 6", "", "( ( 3 <l1 4 <l1b 5 ) <-0 6 )"},
+
+		// parens
+		{"simple parens", "( 3 )", "", "(( 3 ))"},
+		{"binary inside parens", "( 3 + 4 )", "", "(( ( 3 + 4 ) ))"},
+		{"parens vs binary (part 1)", "3 * ( 4 + 5 )", "", "( 3 * (( ( 4 + 5 ) )) )"},
+		{"parens vs binary (part 2)", "( 3 + 4 ) * 5", "", "( (( ( 3 + 4 ) )) * 5 )"},
+		{"parens then postfix", "3 * ( 4 + 5 ; ) ;", "", "( 3 * ( (( ( 4 + ( 5 ; ) ) )) ; ) )"},
+
+		// braces
+		// 3 [ 4 ]
+		// 3 + 4 [ 5 ]
+		// 3 [ 4 + 5 ]
 	}
 
 	for _, c := range cases {

@@ -16,16 +16,23 @@ type TernOp struct {
 }
 
 type Operators struct {
-	Prefix       map[string]int
-	Postfix      map[string]int
-	BinarySlice  []*BinOp
-	Binary       map[string]*BinOp
-	TernarySlice []*TernOp
-	TernaryOpen  map[string]*TernOp
-	TernaryClose map[string]*TernOp
+	Prefix        map[string]int
+	Postfix       map[string]int
+	BinarySlice   []*BinOp
+	Binary        map[string]*BinOp
+	TernarySlice  []*TernOp
+	TernaryOpen   map[string]*TernOp
+	TernaryClose  map[string]*TernOp
+	GroupingOpen  map[string]string
+	GroupingClose map[string]string
 }
 
-func NewOperators(prefix map[string]int, postfix map[string]int, binarySlice []*BinOp, ternarySlice []*TernOp) *Operators {
+func NewOperators(
+	prefix map[string]int,
+	postfix map[string]int,
+	binarySlice []*BinOp,
+	ternarySlice []*TernOp,
+	grouping map[string]string) *Operators {
 	binary := map[string]*BinOp{}
 	for _, b := range binarySlice {
 		if _, ok := binary[b.Symbol]; ok {
@@ -37,20 +44,31 @@ func NewOperators(prefix map[string]int, postfix map[string]int, binarySlice []*
 	ternaryClose := map[string]*TernOp{}
 	for _, t := range ternarySlice {
 		if _, ok := ternaryOpen[t.Open]; ok {
-			panic(errors.Errorf("dupe ternary symbol %s", t.Open))
+			panic(errors.Errorf("dupe ternary open symbol %s", t.Open))
 		}
-		// TODO is it necessary to validate uniqueness of close symbols?
+		if _, ok := ternaryClose[t.Close]; ok {
+			panic(errors.Errorf("dupe ternary close symbol %s", t.Close))
+		}
 		ternaryOpen[t.Open] = t
 		ternaryClose[t.Close] = t
 	}
+	groupingClose := map[string]string{}
+	for k, v := range grouping {
+		if _, ok := groupingClose[v]; ok {
+			panic(errors.Errorf("dupe grouping close symbol %s", v))
+		}
+		groupingClose[v] = k
+	}
 	return &Operators{
-		Prefix:       prefix,
-		Postfix:      postfix,
-		BinarySlice:  binarySlice,
-		Binary:       binary,
-		TernarySlice: ternarySlice,
-		TernaryOpen:  ternaryOpen,
-		TernaryClose: ternaryClose,
+		Prefix:        prefix,
+		Postfix:       postfix,
+		BinarySlice:   binarySlice,
+		Binary:        binary,
+		TernarySlice:  ternarySlice,
+		TernaryOpen:   ternaryOpen,
+		TernaryClose:  ternaryClose,
+		GroupingOpen:  grouping,
+		GroupingClose: groupingClose,
 	}
 }
 
@@ -77,6 +95,9 @@ func (o *Operators) GetPrecedence(op string, opType OpType) int {
 			panic(errors.Errorf("invalid ternary op %s", op))
 		}
 		return o.TernaryOpen[op].Precedence
+	case OpTypeGrouping:
+		// TODO the intention is that Grouping has the absolute lowest precedence
+		return -1000
 	default:
 		panic(errors.Errorf("invalid opType for %s: %s", op, opType))
 	}
@@ -113,6 +134,8 @@ func (o *Operators) IsRightAssociative(op string, opType OpType) bool {
 			panic(errors.Errorf("invalid ternary op %s", op))
 		}
 		return o.TernaryOpen[op].IsRightAssociative
+	case OpTypeGrouping:
+		panic(errors.Errorf("TODO -- make decision"))
 	default:
 		panic(errors.Errorf("invalid optype for %s: %s", op, opType))
 	}

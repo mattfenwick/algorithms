@@ -71,6 +71,16 @@ func (o *Operators) Tokenize(s string) ([]*Token, error) {
 			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
 			continue
 		}
+		// grouping op -- open
+		if _, ok := o.GroupingOpen[field]; ok {
+			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
+			continue
+		}
+		// grouping op -- close
+		if _, ok := o.GroupingClose[field]; ok {
+			tokens = append(tokens, &Token{Type: TokenTypeOp, Value: field})
+			continue
+		}
 
 		// number
 		if _, ok := digits[field[0]]; !ok {
