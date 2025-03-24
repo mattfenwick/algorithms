@@ -19,16 +19,14 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 			} else if _, ok := o.GroupingOpen[op.Value]; ok {
 				stack = append(stack, Grouping(op.Value))
 			} else {
-				return nil, errors.Errorf("expected prefix op at %d, found %+v", i, op)
+				return nil, errors.Errorf("expected prefix op or gouping open at %d, found %+v", i, op)
 			}
 			i++
 		}
 
 		// 2. find a num
 		arg := tokens[i]
-		switch arg.Type {
-		case TokenTypeNum:
-		default:
+		if arg.Type != TokenTypeNum {
 			return nil, errors.Errorf("expected num at %d, found %+v", i, arg)
 		}
 		i++
