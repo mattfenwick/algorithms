@@ -1,11 +1,51 @@
 package pratt
 
 import (
+	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 )
 
+func unwindE(stack []*OpNode, newNode Node, pred func(top *OpNode) (bool, error)) ([]*OpNode, Node, bool, error) {
+	for len(stack) > 0 {
+		top := stack[len(stack)-1]
+		stop, err := pred(top)
+		if err != nil {
+			return nil, nil, false, err
+		}
+		if stop {
+			return stack, newNode, true, nil
+		}
+		top.Args = append(top.Args, newNode)
+		newNode = top
+		stack = stack[:len(stack)-1]
+	}
+	return nil, newNode, false, nil
+}
+
+func unwind(stack []*OpNode, newNode Node, pred func(top *OpNode) bool) ([]*OpNode, Node, bool) {
+	stack, newNode, found, err := unwindE(stack, newNode, func(top *OpNode) (bool, error) {
+		return pred(top), nil
+	})
+	utils.Die0(err)
+	return stack, newNode, found
+}
+
+func (o *Operators) IsGroupLeft(a string, aType OpType, b string, bType OpType) (bool, error) {
+	aPrec, bPrec := o.GetPrecedence(a, aType), o.GetPrecedence(b, bType)
+	if aPrec > bPrec {
+		return true, nil
+	} else if aPrec < bPrec {
+		return false, nil
+	}
+	aAssocRight, bAssocRight := o.IsRightAssociative(a, aType), o.IsRightAssociative(b, bType)
+	if aAssocRight != bAssocRight {
+		return false, errors.Errorf("same precedence, different associativity: %s vs %s", a, b)
+	}
+	return !aAssocRight, nil
+}
+
 func (o *Operators) Parse(tokens []*Token) (Node, error) {
+	var err error
 	stack := []*OpNode{}
 	for i := 0; ; {
 		// 1. throw any prefix unary operators on to the stack
@@ -39,47 +79,30 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 				break
 			}
 			if _, ok := o.Postfix[op.Value]; ok {
-				for len(stack) > 0 {
-					top := stack[len(stack)-1]
-					currPrec, topPrec := o.GetPrecedence(op.Value, OpTypePostfix), o.GetPrecedence(top.Open, top.Type)
-					if currPrec > topPrec {
-						break
-					} else if currPrec == topPrec {
-						currIsRight := o.IsRightAssociative(op.Value, OpTypePostfix)
-						if currIsRight != o.IsRightAssociative(top.Open, top.Type) {
-							return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Open)
-						}
-						if currIsRight {
-							break
-						}
-						// left associative => continue loop, b/c top of stack wins
-					}
-					// top of stack wins
-					// keep poppin' until top of stack doesn't win
-					top.Args = append(top.Args, newNode)
-					newNode = top
-					stack = stack[:len(stack)-1]
+				stack, newNode, _, err = unwindE(stack, newNode, func(top *OpNode) (bool, error) {
+					isLeft, err := o.IsGroupLeft(top.Open, top.Type, op.Value, OpTypePostfix)
+					return !isLeft, err
+				})
+				if err != nil {
+					return nil, err
 				}
 				newNode = Postfix(op.Value, newNode)
 			} else if groupingOpen, ok := o.GroupingClose[op.Value]; ok {
-				// pop the stack looking for the corresponding open
-				found := false
-				for len(stack) > 0 {
-					top := stack[len(stack)-1]
-					top.Args = append(top.Args, newNode)
-					newNode = top
-					stack = stack[:len(stack)-1]
+				var found bool
+				stack, newNode, found = unwind(stack, newNode, func(top *OpNode) bool {
 					if top.Type == OpTypeGrouping && top.Open == groupingOpen {
 						top.Close = op.Value
-						found = true
-						break
-					} else {
-						logrus.Warnf("top op: %+v", top)
+						return true
 					}
-				}
+					return false
+				})
 				if !found {
 					return nil, errors.Errorf("found grouping close %s, but no matching open %s at %d", op.Value, groupingOpen, i)
 				}
+				top := stack[len(stack)-1]
+				top.Args = append(top.Args, newNode)
+				stack = stack[:len(stack)-1]
+				newNode = top
 			} else {
 				break
 			}
@@ -88,14 +111,7 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 
 		// no more tokens => done, so it's time to unwind the stack
 		if i >= len(tokens) {
-			// get the stack down to one completed expression
-			for len(stack) > 0 {
-				// pop the stack, add newNode as arg to popped top
-				top := stack[len(stack)-1]
-				top.Args = append(top.Args, newNode)
-				newNode = top
-				stack = stack[:len(stack)-1]
-			}
+			_, newNode, _ = unwind(stack, newNode, func(top *OpNode) bool { return false })
 			return newNode, nil
 		}
 
@@ -113,18 +129,17 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 			finish = Ternary
 			opType = OpTypeTernary
 		} else if v, ok := o.TernaryClose[op.Value]; ok {
-			// pop stack until corresponding open is found
-			for len(stack) > 0 {
-				top := stack[len(stack)-1]
-				top.Args = append(top.Args, newNode)
+			var found bool
+			stack, newNode, found = unwind(stack, newNode, func(top *OpNode) bool {
 				if top.Open == v.Open {
+					// TODO is there a better way to handle this mutation?  or a better place to put it?
+					top.Args = append(top.Args, newNode)
 					top.Close = op.Value
-					break
+					return true
 				}
-				newNode = top
-				stack = stack[:len(stack)-1]
-			}
-			if len(stack) == 0 {
+				return false
+			})
+			if !found {
 				return nil, errors.Errorf("ternary close '%s' found without corresponding open '%s' at %d", op.Value, v.Open, i)
 			}
 			i++
@@ -132,31 +147,16 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 		} else {
 			return nil, errors.Errorf("expected binary or ternary operator, found %s at %d", op.Value, i)
 		}
-		for len(stack) > 0 {
-			top := stack[len(stack)-1]
-			topPrec := o.GetPrecedence(top.Open, top.Type)
-			if o.GetPrecedence(op.Value, opType) > topPrec {
-				// next operator is higher precedence?  stop poppin'
-				break
-			}
-			if o.GetPrecedence(op.Value, opType) == topPrec {
-				isTopRightAssociative := o.IsRightAssociative(top.Open, top.Type)
-				if o.IsRightAssociative(op.Value, opType) != isTopRightAssociative {
-					return nil, errors.Errorf("unable to handle same precedence but different associativity: %s vs %s", op.Value, top.Open)
-				}
-				// same precedence but right-associative?  stop poppin'
-				if isTopRightAssociative {
-					break
-				}
-				// same precedence but left-associative -- continue loop
-			}
-			// time to pop: remove the top, and complete it by adding in previous 'newNode' as its next operand.
-			// then set 'newNode' to the popped top
-			stack = stack[:len(stack)-1]
-			top.Args = append(top.Args, newNode)
-			newNode = top
+
+		stack, newNode, _, err = unwindE(stack, newNode, func(top *OpNode) (bool, error) {
+			isLeft, err := o.IsGroupLeft(top.Open, top.Type, op.Value, opType)
+			return !isLeft, err
+		})
+		if err != nil {
+			return nil, err
 		}
 		stack = append(stack, finish(op.Value, newNode))
+
 		i++
 	}
 }

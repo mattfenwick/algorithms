@@ -58,7 +58,7 @@ var _ = Describe("Operator parsing", func() {
 			"",
 			"( ( pre-mid ( pre-mid ( pre-mid 3 ) ) ) bin-mid-left 4 )"},
 		{"refuses to handle associativity mismatch of prefix vs. binary", "pre-mid 3 bin-mid-right 4",
-			"unable to handle same precedence but different associativity: bin-mid-right vs pre-mid",
+			"same precedence, different associativity: pre-mid vs bin-mid-right",
 			""},
 
 		// postfix
@@ -76,7 +76,7 @@ var _ = Describe("Operator parsing", func() {
 			"",
 			"( 3 bin-mid-right ( ( ( 4 post-mid ) post-mid ) post-mid ) )"},
 		{"refuses to handle associativity mismatch of binary vs. postfix", "3 bin-mid-left 4 post-mid",
-			"unable to handle same precedence but different associativity: post-mid vs bin-mid-left",
+			"same precedence, different associativity: bin-mid-left vs post-mid",
 			""},
 
 		// ternary

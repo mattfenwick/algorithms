@@ -90,7 +90,7 @@ func (o *Operators) Tokenize(s string) ([]*Token, error) {
 		if err != nil {
 			return nil, errors.Wrapf(err, "invalid num literal '%s'", field)
 		}
-		logrus.Warnf("TODO: don't throw away the int token value %d", val)
+		logrus.Debugf("TODO: don't throw away the int token value %d", val)
 		tokens = append(tokens, &Token{Type: TokenTypeNum, Value: field})
 	}
 	return tokens, nil
