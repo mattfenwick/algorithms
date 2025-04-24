@@ -23,22 +23,21 @@ type Case struct {
 
 var _ = Describe("Type parsing", func() {
 	cases := []*Case{
-		{"first, crazy", `{"a":1,"b":true,"c":[1,1.2,"d",{}],"e":null}`, "", &Type{Dict: map[string]*Type{
-			"a": {Float64: ptr(1.0)},
-			"b": {Bool: ptr(true)},
-			"c": {Array: &Type{Union: []*Type{
-				{Float64: ptr(1.0)},
-				{Float64: ptr(1.2)},
-				{String: ptr("d")},
-				{Dict: map[string]*Type{}},
-			}}},
+		{"grab bag", `{"a":1,"b":true,"c":[1,1.2,"d",{}],"e":null}`, "", &Type{Dict: map[string]*Type{
+			"a": {Number: true},
+			"b": {Bool: true},
+			"c": {Array: Union([]*Type{{Number: true}, {String: true}, {Dict: map[string]*Type{}}})},
 			"e": {Null: true},
 		}}},
+		{"array of arrays -- unions", `[[null, true], [null, true], [3, false]]`, "", &Type{Array: Union([]*Type{
+			{Array: Union([]*Type{{Bool: true}, {Null: true}})},
+			{Array: Union([]*Type{{Bool: true}, {Number: true}})},
+		})}},
 	}
 
 	for _, c := range cases {
 		It(c.Name, func() {
-			var out interface{}
+			var out any
 			utils.Die0(json.Unmarshal([]byte(c.Input), &out))
 			res := GetType(out)
 			Expect(res).To(BeEquivalentTo(c.Expected))
