@@ -7,6 +7,7 @@ import (
 )
 
 type Type struct {
+	Null    bool
 	Bool    *bool
 	Int     *int
 	Float64 *float64
@@ -34,6 +35,8 @@ func GetType(o any) *Type {
 		return &Type{Float64: ptr(val)}
 	case string:
 		return &Type{String: ptr(val)}
+	case nil:
+		return &Type{Null: true}
 	case []any:
 		return &Type{Array: CompactType(slice.Map(GetType, val))}
 	case map[string]any:

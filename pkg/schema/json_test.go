@@ -23,7 +23,7 @@ type Case struct {
 
 var _ = Describe("Type parsing", func() {
 	cases := []*Case{
-		{"first, crazy", `{"a": 1, "b": true, "c": [1,1.2,"d",{}]}`, "", &Type{Dict: map[string]*Type{
+		{"first, crazy", `{"a":1,"b":true,"c":[1,1.2,"d",{}],"e":null}`, "", &Type{Dict: map[string]*Type{
 			"a": {Float64: ptr(1.0)},
 			"b": {Bool: ptr(true)},
 			"c": {Array: &Type{Union: []*Type{
@@ -32,6 +32,7 @@ var _ = Describe("Type parsing", func() {
 				{String: ptr("d")},
 				{Dict: map[string]*Type{}},
 			}}},
+			"e": {Null: true},
 		}}},
 	}
 
