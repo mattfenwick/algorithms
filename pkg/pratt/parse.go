@@ -72,7 +72,7 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 		i++
 		var newNode Node = Num(arg.Value)
 
-		// 3. process any postfix operators
+		// 3. process any postfix or grouping-close operators
 		for i < len(tokens) {
 			op := tokens[i]
 			if op.Type != TokenTypeOp {
@@ -115,7 +115,7 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 			return newNode, nil
 		}
 
-		// 4. process a binary or ternary operator
+		// 4. find a binary, ternary-open, or ternary-close operator
 		op := tokens[i]
 		if op.Type != TokenTypeOp {
 			return nil, errors.Errorf("expected op at %d, found %+v", i, op)
@@ -129,6 +129,7 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 			finish = Ternary
 			opType = OpTypeTernary
 		} else if v, ok := o.TernaryClose[op.Value]; ok {
+			// 4a. ternary close
 			var found bool
 			stack, newNode, found = unwind(stack, newNode, func(top *OpNode) bool {
 				if top.Open == v.Open {
@@ -148,6 +149,7 @@ func (o *Operators) Parse(tokens []*Token) (Node, error) {
 			return nil, errors.Errorf("expected binary or ternary operator, found %s at %d", op.Value, i)
 		}
 
+		// 5. compare found op to top of stack
 		stack, newNode, _, err = unwindE(stack, newNode, func(top *OpNode) (bool, error) {
 			isLeft, err := o.IsGroupLeft(top.Open, top.Type, op.Value, opType)
 			return !isLeft, err
