@@ -41,6 +41,7 @@ var _ = Describe("Type parsing", func() {
 			utils.Die0(json.Unmarshal([]byte(c.Input), &out))
 			res := GetType(out)
 			Expect(res).To(BeEquivalentTo(c.Expected))
+			Expect(res.PrettyPrint()).To(BeEquivalentTo("?"))
 		})
 	}
 })

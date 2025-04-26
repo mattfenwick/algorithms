@@ -50,12 +50,61 @@ func (t *Type) Key() string {
 	return t.key
 }
 
+func (t *Type) PrettyPrint() string {
+	return strings.Join(
+		slice.Map(func(l *line) string {
+			return strings.Repeat("  ", l.indent) + l.content
+		},
+			t.prettyPrintHelper(0)),
+		"\n")
+}
+
+type line struct {
+	indent  int
+	content string
+}
+
+func (t *Type) prettyPrintHelper(indent int) []*line {
+	if t.Null {
+		return []*line{{indent, "null"}}
+	} else if t.Bool {
+		return []*line{{indent, "bool"}}
+	} else if t.Number {
+		return []*line{{indent, "number"}}
+	} else if t.String {
+		return []*line{{indent, "string"}}
+	} else if t.Array != nil {
+		ls := t.Array.prettyPrintHelper(indent + 1)
+		return append(append([]*line{{indent, "["}}, ls...), &line{indent, "]"})
+	} else if t.Dict != nil {
+		keys := slice.Sort(dict.Keys(t.Dict))
+		ls := []*line{{indent, "{"}}
+		for _, k := range keys {
+			ls = append(ls, &line{indent + 1, k + ":"})
+			ls = append(ls, t.Dict[k].prettyPrintHelper(indent+2)...)
+		}
+		ls = append(ls, &line{indent, "}"})
+		return ls
+	} else if t.Union != nil {
+		ls := []*line{{indent, "("}}
+		for _, k := range slice.Sort(dict.Keys(t.Union)) {
+			ls = append(ls, t.Union[k].prettyPrintHelper(indent+1)...)
+		}
+		ls = append(ls, &line{indent, ")"})
+		return ls
+	} else {
+		panic(errors.Errorf("invalid Type %+v", t))
+	}
+}
+
 func Union(ts []*Type) *Type {
 	types := map[string]*Type{}
 	for _, t := range ts {
 		if v, ok := types[t.Key()]; ok {
 			logrus.Infof("overwriting %+v with %+v for key %s, should be same though", v, t, t.Key())
 		}
+		// TODO 3 ways to look at {}. 1: arbitrary dict, kvs don't matter. 2: ks matter, vs don't. 3: ks and vs both matter. which one to use? should this choice be configurable?
+		// TODO do pairwise union of objects?
 		// TODO -- if it's a union, pull out every member and add into `types`
 		types[t.Key()] = t
 	}
