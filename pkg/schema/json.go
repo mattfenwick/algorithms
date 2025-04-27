@@ -164,8 +164,33 @@ func (p Path) Key() string {
 
 type Listener func(Path, any)
 
-func Traverse(o any) string {
-	paths := TraversePaths(o)
+type Traverser struct {
+	Paths map[string]*set.Set[string]
+}
+
+func NewTraverser() *Traverser {
+	return &Traverser{Paths: make(map[string]*set.Set[string])}
+}
+
+func (t *Traverser) Add(o any) {
+	TraversePaths(o, t.Paths)
+}
+
+func (t *Traverser) Lines() []string {
+	var lines []string
+	for _, path := range slice.Sort(dict.Keys(t.Paths)) {
+		for _, t := range slice.Sort(t.Paths[path].ToSlice()) {
+			lines = append(lines, path+": "+t)
+		}
+	}
+	return lines
+}
+
+func Traverse(objs ...any) string {
+	paths := map[string]*set.Set[string]{}
+	for _, o := range objs {
+		TraversePaths(o, paths)
+	}
 	var lines []string
 	for _, path := range slice.Sort(dict.Keys(paths)) {
 		for _, t := range slice.Sort(paths[path].ToSlice()) {
@@ -175,8 +200,7 @@ func Traverse(o any) string {
 	return strings.Join(lines, "\n")
 }
 
-func TraversePaths(o any) map[string]*set.Set[string] {
-	paths := map[string]*set.Set[string]{}
+func TraversePaths(o any, paths map[string]*set.Set[string]) {
 	f := func(path Path, o any) {
 		if _, ok := paths[path.Key()]; !ok {
 			paths[path.Key()] = set.Empty[string]()
@@ -201,7 +225,6 @@ func TraversePaths(o any) map[string]*set.Set[string] {
 		paths[path.Key()].Add(typeName)
 	}
 	TraverseHelp(nil, o, f)
-	return paths
 }
 
 func TraverseHelp(path Path, o any, f Listener) {
