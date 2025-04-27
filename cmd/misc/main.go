@@ -1,17 +1,96 @@
 package main
 
 import (
-	"os"
-
 	"github.com/mattfenwick/algorithms/pkg/pratt"
 	"github.com/mattfenwick/algorithms/pkg/schema"
+	"github.com/mattfenwick/algorithms/pkg/utils"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 )
 
 func main() {
-	switch os.Args[1] {
-	case "pratt":
-		pratt.Run(os.Args[2])
-	case "json":
-		schema.Run(os.Args[2])
+	command := SetupRootCommand()
+	utils.Die0(errors.Wrapf(command.Execute(), "run root command"))
+}
+
+type RootFlags struct {
+	Verbosity string
+}
+
+func SetupRootCommand() *cobra.Command {
+	flags := &RootFlags{}
+	command := &cobra.Command{
+		Use: "",
+		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			return SetUpLogger(flags.Verbosity)
+		},
 	}
+
+	command.PersistentFlags().StringVarP(&flags.Verbosity, "verbosity", "v", "info", "log level; one of [info, debug, trace, warn, error, fatal, panic]")
+
+	command.AddCommand(SetupPrattCommand())
+	command.AddCommand(SetupSchemaCommand())
+
+	return command
+}
+
+type PrattArgs struct {
+	Expr string
+}
+
+func SetupPrattCommand() *cobra.Command {
+	args := &PrattArgs{}
+
+	command := &cobra.Command{
+		Use: "pratt",
+		Run: func(cmd *cobra.Command, as []string) {
+			RunPratt(args.Expr)
+		},
+	}
+
+	command.Flags().StringVar(&args.Expr, "expr", "", "expression")
+
+	return command
+}
+
+func RunPratt(s string) {
+	pratt.Run(s)
+}
+
+type SchemaArgs struct {
+	Path string
+}
+
+func SetupSchemaCommand() *cobra.Command {
+	args := &SchemaArgs{}
+
+	command := &cobra.Command{
+		Use: "schema",
+		Run: func(cmd *cobra.Command, as []string) {
+			RunSchema(args.Path)
+		},
+	}
+
+	command.Flags().StringVar(&args.Path, "path", "", "root path to traverse, under which json and jsonl files will be analyzed")
+	command.MarkFlagRequired("path")
+
+	return command
+}
+
+func RunSchema(path string) {
+	schema.Run(path)
+}
+
+func SetUpLogger(logLevelStr string) error {
+	logLevel, err := logrus.ParseLevel(logLevelStr)
+	if err != nil {
+		return errors.Wrapf(err, "unable to parse the specified log level: '%s'", logLevel)
+	}
+	logrus.SetLevel(logLevel)
+	logrus.SetFormatter(&logrus.TextFormatter{
+		FullTimestamp: true,
+	})
+	logrus.Infof("log level set to '%s'", logrus.GetLevel())
+	return nil
 }
