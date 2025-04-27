@@ -7,6 +7,7 @@ import (
 	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/mattfenwick/collections/pkg/dict"
 	"github.com/mattfenwick/collections/pkg/json"
+	"github.com/mattfenwick/collections/pkg/set"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -129,4 +130,97 @@ func GetType(o any) *Type {
 	default:
 		panic(errors.Errorf("invalid type: %+v, %T", o, o))
 	}
+}
+
+type Index struct {
+	Object *string
+	Array  *int
+}
+
+func copySlice[A any](as []A) []A {
+	out := make([]A, len(as))
+	copy(out, as)
+	return out
+}
+
+func ObjectIndex(k string) *Index {
+	return &Index{Object: &k}
+}
+
+func ArrayIndex(i int) *Index {
+	return &Index{Array: &i}
+}
+
+type Path []*Index
+
+func (p Path) Key() string {
+	return strings.Join(slice.Map(func(i *Index) string {
+		if i.Array != nil {
+			return "[*]"
+		}
+		return fmt.Sprintf(`["%s"]`, strings.ReplaceAll(*i.Object, `"`, `\"`))
+	}, p), "")
+}
+
+type Listener func(Path, any)
+
+func Traverse(o any) string {
+	paths := TraversePaths(o)
+	var lines []string
+	for _, path := range slice.Sort(dict.Keys(paths)) {
+		for _, t := range slice.Sort(paths[path].ToSlice()) {
+			lines = append(lines, path+": "+t)
+		}
+	}
+	return strings.Join(lines, "\n")
+}
+
+func TraversePaths(o any) map[string]*set.Set[string] {
+	paths := map[string]*set.Set[string]{}
+	f := func(path Path, o any) {
+		if _, ok := paths[path.Key()]; !ok {
+			paths[path.Key()] = set.Empty[string]()
+		}
+		var typeName string
+		switch o.(type) {
+		case nil:
+			typeName = "null"
+		case bool:
+			typeName = "bool"
+		case string:
+			typeName = "string"
+		case int, float64:
+			typeName = "number"
+		case []any:
+			typeName = "array"
+		case map[string]any:
+			typeName = "object"
+		default:
+			panic(errors.Errorf("invalid type: %T", o))
+		}
+		paths[path.Key()].Add(typeName)
+	}
+	TraverseHelp(nil, o, f)
+	return paths
+}
+
+func TraverseHelp(path Path, o any, f Listener) {
+	f(copySlice(path), o)
+	switch val := o.(type) {
+	case bool, int, float64, string, nil:
+		// no need to recur for these types
+	case []any:
+		for i, v := range val {
+			newPath := append(copySlice(path), ArrayIndex(i))
+			TraverseHelp(newPath, v, f)
+		}
+	case map[string]any:
+		for _, k := range slice.Sort(dict.Keys(val)) {
+			newPath := append(copySlice(path), ObjectIndex(k))
+			TraverseHelp(newPath, val[k], f)
+		}
+	default:
+		panic(errors.Errorf("invalid type: %+v, %T", o, o))
+	}
+
 }
