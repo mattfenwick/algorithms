@@ -59,7 +59,8 @@ func RunPratt(s string) {
 }
 
 type SchemaArgs struct {
-	Path string
+	Path    string
+	ReadAll bool
 }
 
 func SetupSchemaCommand() *cobra.Command {
@@ -68,18 +69,19 @@ func SetupSchemaCommand() *cobra.Command {
 	command := &cobra.Command{
 		Use: "schema",
 		Run: func(cmd *cobra.Command, as []string) {
-			RunSchema(args.Path)
+			RunSchema(args.Path, args.ReadAll)
 		},
 	}
 
+	command.Flags().BoolVar(&args.ReadAll, "all", false, "if true, ignore extension and treat all files as either json or jsonl")
 	command.Flags().StringVar(&args.Path, "path", "", "root path to traverse, under which json and jsonl files will be analyzed")
 	command.MarkFlagRequired("path")
 
 	return command
 }
 
-func RunSchema(path string) {
-	schema.Run(path)
+func RunSchema(path string, readAll bool) {
+	schema.Run(path, readAll)
 }
 
 func SetUpLogger(logLevelStr string) error {

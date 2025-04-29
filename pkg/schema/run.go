@@ -13,7 +13,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func Run(rootPath string) {
+func Run(rootPath string, readAll bool) {
 	t := NewTraverser()
 	filepath.WalkDir(rootPath, func(path string, d fs.DirEntry, err error) error {
 		if d.IsDir() {
@@ -24,7 +24,7 @@ func Run(rootPath string) {
 			var v any
 			utils.Die0(json.Unmarshal(bs, &v))
 			t.Add(v)
-		} else if filepath.Ext(path) == ".jsonl" {
+		} else if filepath.Ext(path) == ".jsonl" || readAll {
 			for _, line := range strings.Split(string(utils.Die(os.ReadFile(path))), "\n") {
 				if strings.TrimSpace(line) == "" {
 					continue
