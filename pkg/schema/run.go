@@ -26,6 +26,9 @@ func Run(rootPath string) {
 			t.Add(v)
 		} else if filepath.Ext(path) == ".jsonl" {
 			for _, line := range strings.Split(string(utils.Die(os.ReadFile(path))), "\n") {
+				if strings.TrimSpace(line) == "" {
+					continue
+				}
 				var v any
 				utils.Die0(errors.Wrapf(json.Unmarshal([]byte(line), &v), "unable to read jsonl from %s", path))
 				t.Add(v)
