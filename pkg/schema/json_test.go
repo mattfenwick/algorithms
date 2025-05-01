@@ -49,32 +49,32 @@ type Case struct {
 var _ = Describe("Traverse", func() {
 	cases := []*Case{
 		{"grab bag", `{"a":1,"b":true,"c":[1,1.2,"d",{}],"e":null}`, "",
-			`: object
-["a"]: number
-["b"]: bool
-["c"]: array
-["c"][*]: number
-["c"][*]: object
-["c"][*]: string
-["e"]: null`,
+			`: object (1)
+["a"]: number (1)
+["b"]: bool (1)
+["c"]: array (1)
+["c"][*]: number (2)
+["c"][*]: object (1)
+["c"][*]: string (1)
+["e"]: null (1)`,
 		},
 		{"array of arrays", `[[null, true], [null, true], [3, false], "abc"]`, "",
-			`: array
-[*]: array
-[*]: string
-[*][*]: bool
-[*][*]: null
-[*][*]: number`,
+			`: array (1)
+[*]: array (3)
+[*]: string (1)
+[*][*]: bool (3)
+[*][*]: null (2)
+[*][*]: number (1)`,
 		},
 		{"objects in array", `{"a": [{"b": 1, "c": null, "e": 2}, {"b": [], "d": false, "e": 3}]}`, "",
-			`: object
-["a"]: array
-["a"][*]: object
-["a"][*]["b"]: array
-["a"][*]["b"]: number
-["a"][*]["c"]: null
-["a"][*]["d"]: bool
-["a"][*]["e"]: number`,
+			`: object (1)
+["a"]: array (1)
+["a"][*]: object (2)
+["a"][*]["b"]: array (1)
+["a"][*]["b"]: number (1)
+["a"][*]["c"]: null (1)
+["a"][*]["d"]: bool (1)
+["a"][*]["e"]: number (2)`,
 		},
 	}
 

@@ -7,7 +7,6 @@ import (
 	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/mattfenwick/collections/pkg/dict"
 	"github.com/mattfenwick/collections/pkg/json"
-	"github.com/mattfenwick/collections/pkg/set"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -165,11 +164,11 @@ func (p Path) Key() string {
 type Listener func(Path, any)
 
 type Traverser struct {
-	Paths map[string]*set.Set[string]
+	Paths map[string]map[string]int
 }
 
 func NewTraverser() *Traverser {
-	return &Traverser{Paths: make(map[string]*set.Set[string])}
+	return &Traverser{Paths: make(map[string]map[string]int)}
 }
 
 func (t *Traverser) Add(o any) {
@@ -179,31 +178,33 @@ func (t *Traverser) Add(o any) {
 func (t *Traverser) Lines() []string {
 	var lines []string
 	for _, path := range slice.Sort(dict.Keys(t.Paths)) {
-		for _, t := range slice.Sort(t.Paths[path].ToSlice()) {
-			lines = append(lines, path+": "+t)
+		for _, typeName := range slice.Sort(dict.Keys(t.Paths[path])) {
+			count := t.Paths[path][typeName]
+			lines = append(lines, fmt.Sprintf("%s: %s (%d)", path, typeName, count))
 		}
 	}
 	return lines
 }
 
 func Traverse(objs ...any) string {
-	paths := map[string]*set.Set[string]{}
+	paths := map[string]map[string]int{}
 	for _, o := range objs {
 		TraversePaths(o, paths)
 	}
 	var lines []string
 	for _, path := range slice.Sort(dict.Keys(paths)) {
-		for _, t := range slice.Sort(paths[path].ToSlice()) {
-			lines = append(lines, path+": "+t)
+		for _, typeName := range slice.Sort(dict.Keys(paths[path])) {
+			count := paths[path][typeName]
+			lines = append(lines, fmt.Sprintf("%s: %s (%d)", path, typeName, count))
 		}
 	}
 	return strings.Join(lines, "\n")
 }
 
-func TraversePaths(o any, paths map[string]*set.Set[string]) {
+func TraversePaths(o any, paths map[string]map[string]int) {
 	f := func(path Path, o any) {
 		if _, ok := paths[path.Key()]; !ok {
-			paths[path.Key()] = set.Empty[string]()
+			paths[path.Key()] = map[string]int{}
 		}
 		var typeName string
 		switch o.(type) {
@@ -222,7 +223,7 @@ func TraversePaths(o any, paths map[string]*set.Set[string]) {
 		default:
 			panic(errors.Errorf("invalid type: %T", o))
 		}
-		paths[path.Key()].Add(typeName)
+		paths[path.Key()][typeName]++
 	}
 	TraverseHelp(nil, o, f)
 }
