@@ -8,7 +8,6 @@ import (
 	"github.com/mattfenwick/collections/pkg/dict"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 )
 
 type Type struct {
@@ -174,17 +173,12 @@ func (t *Traverser) Add(o any) {
 	TraversePaths(o, t.Paths)
 }
 
-func orderByInsensitiveThenCase(a string, b string) base.Ordering {
-	al, bl := strings.ToLower(a), strings.ToLower(b)
-	logrus.Infof("%s, %s, %s, %s: %t, %t, %t, %+v", a, b, al, bl, a == b, a < b, al < bl, base.CompareOrdered(a, b))
-	if al < bl {
-		return base.OrderingLessThan
-	} else if al > bl {
-		return base.OrderingGreaterThan
-	}
-	// slice.CompareBy(base.CompareOn(strings.ToLower), base.CompareOrdered)
-	return base.CompareOrdered(a, b)
-}
+// ordering:
+// 1. ignore case
+// 2. if same when ignoring case, then consider case.  uppercase sorts first
+var orderByInsensitiveThenCase = slice.CompareBy(
+	base.CompareOn(strings.ToLower),
+	base.CompareOrdered)
 
 func (t *Traverser) Lines() []string {
 	var lines []string
