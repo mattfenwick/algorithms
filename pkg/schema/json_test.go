@@ -2,6 +2,7 @@ package schema
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 
 	"github.com/mattfenwick/algorithms/pkg/utils"
@@ -82,7 +83,9 @@ var _ = Describe("Traverse", func() {
 		It(c.Name, func() {
 			var out any
 			utils.Die0(json.Unmarshal([]byte(c.Input), &out))
-			res := Traverse(out)
+			t := NewTraverser()
+			t.Add(out)
+			res := strings.Join(t.Lines(), "\n")
 			Expect(res).To(BeEquivalentTo(c.Expected))
 		})
 	}
