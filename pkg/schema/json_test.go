@@ -77,6 +77,15 @@ var _ = Describe("Traverse", func() {
 ["a"][*]["d"]: bool (1)
 ["a"][*]["e"]: number (2)`,
 		},
+		{"case-insensitive sort", `{"a":1,"b":2,"c":3,"A":4,"B":5,"C":6}`, "",
+			`: object (1)
+["A"]: number (1)
+["a"]: number (1)
+["B"]: number (1)
+["b"]: number (1)
+["C"]: number (1)
+["c"]: number (1)`,
+		},
 	}
 
 	for _, c := range cases {
