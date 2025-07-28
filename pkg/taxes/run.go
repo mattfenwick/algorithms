@@ -84,17 +84,11 @@ func RunBrackets(taxYear []int) {
 		PrintOrdinaryIncomeBrackets(taxYear)
 		fmt.Printf("\nlong term %d capital gains:\n", year)
 		PrintLTCGIncomeBrackets(taxYear)
+		fmt.Printf("\n%d medicare and standard deduction:\n", year)
+		PrintMedicareThresholdAndStandardDeductions(taxYear)
+		fmt.Printf("\n%d medicare and social security rates and limits:\n", year)
+		PrintMedicareAndSocialSecurityInfo(taxYear)
 		fmt.Printf("\n\n")
-
-		// // TODO med
-		// taxYear.MedicareAdditionalRate
-		// taxYear.MedicareBaseRate
-		// taxYear.NetInvestmentTaxRate
-		// // TODO social
-		// taxYear.SocialSecurityLimit
-		// taxYear.SocialSecurityRate
-		// // TODO deduction
-		// taxYear.ByStatus[FilingStatusMarriedJointly].StandardDeduction
 	}
 }
 
@@ -164,6 +158,35 @@ func PrintLTCGIncomeBrackets(taxYear *TaxYearConstants) {
 	table := &utils.Table{
 		Headers: slice.Cons("Rate %", slice.Map(func(f FilingStatus) string { return f.ToString() }, statuses)),
 		Rows:    Transpose(rows),
+	}
+	fmt.Printf("%s\n", table.ToFormattedTable())
+}
+
+func PrintMedicareThresholdAndStandardDeductions(taxYear *TaxYearConstants) {
+	statuses := []FilingStatus{FilingStatusSingle, FilingStatusMarriedJointly, FilingStatusMarriedSeparately, FilingStatusHeadOfHouseHold}
+	medicareRow := []string{"Medicare additional threshold"}
+	standardDeductionRow := []string{"Standard deduction"}
+	for _, s := range statuses {
+		medicareRow = append(medicareRow, fmt.Sprintf("%d", taxYear.ByStatus[s].MedicareAdditionalThreshold))
+		standardDeductionRow = append(standardDeductionRow, fmt.Sprintf("%d", taxYear.ByStatus[s].StandardDeduction))
+	}
+	table := &utils.Table{
+		Headers: slice.Cons("", slice.Map(func(f FilingStatus) string { return f.ToString() }, statuses)),
+		Rows:    [][]string{medicareRow, standardDeductionRow},
+	}
+	fmt.Printf("%s\n", table.ToFormattedTable())
+}
+
+func PrintMedicareAndSocialSecurityInfo(taxYear *TaxYearConstants) {
+	table := &utils.Table{
+		Headers: []string{"", ""},
+		Rows: [][]string{
+			{"Medicare base rate", fmt.Sprintf("%.2f %%", taxYear.MedicareBaseRate.ToDebugPercentage())},
+			{"Medicare additional rate", fmt.Sprintf("%.2f %%", taxYear.MedicareAdditionalRate.ToDebugPercentage())},
+			{"Medicare NIIT rate", fmt.Sprintf("%.1f %%", taxYear.NetInvestmentTaxRate.ToDebugPercentage())},
+			{"Social security rate", fmt.Sprintf("%.1f %%", taxYear.SocialSecurityRate.ToDebugPercentage())},
+			{"Social security limit", intToString(taxYear.SocialSecurityLimit)},
+		},
 	}
 	fmt.Printf("%s\n", table.ToFormattedTable())
 }
