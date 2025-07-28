@@ -10,7 +10,7 @@ import (
 var (
 	defaultIncomes = []*Income{
 		{
-			Year:   2024,
+			Year:   2025,
 			Status: FilingStatusSingle,
 			IncomeSources: []*IncomeSource{
 				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 25_000},
@@ -19,7 +19,7 @@ var (
 			Deduction: nil,
 		},
 		{
-			Year:   2024,
+			Year:   2025,
 			Status: FilingStatusSingle,
 			IncomeSources: []*IncomeSource{
 				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 250_000},
@@ -28,7 +28,7 @@ var (
 			Deduction: nil,
 		},
 		{
-			Year:   2024,
+			Year:   2025,
 			Status: FilingStatusSingle,
 			IncomeSources: []*IncomeSource{
 				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 30_000},
@@ -36,7 +36,7 @@ var (
 			Deduction: nil,
 		},
 		{
-			Year:   2024,
+			Year:   2025,
 			Status: FilingStatusSingle,
 			IncomeSources: []*IncomeSource{
 				{Description: "inv1", IncomeType: IncomeTypeLongTerm, Amount: 30_000},
@@ -44,7 +44,7 @@ var (
 			Deduction: nil,
 		},
 		{
-			Year:   2024,
+			Year:   2025,
 			Status: FilingStatusSingle,
 			IncomeSources: []*IncomeSource{
 				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 25_000},
@@ -53,7 +53,7 @@ var (
 			Deduction: nil,
 		},
 		{
-			Year:   2024,
+			Year:   2025,
 			Status: FilingStatusSingle,
 			IncomeSources: []*IncomeSource{
 				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 5_000},
@@ -62,7 +62,7 @@ var (
 			Deduction: nil,
 		},
 		{
-			Year:   2024,
+			Year:   2025,
 			Status: FilingStatusSingle,
 			IncomeSources: []*IncomeSource{
 				{Description: "job1", IncomeType: IncomeTypeWage, Amount: 65_000},
