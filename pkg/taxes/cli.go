@@ -35,7 +35,8 @@ func SetupRootCommand() *cobra.Command {
 }
 
 type EstimateArgs struct {
-	ConfigPath string
+	ConfigPath     string
+	ShowComparison bool
 }
 
 func SetupEstimateCommand() *cobra.Command {
@@ -51,6 +52,7 @@ func SetupEstimateCommand() *cobra.Command {
 	}
 
 	command.Flags().StringVar(&args.ConfigPath, "config", "", "path to config file")
+	command.Flags().BoolVar(&args.ShowComparison, "show-comparison", true, "if true and more than 1 income, show comparison")
 
 	return command
 }
@@ -64,7 +66,7 @@ func RunEstimate(args *EstimateArgs) {
 	} else {
 		incomes = defaultIncomes
 	}
-	RunTaxes(incomes)
+	RunTaxes(incomes, args.ShowComparison)
 }
 
 func SetUpLogger(logLevelStr string) error {

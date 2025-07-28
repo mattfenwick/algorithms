@@ -98,7 +98,7 @@ func RunBrackets(taxYear []int) {
 	}
 }
 
-func RunTaxes(incomes []*Income) {
+func RunTaxes(incomes []*Income, showComparison bool) {
 	var estimates []*TaxEstimate
 	for _, inc := range incomes {
 		estimate := EstimateTaxes(inc)
@@ -108,8 +108,10 @@ func RunTaxes(incomes []*Income) {
 		estimates = append(estimates, estimate)
 	}
 
-	fmt.Printf("comparison:\n")
-	PrettyPrintComparison(estimates)
+	if showComparison && len(estimates) > 1 {
+		fmt.Printf("comparison:\n")
+		PrettyPrintComparison(estimates)
+	}
 }
 
 func PrintOrdinaryIncomeBrackets(taxYear *TaxYearConstants) {
