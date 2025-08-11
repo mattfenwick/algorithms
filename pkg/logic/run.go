@@ -10,4 +10,5 @@ func Run() {
 		),
 	)
 	fmt.Println(PrettyPrint(tree))
+	fmt.Println(Evaluate(tree, map[string]bool{"P": false, "Q": false}))
 }
