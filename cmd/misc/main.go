@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/mattfenwick/algorithms/pkg/logic"
 	"github.com/mattfenwick/algorithms/pkg/pratt"
 	"github.com/mattfenwick/algorithms/pkg/schema"
 	"github.com/mattfenwick/algorithms/pkg/utils"
@@ -31,6 +32,7 @@ func SetupRootCommand() *cobra.Command {
 
 	command.AddCommand(SetupPrattCommand())
 	command.AddCommand(SetupSchemaCommand())
+	command.AddCommand(SetupLogicCommand())
 
 	return command
 }
@@ -82,6 +84,26 @@ func SetupSchemaCommand() *cobra.Command {
 
 func RunSchema(path string, readAll bool) {
 	schema.Run(path, readAll)
+}
+
+func RunLogic(args *LogicArgs) {
+	logic.Run()
+}
+
+type LogicArgs struct {
+}
+
+func SetupLogicCommand() *cobra.Command {
+	args := &LogicArgs{}
+
+	command := &cobra.Command{
+		Use: "logic",
+		Run: func(cmd *cobra.Command, as []string) {
+			RunLogic(args)
+		},
+	}
+
+	return command
 }
 
 func SetUpLogger(logLevelStr string) error {
