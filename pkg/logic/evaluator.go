@@ -4,15 +4,15 @@ import (
 	"github.com/pkg/errors"
 )
 
-func Evaluate(node Node, env map[string]bool) (bool, error) {
+func Evaluate(node Term, env map[string]bool) (bool, error) {
 	switch t := node.(type) {
-	case *VarNode:
+	case *VarTerm:
 		val, ok := env[t.Name]
 		if !ok {
 			return false, errors.Errorf("undefined variable: %s", t.Name)
 		}
 		return val, nil
-	case *OpNode:
+	case *OpTerm:
 		switch t.Op {
 		case NotOp:
 			val, err := Evaluate(t.Args[0], env)

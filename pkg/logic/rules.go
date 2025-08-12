@@ -11,11 +11,11 @@ import (
 
 type Environment struct {
 	Parent    *Environment
-	TrueNodes *set.Set[string]
+	TrueTerms *set.Set[string] // TODO string is nice for equality, but should this keep the actual term as well?
 }
 
 func (e *Environment) Find(key string) bool {
-	return e.TrueNodes.Contains(key)
+	return e.TrueTerms.Contains(key)
 }
 
 func (e *Environment) FindInParent(key string) bool {
@@ -26,17 +26,17 @@ func (e *Environment) FindInParent(key string) bool {
 }
 
 func (e *Environment) Add(key string) error {
-	if e.TrueNodes.Contains(key) {
+	if e.TrueTerms.Contains(key) {
 		return errors.Errorf("unable to add key '%s', already present", key)
 	}
-	e.TrueNodes.Add(key)
+	e.TrueTerms.Add(key)
 	return nil
 }
 
 func (e *Environment) Print(indent int) {
 	fmt.Printf("%s%s\n",
 		strings.Join(slice.Replicate(indent*2, " "), ""),
-		strings.Join(slice.Sort(e.TrueNodes.ToSlice()), ","))
+		strings.Join(slice.Sort(e.TrueTerms.ToSlice()), ","))
 	if e.Parent != nil {
 		e.Parent.Print(indent + 1)
 	}
@@ -84,12 +84,12 @@ func (e *Environment) Apply(rule Rule) error {
 
 type Rule interface {
 	StandardForm() Rule
-	Preconditions() []Node
-	Result() Node
+	Preconditions() []Term
+	Result() Term
 	FindInParent() bool
 }
 
-func StandardForm(rule Rule) Node {
+func StandardForm(rule Rule) Term {
 	sf := rule.StandardForm()
 	pres, result := sf.Preconditions(), sf.Result()
 	if len(pres) == 0 {
@@ -103,8 +103,8 @@ func StandardForm(rule Rule) Node {
 }
 
 type ElimImplicationRule struct {
-	If   Node
-	Then Node
+	If   Term
+	Then Term
 }
 
 func (e *ElimImplicationRule) FindInParent() bool {
@@ -115,20 +115,20 @@ func (e *ElimImplicationRule) StandardForm() Rule { //*ElimImplicationRule {
 	return &ElimImplicationRule{If: Var("P"), Then: Var("Q")}
 }
 
-func (e *ElimImplicationRule) Preconditions() []Node {
-	return []Node{
+func (e *ElimImplicationRule) Preconditions() []Term {
+	return []Term{
 		e.If,
 		Implication(e.If, e.Then),
 	}
 }
 
-func (e *ElimImplicationRule) Result() Node {
+func (e *ElimImplicationRule) Result() Term {
 	return e.Then
 }
 
 type IntroImplicationRule struct {
-	If   Node
-	Then Node
+	If   Term
+	Then Term
 }
 
 func (e *IntroImplicationRule) FindInParent() bool {
@@ -139,11 +139,11 @@ func (e *IntroImplicationRule) StandardForm() Rule { //*ElimImplicationRule {
 	return &IntroImplicationRule{If: Var("P"), Then: Var("Q")}
 }
 
-func (e *IntroImplicationRule) Preconditions() []Node {
-	return []Node{e.If, e.Then}
+func (e *IntroImplicationRule) Preconditions() []Term {
+	return []Term{e.If, e.Then}
 }
 
-func (e *IntroImplicationRule) Result() Node {
+func (e *IntroImplicationRule) Result() Term {
 	return Implication(e.If, e.Then)
 }
 
@@ -155,7 +155,7 @@ func (e *IntroImplicationRule) Result() Node {
 
 // reiterate
 type ReiterateRule struct {
-	Term Node
+	Term Term
 }
 
 func (e *ReiterateRule) FindInParent() bool {
@@ -166,11 +166,11 @@ func (e *ReiterateRule) StandardForm() Rule {
 	return &ReiterateRule{Term: Var("P")}
 }
 
-func (e *ReiterateRule) Preconditions() []Node {
-	return []Node{e.Term}
+func (e *ReiterateRule) Preconditions() []Term {
+	return []Term{e.Term}
 }
 
-func (e *ReiterateRule) Result() Node {
+func (e *ReiterateRule) Result() Term {
 	return e.Term
 }
 

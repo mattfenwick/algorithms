@@ -21,10 +21,10 @@ func Run() {
 		Then: Var("U"),
 	}
 	fmt.Printf("%s\n", PrettyPrint(StandardForm(elimImp)))
-	parentEnv := &Environment{TrueNodes: set.FromSlice([]string{"Z"})}
+	parentEnv := &Environment{TrueTerms: set.FromSlice([]string{"Z"})}
 	env := &Environment{
 		Parent:    parentEnv,
-		TrueNodes: set.FromSlice([]string{"T", "T -> U"}),
+		TrueTerms: set.FromSlice([]string{"T", "T -> U"}),
 	}
 	fmt.Println("before:")
 	env.Print(0)

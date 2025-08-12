@@ -16,16 +16,16 @@ const (
 	BiconditionalOp = "<->"
 )
 
-type Node interface{}
+type Term interface{}
 
-func PrettyPrint(n Node) string {
-	var help func(int, Node) []string
-	help = func(depth int, node Node) []string {
+func PrettyPrint(n Term) string {
+	var help func(int, Term) []string
+	help = func(depth int, node Term) []string {
 		out := []string{}
 		switch t := node.(type) {
-		case *VarNode:
+		case *VarTerm:
 			out = append(out, t.Name)
-		case *OpNode:
+		case *OpTerm:
 			switch t.Op {
 			case NotOp:
 				out = append(out, string(t.Op))
@@ -49,35 +49,35 @@ func PrettyPrint(n Node) string {
 	return strings.Join(help(0, n), " ")
 }
 
-type VarNode struct {
+type VarTerm struct {
 	Name string
 }
 
-type OpNode struct {
+type OpTerm struct {
 	Op   Op
-	Args []Node
+	Args []Term
 }
 
-func Var(name string) *VarNode {
-	return &VarNode{Name: name}
+func Var(name string) *VarTerm {
+	return &VarTerm{Name: name}
 }
 
-func Not(arg Node) *OpNode {
-	return &OpNode{Op: NotOp, Args: []Node{arg}}
+func Not(arg Term) *OpTerm {
+	return &OpTerm{Op: NotOp, Args: []Term{arg}}
 }
 
-func And(l, r Node) *OpNode {
-	return &OpNode{Op: AndOp, Args: []Node{l, r}}
+func And(l, r Term) *OpTerm {
+	return &OpTerm{Op: AndOp, Args: []Term{l, r}}
 }
 
-func Or(l, r Node) *OpNode {
-	return &OpNode{Op: OrOp, Args: []Node{l, r}}
+func Or(l, r Term) *OpTerm {
+	return &OpTerm{Op: OrOp, Args: []Term{l, r}}
 }
 
-func Implication(l, r Node) *OpNode {
-	return &OpNode{Op: ImplicationOp, Args: []Node{l, r}}
+func Implication(l, r Term) *OpTerm {
+	return &OpTerm{Op: ImplicationOp, Args: []Term{l, r}}
 }
 
-func Biconditional(l, r Node) *OpNode {
-	return &OpNode{Op: BiconditionalOp, Args: []Node{l, r}}
+func Biconditional(l, r Term) *OpTerm {
+	return &OpTerm{Op: BiconditionalOp, Args: []Term{l, r}}
 }
