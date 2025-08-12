@@ -18,7 +18,7 @@ func Evaluate(node Term, env map[string]bool) (bool, error) {
 			return false, err
 		}
 		return !val, nil
-	case *OpTerm:
+	case *BinOpTerm:
 		switch t.Op {
 		default:
 			l, err := Evaluate(t.LeftArg, env)

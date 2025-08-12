@@ -2,13 +2,13 @@ package logic
 
 import "strings"
 
-type Op string
+type BinOp string
 
 const (
-	AndOp           = "^"
-	OrOp            = "v"
-	ImplicationOp   = "->"
-	BiconditionalOp = "<->"
+	AndOp           BinOp = "^"
+	OrOp            BinOp = "v"
+	ImplicationOp   BinOp = "->"
+	BiconditionalOp BinOp = "<->"
 )
 
 type Term interface {
@@ -33,13 +33,13 @@ func (n *NotTerm) TermPrint(isRoot bool) string {
 	return strings.Join(out, " ")
 }
 
-type OpTerm struct {
-	Op       Op
+type BinOpTerm struct {
+	Op       BinOp
 	LeftArg  Term
 	RightArg Term
 }
 
-func (o *OpTerm) TermPrint(isRoot bool) string {
+func (o *BinOpTerm) TermPrint(isRoot bool) string {
 	var out []string
 	if !isRoot {
 		out = append(out, "(")
@@ -61,18 +61,18 @@ func Not(arg Term) *NotTerm {
 	return &NotTerm{Arg: arg}
 }
 
-func And(l, r Term) *OpTerm {
-	return &OpTerm{Op: AndOp, LeftArg: l, RightArg: r}
+func And(l, r Term) *BinOpTerm {
+	return &BinOpTerm{Op: AndOp, LeftArg: l, RightArg: r}
 }
 
-func Or(l, r Term) *OpTerm {
-	return &OpTerm{Op: OrOp, LeftArg: l, RightArg: r}
+func Or(l, r Term) *BinOpTerm {
+	return &BinOpTerm{Op: OrOp, LeftArg: l, RightArg: r}
 }
 
-func Implication(l, r Term) *OpTerm {
-	return &OpTerm{Op: ImplicationOp, LeftArg: l, RightArg: r}
+func Implication(l, r Term) *BinOpTerm {
+	return &BinOpTerm{Op: ImplicationOp, LeftArg: l, RightArg: r}
 }
 
-func Biconditional(l, r Term) *OpTerm {
-	return &OpTerm{Op: BiconditionalOp, LeftArg: l, RightArg: r}
+func Biconditional(l, r Term) *BinOpTerm {
+	return &BinOpTerm{Op: BiconditionalOp, LeftArg: l, RightArg: r}
 }
