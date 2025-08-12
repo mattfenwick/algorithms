@@ -29,9 +29,43 @@ func (e *Environment) Add(key string) error {
 	return nil
 }
 
+func (e *Environment) Apply(rule Rule) error {
+	// 1. check preconditions
+	for _, n := range rule.Preconditions() {
+		key := PrettyPrint(n)
+		// TODO reiterate -- needs to look up in parent.  how to do this?
+		if !e.Find(key) {
+			return errors.Errorf("missing or untrue premise '%s'", key)
+		}
+	}
+	// 2. result
+	result := rule.Result()
+	// 3. check that result is not in environment
+	// 4. update env
+	thenString := PrettyPrint(result)
+	if err := e.Add(thenString); err != nil {
+		return errors.Errorf("'%s' aready in environment -- unnecessary step", thenString)
+	}
+	return nil
+}
+
 type Rule interface {
-	StandardForm() Node
-	Apply(env *Environment) error
+	StandardForm() Rule
+	Preconditions() []Node
+	Result() Node
+}
+
+func StandardForm(rule Rule) Node {
+	sf := rule.StandardForm()
+	pres, result := sf.Preconditions(), sf.Result()
+	if len(pres) == 0 {
+		return result
+	}
+	left := pres[0]
+	for _, l := range pres[1:] {
+		left = And(left, l)
+	}
+	return Implication(left, result)
 }
 
 type ElimImplicationRule struct {
@@ -39,44 +73,36 @@ type ElimImplicationRule struct {
 	Then Node
 }
 
-func (e *ElimImplicationRule) StandardForm() Node {
-	return Implication(
-		And(
-			Implication(
-				Var("P"),
-				Var("Q")),
-			Var("P")),
-		Var("Q"))
+func (e *ElimImplicationRule) StandardForm() Rule { //*ElimImplicationRule {
+	return &ElimImplicationRule{If: Var("P"), Then: Var("Q")}
 }
 
-func (e *ElimImplicationRule) Apply(env *Environment) error {
-	// 1. check preconditions
-	for _, n := range []Node{e.If, Implication(e.If, e.Then)} {
-		key := PrettyPrint(n)
-		if !env.Find(key) {
-			return errors.Errorf("missing or untrue premise '%s'", key)
-		}
+func (e *ElimImplicationRule) Preconditions() []Node {
+	return []Node{
+		e.If,
+		Implication(e.If, e.Then),
 	}
-	// 2. result
-	result := e.Then
-	// 3. check that result is not in environment
-	// 4. update env
-	thenString := PrettyPrint(result)
-	if err := env.Add(thenString); err != nil {
-		return errors.Errorf("'%s' aready in environment -- unnecessary step", thenString)
-	}
-	return nil
 }
 
-func AssertTrue(env map[string]bool, node Node) error {
-	str := PrettyPrint(node)
-	val, ok := env[str]
-	if !ok {
-		return errors.Errorf("'%s' not found in env", str)
-	} else if !val {
-		return errors.Errorf("'%s' is false in env", str)
-	}
-	return nil
+func (e *ElimImplicationRule) Result() Node {
+	return e.Then
+}
+
+type IntroImplicationRule struct {
+	If   Node
+	Then Node
+}
+
+func (e *IntroImplicationRule) StandardForm() Rule { //*ElimImplicationRule {
+	return &IntroImplicationRule{If: Var("P"), Then: Var("Q")}
+}
+
+func (e *IntroImplicationRule) Preconditions() []Node {
+	return []Node{e.If, e.Then}
+}
+
+func (e *IntroImplicationRule) Result() Node {
+	return Implication(e.If, e.Then)
 }
 
 // rule evaluation
@@ -92,50 +118,6 @@ func AssertTrue(env map[string]bool, node Node) error {
 //      3. not already in env; ok
 //      4. env: Q -> (R ^ S), Q, R ^ S
 // DON'T check for contradictions, that's not our job right now (TODO: or is it?)
-
-// I - -> P, Q -> (P -> Q)
-func IntroImplication(p Node, q Node) func(map[string]bool) error {
-	return func(env map[string]bool) error {
-		// 1. check preconditions
-		if err := AssertTrue(env, p); err != nil {
-			return errors.WithMessagef(err, "unable to apply rule -- missing P")
-		} else if err := AssertTrue(env, q); err != nil {
-			return errors.WithMessagef(err, "unable to apply rule -- missing Q")
-		}
-		// 2. result
-		result := Implication(p, q)
-		// 3. check that result is not in environment
-		thenString := PrettyPrint(result)
-		if _, ok := env[thenString]; ok {
-			return errors.Errorf("'%s' aready in environment -- unnecessary step", thenString)
-		}
-		// 4. update env
-		env[thenString] = true
-		return nil
-	}
-}
-
-// E - -> (P -> Q), P -> Q
-func ElimImplication(p Node, q Node) func(map[string]bool) error {
-	return func(env map[string]bool) error {
-		// 1. check preconditions
-		implication := Implication(p, q)
-		if err := AssertTrue(env, p); err != nil {
-			return errors.WithMessagef(err, "unable to apply rule -- missing P")
-		} else if err := AssertTrue(env, implication); err != nil {
-			return errors.WithMessagef(err, "unable to apply rule -- missing implication")
-		}
-		// 2. result
-		result := q
-		// 3. check that result is not in environment
-		thenString := PrettyPrint(result)
-		if _, ok := env[thenString]; ok {
-			return errors.Errorf("'%s' aready in environment -- unnecessary step", thenString)
-		}
-		env[thenString] = true
-		return nil
-	}
-}
 
 // I - ^ -- A, B -> A ^ B
 // E - ^ -- A ^ B -> A; A ^ B -> B;
