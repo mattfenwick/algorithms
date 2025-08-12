@@ -16,8 +16,15 @@ func Run() {
 
 	parentEnv := &Environment{TrueTerms: set.FromSlice([]string{"Z"})}
 	env := &Environment{
-		Parent:    parentEnv,
-		TrueTerms: set.FromSlice([]string{"T", "T -> U"}),
+		Parent: parentEnv,
+		TrueTerms: set.FromSlice([]string{
+			"T",
+			"T -> U",
+			"A",
+			"B",
+			"Z -> X",
+			"C -> X",
+		}),
 	}
 	fmt.Println("before:")
 	env.Print(0)
@@ -26,6 +33,10 @@ func Run() {
 		&ElimImplicationRule{If: Var("T"), Then: Var("U")},
 		&IntroImplicationRule{If: Implication(Var("T"), Var("U")), Then: Var("T")},
 		&ReiterateRule{Term: Var("Z")},
+		&IntroAndRule{Left: Var("Z"), Right: Var("U")},
+		&ElimAndRule{Left: Var("A"), Right: Var("B"), IsLeft: false},
+		&IntroOrRule{Left: Var("Z"), Right: Var("C"), IsLeft: true},
+		&ElimOrRule{If1: Var("Z"), If2: Var("C"), Then: Var("X")},
 	}
 	for _, r := range rules {
 		str := PrettyPrint(StandardForm(r))
