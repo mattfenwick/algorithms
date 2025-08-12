@@ -10,17 +10,10 @@ func Run() {
 	tree := Not(
 		And(
 			Not(Var("P")),
-			Not(Var("Q")),
-		),
-	)
+			Not(Var("Q"))))
 	fmt.Println(PrettyPrint(tree))
 	fmt.Println(Evaluate(tree, map[string]bool{"P": false, "Q": false}))
 
-	elimImp := &ElimImplicationRule{
-		If:   Var("T"),
-		Then: Var("U"),
-	}
-	fmt.Printf("%s\n", PrettyPrint(StandardForm(elimImp)))
 	parentEnv := &Environment{TrueTerms: set.FromSlice([]string{"Z"})}
 	env := &Environment{
 		Parent:    parentEnv,
@@ -28,29 +21,30 @@ func Run() {
 	}
 	fmt.Println("before:")
 	env.Print(0)
-	if err := env.Apply(elimImp); err != nil {
-		panic(err)
-	}
-	fmt.Println("after:")
-	env.Print(0)
 
-	intImp := &IntroImplicationRule{If: Implication(Var("T"), Var("U")), Then: Var("T")}
-	if err := env.Apply(intImp); err != nil {
-		panic(err)
+	var rules = []Rule{
+		&ElimImplicationRule{If: Var("T"), Then: Var("U")},
+		&IntroImplicationRule{If: Implication(Var("T"), Var("U")), Then: Var("T")},
+		&ReiterateRule{Term: Var("Z")},
 	}
-	fmt.Println("after intro:")
-	env.Print(0)
+	for _, r := range rules {
+		str := PrettyPrint(StandardForm(r))
+		fmt.Printf("processing rule '%s'\n", str)
+		if err := env.Apply(r); err != nil {
+			fmt.Printf("unable to apply rule '%s': %s\n", str, err)
+		} else {
+			fmt.Printf("successfully applied rule '%s'\n", str)
+		}
+		fmt.Println("after rule ", str)
+		env.Print(0)
 
-	reiterate := &ReiterateRule{Term: Var("Z")}
-	if err := env.Apply(reiterate); err != nil {
-		panic(err)
+		if err := parentEnv.Apply(r); err != nil {
+			fmt.Printf("unable to apply rule '%s' in parent env: %s\n", str, err)
+		} else {
+			fmt.Printf("successfully applied rule '%s' in parent\n", str)
+		}
+		fmt.Printf("after rule %s in parent\n", str)
+		env.Print(0)
+		fmt.Println()
 	}
-	fmt.Println("after reiterate:")
-	env.Print(0)
-
-	if err := parentEnv.Apply(reiterate); err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("after reiterate on parent:")
-	env.Print(0)
 }
