@@ -2,7 +2,6 @@ package logic
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/mattfenwick/collections/pkg/set"
 )
@@ -22,18 +21,36 @@ func Run() {
 		Then: Var("U"),
 	}
 	fmt.Printf("%s\n", PrettyPrint(StandardForm(elimImp)))
+	parentEnv := &Environment{TrueNodes: set.FromSlice([]string{"Z"})}
 	env := &Environment{
+		Parent:    parentEnv,
 		TrueNodes: set.FromSlice([]string{"T", "T -> U"}),
 	}
-	fmt.Printf("before: %+v\n", strings.Join(env.TrueNodes.ToSlice(), ","))
+	fmt.Println("before:")
+	env.Print(0)
 	if err := env.Apply(elimImp); err != nil {
 		panic(err)
 	}
-	fmt.Printf("after: %+v\n", strings.Join(env.TrueNodes.ToSlice(), ","))
+	fmt.Println("after:")
+	env.Print(0)
 
 	intImp := &IntroImplicationRule{If: Implication(Var("T"), Var("U")), Then: Var("T")}
 	if err := env.Apply(intImp); err != nil {
 		panic(err)
 	}
-	fmt.Printf("after intro ->: %+v\n", strings.Join(env.TrueNodes.ToSlice(), ","))
+	fmt.Println("after intro:")
+	env.Print(0)
+
+	reiterate := &ReiterateRule{Term: Var("Z")}
+	if err := env.Apply(reiterate); err != nil {
+		panic(err)
+	}
+	fmt.Println("after reiterate:")
+	env.Print(0)
+
+	if err := parentEnv.Apply(reiterate); err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("after reiterate on parent:")
+	env.Print(0)
 }
