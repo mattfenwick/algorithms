@@ -1,83 +1,78 @@
 package logic
 
-import (
-	"strings"
-
-	"github.com/pkg/errors"
-)
+import "strings"
 
 type Op string
 
 const (
-	NotOp           = "~"
 	AndOp           = "^"
 	OrOp            = "v"
 	ImplicationOp   = "->"
 	BiconditionalOp = "<->"
 )
 
-type Term interface{}
-
-func PrettyPrint(n Term) string {
-	var help func(int, Term) []string
-	help = func(depth int, node Term) []string {
-		out := []string{}
-		switch t := node.(type) {
-		case *VarTerm:
-			out = append(out, t.Name)
-		case *OpTerm:
-			switch t.Op {
-			case NotOp:
-				out = append(out, string(t.Op))
-				out = append(out, help(depth+1, t.Args[0])...)
-			default:
-				if depth != 0 {
-					out = append(out, "(")
-				}
-				out = append(out, help(depth+1, t.Args[0])...)
-				out = append(out, string(t.Op))
-				out = append(out, help(depth+1, t.Args[1])...)
-				if depth != 0 {
-					out = append(out, ")")
-				}
-			}
-		default:
-			panic(errors.Errorf("invalid type: %+V", t))
-		}
-		return out
-	}
-	return strings.Join(help(0, n), " ")
+type Term interface {
+	TermPrint(isRoot bool) string
 }
 
 type VarTerm struct {
 	Name string
 }
 
+func (v *VarTerm) TermPrint(isRoot bool) string {
+	return v.Name
+}
+
+type NotTerm struct {
+	Arg Term
+}
+
+func (n *NotTerm) TermPrint(isRoot bool) string {
+	out := []string{"~"}
+	out = append(out, n.Arg.TermPrint(false))
+	return strings.Join(out, " ")
+}
+
 type OpTerm struct {
-	Op   Op
-	Args []Term
+	Op       Op
+	LeftArg  Term
+	RightArg Term
+}
+
+func (o *OpTerm) TermPrint(isRoot bool) string {
+	var out []string
+	if !isRoot {
+		out = append(out, "(")
+	}
+	out = append(out, o.LeftArg.TermPrint(false))
+	out = append(out, string(o.Op))
+	out = append(out, o.RightArg.TermPrint(false))
+	if !isRoot {
+		out = append(out, ")")
+	}
+	return strings.Join(out, " ")
 }
 
 func Var(name string) *VarTerm {
 	return &VarTerm{Name: name}
 }
 
-func Not(arg Term) *OpTerm {
-	return &OpTerm{Op: NotOp, Args: []Term{arg}}
+func Not(arg Term) *NotTerm {
+	return &NotTerm{Arg: arg}
 }
 
 func And(l, r Term) *OpTerm {
-	return &OpTerm{Op: AndOp, Args: []Term{l, r}}
+	return &OpTerm{Op: AndOp, LeftArg: l, RightArg: r}
 }
 
 func Or(l, r Term) *OpTerm {
-	return &OpTerm{Op: OrOp, Args: []Term{l, r}}
+	return &OpTerm{Op: OrOp, LeftArg: l, RightArg: r}
 }
 
 func Implication(l, r Term) *OpTerm {
-	return &OpTerm{Op: ImplicationOp, Args: []Term{l, r}}
+	return &OpTerm{Op: ImplicationOp, LeftArg: l, RightArg: r}
 }
 
 func Biconditional(l, r Term) *OpTerm {
-	return &OpTerm{Op: BiconditionalOp, Args: []Term{l, r}}
+	return &OpTerm{Op: BiconditionalOp, LeftArg: l, RightArg: r}
 }

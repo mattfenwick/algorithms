@@ -11,7 +11,7 @@ func Run() {
 		And(
 			Not(Var("P")),
 			Not(Var("Q"))))
-	fmt.Println(PrettyPrint(tree))
+	fmt.Println(tree.TermPrint(true))
 	fmt.Println(Evaluate(tree, map[string]bool{"P": false, "Q": false}))
 
 	parentEnv := &Environment{TrueTerms: set.FromSlice([]string{"Z"})}
@@ -39,7 +39,7 @@ func Run() {
 		&ElimOrRule{If1: Var("Z"), If2: Var("C"), Then: Var("X")},
 	}
 	for _, r := range rules {
-		str := PrettyPrint(StandardForm(r))
+		str := StandardForm(r).TermPrint(true)
 		fmt.Printf("processing rule '%s'\n", str)
 		if err := env.Apply(r); err != nil {
 			fmt.Printf("unable to apply rule '%s': %s\n", str, err)

@@ -12,20 +12,20 @@ func Evaluate(node Term, env map[string]bool) (bool, error) {
 			return false, errors.Errorf("undefined variable: %s", t.Name)
 		}
 		return val, nil
+	case *NotTerm:
+		val, err := Evaluate(t.Arg, env)
+		if err != nil {
+			return false, err
+		}
+		return !val, nil
 	case *OpTerm:
 		switch t.Op {
-		case NotOp:
-			val, err := Evaluate(t.Args[0], env)
-			if err != nil {
-				return false, err
-			}
-			return !val, nil
 		default:
-			l, err := Evaluate(t.Args[0], env)
+			l, err := Evaluate(t.LeftArg, env)
 			if err != nil {
 				return false, err
 			}
-			r, err := Evaluate(t.Args[1], env)
+			r, err := Evaluate(t.RightArg, env)
 			if err != nil {
 				return false, err
 			}
