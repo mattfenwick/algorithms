@@ -9,33 +9,33 @@ import (
 	"github.com/pkg/errors"
 )
 
-func CheckProof(proof *Proof) (*Environment, error) {
-	env := NewEnvironment(nil)
+func CheckProof(proof *Proof) (*Scope, error) {
+	env := NewScope(nil)
 	err := env.ApplyProof(proof)
 	return env, err
 }
 
-type Environment struct {
-	Parent    *Environment
+type Scope struct {
+	Parent    *Scope
 	TrueTerms *set.Set[string] // TODO string is nice for equality, but should this keep the actual term as well?
 }
 
-func NewEnvironment(parent *Environment, trueTerms ...string) *Environment {
-	return &Environment{Parent: parent, TrueTerms: set.FromSlice(trueTerms)}
+func NewScope(parent *Scope, trueTerms ...string) *Scope {
+	return &Scope{Parent: parent, TrueTerms: set.FromSlice(trueTerms)}
 }
 
-func (e *Environment) Find(key string) bool {
+func (e *Scope) Find(key string) bool {
 	return e.TrueTerms.Contains(key)
 }
 
-func (e *Environment) FindInParent(key string) bool {
+func (e *Scope) FindInParent(key string) bool {
 	if e.Parent == nil {
 		return false
 	}
 	return e.Parent.Find(key) || e.Parent.FindInParent(key)
 }
 
-func (e *Environment) Add(key string) error {
+func (e *Scope) Add(key string) error {
 	if e.TrueTerms.Contains(key) {
 		return errors.Errorf("unable to add key '%s', already present", key)
 	}
@@ -43,11 +43,11 @@ func (e *Environment) Add(key string) error {
 	return nil
 }
 
-func (e *Environment) GetTrueTerms() []string {
+func (e *Scope) GetTrueTerms() []string {
 	return slice.Sort(e.TrueTerms.ToSlice())
 }
 
-func (e *Environment) Print(indent int) {
+func (e *Scope) Print(indent int) {
 	fmt.Printf("%s%s\n",
 		strings.Join(slice.Replicate(indent*2, " "), ""),
 		strings.Join(e.GetTrueTerms(), ","))
@@ -56,7 +56,7 @@ func (e *Environment) Print(indent int) {
 	}
 }
 
-func (e *Environment) ApplyProof(proof *Proof) error {
+func (e *Scope) ApplyProof(proof *Proof) error {
 	for _, step := range proof.Steps {
 		if err := e.ApplyStep(step); err != nil {
 			return err
@@ -68,10 +68,10 @@ func (e *Environment) ApplyProof(proof *Proof) error {
 	return nil
 }
 
-func (e *Environment) ApplyStep(step any) error {
+func (e *Scope) ApplyStep(step Step) error {
 	switch t := step.(type) {
 	case *SubProof:
-		childEnv := NewEnvironment(e, t.Hypothesis.TermPrint(true))
+		childEnv := NewScope(e, t.Hypothesis.TermPrint(true))
 		return childEnv.ApplySubProof(t)
 		// TODO somehow return childEnv for debugging purposes
 	case *Reiterate:
@@ -80,7 +80,7 @@ func (e *Environment) ApplyStep(step any) error {
 			return errors.Errorf("missing or untrue premise '%s' in parent(s)", key)
 		}
 		if err := e.Add(key); err != nil {
-			return errors.Errorf("'%s' aready in environment -- unnecessary step", key)
+			return errors.Errorf("'%s' aready in scope -- unnecessary step", key)
 		}
 		return nil
 	case *Repeat:
@@ -96,7 +96,7 @@ func (e *Environment) ApplyStep(step any) error {
 	}
 }
 
-func (e *Environment) ApplySubProof(sp *SubProof) error {
+func (e *Scope) ApplySubProof(sp *SubProof) error {
 	for _, step := range sp.Steps {
 		if err := e.ApplyStep(step); err != nil {
 			return err
@@ -120,7 +120,7 @@ func (e *Environment) ApplySubProof(sp *SubProof) error {
 //	   4. env: Q -> (R ^ S), Q, R ^ S
 //
 // DON'T check for contradictions, that's not our job right here (TODO: or is it?)
-func (e *Environment) ApplyRule(rule *Rule) error {
+func (e *Scope) ApplyRule(rule *Rule) error {
 	// 1. check preconditions
 	for _, n := range rule.Preconditions {
 		key := n.TermPrint(true)
@@ -130,11 +130,11 @@ func (e *Environment) ApplyRule(rule *Rule) error {
 	}
 	// 2. result
 	result := rule.Result
-	// 3. check that result is not in environment
+	// 3. check that result is not in scope
 	// 4. update env
 	thenString := result.TermPrint(true)
 	if err := e.Add(thenString); err != nil {
-		return errors.Errorf("'%s' aready in environment -- unnecessary step", thenString)
+		return errors.Errorf("'%s' aready in scope -- unnecessary step", thenString)
 	}
 	return nil
 }

@@ -14,8 +14,8 @@ func Run() {
 	fmt.Println(tree.TermPrint(true))
 	fmt.Println(Evaluate(tree, map[string]bool{"P": false, "Q": false}))
 
-	parentEnv := &Environment{TrueTerms: set.FromSlice([]string{"Z"})}
-	env := &Environment{
+	parentEnv := &Scope{TrueTerms: set.FromSlice([]string{"Z"})}
+	env := &Scope{
 		Parent: parentEnv,
 		TrueTerms: set.FromSlice([]string{
 			"T",
