@@ -1,18 +1,16 @@
 package logic
 
-type Rule interface {
-	StandardForm() Rule
-	Preconditions() []Term
-	Result() Term
-	FindInParent() bool
+type Rule struct {
+	Preconditions []Term
+	Result        Term
 }
 
-func StandardForm(rule Rule) Term {
-	// sf := rule.StandardForm()
-	pres, result := rule.Preconditions(), rule.Result()
-	if len(pres) == 0 {
-		return result
-	}
+func (r *Rule) StepResult() Term {
+	return r.Result
+}
+
+func (r *Rule) StandardForm() Term {
+	pres, result := r.Preconditions, r.Result
 	left := pres[0]
 	for _, l := range pres[1:] {
 		left = And(left, l)
@@ -20,176 +18,57 @@ func StandardForm(rule Rule) Term {
 	return Implication(left, result)
 }
 
-type ElimImplicationRule struct {
-	If   Term
-	Then Term
+func NewRule(result Term, preconditions ...Term) *Rule {
+	return &Rule{Preconditions: preconditions, Result: result}
 }
 
-func (e *ElimImplicationRule) FindInParent() bool {
-	return false
+// E -> -- (P -> Q), P => Q
+func ElimImplicationRule(ifTerm Term, then Term) *Rule {
+	return NewRule(then, ifTerm, Implication(ifTerm, then))
 }
 
-func (e *ElimImplicationRule) StandardForm() Rule { //*ElimImplicationRule {
-	return &ElimImplicationRule{If: Var("P"), Then: Var("Q")}
+// I -> -- P, Q => P -> Q
+func IntroImplicationRule(ifTerm Term, then Term) *Rule {
+	return NewRule(Implication(ifTerm, then), ifTerm, then)
 }
 
-func (e *ElimImplicationRule) Preconditions() []Term {
-	return []Term{
-		e.If,
-		Implication(e.If, e.Then),
+// I ^ -- A, B => A ^ B
+func IntroAndRule(left Term, right Term) *Rule {
+	return NewRule(And(left, right), left, right)
+}
+
+// E ^ -- A ^ B => A; A ^ B => B;
+func ElimAndRule(left Term, right Term, isLeft bool) *Rule {
+	result := right
+	if isLeft {
+		result = left
 	}
+	return NewRule(result, And(left, right))
 }
 
-func (e *ElimImplicationRule) Result() Term {
-	return e.Then
-}
-
-type IntroImplicationRule struct {
-	If   Term
-	Then Term
-}
-
-func (e *IntroImplicationRule) FindInParent() bool {
-	return false
-}
-
-func (e *IntroImplicationRule) StandardForm() Rule { //*ElimImplicationRule {
-	return &IntroImplicationRule{If: Var("P"), Then: Var("Q")}
-}
-
-func (e *IntroImplicationRule) Preconditions() []Term {
-	return []Term{e.If, e.Then}
-}
-
-func (e *IntroImplicationRule) Result() Term {
-	return Implication(e.If, e.Then)
-}
-
-// I - ^ -- A, B -> A ^ B
-type IntroAndRule struct {
-	Left  Term
-	Right Term
-}
-
-func (e *IntroAndRule) FindInParent() bool {
-	return false
-}
-
-func (e *IntroAndRule) StandardForm() Rule {
-	return &IntroAndRule{Left: Var("P"), Right: Var("Q")}
-}
-
-func (e *IntroAndRule) Preconditions() []Term {
-	return []Term{e.Left, e.Right}
-}
-
-func (e *IntroAndRule) Result() Term {
-	return And(e.Left, e.Right)
-}
-
-// E - ^ -- A ^ B -> A; A ^ B -> B;
-type ElimAndRule struct {
-	Left   Term
-	Right  Term
-	IsLeft bool
-}
-
-func (e *ElimAndRule) FindInParent() bool {
-	return false
-}
-
-func (e *ElimAndRule) StandardForm() Rule {
-	return &ElimAndRule{Left: Var("P"), Right: Var("Q"), IsLeft: true}
-}
-
-func (e *ElimAndRule) Preconditions() []Term {
-	return []Term{And(e.Left, e.Right)}
-}
-
-func (e *ElimAndRule) Result() Term {
-	if e.IsLeft {
-		return e.Left
+// I v -- A -> A v B; B -> A v B
+func IntroOrRule(left Term, right Term, isLeft bool) *Rule {
+	pre := right
+	if isLeft {
+		pre = left
 	}
-	return e.Right
+	return NewRule(Or(left, right), pre)
 }
 
-// I - v -- A -> A v B; B -> A v B
-type IntroOrRule struct {
-	Left   Term
-	Right  Term
-	IsLeft bool
+// E v -- P -> R, Q -> R, P v Q -> R
+func ElimOrRule(if1 Term, if2 Term, then Term) *Rule {
+	return NewRule(then,
+		Implication(if1, then),
+		Implication(if2, then),
+		Or(if1, if2))
 }
 
-func (e *IntroOrRule) FindInParent() bool {
-	return false
+// I ~ -- P -> ~~P
+func IntroNotRule(term Term) *Rule {
+	return NewRule(Not(Not(term)), term)
 }
 
-func (e *IntroOrRule) StandardForm() Rule {
-	return &IntroOrRule{Left: Var("P"), Right: Var("Q"), IsLeft: true}
+// E ~ -- ~~P -> P
+func ElimNotRule(term Term) *Rule {
+	return NewRule(term, Not(Not(term)))
 }
-
-func (e *IntroOrRule) Preconditions() []Term {
-	if e.IsLeft {
-		return []Term{e.Left}
-	} else {
-		return []Term{e.Right}
-	}
-}
-
-func (e *IntroOrRule) Result() Term {
-	return Or(e.Left, e.Right)
-}
-
-// E - v -- P -> R, Q -> R, P v Q -> R
-type ElimOrRule struct {
-	If1  Term
-	If2  Term
-	Then Term
-}
-
-func (e *ElimOrRule) FindInParent() bool {
-	return false
-}
-
-func (e *ElimOrRule) StandardForm() Rule {
-	return &ElimOrRule{If1: Var("P"), If2: Var("Q"), Then: Var("R")}
-}
-
-func (e *ElimOrRule) Preconditions() []Term {
-	return []Term{
-		Implication(e.If1, e.Then),
-		Implication(e.If2, e.Then),
-		Or(e.If1, e.If2)}
-}
-
-func (e *ElimOrRule) Result() Term {
-	return e.Then
-}
-
-// I - ~ -- TODO
-// E - ~ -- TODO
-
-// reiterate
-type ReiterateRule struct {
-	Term Term
-}
-
-func (e *ReiterateRule) FindInParent() bool {
-	return true
-}
-
-func (e *ReiterateRule) StandardForm() Rule {
-	return &ReiterateRule{Term: Var("P")}
-}
-
-func (e *ReiterateRule) Preconditions() []Term {
-	return []Term{e.Term}
-}
-
-func (e *ReiterateRule) Result() Term {
-	return e.Term
-}
-
-// subproof
-//   to implication
-//   contradiction to negation of hypothesis

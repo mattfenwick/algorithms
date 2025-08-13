@@ -9,9 +9,19 @@ import (
 	"github.com/pkg/errors"
 )
 
+func CheckProof(proof *Proof) (*Environment, error) {
+	env := NewEnvironment(nil)
+	err := env.ApplyProof(proof)
+	return env, err
+}
+
 type Environment struct {
 	Parent    *Environment
 	TrueTerms *set.Set[string] // TODO string is nice for equality, but should this keep the actual term as well?
+}
+
+func NewEnvironment(parent *Environment, trueTerms ...string) *Environment {
+	return &Environment{Parent: parent, TrueTerms: set.FromSlice(trueTerms)}
 }
 
 func (e *Environment) Find(key string) bool {
@@ -33,16 +43,63 @@ func (e *Environment) Add(key string) error {
 	return nil
 }
 
+func (e *Environment) GetTrueTerms() []string {
+	return slice.Sort(e.TrueTerms.ToSlice())
+}
+
 func (e *Environment) Print(indent int) {
 	fmt.Printf("%s%s\n",
 		strings.Join(slice.Replicate(indent*2, " "), ""),
-		strings.Join(slice.Sort(e.TrueTerms.ToSlice()), ","))
+		strings.Join(e.GetTrueTerms(), ","))
 	if e.Parent != nil {
 		e.Parent.Print(indent + 1)
 	}
 }
 
-// Apply implements rule checking
+func (e *Environment) ApplyProof(proof *Proof) error {
+	for _, step := range proof.Steps {
+		if err := e.ApplyStep(step); err != nil {
+			return err
+		}
+		if err := e.Add(step.StepResult().TermPrint(true)); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (e *Environment) ApplyStep(step any) error {
+	switch t := step.(type) {
+	case *SubProof:
+		childEnv := NewEnvironment(e, t.Hypothesis.TermPrint(true))
+		return childEnv.ApplySubProof(t)
+		// TODO somehow return childEnv for debugging purposes
+	case *Reiterate:
+		key := t.Term.TermPrint(true)
+		if !e.FindInParent(key) {
+			return errors.Errorf("missing or untrue premise '%s' in parent(s)", key)
+		}
+		if err := e.Add(key); err != nil {
+			return errors.Errorf("'%s' aready in environment -- unnecessary step", key)
+		}
+		return nil
+	case *Rule:
+		return e.ApplyRule(t)
+	default:
+		return errors.Errorf("invalid step type %+v", t)
+	}
+}
+
+func (e *Environment) ApplySubProof(sp *SubProof) error {
+	for _, step := range sp.Steps {
+		if err := e.ApplyStep(step); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// ApplyRule implements application of a single rule step
 // 1. ensure all args' node strings are in the env.  if not, error -- does not apply
 // 2. apply rule to get result
 // 3. ensure result is not already in env.  if not, error -- unnecessary step
@@ -57,22 +114,16 @@ func (e *Environment) Print(indent int) {
 //	   4. env: Q -> (R ^ S), Q, R ^ S
 //
 // DON'T check for contradictions, that's not our job right here (TODO: or is it?)
-func (e *Environment) Apply(rule Rule) error {
+func (e *Environment) ApplyRule(rule *Rule) error {
 	// 1. check preconditions
-	for _, n := range rule.Preconditions() {
+	for _, n := range rule.Preconditions {
 		key := n.TermPrint(true)
-		if rule.FindInParent() {
-			if !e.FindInParent(key) {
-				return errors.Errorf("missing or untrue premise '%s' in parent", key)
-			}
-		} else {
-			if !e.Find(key) {
-				return errors.Errorf("missing or untrue premise '%s'", key)
-			}
+		if !e.Find(key) {
+			return errors.Errorf("missing or untrue premise '%s'", key)
 		}
 	}
 	// 2. result
-	result := rule.Result()
+	result := rule.Result
 	// 3. check that result is not in environment
 	// 4. update env
 	thenString := result.TermPrint(true)

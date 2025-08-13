@@ -29,19 +29,18 @@ func Run() {
 	fmt.Println("before:")
 	env.Print(0)
 
-	var rules = []Rule{
-		&ElimImplicationRule{If: Var("T"), Then: Var("U")},
-		&IntroImplicationRule{If: Implication(Var("T"), Var("U")), Then: Var("T")},
-		&ReiterateRule{Term: Var("Z")},
-		&IntroAndRule{Left: Var("Z"), Right: Var("U")},
-		&ElimAndRule{Left: Var("A"), Right: Var("B"), IsLeft: false},
-		&IntroOrRule{Left: Var("Z"), Right: Var("C"), IsLeft: true},
-		&ElimOrRule{If1: Var("Z"), If2: Var("C"), Then: Var("X")},
+	var rules = []*Rule{
+		ElimImplicationRule(Var("T"), Var("U")),
+		IntroImplicationRule(Implication(Var("T"), Var("U")), Var("T")),
+		IntroAndRule(Var("Z"), Var("U")),
+		ElimAndRule(Var("A"), Var("B"), false),
+		IntroOrRule(Var("Z"), Var("C"), true),
+		ElimOrRule(Var("Z"), Var("C"), Var("X")),
 	}
 	for _, r := range rules {
-		str := StandardForm(r).TermPrint(true)
+		str := r.StandardForm().TermPrint(true)
 		fmt.Printf("processing rule '%s'\n", str)
-		if err := env.Apply(r); err != nil {
+		if err := env.ApplyRule(r); err != nil {
 			fmt.Printf("unable to apply rule '%s': %s\n", str, err)
 		} else {
 			fmt.Printf("successfully applied rule '%s'\n", str)
@@ -49,7 +48,7 @@ func Run() {
 		fmt.Println("after rule ", str)
 		env.Print(0)
 
-		if err := parentEnv.Apply(r); err != nil {
+		if err := parentEnv.ApplyRule(r); err != nil {
 			fmt.Printf("unable to apply rule '%s' in parent env: %s\n", str, err)
 		} else {
 			fmt.Printf("successfully applied rule '%s' in parent\n", str)
@@ -58,4 +57,23 @@ func Run() {
 		env.Print(0)
 		fmt.Println()
 	}
+
+	proof := NewProof(
+		// NewSubProofImplication(Var("P"), Var("P")), // P -> P , umm actually not sure how to write this. let's circle back TODO
+		// P -> P ^ P v ~P
+		Must(NewSubProofImplication(Var("P"),
+			IntroAndRule(Var("P"), Var("P")),
+			IntroOrRule(And(Var("P"), Var("P")), Not(Var("P")), true),
+		)),
+	)
+	env, err := CheckProof(proof)
+	fmt.Printf("result from proof: %s\n", err)
+	env.Print(0)
+}
+
+func Must[A any](a A, err error) A {
+	if err != nil {
+		panic(err)
+	}
+	return a
 }
