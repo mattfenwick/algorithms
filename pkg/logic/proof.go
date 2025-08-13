@@ -55,21 +55,32 @@ func NewSubProofContradiction(hypothesis Term, steps ...Step) (*SubProof, error)
 
 func NewSubProofImplication(hypothesis Term, steps ...Step) (*SubProof, error) {
 	// last step is the result and must be a term
-	// there must be at least 1 step
-	last := steps[len(steps)-1]
-	switch t := last.(type) {
-	case *Rule:
-		return &SubProof{
-			Hypothesis:   hypothesis,
-			Steps:        steps,
-			Result:       Implication(hypothesis, t.Result),
-			SubProofType: SubProofTypeImplication,
-		}, nil
-	default:
-		return nil, errors.Errorf("last step must be a Term, got %+v", last)
+	if len(steps) == 0 {
+		return nil, errors.Errorf("must be at least one step in subproof")
 	}
+	last := steps[len(steps)-1]
+	return &SubProof{
+		Hypothesis:   hypothesis,
+		Steps:        steps,
+		Result:       Implication(hypothesis, last.StepResult()),
+		SubProofType: SubProofTypeImplication,
+	}, nil
 }
 
+// Reiterate pulls in a term from an enclosing scope
 type Reiterate struct {
 	Term Term
+}
+
+func (r *Reiterate) StepResult() Term {
+	return r.Term
+}
+
+// Repeat asserts that a term is in the current scope.  basically just useful for `P -> P`
+type Repeat struct {
+	Term Term
+}
+
+func (r *Repeat) StepResult() Term {
+	return r.Term
 }

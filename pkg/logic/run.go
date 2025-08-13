@@ -59,7 +59,8 @@ func Run() {
 	}
 
 	proof := NewProof(
-		// NewSubProofImplication(Var("P"), Var("P")), // P -> P , umm actually not sure how to write this. let's circle back TODO
+		// P -> P
+		Must(NewSubProofImplication(Var("P"), &Repeat{Var("P")})),
 		// P -> P ^ P v ~P
 		Must(NewSubProofImplication(Var("P"),
 			IntroAndRule(Var("P"), Var("P")),

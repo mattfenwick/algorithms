@@ -83,6 +83,12 @@ func (e *Environment) ApplyStep(step any) error {
 			return errors.Errorf("'%s' aready in environment -- unnecessary step", key)
 		}
 		return nil
+	case *Repeat:
+		key := t.Term.TermPrint(true)
+		if !e.Find(key) {
+			return errors.Errorf("missing or untrue premise '%s'", key)
+		}
+		return nil
 	case *Rule:
 		return e.ApplyRule(t)
 	default:
