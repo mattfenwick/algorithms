@@ -30,12 +30,12 @@ func Run() {
 	env.Print(0)
 
 	var rules = []*Rule{
-		ElimImplicationRule(Var("T"), Var("U")),
-		IntroImplicationRule(Implication(Var("T"), Var("U")), Var("T")),
-		IntroAndRule(Var("Z"), Var("U")),
-		ElimAndRule(Var("A"), Var("B"), false),
-		IntroOrRule(Var("Z"), Var("C"), true),
-		ElimOrRule(Var("Z"), Var("C"), Var("X")),
+		EImply(Var("T"), Var("U")),
+		IImply(Implication(Var("T"), Var("U")), Var("T")),
+		IAnd(Var("Z"), Var("U")),
+		EAnd(Var("A"), Var("B"), false),
+		IOr(Var("Z"), Var("C"), true),
+		EOr(Var("Z"), Var("C"), Var("X")),
 	}
 	for _, r := range rules {
 		str := r.StandardForm().TermPrint(true)
@@ -59,17 +59,23 @@ func Run() {
 	}
 
 	proof := NewProof(
-		// P -> P
-		Must(NewSubProofImplication(Var("P"), &Repeat{Var("P")})),
+		"P -> P",
+		NewSubProofImplication(Var("P"), &Repeat{Var("P")}),
 		// P -> P ^ P v ~P
-		Must(NewSubProofImplication(Var("P"),
-			IntroAndRule(Var("P"), Var("P")),
-			IntroOrRule(And(Var("P"), Var("P")), Not(Var("P")), true),
-		)),
+		NewSubProofImplication(Var("P"),
+			IAnd(Var("P"), Var("P")),
+			IOr(And(Var("P"), Var("P")), Not(Var("P")), true),
+		),
 	)
 	env, err := CheckProof(proof)
-	fmt.Printf("result from proof: %s\n", err)
+	fmt.Printf("result from proof '%s': %s\n", proof.Name, err)
 	env.Print(0)
+
+	for _, eg := range examples {
+		env, err := CheckProof(eg)
+		fmt.Printf("\n\nresult from proof '%s': %s\n", eg.Name, err)
+		env.Print(0)
+	}
 }
 
 func Must[A any](a A, err error) A {

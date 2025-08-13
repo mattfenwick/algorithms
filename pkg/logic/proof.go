@@ -1,17 +1,21 @@
 package logic
 
-import "github.com/pkg/errors"
+import (
+	"github.com/mattfenwick/collections/pkg/json"
+	"github.com/pkg/errors"
+)
 
 type Step interface {
 	StepResult() Term
 }
 
 type Proof struct {
+	Name  string
 	Steps []Step
 }
 
-func NewProof(steps ...Step) *Proof {
-	return &Proof{Steps: steps}
+func NewProof(name string, steps ...Step) *Proof {
+	return &Proof{Name: name, Steps: steps}
 }
 
 type SubProofType string
@@ -32,31 +36,39 @@ func (sp *SubProof) StepResult() Term {
 	return sp.Result
 }
 
-func NewSubProofContradiction(hypothesis Term, steps ...Step) (*SubProof, error) {
+func NewSubProofContradiction(hypothesis Term, steps ...Step) *SubProof {
 	if len(steps) == 0 {
-		return nil, errors.Errorf("expected at least 1 step")
+		panic(errors.Errorf("expected at least 1 step"))
 	}
-	last := steps[len(steps)-1]
+	results := map[string]bool{hypothesis.TermPrint(true): true}
+	for _, step := range steps[:len(steps)-1] {
+		results[step.StepResult().TermPrint(true)] = true
+	}
+	last := steps[len(steps)-1].StepResult()
+	foundPositive, foundNegative := false, false
 	switch t := last.(type) {
-	case Term:
-		if t.TermPrint(true) != Not(hypothesis).TermPrint(true) {
-			return nil, errors.Errorf("subproof contradiction must end with term negating hypothesis")
-		}
-		return &SubProof{
-			Hypothesis:   hypothesis,
-			Steps:        steps,
-			Result:       t,
-			SubProofType: SubProofTypeContradiction,
-		}, nil
-	default:
-		return nil, errors.Errorf("subproof contradiction must end with term, found %+v", last)
+	case *NotTerm:
+		_, foundPositive = results[t.Arg.TermPrint(true)]
+	}
+	_, foundNegative = results[Not(last).TermPrint(true)]
+	if !foundNegative && !foundPositive {
+		panic(errors.Errorf(
+			"subproof contradiction must end with negation of some previous term -- '%s' not found in scope\n  previous terms: %s",
+			last.TermPrint(true),
+			json.MustMarshalToString(results)))
+	}
+	return &SubProof{
+		Hypothesis:   hypothesis,
+		Steps:        steps,
+		Result:       Not(hypothesis),
+		SubProofType: SubProofTypeContradiction,
 	}
 }
 
-func NewSubProofImplication(hypothesis Term, steps ...Step) (*SubProof, error) {
+func NewSubProofImplication(hypothesis Term, steps ...Step) *SubProof {
 	// last step is the result and must be a term
 	if len(steps) == 0 {
-		return nil, errors.Errorf("must be at least one step in subproof")
+		panic(errors.Errorf("must be at least one step in subproof"))
 	}
 	last := steps[len(steps)-1]
 	return &SubProof{
@@ -64,7 +76,7 @@ func NewSubProofImplication(hypothesis Term, steps ...Step) (*SubProof, error) {
 		Steps:        steps,
 		Result:       Implication(hypothesis, last.StepResult()),
 		SubProofType: SubProofTypeImplication,
-	}, nil
+	}
 }
 
 // Reiterate pulls in a term from an enclosing scope

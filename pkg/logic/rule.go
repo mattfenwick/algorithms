@@ -22,23 +22,23 @@ func NewRule(result Term, preconditions ...Term) *Rule {
 	return &Rule{Preconditions: preconditions, Result: result}
 }
 
-// E -> -- (P -> Q), P => Q
-func ElimImplicationRule(ifTerm Term, then Term) *Rule {
-	return NewRule(then, ifTerm, Implication(ifTerm, then))
-}
-
 // I -> -- P, Q => P -> Q
-func IntroImplicationRule(ifTerm Term, then Term) *Rule {
+func IImply(ifTerm Term, then Term) *Rule {
 	return NewRule(Implication(ifTerm, then), ifTerm, then)
 }
 
-// I ^ -- A, B => A ^ B
-func IntroAndRule(left Term, right Term) *Rule {
+// E -> -- (P -> Q), P => Q
+func EImply(ifTerm Term, then Term) *Rule {
+	return NewRule(then, ifTerm, Implication(ifTerm, then))
+}
+
+// I ^ -- P, Q => P ^ Q
+func IAnd(left Term, right Term) *Rule {
 	return NewRule(And(left, right), left, right)
 }
 
-// E ^ -- A ^ B => A; A ^ B => B;
-func ElimAndRule(left Term, right Term, isLeft bool) *Rule {
+// E ^ -- P ^ Q => P; P ^ Q => Q;
+func EAnd(left Term, right Term, isLeft bool) *Rule {
 	result := right
 	if isLeft {
 		result = left
@@ -47,7 +47,7 @@ func ElimAndRule(left Term, right Term, isLeft bool) *Rule {
 }
 
 // I v -- A -> A v B; B -> A v B
-func IntroOrRule(left Term, right Term, isLeft bool) *Rule {
+func IOr(left Term, right Term, isLeft bool) *Rule {
 	pre := right
 	if isLeft {
 		pre = left
@@ -56,7 +56,7 @@ func IntroOrRule(left Term, right Term, isLeft bool) *Rule {
 }
 
 // E v -- P -> R, Q -> R, P v Q -> R
-func ElimOrRule(if1 Term, if2 Term, then Term) *Rule {
+func EOr(if1 Term, if2 Term, then Term) *Rule {
 	return NewRule(then,
 		Implication(if1, then),
 		Implication(if2, then),
@@ -64,11 +64,11 @@ func ElimOrRule(if1 Term, if2 Term, then Term) *Rule {
 }
 
 // I ~ -- P -> ~~P
-func IntroNotRule(term Term) *Rule {
+func INot(term Term) *Rule {
 	return NewRule(Not(Not(term)), term)
 }
 
 // E ~ -- ~~P -> P
-func ElimNotRule(term Term) *Rule {
+func ENot(term Term) *Rule {
 	return NewRule(term, Not(Not(term)))
 }
