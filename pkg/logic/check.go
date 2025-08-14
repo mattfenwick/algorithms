@@ -4,21 +4,22 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mattfenwick/collections/pkg/set"
+	"github.com/mattfenwick/collections/pkg/dict"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
 )
 
 type EvaluatedStep struct {
-	Depth      int
-	Step       Step
-	ScopeTerms []string
+	Depth          int
+	LineReferences []int
+	Step           Step
+	ScopeTerms     []string
 }
 
 type Scope struct {
 	Depth     int
 	Parent    *Scope
-	TrueTerms *set.Set[string]
+	TrueTerms map[string]int
 }
 
 func NewScope(parent *Scope) *Scope {
@@ -29,29 +30,35 @@ func NewScope(parent *Scope) *Scope {
 	return &Scope{
 		Depth:     depth,
 		Parent:    parent,
-		TrueTerms: set.FromSlice([]string{})}
+		TrueTerms: map[string]int{}}
 }
 
-func (e *Scope) Find(key string) bool {
-	return e.TrueTerms.Contains(key)
+func (e *Scope) Find(key string) (int, bool) {
+	line, ok := e.TrueTerms[key]
+	return line, ok
 }
 
-func (e *Scope) FindInParent(key string) bool {
+func (e *Scope) FindInParent(key string) (int, bool) {
 	if e.Parent == nil {
-		return false
+		return 0, false
 	}
-	return e.Parent.Find(key) || e.Parent.FindInParent(key)
+	line, ok := e.Parent.Find(key)
+	if ok {
+		return line, true
+	}
+	return e.Parent.FindInParent(key)
 }
 
-func (e *Scope) Add(key string) error {
-	if !e.TrueTerms.Add(key) {
+func (e *Scope) Add(key string, line int) error {
+	if _, ok := e.TrueTerms[key]; ok {
 		return errors.Errorf("unable to add key '%s', already present", key)
 	}
+	e.TrueTerms[key] = line
 	return nil
 }
 
 func (e *Scope) GetTrueTerms() []string {
-	return slice.Sort(e.TrueTerms.ToSlice())
+	return slice.Sort(dict.Keys(e.TrueTerms))
 }
 
 func (e *Scope) Print(indent int) {
@@ -63,78 +70,95 @@ func (e *Scope) Print(indent int) {
 	}
 }
 
-func CheckProof(proof *Proof, parentScope *Scope) ([]*EvaluatedStep, error) {
-	var outSteps []*EvaluatedStep
-	scope := NewScope(parentScope)
-	if proof.Hypothesis != nil {
-		evaledSteps, err := CheckStep(&Assumption{Term: proof.Hypothesis}, scope)
-		if err != nil {
-			return nil, err
-		}
-		outSteps = append(outSteps, evaledSteps...)
-	}
-	for _, step := range proof.Steps {
-		evaledSteps, err := CheckStep(step, scope)
-		if err != nil {
-			return nil, err
-		}
-		outSteps = append(outSteps, evaledSteps...)
-	}
-	return outSteps, nil
+type CheckedProof struct {
+	Steps []*EvaluatedStep
 }
 
-func CheckStep(step Step, scope *Scope) ([]*EvaluatedStep, error) {
-	eStep := &EvaluatedStep{Depth: scope.Depth, Step: step, ScopeTerms: scope.GetTrueTerms()}
-	outSteps := []*EvaluatedStep{}
+func (c *CheckedProof) Add(step *EvaluatedStep) int {
+	c.Steps = append(c.Steps, step)
+	return len(c.Steps)
+}
+
+func CheckProof(proof *Proof) (*CheckedProof, error) {
+	checked := &CheckedProof{}
+	err := CheckProofHelper(proof, nil, checked)
+	return checked, err
+}
+
+func CheckProofHelper(proof *Proof, parentScope *Scope, checked *CheckedProof) error {
+	scope := NewScope(parentScope)
+	if proof.Hypothesis != nil {
+		if err := CheckStep(&Assumption{Term: proof.Hypothesis}, scope, checked); err != nil {
+			return err
+		}
+	}
+	for _, step := range proof.Steps {
+		if err := CheckStep(step, scope, checked); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
+	trueTerms := scope.GetTrueTerms()
+	lineRefs := []int{}
+	shouldAdd := true
 	switch t := step.(type) {
 	case *Assumption:
-		if err := scope.Add(t.StepResult().TermPrint(true)); err != nil {
-			return nil, err
-		}
 	case *Proof:
-		evaledSteps, err := CheckProof(t, scope)
-		if err != nil {
-			return nil, err
+		startLine := len(checked.Steps) + 1
+		if err := CheckProofHelper(t, scope, checked); err != nil {
+			return err
 		}
-		outSteps = append(outSteps, evaledSteps...)
-		if err := scope.Add(t.StepResult().TermPrint(true)); err != nil {
-			return nil, err
+		endLine := len(checked.Steps) + 1
+		for i := startLine; i < endLine; i++ {
+			lineRefs = append(lineRefs, i)
 		}
 	case *Reiterate:
 		key := t.Term.TermPrint(true)
-		if !scope.FindInParent(key) {
-			return nil, errors.Errorf("missing or untrue premise '%s' in parent(s)", key)
+		lineRef, ok := scope.FindInParent(key)
+		if !ok {
+			return errors.Errorf("missing or untrue premise '%s' in parent(s)", key)
 		}
-		if err := scope.Add(t.StepResult().TermPrint(true)); err != nil {
-			return nil, errors.Errorf("'%s' aready in scope -- unnecessary step", key)
-		}
+		lineRefs = append(lineRefs, lineRef)
 	case *Repeat:
 		key := t.Term.TermPrint(true)
-		if !scope.Find(key) {
-			return nil, errors.Errorf("missing or untrue premise '%s'", key)
+		lineRef, ok := scope.Find(key)
+		if !ok {
+			return errors.Errorf("missing or untrue premise '%s'", key)
 		}
+		lineRefs = append(lineRefs, lineRef)
+		shouldAdd = false
 	case *Rule:
-		// check preconditions
 		for _, n := range t.Preconditions {
 			key := n.TermPrint(true)
-			if !scope.Find(key) {
-				return nil, errors.Errorf("missing or untrue premise '%s'", key)
+			lineRef, ok := scope.Find(key)
+			if !ok {
+				return errors.Errorf("missing or untrue premise '%s'", key)
 			}
-		}
-		// check that result is not in scope and update env
-		if err := scope.Add(t.StepResult().TermPrint(true)); err != nil {
-			return nil, errors.Errorf("'%s' aready in scope -- unnecessary step", t.StepResult().TermPrint(true))
+			lineRefs = append(lineRefs, lineRef)
 		}
 	default:
-		return nil, errors.Errorf("invalid step type %+v", t)
+		return errors.Errorf("invalid step type %+v", t)
 	}
-	outSteps = append(outSteps, eStep)
-	return outSteps, nil
+	addedLine := checked.Add(&EvaluatedStep{LineReferences: lineRefs, Depth: scope.Depth, Step: step, ScopeTerms: trueTerms})
+	if !shouldAdd {
+		return nil
+	}
+	return scope.Add(step.StepResult().TermPrint(true), addedLine)
 }
 
 func PrintSteps(steps []*EvaluatedStep) {
 	for i, step := range steps {
 		indent := strings.Repeat("  ", step.Depth)
-		fmt.Printf("%s%d: %s\n", indent, i+1, step.Step.StepResult().TermPrint(true))
+		fmt.Printf("%s%d: %s    %s: %s\n",
+			indent,
+			i+1,
+			step.Step.StepResult().TermPrint(true),
+			step.Step.StepName(),
+			strings.Join(slice.Map(
+				func(l int) string { return fmt.Sprintf("%d", l) },
+				step.LineReferences), ", "))
 	}
 }

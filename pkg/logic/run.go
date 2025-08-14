@@ -57,9 +57,9 @@ func Run() {
 	// }
 
 	for _, eg := range examples {
-		steps, err := CheckProof(eg, nil)
+		checked, err := CheckProof(eg)
 		fmt.Printf("\n\nresult from proof '%s': %s\n", eg.Name, err)
-		PrintSteps(steps)
+		PrintSteps(checked.Steps)
 	}
 }
 

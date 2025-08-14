@@ -9,7 +9,16 @@ import (
 
 type Step interface {
 	StepResult() Term
+	StepName() string
 }
+
+type ProofType string
+
+const (
+	ProofTypeRoot          ProofType = "Root"
+	ProofTypeContradiction ProofType = "Contradiction"
+	ProofTypeImplication   ProofType = "Implication"
+)
 
 type Proof struct {
 	Name       string
@@ -23,13 +32,9 @@ func (p *Proof) StepResult() Term {
 	return p.Result
 }
 
-type ProofType string
-
-const (
-	ProofTypeRoot          ProofType = "Root"
-	ProofTypeContradiction ProofType = "Contradiction"
-	ProofTypeImplication   ProofType = "Implication"
-)
+func (p *Proof) StepName() string {
+	return p.Name
+}
 
 func NewRootProof(name string, steps ...Step) *Proof {
 	return &Proof{
@@ -95,6 +100,10 @@ func (r *Reiterate) StepResult() Term {
 	return r.Term
 }
 
+func (r *Reiterate) StepName() string {
+	return "Reiterate"
+}
+
 // Repeat asserts that a term is in the current scope.  basically just useful for `P -> P`
 type Repeat struct {
 	Term Term
@@ -104,6 +113,10 @@ func (r *Repeat) StepResult() Term {
 	return r.Term
 }
 
+func (r *Repeat) StepName() string {
+	return "Repeat"
+}
+
 // TODO do we really need this?
 type Assumption struct {
 	Term Term
@@ -111,4 +124,8 @@ type Assumption struct {
 
 func (a *Assumption) StepResult() Term {
 	return a.Term
+}
+
+func (a *Assumption) StepName() string {
+	return "Assume"
 }
