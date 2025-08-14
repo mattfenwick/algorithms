@@ -12,20 +12,13 @@ var (
 		"P -> P",
 		NewProofImplication(Var("P"), &Repeat{Var("P")}))
 
-	pToPAndPOrNotPTodoDelete = NewRootProof(
-		"P -> P ^ P v ~P",
-		NewProofImplication(Var("P"),
-			IAnd(Var("P"), Var("P")),
-			IOr(And(Var("P"), Var("P")), Not(Var("P")), true),
-		),
-	)
-
 	notPAndNotP = NewRootProof("~ ( P ^ ~ P )",
 		NewProofContradiction(
 			And(P, Not(P)),
 			EAnd(P, Not(P), true),
 			EAnd(P, Not(P), false),
 		))
+
 	andCommutativity = NewRootProof("P ^ Q -> Q ^ P",
 		NewProofImplication(
 			And(P, Q),
@@ -33,11 +26,6 @@ var (
 			EAnd(P, Q, false),
 			IAnd(Q, P),
 		))
-	// tempDelete = NewSubProofContradiction(
-	// 	P,
-	// 	IOr(P, Not(P), true),
-	// 	&Reiterate{Term: Not(Or(P, Not(P)))},
-	// )
 
 	pOrNotP = NewRootProof("P v ~ P",
 		NewProofContradiction(
@@ -51,6 +39,31 @@ var (
 		),
 		ENot(Or(P, Not(P))),
 	)
+
+	pQNotQNotP = NewRootProof("( P -> Q ) -> ( ~ Q -> ~ P)",
+		NewProofImplication(
+			Implication(P, Q),
+			NewProofImplication(
+				Not(Q),
+				NewProofContradiction(
+					P,
+					&Reiterate{Term: Not(Q)},
+					EImply(P, Q),
+				),
+			),
+		),
+	)
+)
+
+// junk (uninteresting) proofs in this section
+var (
+	pToPAndPOrNotPTodoDelete = NewRootProof(
+		"P -> P ^ P v ~P",
+		NewProofImplication(Var("P"),
+			IAnd(Var("P"), Var("P")),
+			IOr(And(Var("P"), Var("P")), Not(Var("P")), true),
+		),
+	)
 )
 
 var examples = []*Proof{
@@ -59,4 +72,5 @@ var examples = []*Proof{
 	notPAndNotP,
 	andCommutativity,
 	pOrNotP,
+	pQNotQNotP,
 }
