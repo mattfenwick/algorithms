@@ -8,6 +8,18 @@ var (
 )
 
 var (
+	pToP = NewRootProof(
+		"P -> P",
+		NewProofImplication(Var("P"), &Repeat{Var("P")}))
+
+	pToPAndPOrNotPTodoDelete = NewRootProof(
+		"P -> P ^ P v ~P",
+		NewProofImplication(Var("P"),
+			IAnd(Var("P"), Var("P")),
+			IOr(And(Var("P"), Var("P")), Not(Var("P")), true),
+		),
+	)
+
 	notPAndNotP = NewRootProof("~ ( P ^ ~ P )",
 		NewProofContradiction(
 			And(P, Not(P)),
@@ -42,6 +54,8 @@ var (
 )
 
 var examples = []*Proof{
+	pToP,
+	pToPAndPOrNotPTodoDelete,
 	notPAndNotP,
 	andCommutativity,
 	pOrNotP,

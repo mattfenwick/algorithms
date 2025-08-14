@@ -63,18 +63,18 @@ func (e *Scope) Print(indent int) {
 	}
 }
 
-func ApplyProof(proof *Proof, parentScope *Scope) ([]*EvaluatedStep, error) {
+func CheckProof(proof *Proof, parentScope *Scope) ([]*EvaluatedStep, error) {
 	var outSteps []*EvaluatedStep
 	scope := NewScope(parentScope)
 	if proof.Hypothesis != nil {
-		evaledSteps, err := ApplyStep(&Assumption{Term: proof.Hypothesis}, scope)
+		evaledSteps, err := CheckStep(&Assumption{Term: proof.Hypothesis}, scope)
 		if err != nil {
 			return nil, err
 		}
 		outSteps = append(outSteps, evaledSteps...)
 	}
 	for _, step := range proof.Steps {
-		evaledSteps, err := ApplyStep(step, scope)
+		evaledSteps, err := CheckStep(step, scope)
 		if err != nil {
 			return nil, err
 		}
@@ -83,7 +83,7 @@ func ApplyProof(proof *Proof, parentScope *Scope) ([]*EvaluatedStep, error) {
 	return outSteps, nil
 }
 
-func ApplyStep(step Step, scope *Scope) ([]*EvaluatedStep, error) {
+func CheckStep(step Step, scope *Scope) ([]*EvaluatedStep, error) {
 	eStep := &EvaluatedStep{Depth: scope.Depth, Step: step, ScopeTerms: scope.GetTrueTerms()}
 	outSteps := []*EvaluatedStep{}
 	switch t := step.(type) {
@@ -92,7 +92,7 @@ func ApplyStep(step Step, scope *Scope) ([]*EvaluatedStep, error) {
 			return nil, err
 		}
 	case *Proof:
-		evaledSteps, err := ApplyProof(t, scope)
+		evaledSteps, err := CheckProof(t, scope)
 		if err != nil {
 			return nil, err
 		}
@@ -132,26 +132,9 @@ func ApplyStep(step Step, scope *Scope) ([]*EvaluatedStep, error) {
 	return outSteps, nil
 }
 
-// func printHelper(step *EvaluatedStep, line int, depth int) int {
-// 	if step.ChildScope != nil {
-// 		for _, s := range step.ChildScope.EvaluatedSteps {
-// 			line = step.ChildScope.printHelper(s, line, depth+1)
-// 		}
-// 	}
-// 	indent := strings.Repeat("  ", depth)
-// 	fmt.Printf("%s%d: %s\n%s- %s\n",
-// 		indent,
-// 		line,
-// 		step.Step.StepResult().TermPrint(true),
-// 		indent,
-// 		strings.Join(step.ScopeTerms, ",   "))
-// 	line++
-// 	return line
-// }
-
-// func PrintResult() {
-// 	line := 1
-// 	for _, step := range e.EvaluatedSteps {
-// 		line = e.printHelper(step, line, 0)
-// 	}
-// }
+func PrintSteps(steps []*EvaluatedStep) {
+	for i, step := range steps {
+		indent := strings.Repeat("  ", step.Depth)
+		fmt.Printf("%s%d: %s\n", indent, i+1, step.Step.StepResult().TermPrint(true))
+	}
+}
