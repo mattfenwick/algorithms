@@ -1,8 +1,6 @@
 package logic
 
 import (
-	"fmt"
-
 	"github.com/mattfenwick/collections/pkg/json"
 	"github.com/pkg/errors"
 )
@@ -68,7 +66,7 @@ func NewProofContradiction(hypothesis Term, steps ...Step) *Proof {
 			json.MustMarshalToString(results)))
 	}
 	return &Proof{
-		Name:       fmt.Sprintf("subproof contradiction of '%s'", hypothesis.TermPrint(true)),
+		Name:       "subproof contradiction",
 		Hypothesis: hypothesis,
 		Steps:      steps,
 		Result:     Not(hypothesis),
@@ -83,7 +81,7 @@ func NewProofImplication(hypothesis Term, steps ...Step) *Proof {
 	}
 	last := steps[len(steps)-1]
 	return &Proof{
-		Name:       fmt.Sprintf("subproof implication of '%s'", hypothesis.TermPrint(true)),
+		Name:       "subproof implication",
 		Hypothesis: hypothesis,
 		Steps:      steps,
 		Result:     Implication(hypothesis, last.StepResult()),

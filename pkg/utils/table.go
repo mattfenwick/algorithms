@@ -32,13 +32,15 @@ func (t *Table) AddRow(row []string) {
 	t.Rows = append(t.Rows, row)
 }
 
-func (t *Table) ToFormattedTable() string {
+func (t *Table) ToFormattedTable(f func(*tablewriter.Table)) string {
 	tableString := &strings.Builder{}
 	table := tablewriter.NewWriter(tableString)
 	table.SetAutoWrapText(false)
 	table.SetRowLine(true)
 	table.SetAutoMergeCellsByColumnIndex([]int{0})
-	// table.SetAutoMergeCells(true)
+	if f != nil {
+		f(table)
+	}
 
 	table.SetHeader(t.Headers)
 	table.AppendBulk(t.Rows)

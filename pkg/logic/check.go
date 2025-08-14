@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/mattfenwick/collections/pkg/dict"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
@@ -11,7 +12,7 @@ import (
 
 type EvaluatedStep struct {
 	Depth          int
-	LineReferences []int
+	LineReferences string
 	Step           Step
 	ScopeTerms     []string
 }
@@ -102,7 +103,7 @@ func CheckProofHelper(proof *Proof, parentScope *Scope, checked *CheckedProof) e
 
 func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 	trueTerms := scope.GetTrueTerms()
-	lineRefs := []int{}
+	lineRefs := ""
 	shouldAdd := true
 	switch t := step.(type) {
 	case *Assumption:
@@ -111,34 +112,37 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 		if err := CheckProofHelper(t, scope, checked); err != nil {
 			return err
 		}
-		endLine := len(checked.Steps) + 1
-		for i := startLine; i < endLine; i++ {
-			lineRefs = append(lineRefs, i)
-		}
+		endLine := len(checked.Steps)
+		lineRefs = fmt.Sprintf("%d - %d", startLine, endLine)
 	case *Reiterate:
 		key := t.Term.TermPrint(true)
 		lineRef, ok := scope.FindInParent(key)
 		if !ok {
 			return errors.Errorf("missing or untrue premise '%s' in parent(s)", key)
 		}
-		lineRefs = append(lineRefs, lineRef)
+		lineRefs = fmt.Sprintf("%d", lineRef)
 	case *Repeat:
 		key := t.Term.TermPrint(true)
 		lineRef, ok := scope.Find(key)
 		if !ok {
 			return errors.Errorf("missing or untrue premise '%s'", key)
 		}
-		lineRefs = append(lineRefs, lineRef)
+		lineRefs = fmt.Sprintf("%d", lineRef)
 		shouldAdd = false
 	case *Rule:
+		var linesUsed []int
 		for _, n := range t.Preconditions {
 			key := n.TermPrint(true)
 			lineRef, ok := scope.Find(key)
 			if !ok {
 				return errors.Errorf("missing or untrue premise '%s'", key)
 			}
-			lineRefs = append(lineRefs, lineRef)
+			linesUsed = append(linesUsed, lineRef)
 		}
+		// purposely not sorting `linesUsed`, which means they can show up seemingly out of order
+		//   for example, '3, 2'
+		//   but this matches the actual order they're used in by the rule, so imo it's a good thing
+		lineRefs = strings.Join(slice.Map(intToString, linesUsed), ", ")
 	default:
 		return errors.Errorf("invalid step type %+v", t)
 	}
@@ -149,6 +153,10 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 	return scope.Add(step.StepResult().TermPrint(true), addedLine)
 }
 
+func intToString(i int) string {
+	return fmt.Sprintf("%d", i)
+}
+
 func PrintSteps(steps []*EvaluatedStep) {
 	for i, step := range steps {
 		indent := strings.Repeat("  ", step.Depth)
@@ -157,8 +165,20 @@ func PrintSteps(steps []*EvaluatedStep) {
 			i+1,
 			step.Step.StepResult().TermPrint(true),
 			step.Step.StepName(),
-			strings.Join(slice.Map(
-				func(l int) string { return fmt.Sprintf("%d", l) },
-				step.LineReferences), ", "))
+			step.LineReferences)
 	}
+}
+
+func BuildStepTable(steps []*EvaluatedStep) *utils.Table {
+	table := utils.NewTable([]string{"Line", "Formula", "Justification", "Lines used"})
+	for i, step := range steps {
+		indent := strings.Repeat("    ", step.Depth)
+		table.AddRow([]string{
+			fmt.Sprintf("%d", i+1),
+			fmt.Sprintf("%s%s", indent, step.Step.StepResult().TermPrint(true)),
+			step.Step.StepName(),
+			step.LineReferences,
+		})
+	}
+	return table
 }

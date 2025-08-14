@@ -83,10 +83,10 @@ func RunScalesDeprecated(args *ScalesArgs) {
 	}
 	fmt.Println("major scales:")
 	majorTable := utils.NewTable([]string{"", "1", "2", "3", "4", "5", "6", "7", "8"}, majorRows...)
-	fmt.Println(majorTable.ToFormattedTable())
+	fmt.Println(majorTable.ToFormattedTable(nil))
 	fmt.Println("minor scales:")
 	minorTable := utils.NewTable([]string{"", "1", "2", "3", "4", "5", "6", "7", "8"}, minorRows...)
-	fmt.Println(minorTable.ToFormattedTable())
+	fmt.Println(minorTable.ToFormattedTable(nil))
 
 	for _, k := range music.KeysByFifths {
 		var rows [][]string
@@ -98,7 +98,7 @@ func RunScalesDeprecated(args *ScalesArgs) {
 			}
 			rows = append(rows, row)
 		}
-		fmt.Println(utils.NewTable([]string{k.Start.String(), "", "", "", "", ""}, rows...).ToFormattedTable())
+		fmt.Println(utils.NewTable([]string{k.Start.String(), "", "", "", "", ""}, rows...).ToFormattedTable(nil))
 
 		for _, progression := range music.Progressions {
 			progressionTable := utils.NewTable([]string{progression.Name, "", "", ""})
@@ -106,7 +106,7 @@ func RunScalesDeprecated(args *ScalesArgs) {
 			for i, notes := range progressionNotes {
 				progressionTable.AddRow(slice.Cons(progression.Chords[i].Name(k), slice.Map(noteToString, notes)))
 			}
-			fmt.Println(progressionTable.ToFormattedTable())
+			fmt.Println(progressionTable.ToFormattedTable(nil))
 		}
 	}
 }

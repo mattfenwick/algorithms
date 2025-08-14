@@ -57,7 +57,7 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 		inputHeader = append(inputHeader, e.Income.Description)
 	}
 	inputTable := utils.NewTable(inputHeader, Transpose(inputColumns)...)
-	fmt.Printf("income/input: \n%s\n\n", inputTable.ToFormattedTable())
+	fmt.Printf("income/input: \n%s\n\n", inputTable.ToFormattedTable(nil))
 
 	breakdownHeader := []string{"", ""}
 	breakdownColumns := [][]string{
@@ -98,7 +98,7 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 		breakdownHeader = append(breakdownHeader, e.Income.Description)
 	}
 	breakdownTable := utils.NewTable(breakdownHeader, Transpose(breakdownColumns)...)
-	fmt.Printf("bracket breakdown: \n%s\n\n", breakdownTable.ToFormattedTable())
+	fmt.Printf("bracket breakdown: \n%s\n\n", breakdownTable.ToFormattedTable(nil))
 
 	totalHeader := []string{""}
 	totalColumns := [][]string{
@@ -122,7 +122,7 @@ func PrettyPrintComparison(estimates []*TaxEstimate) {
 		totalHeader = append(totalHeader, e.Income.Description)
 	}
 	totalTable := utils.NewTable(totalHeader, Transpose(totalColumns)...)
-	fmt.Printf("totals:\n%s\n\n", totalTable.ToFormattedTable())
+	fmt.Printf("totals:\n%s\n\n", totalTable.ToFormattedTable(nil))
 
 	fmt.Printf("\n\n")
 }

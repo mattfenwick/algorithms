@@ -102,7 +102,7 @@ func (e *TaxEstimate) PrettyPrint() {
 		[]string{"Medicare NIIT", intToString(medicareNiit)},
 		[]string{"Social security", strings.Join(slice.Map(intToString, socialSecurity), "\n")},
 	)
-	fmt.Printf("income/input: \n%s\n\n", inputTable.ToFormattedTable())
+	fmt.Printf("income/input: \n%s\n\n", inputTable.ToFormattedTable(nil))
 
 	// taxes
 	taxTable := utils.NewTable([]string{"Tax", "Description", "Rate (%)", "Taxable amount", "Tax"})
@@ -199,8 +199,8 @@ func (e *TaxEstimate) PrettyPrint() {
 		"?",
 		fmt.Sprintf("%.2f", 100*float32(grandTotal)/float32(e.TotalIncome))})
 
-	fmt.Printf("tax breakdown:\n%s\n\n", taxTable.ToFormattedTable())
-	fmt.Printf("totals:\n%s\n\n", taxTotalTable.ToFormattedTable())
+	fmt.Printf("tax breakdown:\n%s\n\n", taxTable.ToFormattedTable(nil))
+	fmt.Printf("totals:\n%s\n\n", taxTotalTable.ToFormattedTable(nil))
 
 	fmt.Printf("\n\n")
 }

@@ -132,7 +132,7 @@ func PrintOrdinaryIncomeBrackets(taxYear *TaxYearConstants) {
 		Headers: slice.Cons("Rate %", slice.Map(func(f FilingStatus) string { return f.ToString() }, statuses)),
 		Rows:    Transpose(rows),
 	}
-	fmt.Printf("%s\n", table.ToFormattedTable())
+	fmt.Printf("%s\n", table.ToFormattedTable(nil))
 }
 
 func PrintLTCGIncomeBrackets(taxYear *TaxYearConstants) {
@@ -159,7 +159,7 @@ func PrintLTCGIncomeBrackets(taxYear *TaxYearConstants) {
 		Headers: slice.Cons("Rate %", slice.Map(func(f FilingStatus) string { return f.ToString() }, statuses)),
 		Rows:    Transpose(rows),
 	}
-	fmt.Printf("%s\n", table.ToFormattedTable())
+	fmt.Printf("%s\n", table.ToFormattedTable(nil))
 }
 
 func PrintMedicareThresholdAndStandardDeductions(taxYear *TaxYearConstants) {
@@ -174,7 +174,7 @@ func PrintMedicareThresholdAndStandardDeductions(taxYear *TaxYearConstants) {
 		Headers: slice.Cons("", slice.Map(func(f FilingStatus) string { return f.ToString() }, statuses)),
 		Rows:    [][]string{medicareRow, standardDeductionRow},
 	}
-	fmt.Printf("%s\n", table.ToFormattedTable())
+	fmt.Printf("%s\n", table.ToFormattedTable(nil))
 }
 
 func PrintMedicareAndSocialSecurityInfo(taxYear *TaxYearConstants) {
@@ -188,5 +188,5 @@ func PrintMedicareAndSocialSecurityInfo(taxYear *TaxYearConstants) {
 			{"Social security limit", intToString(taxYear.SocialSecurityLimit)},
 		},
 	}
-	fmt.Printf("%s\n", table.ToFormattedTable())
+	fmt.Printf("%s\n", table.ToFormattedTable(nil))
 }
