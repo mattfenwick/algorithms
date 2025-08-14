@@ -3,14 +3,14 @@ package logic
 type Rule struct {
 	Preconditions []Term
 	Result        Term
-	Name string
+	Name          string
 }
 
 func (r *Rule) StepResult() Term {
 	return r.Result
 }
 
-func (r *Rule)StepName() string {
+func (r *Rule) StepName() string {
 	return r.Name
 }
 
@@ -42,7 +42,10 @@ func IAnd(left Term, right Term) *Rule {
 	return NewRule("I ^", And(left, right), left, right)
 }
 
-// E ^ -- P ^ Q => P; P ^ Q => Q;
+// E ^ -- Left and Right versions
+//
+//	Left : P ^ Q => P
+//	Right: P ^ Q => Q
 func EAnd(left Term, right Term, isLeft bool) *Rule {
 	result := right
 	name := "E ^ (R)"
@@ -53,7 +56,10 @@ func EAnd(left Term, right Term, isLeft bool) *Rule {
 	return NewRule(name, result, And(left, right))
 }
 
-// I v -- A -> A v B; B -> A v B
+// I v -- Left and Right versions
+//
+//	Left: A -> A v B
+//	Right: B -> A v B
 func IOr(left Term, right Term, isLeft bool) *Rule {
 	pre := right
 	name := "I v (R)"
