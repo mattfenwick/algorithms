@@ -8,14 +8,14 @@ var (
 )
 
 var (
-	notPAndNotP = NewProof("~ ( P ^ ~ P )",
-		NewSubProofContradiction(
+	notPAndNotP = NewRootProof("~ ( P ^ ~ P )",
+		NewProofContradiction(
 			And(P, Not(P)),
 			EAnd(P, Not(P), true),
 			EAnd(P, Not(P), false),
 		))
-	andCommutativity = NewProof("P ^ Q -> Q ^ P",
-		NewSubProofImplication(
+	andCommutativity = NewRootProof("P ^ Q -> Q ^ P",
+		NewProofImplication(
 			And(P, Q),
 			EAnd(P, Q, true),
 			EAnd(P, Q, false),
@@ -27,10 +27,10 @@ var (
 	// 	&Reiterate{Term: Not(Or(P, Not(P)))},
 	// )
 
-	pOrNotP = NewProof("P v ~ P",
-		NewSubProofContradiction(
+	pOrNotP = NewRootProof("P v ~ P",
+		NewProofContradiction(
 			Not(Or(P, Not(P))),
-			NewSubProofContradiction(
+			NewProofContradiction(
 				P,
 				IOr(P, Not(P), true),
 				&Reiterate{Term: Not(Or(P, Not(P)))},

@@ -10,33 +10,36 @@ type Step interface {
 }
 
 type Proof struct {
-	Name  string
-	Steps []Step
+	Name       string
+	Hypothesis Term
+	Steps      []Step
+	Result     Term
+	ProofType  ProofType
 }
 
-func NewProof(name string, steps ...Step) *Proof {
-	return &Proof{Name: name, Steps: steps}
+func (p *Proof) StepResult() Term {
+	return p.Result
 }
 
-type SubProofType string
+type ProofType string
 
 const (
-	SubProofTypeContradiction SubProofType = "Contradiction"
-	SubProofTypeImplication   SubProofType = "Implication"
+	ProofTypeRoot          ProofType = "Root"
+	ProofTypeContradiction ProofType = "Contradiction"
+	ProofTypeImplication   ProofType = "Implication"
 )
 
-type SubProof struct {
-	Hypothesis   Term
-	Steps        []Step
-	Result       Term
-	SubProofType SubProofType
+func NewRootProof(name string, steps ...Step) *Proof {
+	return &Proof{
+		Name:       name,
+		Hypothesis: nil,
+		Steps:      steps,
+		Result:     steps[len(steps)-1].StepResult(),
+		ProofType:  ProofTypeRoot,
+	}
 }
 
-func (sp *SubProof) StepResult() Term {
-	return sp.Result
-}
-
-func NewSubProofContradiction(hypothesis Term, steps ...Step) *SubProof {
+func NewProofContradiction(hypothesis Term, steps ...Step) *Proof {
 	if len(steps) == 0 {
 		panic(errors.Errorf("expected at least 1 step"))
 	}
@@ -57,25 +60,25 @@ func NewSubProofContradiction(hypothesis Term, steps ...Step) *SubProof {
 			last.TermPrint(true),
 			json.MustMarshalToString(results)))
 	}
-	return &SubProof{
-		Hypothesis:   hypothesis,
-		Steps:        steps,
-		Result:       Not(hypothesis),
-		SubProofType: SubProofTypeContradiction,
+	return &Proof{
+		Hypothesis: hypothesis,
+		Steps:      steps,
+		Result:     Not(hypothesis),
+		ProofType:  ProofTypeContradiction,
 	}
 }
 
-func NewSubProofImplication(hypothesis Term, steps ...Step) *SubProof {
-	// last step is the result and must be a term
+func NewProofImplication(hypothesis Term, steps ...Step) *Proof {
+	// last step is the result
 	if len(steps) == 0 {
 		panic(errors.Errorf("must be at least one step in subproof"))
 	}
 	last := steps[len(steps)-1]
-	return &SubProof{
-		Hypothesis:   hypothesis,
-		Steps:        steps,
-		Result:       Implication(hypothesis, last.StepResult()),
-		SubProofType: SubProofTypeImplication,
+	return &Proof{
+		Hypothesis: hypothesis,
+		Steps:      steps,
+		Result:     Implication(hypothesis, last.StepResult()),
+		ProofType:  ProofTypeImplication,
 	}
 }
 
@@ -95,4 +98,13 @@ type Repeat struct {
 
 func (r *Repeat) StepResult() Term {
 	return r.Term
+}
+
+// TODO do we really need this?
+type Assumption struct {
+	Term Term
+}
+
+func (a *Assumption) StepResult() Term {
+	return a.Term
 }
