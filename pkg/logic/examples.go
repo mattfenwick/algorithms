@@ -19,7 +19,7 @@ var (
 			EAnd(P, Not(P), false),
 		))
 
-	andCommutativity = NewRootProof("P ^ Q -> Q ^ P",
+	andCommutativity = NewRootProof("( P ^ Q ) -> ( Q ^ P )",
 		NewProofImplication(
 			And(P, Q),
 			EAnd(P, Q, true),
@@ -40,7 +40,7 @@ var (
 		ENot(Or(P, Not(P))),
 	)
 
-	pQNotQNotP = NewRootProof("( P -> Q ) -> ( ~ Q -> ~ P)",
+	pQNotQNotP = NewRootProof("( P -> Q ) -> ( ~ Q -> ~ P )",
 		NewProofImplication(
 			Implication(P, Q),
 			NewProofImplication(
@@ -54,12 +54,46 @@ var (
 			),
 		),
 	)
+
+	qToPToQ = NewRootProof("Q -> ( P -> Q )",
+		NewProofImplication(
+			Q,
+			NewProofImplication(P,
+				&Reiterate{Term: Q})),
+	)
+
+	notQNotPToPQ = NewRootProof("( ~ Q -> ~ P ) -> ( P -> Q )",
+		NewProofImplication(
+			Implication(Not(Q), Not(P)),
+			NewProofImplication(
+				P,
+				NewProofContradiction(
+					Not(Q),
+					&Reiterate{Term: Implication(Not(Q), Not(P))},
+					EImply(Not(Q), Not(P)),
+					&Reiterate{Term: P},
+				),
+				ENot(Q),
+			),
+		),
+	)
+
+	pToQToQToRToPToR = NewRootProof("( ( P -> Q ) ^ ( Q -> R ) ) -> ( P -> R )",
+		NewProofImplication(And(Implication(P, Q), Implication(Q, R)),
+			NewProofImplication(P,
+				&Reiterate{Term: And(Implication(P, Q), Implication(Q, R))},
+				EAnd(Implication(P, Q), Implication(Q, R), true),
+				EAnd(Implication(P, Q), Implication(Q, R), false),
+				EImply(P, Q),
+				EImply(Q, R),
+			)),
+	)
 )
 
 // junk (uninteresting) proofs in this section
 var (
 	pToPAndPOrNotPTodoDelete = NewRootProof(
-		"P -> P ^ P v ~P",
+		"P -> ( ( P ^ P ) v ~ P )",
 		NewProofImplication(Var("P"),
 			IAnd(Var("P"), Var("P")),
 			IOr(And(Var("P"), Var("P")), Not(Var("P")), true),
@@ -74,4 +108,7 @@ var examples = []*Proof{
 	andCommutativity,
 	pOrNotP,
 	pQNotQNotP,
+	notQNotPToPQ,
+	qToPToQ,
+	pToQToQToRToPToR,
 }

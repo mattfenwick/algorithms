@@ -34,7 +34,7 @@ func IImply(ifTerm Term, then Term) *Rule {
 
 // E -> -- (P -> Q), P => Q
 func EImply(ifTerm Term, then Term) *Rule {
-	return NewRule("E ->", then, ifTerm, Implication(ifTerm, then))
+	return NewRule("E ->", then, Implication(ifTerm, then), ifTerm)
 }
 
 // I ^ -- P, Q => P ^ Q

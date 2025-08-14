@@ -96,7 +96,7 @@ func (c *CheckedProof) PrintSteps() {
 func (c *CheckedProof) BuildStepTable() string {
 	table := utils.NewTable([]string{"Line", "Formula", "Justification", "Lines used"})
 	for i, step := range c.Steps {
-		indent := strings.Repeat("    ", step.Depth)
+		indent := strings.Repeat("  | ", step.Depth)
 		table.AddRow([]string{
 			fmt.Sprintf("%d", i+1),
 			fmt.Sprintf("%s%s", indent, step.Step.StepResult().TermPrint(true)),
@@ -112,7 +112,14 @@ func (c *CheckedProof) BuildStepTable() string {
 func CheckProof(proof *Proof) (*CheckedProof, error) {
 	checked := &CheckedProof{}
 	err := CheckProofHelper(proof, nil, checked)
-	return checked, err
+	if err != nil {
+		return checked, err
+	}
+	result := checked.Steps[len(checked.Steps)-1].Step.StepResult().TermPrint(true)
+	if result != proof.Name {
+		return checked, errors.Errorf("proof name '%s' does not match result '%s'", proof.Name, result)
+	}
+	return checked, nil
 }
 
 func CheckProofHelper(proof *Proof, parentScope *Scope, checked *CheckedProof) error {
