@@ -2,8 +2,6 @@ package logic
 
 import (
 	"fmt"
-
-	"github.com/olekukonko/tablewriter"
 )
 
 func Run() {
@@ -61,10 +59,8 @@ func Run() {
 	for _, eg := range examples {
 		checked, err := CheckProof(eg)
 		fmt.Printf("\n\nresult from proof '%s': %s\n", eg.Name, err)
-		PrintSteps(checked.Steps)
-		fmt.Println(BuildStepTable(checked.Steps).ToFormattedTable(func(t *tablewriter.Table) {
-			t.SetAlignment(tablewriter.ALIGN_LEFT)
-		}))
+		checked.PrintSteps()
+		fmt.Println(checked.BuildStepTable())
 	}
 }
 

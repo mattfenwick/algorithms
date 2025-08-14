@@ -7,6 +7,7 @@ import (
 	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/mattfenwick/collections/pkg/dict"
 	"github.com/mattfenwick/collections/pkg/slice"
+	"github.com/olekukonko/tablewriter"
 	"github.com/pkg/errors"
 )
 
@@ -78,6 +79,34 @@ type CheckedProof struct {
 func (c *CheckedProof) Add(step *EvaluatedStep) int {
 	c.Steps = append(c.Steps, step)
 	return len(c.Steps)
+}
+
+func (c *CheckedProof) PrintSteps() {
+	for i, step := range c.Steps {
+		indent := strings.Repeat("  ", step.Depth)
+		fmt.Printf("%s%d: %s    %s: %s\n",
+			indent,
+			i+1,
+			step.Step.StepResult().TermPrint(true),
+			step.Step.StepName(),
+			step.LineReferences)
+	}
+}
+
+func (c *CheckedProof) BuildStepTable() string {
+	table := utils.NewTable([]string{"Line", "Formula", "Justification", "Lines used"})
+	for i, step := range c.Steps {
+		indent := strings.Repeat("    ", step.Depth)
+		table.AddRow([]string{
+			fmt.Sprintf("%d", i+1),
+			fmt.Sprintf("%s%s", indent, step.Step.StepResult().TermPrint(true)),
+			step.Step.StepName(),
+			step.LineReferences,
+		})
+	}
+	return table.ToFormattedTable(func(t *tablewriter.Table) {
+		t.SetAlignment(tablewriter.ALIGN_LEFT)
+	})
 }
 
 func CheckProof(proof *Proof) (*CheckedProof, error) {
@@ -155,30 +184,4 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 
 func intToString(i int) string {
 	return fmt.Sprintf("%d", i)
-}
-
-func PrintSteps(steps []*EvaluatedStep) {
-	for i, step := range steps {
-		indent := strings.Repeat("  ", step.Depth)
-		fmt.Printf("%s%d: %s    %s: %s\n",
-			indent,
-			i+1,
-			step.Step.StepResult().TermPrint(true),
-			step.Step.StepName(),
-			step.LineReferences)
-	}
-}
-
-func BuildStepTable(steps []*EvaluatedStep) *utils.Table {
-	table := utils.NewTable([]string{"Line", "Formula", "Justification", "Lines used"})
-	for i, step := range steps {
-		indent := strings.Repeat("    ", step.Depth)
-		table.AddRow([]string{
-			fmt.Sprintf("%d", i+1),
-			fmt.Sprintf("%s%s", indent, step.Step.StepResult().TermPrint(true)),
-			step.Step.StepName(),
-			step.LineReferences,
-		})
-	}
-	return table
 }
