@@ -18,6 +18,7 @@ func CheckProof(proof *Proof) (*Scope, error) {
 type EvaluatedStep struct {
 	Step       Step
 	ScopeTerms []string
+	ChildScope *Scope
 }
 
 type Scope struct {
@@ -96,6 +97,7 @@ func (e *Scope) ApplyStep(step Step) error {
 		if err := e.Add(eStep); err != nil {
 			return err
 		}
+		eStep.ChildScope = childEnv
 	case *Reiterate:
 		key := t.Term.TermPrint(true)
 		if !e.FindInParent(key) {
@@ -129,4 +131,28 @@ func (e *Scope) ApplyStep(step Step) error {
 	}
 	e.EvaluatedSteps = append(e.EvaluatedSteps, eStep)
 	return nil
+}
+
+func (e *Scope) printHelper(step *EvaluatedStep, line int, depth int) int {
+	if step.ChildScope != nil {
+		for _, s := range step.ChildScope.EvaluatedSteps {
+			line = step.ChildScope.printHelper(s, line, depth+1)
+		}
+	}
+	indent := strings.Repeat("  ", depth)
+	fmt.Printf("%s%d: %s\n%s- %s\n",
+		indent,
+		line,
+		step.Step.StepResult().TermPrint(true),
+		indent,
+		strings.Join(step.ScopeTerms, ",   "))
+	line++
+	return line
+}
+
+func (e *Scope) PrintResult() {
+	line := 1
+	for _, step := range e.EvaluatedSteps {
+		line = e.printHelper(step, line, 0)
+	}
 }

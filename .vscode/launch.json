@@ -16,6 +16,14 @@
             "mode": "auto",
             "program": "${workspaceFolder}/cmd/misc/main.go",
             "args": ["pratt"]
+        },
+        {
+            "name": "logic",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/misc/main.go",
+            "args": ["logic"]
         }
     ]
 }

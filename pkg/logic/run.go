@@ -70,9 +70,11 @@ func Run() {
 	env.Print(0)
 
 	for _, eg := range examples {
-		env, err := CheckProof(eg)
+		scope, err := CheckProof(eg)
 		fmt.Printf("\n\nresult from proof '%s': %s\n", eg.Name, err)
-		env.Print(0)
+		scope.Print(0)
+		scope.PrintResult()
+		// fmt.Println(json.MustMarshalToString(scope))
 	}
 }
 
