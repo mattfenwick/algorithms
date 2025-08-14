@@ -59,8 +59,10 @@ func Run() {
 	for _, eg := range examples {
 		checked, err := CheckProof(eg)
 		fmt.Printf("\n\nresult from proof '%s': %s\n", eg.Name, err)
-		checked.PrintSteps()
-		fmt.Println(checked.BuildStepTable())
+		if err == nil {
+			checked.PrintSteps()
+			fmt.Println(checked.BuildStepTable())
+		}
 	}
 }
 

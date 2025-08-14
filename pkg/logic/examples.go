@@ -47,8 +47,9 @@ var (
 				Not(Q),
 				NewProofContradiction(
 					P,
-					&Reiterate{Term: Not(Q)},
+					&Reiterate{Term: Implication(P, Q)},
 					EImply(P, Q),
+					&Reiterate{Term: Not(Q)},
 				),
 			),
 		),
