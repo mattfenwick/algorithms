@@ -36,7 +36,9 @@ var (
 				&Reiterate{Term: Not(Or(P, Not(P)))},
 			),
 			IOr(P, Not(P), false),
-		))
+		),
+		ENot(Or(P, Not(P))),
+	)
 )
 
 var examples = []*Proof{

@@ -2,6 +2,9 @@ package logic
 
 import (
 	"fmt"
+	"strings"
+
+	"github.com/mattfenwick/collections/pkg/json"
 )
 
 func Run() {
@@ -65,16 +68,20 @@ func Run() {
 			IOr(And(Var("P"), Var("P")), Not(Var("P")), true),
 		),
 	)
-	env, err := CheckProof(proof)
+	steps, err := ApplyProof(proof, nil)
 	fmt.Printf("result from proof '%s': %s\n", proof.Name, err)
-	env.Print(0)
+	fmt.Printf("%s\n", json.MustMarshalToString(steps))
 
 	for _, eg := range examples {
-		scope, err := CheckProof(eg)
+		steps, err := ApplyProof(eg, nil)
 		fmt.Printf("\n\nresult from proof '%s': %s\n", eg.Name, err)
-		scope.Print(0)
-		scope.PrintResult()
-		// fmt.Println(json.MustMarshalToString(scope))
+		// scope.Print(0)
+		// scope.PrintResult()
+		for i, step := range steps {
+			indent := strings.Repeat("  ", step.Depth)
+			fmt.Printf("%s%d: %s\n", indent, i+1, step.Step.StepResult().TermPrint(true))
+		}
+		// fmt.Println(json.MustMarshalToString(steps))
 	}
 }
 

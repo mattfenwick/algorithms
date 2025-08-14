@@ -4,39 +4,36 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mattfenwick/collections/pkg/dict"
+	"github.com/mattfenwick/collections/pkg/set"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
 )
 
-func CheckProof(proof *Proof) (*Scope, error) {
-	env := NewScope(nil)
-	err := env.ApplyProof(proof)
-	return env, err
-}
-
 type EvaluatedStep struct {
+	Depth      int
 	Step       Step
 	ScopeTerms []string
-	ChildScope *Scope
 }
 
 type Scope struct {
-	Parent         *Scope
-	TrueTerms      map[string]*EvaluatedStep
-	EvaluatedSteps []*EvaluatedStep
+	Depth     int
+	Parent    *Scope
+	TrueTerms *set.Set[string]
 }
 
 func NewScope(parent *Scope) *Scope {
-	s := &Scope{
+	depth := 0
+	if parent != nil {
+		depth = parent.Depth + 1
+	}
+	return &Scope{
+		Depth:     depth,
 		Parent:    parent,
-		TrueTerms: map[string]*EvaluatedStep{}}
-	return s
+		TrueTerms: set.FromSlice([]string{})}
 }
 
 func (e *Scope) Find(key string) bool {
-	_, ok := e.TrueTerms[key]
-	return ok
+	return e.TrueTerms.Contains(key)
 }
 
 func (e *Scope) FindInParent(key string) bool {
@@ -46,17 +43,15 @@ func (e *Scope) FindInParent(key string) bool {
 	return e.Parent.Find(key) || e.Parent.FindInParent(key)
 }
 
-func (e *Scope) Add(eStep *EvaluatedStep) error {
-	key := eStep.Step.StepResult().TermPrint(true)
-	if _, ok := e.TrueTerms[key]; ok {
+func (e *Scope) Add(key string) error {
+	if !e.TrueTerms.Add(key) {
 		return errors.Errorf("unable to add key '%s', already present", key)
 	}
-	e.TrueTerms[key] = eStep
 	return nil
 }
 
 func (e *Scope) GetTrueTerms() []string {
-	return slice.Sort(dict.Keys(e.TrueTerms))
+	return slice.Sort(e.TrueTerms.ToSlice())
 }
 
 func (e *Scope) Print(indent int) {
@@ -68,91 +63,95 @@ func (e *Scope) Print(indent int) {
 	}
 }
 
-func (e *Scope) ApplyProof(proof *Proof) error {
+func ApplyProof(proof *Proof, parentScope *Scope) ([]*EvaluatedStep, error) {
+	var outSteps []*EvaluatedStep
+	scope := NewScope(parentScope)
 	if proof.Hypothesis != nil {
-		if err := e.ApplyStep(&Assumption{Term: proof.Hypothesis}); err != nil {
-			return err
+		evaledSteps, err := ApplyStep(&Assumption{Term: proof.Hypothesis}, scope)
+		if err != nil {
+			return nil, err
 		}
+		outSteps = append(outSteps, evaledSteps...)
 	}
 	for _, step := range proof.Steps {
-		if err := e.ApplyStep(step); err != nil {
-			return err
+		evaledSteps, err := ApplyStep(step, scope)
+		if err != nil {
+			return nil, err
 		}
+		outSteps = append(outSteps, evaledSteps...)
 	}
-	return nil
+	return outSteps, nil
 }
 
-func (e *Scope) ApplyStep(step Step) error {
-	eStep := &EvaluatedStep{Step: step, ScopeTerms: e.GetTrueTerms()}
+func ApplyStep(step Step, scope *Scope) ([]*EvaluatedStep, error) {
+	eStep := &EvaluatedStep{Depth: scope.Depth, Step: step, ScopeTerms: scope.GetTrueTerms()}
+	outSteps := []*EvaluatedStep{}
 	switch t := step.(type) {
 	case *Assumption:
-		if err := e.Add(eStep); err != nil {
-			return err
+		if err := scope.Add(t.StepResult().TermPrint(true)); err != nil {
+			return nil, err
 		}
 	case *Proof:
-		childEnv := NewScope(e)
-		if err := childEnv.ApplyProof(t); err != nil {
-			return err
+		evaledSteps, err := ApplyProof(t, scope)
+		if err != nil {
+			return nil, err
 		}
-		if err := e.Add(eStep); err != nil {
-			return err
+		outSteps = append(outSteps, evaledSteps...)
+		if err := scope.Add(t.StepResult().TermPrint(true)); err != nil {
+			return nil, err
 		}
-		eStep.ChildScope = childEnv
 	case *Reiterate:
 		key := t.Term.TermPrint(true)
-		if !e.FindInParent(key) {
-			return errors.Errorf("missing or untrue premise '%s' in parent(s)", key)
+		if !scope.FindInParent(key) {
+			return nil, errors.Errorf("missing or untrue premise '%s' in parent(s)", key)
 		}
-		if err := e.Add(eStep); err != nil {
-			return errors.Errorf("'%s' aready in scope -- unnecessary step", key)
+		if err := scope.Add(t.StepResult().TermPrint(true)); err != nil {
+			return nil, errors.Errorf("'%s' aready in scope -- unnecessary step", key)
 		}
-		return nil
 	case *Repeat:
 		key := t.Term.TermPrint(true)
-		if !e.Find(key) {
-			return errors.Errorf("missing or untrue premise '%s'", key)
+		if !scope.Find(key) {
+			return nil, errors.Errorf("missing or untrue premise '%s'", key)
 		}
-		return nil
 	case *Rule:
 		// check preconditions
 		for _, n := range t.Preconditions {
 			key := n.TermPrint(true)
-			if !e.Find(key) {
-				return errors.Errorf("missing or untrue premise '%s'", key)
+			if !scope.Find(key) {
+				return nil, errors.Errorf("missing or untrue premise '%s'", key)
 			}
 		}
 		// check that result is not in scope and update env
-		if err := e.Add(eStep); err != nil {
-			return errors.Errorf("'%s' aready in scope -- unnecessary step", eStep.Step.StepResult().TermPrint(true))
+		if err := scope.Add(t.StepResult().TermPrint(true)); err != nil {
+			return nil, errors.Errorf("'%s' aready in scope -- unnecessary step", t.StepResult().TermPrint(true))
 		}
-		return nil
 	default:
-		return errors.Errorf("invalid step type %+v", t)
+		return nil, errors.Errorf("invalid step type %+v", t)
 	}
-	e.EvaluatedSteps = append(e.EvaluatedSteps, eStep)
-	return nil
+	outSteps = append(outSteps, eStep)
+	return outSteps, nil
 }
 
-func (e *Scope) printHelper(step *EvaluatedStep, line int, depth int) int {
-	if step.ChildScope != nil {
-		for _, s := range step.ChildScope.EvaluatedSteps {
-			line = step.ChildScope.printHelper(s, line, depth+1)
-		}
-	}
-	indent := strings.Repeat("  ", depth)
-	fmt.Printf("%s%d: %s\n%s- %s\n",
-		indent,
-		line,
-		step.Step.StepResult().TermPrint(true),
-		indent,
-		strings.Join(step.ScopeTerms, ",   "))
-	line++
-	return line
-}
+// func printHelper(step *EvaluatedStep, line int, depth int) int {
+// 	if step.ChildScope != nil {
+// 		for _, s := range step.ChildScope.EvaluatedSteps {
+// 			line = step.ChildScope.printHelper(s, line, depth+1)
+// 		}
+// 	}
+// 	indent := strings.Repeat("  ", depth)
+// 	fmt.Printf("%s%d: %s\n%s- %s\n",
+// 		indent,
+// 		line,
+// 		step.Step.StepResult().TermPrint(true),
+// 		indent,
+// 		strings.Join(step.ScopeTerms, ",   "))
+// 	line++
+// 	return line
+// }
 
-func (e *Scope) PrintResult() {
-	line := 1
-	for _, step := range e.EvaluatedSteps {
-		line = e.printHelper(step, line, 0)
-	}
-}
+// func PrintResult() {
+// 	line := 1
+// 	for _, step := range e.EvaluatedSteps {
+// 		line = e.printHelper(step, line, 0)
+// 	}
+// }
