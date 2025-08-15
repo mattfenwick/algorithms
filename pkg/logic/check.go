@@ -130,8 +130,8 @@ func CheckProof(proof *Proof) (*CheckedProof, error) {
 		return checked, err
 	}
 	result := checked.Steps[len(checked.Steps)-1].Step.StepResult().TermPrint(true)
-	if result != proof.Name {
-		return checked, errors.Errorf("proof name '%s' does not match result '%s'", proof.Name, result)
+	if result != proof.ExpectedResult {
+		return checked, errors.Errorf("proof expected result '%s' does not match actual result '%s'", proof.ExpectedResult, result)
 	}
 	return checked, nil
 }

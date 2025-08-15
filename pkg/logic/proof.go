@@ -19,11 +19,11 @@ const (
 )
 
 type Proof struct {
-	Name       string
-	Hypothesis Term
-	Steps      []Step
-	Result     Term
-	ProofType  ProofType
+	ExpectedResult string
+	Hypothesis     Term
+	Steps          []Step
+	Result         Term
+	ProofType      ProofType
 }
 
 func (p *Proof) StepResult() Term {
@@ -31,16 +31,23 @@ func (p *Proof) StepResult() Term {
 }
 
 func (p *Proof) StepName() string {
-	return p.Name
+	switch p.ProofType {
+	case ProofTypeContradiction:
+		return "subproof contradiction"
+	case ProofTypeImplication:
+		return "subproof implication"
+	default:
+		panic(errors.Errorf("no StepName defined for proof type '%s'", p.ProofType))
+	}
 }
 
-func NewRootProof(name string, steps ...Step) *Proof {
+func NewRootProof(expectedResult string, steps ...Step) *Proof {
 	return &Proof{
-		Name:       name,
-		Hypothesis: nil,
-		Steps:      steps,
-		Result:     steps[len(steps)-1].StepResult(),
-		ProofType:  ProofTypeRoot,
+		ExpectedResult: expectedResult,
+		Hypothesis:     nil,
+		Steps:          steps,
+		Result:         steps[len(steps)-1].StepResult(),
+		ProofType:      ProofTypeRoot,
 	}
 }
 
@@ -65,12 +72,13 @@ func NewProofContradiction(hypothesis Term, steps ...Step) *Proof {
 			last.TermPrint(true),
 			json.MustMarshalToString(results)))
 	}
+	result := Not(hypothesis)
 	return &Proof{
-		Name:       "subproof contradiction",
-		Hypothesis: hypothesis,
-		Steps:      steps,
-		Result:     Not(hypothesis),
-		ProofType:  ProofTypeContradiction,
+		ExpectedResult: result.TermPrint(true),
+		Hypothesis:     hypothesis,
+		Steps:          steps,
+		Result:         result,
+		ProofType:      ProofTypeContradiction,
 	}
 }
 
@@ -80,12 +88,13 @@ func NewProofImplication(hypothesis Term, steps ...Step) *Proof {
 		panic(errors.Errorf("must be at least one step in subproof"))
 	}
 	last := steps[len(steps)-1]
+	result := Implication(hypothesis, last.StepResult())
 	return &Proof{
-		Name:       "subproof implication",
-		Hypothesis: hypothesis,
-		Steps:      steps,
-		Result:     Implication(hypothesis, last.StepResult()),
-		ProofType:  ProofTypeImplication,
+		ExpectedResult: result.TermPrint(true),
+		Hypothesis:     hypothesis,
+		Steps:          steps,
+		Result:         result,
+		ProofType:      ProofTypeImplication,
 	}
 }
 
