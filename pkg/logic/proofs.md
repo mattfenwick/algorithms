@@ -10,6 +10,8 @@
 7. [( ~ Q -> ~ P ) -> ( P -> Q )](#proof-6)
 8. [Q -> ( P -> Q )](#proof-7)
 9. [( ( P -> Q ) ^ ( Q -> R ) ) -> ( P -> R )](#proof-8)
+10. [( P ^ P ) -> P](#proof-9)
+11. [( P v P ) -> P](#proof-10)
 
 
 
@@ -122,3 +124,24 @@
 | 7 | <pre>.   .   R</pre> | E -> | 5, 6 |
 | 8 | <pre>.   P -> R</pre> | subproof implication | 2 - 7 |
 | 9 | <pre>( ( P -> Q ) ^ ( Q -> R ) ) -> ( P -> R )</pre> | subproof implication | 1 - 8 |
+
+
+# ( P ^ P ) -> P <a name="proof-9"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P ^ P</pre> | Assume |  |
+| 2 | <pre>.   P</pre> | E ^ (L) | 1 |
+| 3 | <pre>( P ^ P ) -> P</pre> | subproof implication | 1 - 2 |
+
+
+# ( P v P ) -> P <a name="proof-10"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P v P</pre> | Assume |  |
+| 2 | <pre>.   .   P</pre> | Assume |  |
+| 3 | <pre>.   .   P</pre> | Repeat | 2 |
+| 4 | <pre>.   P -> P</pre> | subproof implication | 2 - 3 |
+| 5 | <pre>.   P</pre> | E v | 4, 4, 1 |
+| 6 | <pre>( P v P ) -> P</pre> | subproof implication | 1 - 5 |

@@ -88,6 +88,17 @@ var (
 				EImply(Q, R),
 			)),
 	)
+
+	pAndPToP = NewRootProof("( P ^ P ) -> P",
+		NewProofImplication(And(P, P),
+			EAnd(P, P, true)),
+	)
+
+	pOrPToP = NewRootProof("( P v P ) -> P",
+		NewProofImplication(Or(P, P),
+			NewProofImplication(P, &Repeat{Term: P}),
+			EOr(P, P, P)),
+	)
 )
 
 // junk (uninteresting) proofs in this section
@@ -111,4 +122,6 @@ var examples = []*Proof{
 	notQNotPToPQ,
 	qToPToQ,
 	pToQToQToRToPToR,
+	pAndPToP,
+	pOrPToP,
 }
