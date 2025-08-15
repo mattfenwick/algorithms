@@ -109,6 +109,20 @@ func (c *CheckedProof) BuildStepTable() string {
 	})
 }
 
+func (c *CheckedProof) BuildStepMarkdownTable() string {
+	table := utils.NewTable([]string{"Line", "Formula", "Justification", "Lines used"})
+	for i, step := range c.Steps {
+		indent := strings.Repeat(".   ", step.Depth)
+		table.AddRow([]string{
+			fmt.Sprintf("%d", i+1),
+			fmt.Sprintf("<pre>%s%s</pre>", indent, step.Step.StepResult().TermPrint(true)),
+			step.Step.StepName(),
+			step.LineReferences,
+		})
+	}
+	return table.ToMarkdown()
+}
+
 func CheckProof(proof *Proof) (*CheckedProof, error) {
 	checked := &CheckedProof{}
 	err := CheckProofHelper(proof, nil, checked)

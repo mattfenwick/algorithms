@@ -87,10 +87,11 @@ func RunSchema(path string, readAll bool) {
 }
 
 func RunLogic(args *LogicArgs) {
-	logic.Run()
+	logic.Run(args.ProofPath)
 }
 
 type LogicArgs struct {
+	ProofPath string
 }
 
 func SetupLogicCommand() *cobra.Command {
@@ -102,6 +103,7 @@ func SetupLogicCommand() *cobra.Command {
 			RunLogic(args)
 		},
 	}
+	command.Flags().StringVar(&args.ProofPath, "proof-path", "pkg/logic/proofs.md", "path to which markdown file of proofs will be written")
 
 	return command
 }
