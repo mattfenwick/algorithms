@@ -25,6 +25,8 @@
     2. [( ( P -> Q ) v ( P -> R ) ) -> ( P -> ( Q v R ) )](#proof-5-2)
     3. [( P -> ( Q ^ R ) ) -> ( ( P -> Q ) ^ ( P -> R ) )](#proof-5-3)
     4. [( ( P -> Q ) ^ ( P -> R ) ) -> ( P -> ( Q ^ R ) )](#proof-5-4)
+    5. [( P ^ ( Q v R ) ) -> ( ( P ^ Q ) v ( P ^ R ) )](#proof-5-5)
+    6. [( ( P ^ Q ) v ( P ^ R ) ) -> ( P ^ ( Q v R ) )](#proof-5-6)
 
 # basics <a name="basics"></a>
 
@@ -330,4 +332,44 @@
 | 8 | <pre>.   .   Q ^ R</pre> | I ^ | 6, 7 |
 | 9 | <pre>.   P -> ( Q ^ R )</pre> | subproof implication | 2 - 8 |
 | 10 | <pre>( ( P -> Q ) ^ ( P -> R ) ) -> ( P -> ( Q ^ R ) )</pre> | subproof implication | 1 - 9 |
+
+## ( P ^ ( Q v R ) ) -> ( ( P ^ Q ) v ( P ^ R ) ) <a name="proof-5-5"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P ^ ( Q v R )</pre> | Assume |  |
+| 2 | <pre>.   P</pre> | E ^ (L) | 1 |
+| 3 | <pre>.   Q v R</pre> | E ^ (R) | 1 |
+| 4 | <pre>.   .   Q</pre> | Assume |  |
+| 5 | <pre>.   .   P</pre> | Reiterate | 2 |
+| 6 | <pre>.   .   P ^ Q</pre> | I ^ | 5, 4 |
+| 7 | <pre>.   .   ( P ^ Q ) v ( P ^ R )</pre> | I v (L) | 6 |
+| 8 | <pre>.   Q -> ( ( P ^ Q ) v ( P ^ R ) )</pre> | subproof implication | 4 - 7 |
+| 9 | <pre>.   .   R</pre> | Assume |  |
+| 10 | <pre>.   .   P</pre> | Reiterate | 2 |
+| 11 | <pre>.   .   P ^ R</pre> | I ^ | 10, 9 |
+| 12 | <pre>.   .   ( P ^ Q ) v ( P ^ R )</pre> | I v (R) | 11 |
+| 13 | <pre>.   R -> ( ( P ^ Q ) v ( P ^ R ) )</pre> | subproof implication | 9 - 12 |
+| 14 | <pre>.   ( P ^ Q ) v ( P ^ R )</pre> | E v | 8, 13, 3 |
+| 15 | <pre>( P ^ ( Q v R ) ) -> ( ( P ^ Q ) v ( P ^ R ) )</pre> | subproof implication | 1 - 14 |
+
+## ( ( P ^ Q ) v ( P ^ R ) ) -> ( P ^ ( Q v R ) ) <a name="proof-5-6"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ( P ^ Q ) v ( P ^ R )</pre> | Assume |  |
+| 2 | <pre>.   .   P ^ Q</pre> | Assume |  |
+| 3 | <pre>.   .   P</pre> | E ^ (L) | 2 |
+| 4 | <pre>.   .   Q</pre> | E ^ (R) | 2 |
+| 5 | <pre>.   .   Q v R</pre> | I v (L) | 4 |
+| 6 | <pre>.   .   P ^ ( Q v R )</pre> | I ^ | 3, 5 |
+| 7 | <pre>.   ( P ^ Q ) -> ( P ^ ( Q v R ) )</pre> | subproof implication | 2 - 6 |
+| 8 | <pre>.   .   P ^ R</pre> | Assume |  |
+| 9 | <pre>.   .   P</pre> | E ^ (L) | 8 |
+| 10 | <pre>.   .   R</pre> | E ^ (R) | 8 |
+| 11 | <pre>.   .   Q v R</pre> | I v (R) | 10 |
+| 12 | <pre>.   .   P ^ ( Q v R )</pre> | I ^ | 9, 11 |
+| 13 | <pre>.   ( P ^ R ) -> ( P ^ ( Q v R ) )</pre> | subproof implication | 8 - 12 |
+| 14 | <pre>.   P ^ ( Q v R )</pre> | E v | 7, 13, 1 |
+| 15 | <pre>( ( P ^ Q ) v ( P ^ R ) ) -> ( P ^ ( Q v R ) )</pre> | subproof implication | 1 - 14 |
 
