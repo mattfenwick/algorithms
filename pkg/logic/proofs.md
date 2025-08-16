@@ -1,21 +1,21 @@
 
 # Table of Contents
 
-1. [basics](basics)
-  1. [P -> P](#proof-1-1)
-  2. [~ ( P ^ ~ P )](#proof-1-2)
-  3. [P v ~ P](#proof-1-3)
-  4. [( P -> Q ) -> ( ~ Q -> ~ P )](#proof-1-4)
-  5. [( ~ Q -> ~ P ) -> ( P -> Q )](#proof-1-5)
-  6. [Q -> ( P -> Q )](#proof-1-6)
-  7. [( P ^ P ) -> P](#proof-1-7)
-  8. [( P v P ) -> P](#proof-1-8)
-  9. [( ( P -> Q ) ^ ( Q -> R ) ) -> ( P -> R )](#proof-1-9)
-2. [commutativity](commutativity)
-  1. [( P ^ Q ) -> ( Q ^ P )](#proof-2-1)
-  2. [( P v Q ) -> ( Q v P )](#proof-2-2)
-3. [associativity](associativity)
-4. [distributivity](distributivity)
+1. [basics](#basics)
+    1. [P -> P](#proof-1-1)
+    2. [~ ( P ^ ~ P )](#proof-1-2)
+    3. [P v ~ P](#proof-1-3)
+    4. [( P -> Q ) -> ( ~ Q -> ~ P )](#proof-1-4)
+    5. [( ~ Q -> ~ P ) -> ( P -> Q )](#proof-1-5)
+    6. [Q -> ( P -> Q )](#proof-1-6)
+    7. [( P ^ P ) -> P](#proof-1-7)
+    8. [( P v P ) -> P](#proof-1-8)
+    9. [( ( P -> Q ) ^ ( Q -> R ) ) -> ( P -> R )](#proof-1-9)
+2. [commutativity](#commutativity)
+    1. [( P ^ Q ) -> ( Q ^ P )](#proof-2-1)
+    2. [( P v Q ) -> ( Q v P )](#proof-2-2)
+3. [associativity](#associativity)
+4. [distributivity](#distributivity)
 
 # basics <a name="basics"></a>
 
