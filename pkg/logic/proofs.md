@@ -22,6 +22,7 @@
     4. [( P v ( Q v R ) ) -> ( ( P v Q ) v R )](#proof-4-4)
 5. [distributivity](#distributivity)
     1. [( P -> ( Q v R ) ) -> ( ( P -> Q ) v ( P -> R ) )](#proof-5-1)
+    2. [( ( P -> Q ) v ( P -> R ) ) -> ( P -> ( Q v R ) )](#proof-5-2)
 
 # basics <a name="basics"></a>
 
@@ -273,4 +274,25 @@
 | 38 | <pre>.   P v ~ P</pre> | E ~ | 37 |
 | 39 | <pre>.   ( P -> Q ) v ( P -> R )</pre> | E v | 16, 30, 38 |
 | 40 | <pre>( P -> ( Q v R ) ) -> ( ( P -> Q ) v ( P -> R ) )</pre> | subproof implication | 1 - 39 |
+
+## ( ( P -> Q ) v ( P -> R ) ) -> ( P -> ( Q v R ) ) <a name="proof-5-2"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ( P -> Q ) v ( P -> R )</pre> | Assume |  |
+| 2 | <pre>.   .   P</pre> | Assume |  |
+| 3 | <pre>.   .   .   P -> Q</pre> | Assume |  |
+| 4 | <pre>.   .   .   P</pre> | Reiterate | 2 |
+| 5 | <pre>.   .   .   Q</pre> | E -> | 3, 4 |
+| 6 | <pre>.   .   .   Q v R</pre> | I v (L) | 5 |
+| 7 | <pre>.   .   ( P -> Q ) -> ( Q v R )</pre> | subproof implication | 3 - 6 |
+| 8 | <pre>.   .   .   P -> R</pre> | Assume |  |
+| 9 | <pre>.   .   .   P</pre> | Reiterate | 2 |
+| 10 | <pre>.   .   .   R</pre> | E -> | 8, 9 |
+| 11 | <pre>.   .   .   Q v R</pre> | I v (R) | 10 |
+| 12 | <pre>.   .   ( P -> R ) -> ( Q v R )</pre> | subproof implication | 8 - 11 |
+| 13 | <pre>.   .   ( P -> Q ) v ( P -> R )</pre> | Reiterate | 1 |
+| 14 | <pre>.   .   Q v R</pre> | E v | 7, 12, 13 |
+| 15 | <pre>.   P -> ( Q v R )</pre> | subproof implication | 2 - 14 |
+| 16 | <pre>( ( P -> Q ) v ( P -> R ) ) -> ( P -> ( Q v R ) )</pre> | subproof implication | 1 - 15 |
 
