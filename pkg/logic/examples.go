@@ -27,6 +27,16 @@ var (
 			IAnd(Q, P),
 		))
 
+	orCommutativity = NewRootProof("( P v Q ) -> ( Q v P )",
+		NewProofImplication(
+			Or(P, Q),
+			NewProofImplication(P,
+				IOr(Q, P, false)),
+			NewProofImplication(Q,
+				IOr(Q, P, true)),
+			EOr(P, Q, Or(Q, P)),
+		))
+
 	pOrNotP = NewRootProof("P v ~ P",
 		NewProofContradiction(
 			Not(Or(P, Not(P))),
@@ -105,6 +115,7 @@ var examples = []*Proof{
 	pToP,
 	notPAndNotP,
 	andCommutativity,
+	orCommutativity,
 	pOrNotP,
 	pQNotQNotP,
 	notQNotPToPQ,
