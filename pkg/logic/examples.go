@@ -7,6 +7,15 @@ var (
 	S = Var("S")
 )
 
+type ProofsSection struct {
+	Name   string
+	Proofs []*Proof
+}
+
+func NewProofsSection(name string, proofs ...*Proof) *ProofsSection {
+	return &ProofsSection{Name: name, Proofs: proofs}
+}
+
 var (
 	pToP = NewRootProof(
 		"P -> P",
@@ -111,16 +120,22 @@ var (
 	)
 )
 
-var examples = []*Proof{
-	pToP,
-	notPAndNotP,
-	andCommutativity,
-	orCommutativity,
-	pOrNotP,
-	pQNotQNotP,
-	notQNotPToPQ,
-	qToPToQ,
-	pToQToQToRToPToR,
-	pAndPToP,
-	pOrPToP,
+var proofSections = []*ProofsSection{
+	NewProofsSection("basics",
+		pToP,
+		notPAndNotP,
+		pOrNotP,
+		pQNotQNotP,
+		notQNotPToPQ,
+		qToPToQ,
+		pAndPToP,
+		pOrPToP,
+		pToQToQToRToPToR,
+	),
+	NewProofsSection("commutativity",
+		andCommutativity,
+		orCommutativity,
+	),
+	NewProofsSection("associativity"),
+	NewProofsSection("distributivity"),
 }
