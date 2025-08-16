@@ -15,6 +15,8 @@
     1. [( P ^ Q ) -> ( Q ^ P )](#proof-2-1)
     2. [( P v Q ) -> ( Q v P )](#proof-2-2)
 3. [associativity](#associativity)
+    1. [( ( P ^ Q ) ^ R ) -> ( P ^ ( Q ^ R ) )](#proof-3-1)
+    2. [( P ^ ( Q ^ R ) ) -> ( ( P ^ Q ) ^ R )](#proof-3-2)
 4. [distributivity](#distributivity)
 
 # basics <a name="basics"></a>
@@ -148,6 +150,32 @@
 | 9 | <pre>( P v Q ) -> ( Q v P )</pre> | subproof implication | 1 - 8 |
 
 # associativity <a name="associativity"></a>
+
+## ( ( P ^ Q ) ^ R ) -> ( P ^ ( Q ^ R ) ) <a name="proof-3-1"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ( P ^ Q ) ^ R</pre> | Assume |  |
+| 2 | <pre>.   P ^ Q</pre> | E ^ (L) | 1 |
+| 3 | <pre>.   R</pre> | E ^ (R) | 1 |
+| 4 | <pre>.   P</pre> | E ^ (L) | 2 |
+| 5 | <pre>.   Q</pre> | E ^ (R) | 2 |
+| 6 | <pre>.   Q ^ R</pre> | I ^ | 5, 3 |
+| 7 | <pre>.   P ^ ( Q ^ R )</pre> | I ^ | 4, 6 |
+| 8 | <pre>( ( P ^ Q ) ^ R ) -> ( P ^ ( Q ^ R ) )</pre> | subproof implication | 1 - 7 |
+
+## ( P ^ ( Q ^ R ) ) -> ( ( P ^ Q ) ^ R ) <a name="proof-3-2"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P ^ ( Q ^ R )</pre> | Assume |  |
+| 2 | <pre>.   P</pre> | E ^ (L) | 1 |
+| 3 | <pre>.   Q ^ R</pre> | E ^ (R) | 1 |
+| 4 | <pre>.   Q</pre> | E ^ (L) | 3 |
+| 5 | <pre>.   R</pre> | E ^ (R) | 3 |
+| 6 | <pre>.   P ^ Q</pre> | I ^ | 2, 4 |
+| 7 | <pre>.   ( P ^ Q ) ^ R</pre> | I ^ | 6, 5 |
+| 8 | <pre>( P ^ ( Q ^ R ) ) -> ( ( P ^ Q ) ^ R )</pre> | subproof implication | 1 - 7 |
 
 # distributivity <a name="distributivity"></a>
 
