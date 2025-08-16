@@ -70,7 +70,8 @@ func NewProofContradiction(hypothesis Term, steps ...Step) *Proof {
 		panic(errors.Errorf(
 			"subproof contradiction must end with negation of some previous term -- '%s' not found in scope\n  previous terms: %s",
 			last.TermPrint(true),
-			json.MustMarshalToString(results)))
+			Must(json.MarshalWithOptions(results,
+				&json.MarshalOptions{EscapeHTML: false, Indent: true, Sort: true}))))
 	}
 	result := Not(hypothesis)
 	return &Proof{
