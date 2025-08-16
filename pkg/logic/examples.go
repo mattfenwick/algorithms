@@ -63,6 +63,58 @@ var proofSections = []*ProofsSection{
 		// TODO P -> ( P v P )
 		pOrPToP,
 	),
+	NewProofsSection("arrows",
+		NewRootProof("( P -> Q ) -> ( ~ Q -> ~ P )",
+			NewProofImplication(
+				Implication(P, Q),
+				NewProofImplication(
+					Not(Q),
+					NewProofContradiction(
+						P,
+						&Reiterate{Term: Implication(P, Q)},
+						EImply(P, Q),
+						&Reiterate{Term: Not(Q)},
+					),
+				),
+			),
+		),
+		NewRootProof("( ~ Q -> ~ P ) -> ( P -> Q )",
+			NewProofImplication(
+				Implication(Not(Q), Not(P)),
+				NewProofImplication(
+					P,
+					NewProofContradiction(
+						Not(Q),
+						&Reiterate{Term: Implication(Not(Q), Not(P))},
+						EImply(Not(Q), Not(P)),
+						&Reiterate{Term: P},
+					),
+					ENot(Q),
+				),
+			),
+		),
+		NewRootProof("Q -> ( P -> Q )",
+			NewProofImplication(
+				Q,
+				NewProofImplication(P,
+					&Reiterate{Term: Q})),
+		),
+		// TODO ~ P -> ( P -> Q )
+		// TODO (P^Q)->R <-> P->(Q->R)
+		// TODO ~PvQ <-> P->Q
+		// TODO (P->Q)^(P->~Q)->~P
+		// TODO (P->Q)^(~P->Q)->Q
+		NewRootProof("( ( P -> Q ) ^ ( Q -> R ) ) -> ( P -> R )",
+			NewProofImplication(And(Implication(P, Q), Implication(Q, R)),
+				NewProofImplication(P,
+					&Reiterate{Term: And(Implication(P, Q), Implication(Q, R))},
+					EAnd(Implication(P, Q), Implication(Q, R), true),
+					EAnd(Implication(P, Q), Implication(Q, R), false),
+					EImply(P, Q),
+					EImply(Q, R),
+				)),
+		),
+	),
 	NewProofsSection("commutativity",
 		NewRootProof("( P ^ Q ) -> ( Q ^ P )",
 			NewProofImplication(
@@ -185,58 +237,6 @@ var proofSections = []*ProofsSection{
 				ENot(Or(P, Not(P))),
 				EOr(P, Not(P), Or(Implication(P, Q), Implication(P, R))),
 			),
-		),
-	),
-	NewProofsSection("arrows",
-		NewRootProof("( P -> Q ) -> ( ~ Q -> ~ P )",
-			NewProofImplication(
-				Implication(P, Q),
-				NewProofImplication(
-					Not(Q),
-					NewProofContradiction(
-						P,
-						&Reiterate{Term: Implication(P, Q)},
-						EImply(P, Q),
-						&Reiterate{Term: Not(Q)},
-					),
-				),
-			),
-		),
-		NewRootProof("( ~ Q -> ~ P ) -> ( P -> Q )",
-			NewProofImplication(
-				Implication(Not(Q), Not(P)),
-				NewProofImplication(
-					P,
-					NewProofContradiction(
-						Not(Q),
-						&Reiterate{Term: Implication(Not(Q), Not(P))},
-						EImply(Not(Q), Not(P)),
-						&Reiterate{Term: P},
-					),
-					ENot(Q),
-				),
-			),
-		),
-		NewRootProof("Q -> ( P -> Q )",
-			NewProofImplication(
-				Q,
-				NewProofImplication(P,
-					&Reiterate{Term: Q})),
-		),
-		// TODO ~ P -> ( P -> Q )
-		// TODO (P^Q)->R <-> P->(Q->R)
-		// TODO ~PvQ <-> P->Q
-		// TODO (P->Q)^(P->~Q)->~P
-		// TODO (P->Q)^(~P->Q)->Q
-		NewRootProof("( ( P -> Q ) ^ ( Q -> R ) ) -> ( P -> R )",
-			NewProofImplication(And(Implication(P, Q), Implication(Q, R)),
-				NewProofImplication(P,
-					&Reiterate{Term: And(Implication(P, Q), Implication(Q, R))},
-					EAnd(Implication(P, Q), Implication(Q, R), true),
-					EAnd(Implication(P, Q), Implication(Q, R), false),
-					EImply(P, Q),
-					EImply(Q, R),
-				)),
 		),
 	),
 }
