@@ -32,7 +32,7 @@ func GenerateProofsMarkdown() string {
 	for i, proofSection := range proofSections {
 		sectionIndex := i + 1
 		toc = append(toc, fmt.Sprintf("%d. [%s](#%s)", sectionIndex, proofSection.Name, proofSection.Name))
-		sections = append(sections, fmt.Sprintf(`# %s <a name="%s"></a>` + "\n", proofSection.Name, proofSection.Name))
+		sections = append(sections, fmt.Sprintf(`# %s <a name="%s"></a>`+"\n", proofSection.Name, proofSection.Name))
 		for j, proof := range proofSection.Proofs {
 			name := proof.ExpectedResult
 			proofIndex := j + 1
