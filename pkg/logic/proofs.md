@@ -23,6 +23,8 @@
 5. [distributivity](#distributivity)
     1. [( P -> ( Q v R ) ) -> ( ( P -> Q ) v ( P -> R ) )](#proof-5-1)
     2. [( ( P -> Q ) v ( P -> R ) ) -> ( P -> ( Q v R ) )](#proof-5-2)
+    3. [( P -> ( Q ^ R ) ) -> ( ( P -> Q ) ^ ( P -> R ) )](#proof-5-3)
+    4. [( ( P -> Q ) ^ ( P -> R ) ) -> ( P -> ( Q ^ R ) )](#proof-5-4)
 
 # basics <a name="basics"></a>
 
@@ -295,4 +297,37 @@
 | 14 | <pre>.   .   Q v R</pre> | E v | 7, 12, 13 |
 | 15 | <pre>.   P -> ( Q v R )</pre> | subproof implication | 2 - 14 |
 | 16 | <pre>( ( P -> Q ) v ( P -> R ) ) -> ( P -> ( Q v R ) )</pre> | subproof implication | 1 - 15 |
+
+## ( P -> ( Q ^ R ) ) -> ( ( P -> Q ) ^ ( P -> R ) ) <a name="proof-5-3"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P -> ( Q ^ R )</pre> | Assume |  |
+| 2 | <pre>.   .   P</pre> | Assume |  |
+| 3 | <pre>.   .   P -> ( Q ^ R )</pre> | Reiterate | 1 |
+| 4 | <pre>.   .   Q ^ R</pre> | E -> | 3, 2 |
+| 5 | <pre>.   .   Q</pre> | E ^ (L) | 4 |
+| 6 | <pre>.   P -> Q</pre> | subproof implication | 2 - 5 |
+| 7 | <pre>.   .   P</pre> | Assume |  |
+| 8 | <pre>.   .   P -> ( Q ^ R )</pre> | Reiterate | 1 |
+| 9 | <pre>.   .   Q ^ R</pre> | E -> | 8, 7 |
+| 10 | <pre>.   .   R</pre> | E ^ (R) | 9 |
+| 11 | <pre>.   P -> R</pre> | subproof implication | 7 - 10 |
+| 12 | <pre>.   ( P -> Q ) ^ ( P -> R )</pre> | I ^ | 6, 11 |
+| 13 | <pre>( P -> ( Q ^ R ) ) -> ( ( P -> Q ) ^ ( P -> R ) )</pre> | subproof implication | 1 - 12 |
+
+## ( ( P -> Q ) ^ ( P -> R ) ) -> ( P -> ( Q ^ R ) ) <a name="proof-5-4"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ( P -> Q ) ^ ( P -> R )</pre> | Assume |  |
+| 2 | <pre>.   .   P</pre> | Assume |  |
+| 3 | <pre>.   .   ( P -> Q ) ^ ( P -> R )</pre> | Reiterate | 1 |
+| 4 | <pre>.   .   P -> Q</pre> | E ^ (L) | 3 |
+| 5 | <pre>.   .   P -> R</pre> | E ^ (R) | 3 |
+| 6 | <pre>.   .   Q</pre> | E -> | 4, 2 |
+| 7 | <pre>.   .   R</pre> | E -> | 5, 2 |
+| 8 | <pre>.   .   Q ^ R</pre> | I ^ | 6, 7 |
+| 9 | <pre>.   P -> ( Q ^ R )</pre> | subproof implication | 2 - 8 |
+| 10 | <pre>( ( P -> Q ) ^ ( P -> R ) ) -> ( P -> ( Q ^ R ) )</pre> | subproof implication | 1 - 9 |
 
