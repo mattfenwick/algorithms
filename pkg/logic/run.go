@@ -50,7 +50,11 @@ func GenerateProofsMarkdown() string {
 }
 
 func generateMarkdownForProof(sectionIndex int, proofIndex int, proof *Proof) string {
-	checked := Must(CheckProof(proof))
+	checked, err := CheckProof(proof)
+	if err != nil {
+		fmt.Println(checked.BuildStepTable())
+		panic(err)
+	}
 	return fmt.Sprintf(`## %s <a name="proof-%d-%d"></a>
 
 %s
