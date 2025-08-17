@@ -145,7 +145,52 @@ var proofSections = []*ProofsSection{
 				),
 			),
 		),
-		// TODO ~PvQ <-> P->Q
+		NewRootProof("( P v Q ) -> ( ~ P -> Q )",
+			NewProofImplication(Or(P, Q),
+				// Q -> ( ~ P -> Q )
+				NewProofImplication(
+					Q,
+					NewProofImplication(Not(P),
+						&Reiterate{Term: Q})),
+				// P -> ( ~ P -> Q )
+				NewProofImplication(P,
+					NewProofImplication(Not(Q),
+						&Reiterate{P},
+					),
+					NewProofImplication(Not(P),
+						NewProofContradiction(Not(Q),
+							&Reiterate{Implication(Not(Q), P)},
+							&Reiterate{Not(P)},
+							EImply(Not(Q), P)),
+						ENot(Q)),
+				),
+				EOr(P, Q, Implication(Not(P), Q)),
+			),
+		),
+		NewRootProof("( ~ P -> Q ) -> ( P v Q )",
+			NewProofImplication(Implication(Not(P), Q),
+				NewProofImplication(
+					P,
+					IOr(P, Q, true),
+				),
+				NewProofImplication(Not(P),
+					&Reiterate{Implication(Not(P), Q)},
+					EImply(Not(P), Q),
+					IOr(P, Q, false),
+				),
+				NewProofContradiction(
+					Not(Or(P, Not(P))),
+					NewProofContradiction(
+						P,
+						IOr(P, Not(P), true),
+						&Reiterate{Term: Not(Or(P, Not(P)))},
+					),
+					IOr(P, Not(P), false),
+				),
+				ENot(Or(P, Not(P))),
+				EOr(P, Not(P), Or(P, Q)),
+			),
+		),
 		// TODO (P->Q)^(P->~Q)->~P
 		// TODO (P->Q)^(~P->Q)->Q
 	),
