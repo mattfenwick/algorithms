@@ -23,6 +23,7 @@
     13. [( ( P -> Q ) ^ ( ~ P -> Q ) ) -> Q](#proof-2-13)
     14. [( P -> Q ) -> ( P -> ( Q v R ) )](#proof-2-14)
     15. [( P -> R ) -> ( ( P ^ Q ) -> R )](#proof-2-15)
+    16. [( P -> ( Q -> R ) ) -> ( Q -> ( P -> R ) )](#proof-2-16)
 3. [commutativity](#commutativity)
     1. [( P ^ Q ) -> ( Q ^ P )](#proof-3-1)
     2. [( P v Q ) -> ( Q v P )](#proof-3-2)
@@ -347,6 +348,21 @@
 | 5 | <pre>.   .   R</pre> | E -> | 3, 4 |
 | 6 | <pre>.   ( P ^ Q ) -> R</pre> | subproof implication | 2 - 5 |
 | 7 | <pre>( P -> R ) -> ( ( P ^ Q ) -> R )</pre> | subproof implication | 1 - 6 |
+
+## ( P -> ( Q -> R ) ) -> ( Q -> ( P -> R ) ) <a name="proof-2-16"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P -> ( Q -> R )</pre> | Assume |  |
+| 2 | <pre>.   .   Q</pre> | Assume |  |
+| 3 | <pre>.   .   .   P</pre> | Assume |  |
+| 4 | <pre>.   .   .   P -> ( Q -> R )</pre> | Reiterate | 1 |
+| 5 | <pre>.   .   .   Q -> R</pre> | E -> | 4, 3 |
+| 6 | <pre>.   .   .   Q</pre> | Reiterate | 2 |
+| 7 | <pre>.   .   .   R</pre> | E -> | 5, 6 |
+| 8 | <pre>.   .   P -> R</pre> | subproof implication | 3 - 7 |
+| 9 | <pre>.   Q -> ( P -> R )</pre> | subproof implication | 2 - 8 |
+| 10 | <pre>( P -> ( Q -> R ) ) -> ( Q -> ( P -> R ) )</pre> | subproof implication | 1 - 9 |
 
 # commutativity <a name="commutativity"></a>
 
