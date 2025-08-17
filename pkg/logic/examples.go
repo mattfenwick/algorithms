@@ -550,8 +550,6 @@ var proofSections = []*ProofsSection{
 						&Reiterate{Q},
 					),
 				),
-				EAnd(Not(P), Not(Q), true),
-				EAnd(Not(P), Not(Q), false),
 				NewProofContradiction(Or(P, Q),
 					&Reiterate{Implication(P, Not(And(Not(P), Not(Q))))},
 					&Reiterate{Implication(Q, Not(And(Not(P), Not(Q))))},

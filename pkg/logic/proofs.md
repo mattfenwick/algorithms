@@ -663,15 +663,13 @@
 | 11 | <pre>.   .   .   Q</pre> | Reiterate | 8 |
 | 12 | <pre>.   .   ~ ( ~ P ^ ~ Q )</pre> | subproof contradiction | 9 - 11 |
 | 13 | <pre>.   Q -> ~ ( ~ P ^ ~ Q )</pre> | subproof implication | 8 - 12 |
-| 14 | <pre>.   ~ P</pre> | E ^ (L) | 1 |
-| 15 | <pre>.   ~ Q</pre> | E ^ (R) | 1 |
-| 16 | <pre>.   .   P v Q</pre> | Assume |  |
-| 17 | <pre>.   .   P -> ~ ( ~ P ^ ~ Q )</pre> | Reiterate | 7 |
-| 18 | <pre>.   .   Q -> ~ ( ~ P ^ ~ Q )</pre> | Reiterate | 13 |
-| 19 | <pre>.   .   ~ ( ~ P ^ ~ Q )</pre> | E v | 17, 18, 16 |
-| 20 | <pre>.   .   ~ P ^ ~ Q</pre> | Reiterate | 1 |
-| 21 | <pre>.   ~ ( P v Q )</pre> | subproof contradiction | 16 - 20 |
-| 22 | <pre>( ~ P ^ ~ Q ) -> ~ ( P v Q )</pre> | subproof implication | 1 - 21 |
+| 14 | <pre>.   .   P v Q</pre> | Assume |  |
+| 15 | <pre>.   .   P -> ~ ( ~ P ^ ~ Q )</pre> | Reiterate | 7 |
+| 16 | <pre>.   .   Q -> ~ ( ~ P ^ ~ Q )</pre> | Reiterate | 13 |
+| 17 | <pre>.   .   ~ ( ~ P ^ ~ Q )</pre> | E v | 15, 16, 14 |
+| 18 | <pre>.   .   ~ P ^ ~ Q</pre> | Reiterate | 1 |
+| 19 | <pre>.   ~ ( P v Q )</pre> | subproof contradiction | 14 - 18 |
+| 20 | <pre>( ~ P ^ ~ Q ) -> ~ ( P v Q )</pre> | subproof implication | 1 - 19 |
 
 ## ~ ( P ^ Q ) -> ( ~ P v ~ Q ) <a name="proof-5-11"></a>
 
