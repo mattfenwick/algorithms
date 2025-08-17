@@ -112,10 +112,6 @@ var proofSections = []*ProofsSection{
 					ENot(Q)),
 			),
 		),
-		// TODO (P^Q)->R <-> P->(Q->R)
-		// TODO ~PvQ <-> P->Q
-		// TODO (P->Q)^(P->~Q)->~P
-		// TODO (P->Q)^(~P->Q)->Q
 		NewRootProof("( ( P -> Q ) ^ ( Q -> R ) ) -> ( P -> R )",
 			NewProofImplication(And(Implication(P, Q), Implication(Q, R)),
 				NewProofImplication(P,
@@ -126,6 +122,32 @@ var proofSections = []*ProofsSection{
 					EImply(Q, R),
 				)),
 		),
+		NewRootProof("( ( P ^ Q ) -> R ) -> ( P -> ( Q -> R ) )",
+			NewProofImplication(Implication(And(P, Q), R),
+				NewProofImplication(P,
+					NewProofImplication(Q,
+						&Reiterate{P},
+						IAnd(P, Q),
+						&Reiterate{Implication(And(P, Q), R)},
+						EImply(And(P, Q), R),
+					),
+				),
+			),
+		),
+		NewRootProof("( P -> ( Q -> R ) ) -> ( ( P ^ Q ) -> R )",
+			NewProofImplication(Implication(P, Implication(Q, R)),
+				NewProofImplication(And(P, Q),
+					EAnd(P, Q, true),
+					EAnd(P, Q, false),
+					&Reiterate{Implication(P, Implication(Q, R))},
+					EImply(P, Implication(Q, R)),
+					EImply(Q, R),
+				),
+			),
+		),
+		// TODO ~PvQ <-> P->Q
+		// TODO (P->Q)^(P->~Q)->~P
+		// TODO (P->Q)^(~P->Q)->Q
 	),
 	NewProofsSection("commutativity",
 		NewRootProof("( P ^ Q ) -> ( Q ^ P )",
