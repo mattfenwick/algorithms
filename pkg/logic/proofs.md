@@ -38,6 +38,8 @@
     6. [( ( P ^ Q ) v ( P ^ R ) ) -> ( P ^ ( Q v R ) )](#proof-5-6)
     7. [( P v ( Q ^ R ) ) -> ( ( P v Q ) ^ ( P v R ) )](#proof-5-7)
     8. [( ( P v Q ) ^ ( P v R ) ) -> ( P v ( Q ^ R ) )](#proof-5-8)
+6. [miscellaneous](#miscellaneous)
+    1. [( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S )](#proof-6-1)
 
 # basics <a name="basics"></a>
 
@@ -623,4 +625,28 @@
 | 60 | <pre>.   P v ~ P</pre> | E ~ | 59 |
 | 61 | <pre>.   P v ( Q ^ R )</pre> | E v | 6, 52, 60 |
 | 62 | <pre>( ( P v Q ) ^ ( P v R ) ) -> ( P v ( Q ^ R ) )</pre> | subproof implication | 1 - 61 |
+
+# miscellaneous <a name="miscellaneous"></a>
+
+## ( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S ) <a name="proof-6-1"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q )</pre> | Assume |  |
+| 2 | <pre>.   ( P -> R ) ^ ( Q -> S )</pre> | E ^ (L) | 1 |
+| 3 | <pre>.   P v Q</pre> | E ^ (R) | 1 |
+| 4 | <pre>.   P -> R</pre> | E ^ (L) | 2 |
+| 5 | <pre>.   Q -> S</pre> | E ^ (R) | 2 |
+| 6 | <pre>.   .   P</pre> | Assume |  |
+| 7 | <pre>.   .   P -> R</pre> | Reiterate | 4 |
+| 8 | <pre>.   .   R</pre> | E -> | 7, 6 |
+| 9 | <pre>.   .   R v S</pre> | I v (L) | 8 |
+| 10 | <pre>.   P -> ( R v S )</pre> | subproof implication | 6 - 9 |
+| 11 | <pre>.   .   Q</pre> | Assume |  |
+| 12 | <pre>.   .   Q -> S</pre> | Reiterate | 5 |
+| 13 | <pre>.   .   S</pre> | E -> | 12, 11 |
+| 14 | <pre>.   .   R v S</pre> | I v (R) | 13 |
+| 15 | <pre>.   Q -> ( R v S )</pre> | subproof implication | 11 - 14 |
+| 16 | <pre>.   R v S</pre> | E v | 10, 15, 3 |
+| 17 | <pre>( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S )</pre> | subproof implication | 1 - 16 |
 
