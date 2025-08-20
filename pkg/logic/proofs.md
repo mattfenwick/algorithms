@@ -58,8 +58,7 @@
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
 | 1 | <pre>.   P</pre> | Assume |  |
-| 2 | <pre>.   P</pre> | Repeat | 1 |
-| 3 | <pre>P -> P</pre> | subproof implication | 1 - 2 |
+| 2 | <pre>P -> P</pre> | subproof implication | 1 - 1 |
 
 ## ~ ( P ^ ~ P ) <a name="proof-1-2"></a>
 
@@ -97,10 +96,9 @@
 | - | - | - | - |
 | 1 | <pre>.   P v P</pre> | Assume |  |
 | 2 | <pre>.   .   P</pre> | Assume |  |
-| 3 | <pre>.   .   P</pre> | Repeat | 2 |
-| 4 | <pre>.   P -> P</pre> | subproof implication | 2 - 3 |
-| 5 | <pre>.   P</pre> | E v | 4, 4, 1 |
-| 6 | <pre>( P v P ) -> P</pre> | subproof implication | 1 - 5 |
+| 3 | <pre>.   P -> P</pre> | subproof implication | 2 - 2 |
+| 4 | <pre>.   P</pre> | E v | 3, 3, 1 |
+| 5 | <pre>( P v P ) -> P</pre> | subproof implication | 1 - 4 |
 
 # arrows <a name="arrows"></a>
 

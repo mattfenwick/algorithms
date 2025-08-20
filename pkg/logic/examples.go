@@ -19,7 +19,7 @@ func NewProofsSection(name string, proofs ...*Proof) *ProofsSection {
 var (
 	pToP = NewRootProof(
 		"P -> P",
-		NewProofImplication(P, &Repeat{P}))
+		NewProofImplication(P))
 
 	notPAndNotP = NewRootProof("~ ( P ^ ~ P )",
 		NewProofContradiction(
@@ -48,7 +48,7 @@ var (
 
 	pOrPToP = NewRootProof("( P v P ) -> P",
 		NewProofImplication(Or(P, P),
-			NewProofImplication(P, &Repeat{Term: P}),
+			NewProofImplication(P),
 			EOr(P, P, P)),
 	)
 )

@@ -20,7 +20,6 @@ const (
 
 type Proof struct {
 	ExpectedResult string
-	Hypothesis     Term
 	Steps          []Step
 	Result         Term
 	ProofType      ProofType
@@ -44,7 +43,6 @@ func (p *Proof) StepName() string {
 func NewRootProof(expectedResult string, steps ...Step) *Proof {
 	return &Proof{
 		ExpectedResult: expectedResult,
-		Hypothesis:     nil,
 		Steps:          steps,
 		Result:         steps[len(steps)-1].StepResult(),
 		ProofType:      ProofTypeRoot,
@@ -55,6 +53,7 @@ func NewProofContradiction(hypothesis Term, steps ...Step) *Proof {
 	if len(steps) == 0 {
 		panic(errors.Errorf("expected at least 1 step"))
 	}
+	steps = append([]Step{&Assumption{Term: hypothesis}}, steps...)
 	results := map[string]bool{hypothesis.TermPrint(true): true}
 	for _, step := range steps[:len(steps)-1] {
 		results[step.StepResult().TermPrint(true)] = true
@@ -76,7 +75,6 @@ func NewProofContradiction(hypothesis Term, steps ...Step) *Proof {
 	result := Not(hypothesis)
 	return &Proof{
 		ExpectedResult: result.TermPrint(true),
-		Hypothesis:     hypothesis,
 		Steps:          steps,
 		Result:         result,
 		ProofType:      ProofTypeContradiction,
@@ -84,15 +82,12 @@ func NewProofContradiction(hypothesis Term, steps ...Step) *Proof {
 }
 
 func NewProofImplication(hypothesis Term, steps ...Step) *Proof {
+	steps = append([]Step{&Assumption{Term: hypothesis}}, steps...)
 	// last step is the result
-	if len(steps) == 0 {
-		panic(errors.Errorf("must be at least one step in subproof"))
-	}
 	last := steps[len(steps)-1]
 	result := Implication(hypothesis, last.StepResult())
 	return &Proof{
 		ExpectedResult: result.TermPrint(true),
-		Hypothesis:     hypothesis,
 		Steps:          steps,
 		Result:         result,
 		ProofType:      ProofTypeImplication,
@@ -110,19 +105,6 @@ func (r *Reiterate) StepResult() Term {
 
 func (r *Reiterate) StepName() string {
 	return "Reiterate"
-}
-
-// Repeat asserts that a term is in the current scope.  basically just useful for `P -> P`
-type Repeat struct {
-	Term Term
-}
-
-func (r *Repeat) StepResult() Term {
-	return r.Term
-}
-
-func (r *Repeat) StepName() string {
-	return "Repeat"
 }
 
 // TODO do we really need this?

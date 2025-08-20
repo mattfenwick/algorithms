@@ -29,9 +29,6 @@ scope.
 Reiterate: brings a deduction from an enclosing scope into a subproof.  Results from
 enclosing scopes must be imported to be used.
 
-Repeat: reasserts an already asserted deduction from the current scope.  Primarily useful
-for proving `P -> P`.
-
 ### Restrictions
 
 The hypothesis and following step results may not be used outside of their subproof.

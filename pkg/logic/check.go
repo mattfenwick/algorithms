@@ -138,11 +138,6 @@ func CheckProof(proof *Proof) (*CheckedProof, error) {
 
 func CheckProofHelper(proof *Proof, parentScope *Scope, checked *CheckedProof) error {
 	scope := NewScope(parentScope)
-	if proof.Hypothesis != nil {
-		if err := CheckStep(&Assumption{Term: proof.Hypothesis}, scope, checked); err != nil {
-			return err
-		}
-	}
 	for _, step := range proof.Steps {
 		if err := CheckStep(step, scope, checked); err != nil {
 			return err
@@ -171,14 +166,6 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 			return errors.Errorf("missing or untrue premise '%s' in parent(s)", key)
 		}
 		lineRefs = fmt.Sprintf("%d", lineRef)
-	case *Repeat:
-		key := t.Term.TermPrint(true)
-		lineRef, ok := scope.Find(key)
-		if !ok {
-			return errors.Errorf("missing or untrue premise '%s'", key)
-		}
-		lineRefs = fmt.Sprintf("%d", lineRef)
-		shouldAdd = false
 	case *Rule:
 		var linesUsed []int
 		for _, n := range t.Preconditions {
