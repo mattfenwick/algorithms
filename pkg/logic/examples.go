@@ -16,43 +16,33 @@ func NewProofsSection(name string, proofs ...*Proof) *ProofsSection {
 	return &ProofsSection{Name: name, Proofs: proofs}
 }
 
-var (
-	pToP = NewRootProof(
-		"P -> P",
-		NewProofImplication(P))
-
-	notPAndNotP = NewRootProof("~ ( P ^ ~ P )",
-		NewProofContradiction(
-			And(P, Not(P)),
-			EAnd(P, Not(P), true),
-			EAnd(P, Not(P), false),
-		))
-
-	pOrNotP = NewRootProof("P v ~ P",
-		NewProofContradiction(
-			Not(Or(P, Not(P))),
-			NewProofContradiction(
-				P,
-				IOr(P, Not(P), true),
-				&Reiterate{Term: Not(Or(P, Not(P)))},
-			),
-			IOr(P, Not(P), false),
-		),
-		ENot(Or(P, Not(P))),
-	)
-
-	pAndPToP = NewRootProof("( P ^ P ) -> P",
-		NewProofImplication(And(P, P),
-			EAnd(P, P, true)),
-	)
-)
-
 var proofSections = []*ProofsSection{
 	NewProofsSection("basics",
-		pToP,
-		notPAndNotP,
-		pOrNotP,
-		pAndPToP,
+		NewRootProof(
+			"P -> P",
+			NewProofImplication(P)),
+		NewRootProof("~ ( P ^ ~ P )",
+			NewProofContradiction(
+				And(P, Not(P)),
+				EAnd(P, Not(P), true),
+				EAnd(P, Not(P), false),
+			)),
+		NewRootProof("P v ~ P",
+			NewProofContradiction(
+				Not(Or(P, Not(P))),
+				NewProofContradiction(
+					P,
+					IOr(P, Not(P), true),
+					&Reiterate{Term: Not(Or(P, Not(P)))},
+				),
+				IOr(P, Not(P), false),
+			),
+			ENot(Or(P, Not(P))),
+		),
+		NewRootProof("( P ^ P ) -> P",
+			NewProofImplication(And(P, P),
+				EAnd(P, P, true)),
+		),
 		// TODO P -> ( P ^ P )
 		// TODO P -> ( P v P )
 		// TODO P ^ Q -> P v Q
