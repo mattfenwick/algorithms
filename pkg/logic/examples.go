@@ -45,12 +45,6 @@ var (
 		NewProofImplication(And(P, P),
 			EAnd(P, P, true)),
 	)
-
-	pOrPToP = NewRootProof("( P v P ) -> P",
-		NewProofImplication(Or(P, P),
-			NewProofImplication(P),
-			EOr(P, P, P)),
-	)
 )
 
 var proofSections = []*ProofsSection{
@@ -62,7 +56,19 @@ var proofSections = []*ProofsSection{
 		// TODO P -> ( P ^ P )
 		// TODO P -> ( P v P )
 		// TODO P ^ Q -> P v Q
-		pOrPToP,
+		NewRootProof("( P v P ) -> P",
+			NewProofImplication(Or(P, P),
+				NewProofImplication(P),
+				EOr(P, P, P)),
+		),
+		NewRootProof("( P -> ~ P ) -> ~ P",
+			NewProofImplication(Implication(P, Not(P)),
+				NewProofContradiction(P,
+					&Reiterate{Term: Implication(P, Not(P))},
+					EImply(P, Not(P)),
+				),
+			),
+		),
 	),
 	NewProofsSection("arrows",
 		NewRootProof("( P -> Q ) -> ( ~ Q -> ~ P )",

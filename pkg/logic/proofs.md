@@ -7,6 +7,7 @@
     3. [P v ~ P](#proof-1-3)
     4. [( P ^ P ) -> P](#proof-1-4)
     5. [( P v P ) -> P](#proof-1-5)
+    6. [( P -> ~ P ) -> ~ P](#proof-1-6)
 2. [arrows](#arrows)
     1. [( P -> Q ) -> ( ~ Q -> ~ P )](#proof-2-1)
     2. [( ~ Q -> ~ P ) -> ( P -> Q )](#proof-2-2)
@@ -99,6 +100,17 @@
 | 3 | <pre>.   P -> P</pre> | subproof implication | 2 - 2 |
 | 4 | <pre>.   P</pre> | E v | 3, 3, 1 |
 | 5 | <pre>( P v P ) -> P</pre> | subproof implication | 1 - 4 |
+
+## ( P -> ~ P ) -> ~ P <a name="proof-1-6"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P -> ~ P</pre> | Assume |  |
+| 2 | <pre>.   .   P</pre> | Assume |  |
+| 3 | <pre>.   .   P -> ~ P</pre> | Reiterate | 1 |
+| 4 | <pre>.   .   ~ P</pre> | E -> | 3, 2 |
+| 5 | <pre>.   ~ P</pre> | subproof contradiction | 2 - 4 |
+| 6 | <pre>( P -> ~ P ) -> ~ P</pre> | subproof implication | 1 - 5 |
 
 # arrows <a name="arrows"></a>
 
