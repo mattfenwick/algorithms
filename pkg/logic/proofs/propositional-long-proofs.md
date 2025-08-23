@@ -53,6 +53,8 @@
     6. [( ~ P -> Q ) -> ( P v Q )](#proof-6-6)
 7. [biconditional](#biconditional)
     1. [( ( P <-> Q ) ^ P ) -> Q](#proof-7-1)
+    2. [( ( P <-> Q ) ^ ~ P ) -> ~ Q](#proof-7-2)
+    3. [( P <-> Q ) -> ( Q <-> P )](#proof-7-3)
 
 # basics <a name="basics"></a>
 
@@ -870,4 +872,29 @@
 | 4 | <pre>.   P -> Q</pre> | E <-> (L) | 2 |
 | 5 | <pre>.   Q</pre> | E -> | 4, 3 |
 | 6 | <pre>( ( P <-> Q ) ^ P ) -> Q</pre> | subproof implication | 1 - 5 |
+
+## ( ( P <-> Q ) ^ ~ P ) -> ~ Q <a name="proof-7-2"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ( P <-> Q ) ^ ~ P</pre> | Assume |  |
+| 2 | <pre>.   P <-> Q</pre> | E ^ (L) | 1 |
+| 3 | <pre>.   ~ P</pre> | E ^ (R) | 1 |
+| 4 | <pre>.   Q -> P</pre> | E <-> (R) | 2 |
+| 5 | <pre>.   .   Q</pre> | Assume |  |
+| 6 | <pre>.   .   ~ P</pre> | Reiterate | 3 |
+| 7 | <pre>.   .   Q -> P</pre> | Reiterate | 4 |
+| 8 | <pre>.   .   P</pre> | E -> | 7, 5 |
+| 9 | <pre>.   ~ Q</pre> | subproof contradiction | 5 - 8 |
+| 10 | <pre>( ( P <-> Q ) ^ ~ P ) -> ~ Q</pre> | subproof implication | 1 - 9 |
+
+## ( P <-> Q ) -> ( Q <-> P ) <a name="proof-7-3"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P <-> Q</pre> | Assume |  |
+| 2 | <pre>.   P -> Q</pre> | E <-> (L) | 1 |
+| 3 | <pre>.   Q -> P</pre> | E <-> (R) | 1 |
+| 4 | <pre>.   Q <-> P</pre> | I <-> | 3, 2 |
+| 5 | <pre>( P <-> Q ) -> ( Q <-> P )</pre> | subproof implication | 1 - 4 |
 

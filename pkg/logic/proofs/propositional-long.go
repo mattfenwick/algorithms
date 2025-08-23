@@ -730,8 +730,25 @@ var propositionalLongProofSections = []*ProofsSection{
 				EImply(P, Q),
 			),
 		),
-	// TODO ( A <-> B ) ^ ~ A -> ~ B
-	// TODO ( A <-> B ) ^ ( B <-> A )
+		NewRootProof("( ( P <-> Q ) ^ ~ P ) -> ~ Q",
+			NewProofImplication(And(Biconditional(P, Q), Not(P)),
+				EAnd(Biconditional(P, Q), Not(P), true),
+				EAnd(Biconditional(P, Q), Not(P), false),
+				EBiconditional(P, Q, false), // Q -> P
+				NewProofContradiction(Q,
+					&Reiterate{Term: Not(P)},
+					&Reiterate{Term: Implication(Q, P)},
+					EImply(Q, P),
+				),
+			),
+		),
+		NewRootProof("( P <-> Q ) -> ( Q <-> P )",
+			NewProofImplication(Biconditional(P, Q),
+				EBiconditional(P, Q, true),
+				EBiconditional(P, Q, false),
+				IBiconditional(Q, P),
+			),
+		),
 	// TODO ( A <-> ( B <-> C ) ) -> ( ( A <-> B ) <-> C ) and vice versa
 	// TODO ( A <-> ~ B ) -> ~ ( A <-> B ) and vice versa
 	// TODO ( A <-> B ) ^ ( ~ A <-> ~ B )
