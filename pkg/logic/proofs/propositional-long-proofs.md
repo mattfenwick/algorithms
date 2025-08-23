@@ -55,6 +55,7 @@
     1. [( ( P <-> Q ) ^ P ) -> Q](#proof-7-1)
     2. [( ( P <-> Q ) ^ ~ P ) -> ~ Q](#proof-7-2)
     3. [( P <-> Q ) -> ( Q <-> P )](#proof-7-3)
+    4. [( P <-> ~ Q ) -> ( ~ P <-> Q )](#proof-7-4)
 
 # basics <a name="basics"></a>
 
@@ -897,4 +898,29 @@
 | 3 | <pre>.   Q -> P</pre> | E <-> (R) | 1 |
 | 4 | <pre>.   Q <-> P</pre> | I <-> | 3, 2 |
 | 5 | <pre>( P <-> Q ) -> ( Q <-> P )</pre> | subproof implication | 1 - 4 |
+
+## ( P <-> ~ Q ) -> ( ~ P <-> Q ) <a name="proof-7-4"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P <-> ~ Q</pre> | Assume |  |
+| 2 | <pre>.   P -> ~ Q</pre> | E <-> (L) | 1 |
+| 3 | <pre>.   .   Q</pre> | Assume |  |
+| 4 | <pre>.   .   .   P</pre> | Assume |  |
+| 5 | <pre>.   .   .   P -> ~ Q</pre> | Reiterate | 2 |
+| 6 | <pre>.   .   .   ~ Q</pre> | E -> | 5, 4 |
+| 7 | <pre>.   .   .   Q</pre> | Reiterate | 3 |
+| 8 | <pre>.   .   ~ P</pre> | subproof contradiction | 4 - 7 |
+| 9 | <pre>.   Q -> ~ P</pre> | subproof implication | 3 - 8 |
+| 10 | <pre>.   ~ Q -> P</pre> | E <-> (R) | 1 |
+| 11 | <pre>.   .   ~ P</pre> | Assume |  |
+| 12 | <pre>.   .   .   ~ Q</pre> | Assume |  |
+| 13 | <pre>.   .   .   ~ Q -> P</pre> | Reiterate | 10 |
+| 14 | <pre>.   .   .   P</pre> | E -> | 13, 12 |
+| 15 | <pre>.   .   .   ~ P</pre> | Reiterate | 11 |
+| 16 | <pre>.   .   ~ ~ Q</pre> | subproof contradiction | 12 - 15 |
+| 17 | <pre>.   .   Q</pre> | E ~ | 16 |
+| 18 | <pre>.   ~ P -> Q</pre> | subproof implication | 11 - 17 |
+| 19 | <pre>.   ~ P <-> Q</pre> | I <-> | 18, 9 |
+| 20 | <pre>( P <-> ~ Q ) -> ( ~ P <-> Q )</pre> | subproof implication | 1 - 19 |
 
