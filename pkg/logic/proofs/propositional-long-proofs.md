@@ -976,7 +976,7 @@
 | - | - | - | - |
 | 1 | <pre>.   ~ ( P <-> Q )</pre> | Assume |  |
 | 2 | <pre>.   .   ~ ( P -> ~ Q )</pre> | Assume |  |
-| 3 | <pre>.   .   P ^ ~ ~ Q</pre> | ~ ( P -> Q ) -> ( P ^ ~ Q ) | 2 |
+| 3 | <pre>.   .   P ^ ~ ~ Q</pre> | Theorem: arrow negation | 2 |
 | 4 | <pre>.   .   P</pre> | E ^ (L) | 3 |
 | 5 | <pre>.   .   ~ ~ Q</pre> | E ^ (R) | 3 |
 | 6 | <pre>.   .   Q</pre> | E ~ | 5 |
@@ -987,13 +987,13 @@
 | 11 | <pre>.   ~ ~ ( P -> ~ Q )</pre> | subproof contradiction | 2 - 10 |
 | 12 | <pre>.   P -> ~ Q</pre> | E ~ | 11 |
 | 13 | <pre>.   .   ~ ( ~ Q -> P )</pre> | Assume |  |
-| 14 | <pre>.   .   ~ Q ^ ~ P</pre> | ~ ( P -> Q ) -> ( P ^ ~ Q ) | 13 |
+| 14 | <pre>.   .   ~ Q ^ ~ P</pre> | Theorem: arrow negation | 13 |
 | 15 | <pre>.   .   ~ Q</pre> | E ^ (L) | 14 |
 | 16 | <pre>.   .   ~ P</pre> | E ^ (R) | 14 |
 | 17 | <pre>.   .   ~ P -> ~ Q</pre> | I -> | 16, 15 |
-| 18 | <pre>.   .   Q -> P</pre> | ( ~ Q -> ~ P ) -> ( P -> Q ) | 17 |
+| 18 | <pre>.   .   Q -> P</pre> | Theorem: contrapositive (R) | 17 |
 | 19 | <pre>.   .   ~ Q -> ~ P</pre> | I -> | 15, 16 |
-| 20 | <pre>.   .   P -> Q</pre> | ( ~ Q -> ~ P ) -> ( P -> Q ) | 19 |
+| 20 | <pre>.   .   P -> Q</pre> | Theorem: contrapositive (R) | 19 |
 | 21 | <pre>.   .   P <-> Q</pre> | I <-> | 20, 18 |
 | 22 | <pre>.   .   ~ ( P <-> Q )</pre> | Reiterate | 1 |
 | 23 | <pre>.   ~ ~ ( ~ Q -> P )</pre> | subproof contradiction | 13 - 22 |
