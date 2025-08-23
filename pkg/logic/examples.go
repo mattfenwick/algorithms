@@ -719,4 +719,12 @@ var proofSections = []*ProofsSection{
 			),
 		),
 	),
+	NewProofsSection("biconditional"),
+	// TODO ( A <-> B ) ^ A -> B
+	// TODO ( A <-> B ) ^ ~ A -> ~ B
+	// TODO ( A <-> B ) ^ ( B <-> A )
+	// TODO ( A <-> ( B <-> C ) ) -> ( ( A <-> B ) <-> C ) and vice versa
+	// TODO ( A <-> ~ B ) -> ~ ( A <-> B ) and vice versa
+	// TODO ( A <-> B ) ^ ( ~ A <-> ~ B )
+	// TODO no distributive
 }

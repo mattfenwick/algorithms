@@ -33,6 +33,15 @@ func (n *NotTerm) TermPrint(isRoot bool) string {
 	return strings.Join(out, " ")
 }
 
+// TODO
+// type ForallTerm struct {
+//
+// }
+//
+// type ExistentialTerm struct {
+//
+// }
+
 type BinOpTerm struct {
 	Op       BinOp
 	LeftArg  Term

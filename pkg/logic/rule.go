@@ -58,8 +58,8 @@ func EAnd(left Term, right Term, isLeft bool) *Rule {
 
 // I v -- Left and Right versions
 //
-//	Left: A -> A v B
-//	Right: B -> A v B
+//	Left: P -> P v Q
+//	Right: Q -> P v Q
 func IOr(left Term, right Term, isLeft bool) *Rule {
 	pre := right
 	name := "I v (R)"
@@ -86,4 +86,21 @@ func INot(term Term) *Rule {
 // E ~ -- ~~P -> P
 func ENot(term Term) *Rule {
 	return NewRule("E ~", term, Not(Not(term)))
+}
+
+// I <-> -- (P -> Q), (Q -> P) => P <-> Q
+func IBiconditional(l Term, r Term) *Rule {
+	return NewRule("I <->", Biconditional(l, r), Implication(l, r), Implication(r, l))
+}
+
+// E <-> -- Left and Right versions
+//
+//	Left: (P <-> Q) -> (P -> Q)
+//	Right: (P <-> Q) -> (Q -> P)
+func EBiconditional(l Term, r Term, isLeft bool) *Rule {
+	result := Implication(r, l)
+	if isLeft {
+		result = Implication(l, r)
+	}
+	return NewRule("E <->", result, Biconditional(l, r))
 }
