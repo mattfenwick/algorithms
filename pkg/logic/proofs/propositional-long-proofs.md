@@ -57,6 +57,7 @@
     3. [( P <-> Q ) -> ( Q <-> P )](#proof-7-3)
     4. [( P <-> ~ Q ) -> ( ~ P <-> Q )](#proof-7-4)
     5. [( P <-> ~ Q ) -> ~ ( P <-> Q )](#proof-7-5)
+    6. [~ ( P <-> Q ) -> ( P <-> ~ Q )](#proof-7-6)
 
 # basics <a name="basics"></a>
 
@@ -968,4 +969,35 @@
 | 37 | <pre>.   P v ~ P</pre> | E ~ | 36 |
 | 38 | <pre>.   ~ ( P <-> Q )</pre> | E v | 12, 29, 37 |
 | 39 | <pre>( P <-> ~ Q ) -> ~ ( P <-> Q )</pre> | subproof implication | 1 - 38 |
+
+## ~ ( P <-> Q ) -> ( P <-> ~ Q ) <a name="proof-7-6"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ~ ( P <-> Q )</pre> | Assume |  |
+| 2 | <pre>.   .   ~ ( P -> ~ Q )</pre> | Assume |  |
+| 3 | <pre>.   .   P ^ ~ ~ Q</pre> | ~ ( P -> Q ) -> ( P ^ ~ Q ) | 2 |
+| 4 | <pre>.   .   P</pre> | E ^ (L) | 3 |
+| 5 | <pre>.   .   ~ ~ Q</pre> | E ^ (R) | 3 |
+| 6 | <pre>.   .   Q</pre> | E ~ | 5 |
+| 7 | <pre>.   .   P -> Q</pre> | I -> | 4, 6 |
+| 8 | <pre>.   .   Q -> P</pre> | I -> | 6, 4 |
+| 9 | <pre>.   .   P <-> Q</pre> | I <-> | 7, 8 |
+| 10 | <pre>.   .   ~ ( P <-> Q )</pre> | Reiterate | 1 |
+| 11 | <pre>.   ~ ~ ( P -> ~ Q )</pre> | subproof contradiction | 2 - 10 |
+| 12 | <pre>.   P -> ~ Q</pre> | E ~ | 11 |
+| 13 | <pre>.   .   ~ ( ~ Q -> P )</pre> | Assume |  |
+| 14 | <pre>.   .   ~ Q ^ ~ P</pre> | ~ ( P -> Q ) -> ( P ^ ~ Q ) | 13 |
+| 15 | <pre>.   .   ~ Q</pre> | E ^ (L) | 14 |
+| 16 | <pre>.   .   ~ P</pre> | E ^ (R) | 14 |
+| 17 | <pre>.   .   ~ P -> ~ Q</pre> | I -> | 16, 15 |
+| 18 | <pre>.   .   Q -> P</pre> | ( ~ Q -> ~ P ) -> ( P -> Q ) | 17 |
+| 19 | <pre>.   .   ~ Q -> ~ P</pre> | I -> | 15, 16 |
+| 20 | <pre>.   .   P -> Q</pre> | ( ~ Q -> ~ P ) -> ( P -> Q ) | 19 |
+| 21 | <pre>.   .   P <-> Q</pre> | I <-> | 20, 18 |
+| 22 | <pre>.   .   ~ ( P <-> Q )</pre> | Reiterate | 1 |
+| 23 | <pre>.   ~ ~ ( ~ Q -> P )</pre> | subproof contradiction | 13 - 22 |
+| 24 | <pre>.   ~ Q -> P</pre> | E ~ | 23 |
+| 25 | <pre>.   P <-> ~ Q</pre> | I <-> | 12, 24 |
+| 26 | <pre>~ ( P <-> Q ) -> ( P <-> ~ Q )</pre> | subproof implication | 1 - 25 |
 
