@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/mattfenwick/algorithms/pkg/logic"
+	"github.com/mattfenwick/algorithms/pkg/logic/proofs"
 	"github.com/mattfenwick/algorithms/pkg/pratt"
 	"github.com/mattfenwick/algorithms/pkg/schema"
 	"github.com/mattfenwick/algorithms/pkg/utils"
@@ -86,10 +86,6 @@ func RunSchema(path string, readAll bool) {
 	schema.Run(path, readAll)
 }
 
-func RunLogic(args *LogicArgs) {
-	logic.Run(args.ProofPath)
-}
-
 type LogicArgs struct {
 	ProofPath string
 }
@@ -103,9 +99,13 @@ func SetupLogicCommand() *cobra.Command {
 			RunLogic(args)
 		},
 	}
-	command.Flags().StringVar(&args.ProofPath, "proof-path", "pkg/logic/proofs.md", "path to which markdown file of proofs will be written")
+	command.Flags().StringVar(&args.ProofPath, "proof-path", "pkg/logic/proofs", "dir path to which markdown file of proofs will be written")
 
 	return command
+}
+
+func RunLogic(args *LogicArgs) {
+	proofs.Run(args.ProofPath)
 }
 
 func SetUpLogger(logLevelStr string) error {

@@ -1,6 +1,8 @@
 package logic
 
 import (
+	"fmt"
+
 	"github.com/mattfenwick/collections/pkg/json"
 	"github.com/pkg/errors"
 )
@@ -66,11 +68,14 @@ func NewProofContradiction(hypothesis Term, steps ...Step) *Proof {
 	}
 	_, foundNegative = results[Not(last).TermPrint(true)]
 	if !foundNegative && !foundPositive {
+		resultsJson, err := json.MarshalWithOptions(results, &json.MarshalOptions{EscapeHTML: false, Indent: true, Sort: true})
+		if err != nil {
+			fmt.Printf("unable to marshal json for results: %+v\n", err)
+		}
 		panic(errors.Errorf(
 			"subproof contradiction must end with negation of some previous term -- '%s' not found in scope\n  previous terms: %s",
 			last.TermPrint(true),
-			Must(json.MarshalWithOptions(results,
-				&json.MarshalOptions{EscapeHTML: false, Indent: true, Sort: true}))))
+			resultsJson))
 	}
 	result := Not(hypothesis)
 	return &Proof{

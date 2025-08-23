@@ -10,6 +10,9 @@
 | v | P => P v Q; Q => P v Q | P -> R, Q -> R, P v Q => R |
 | -> | P, Q => P -> Q | P -> Q, P => Q |
 | ~ | P => ~~P | ~~P => P |
+| <-> | P <-> Q => P -> Q; P <-> Q => Q -> P | P -> Q, Q -> P => P <-> Q |
+| ∃ | TODO | TODO |
+| ∀ | TODO | TODO |
 
 ## Subproofs
 

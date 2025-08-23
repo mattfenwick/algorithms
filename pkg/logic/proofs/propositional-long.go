@@ -1,4 +1,6 @@
-package logic
+package proofs
+
+import . "github.com/mattfenwick/algorithms/pkg/logic"
 
 var (
 	P = Var("P")
@@ -16,7 +18,7 @@ func NewProofsSection(name string, proofs ...*Proof) *ProofsSection {
 	return &ProofsSection{Name: name, Proofs: proofs}
 }
 
-var proofSections = []*ProofsSection{
+var propositionalLongProofSections = []*ProofsSection{
 	NewProofsSection("basics",
 		NewRootProof(
 			"P -> P",

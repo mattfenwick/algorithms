@@ -51,6 +51,7 @@
     4. [( P ^ ~ Q ) -> ~ ( P -> Q )](#proof-6-4)
     5. [( P v Q ) -> ( ~ P -> Q )](#proof-6-5)
     6. [( ~ P -> Q ) -> ( P v Q )](#proof-6-6)
+7. [biconditional](#biconditional)
 
 # basics <a name="basics"></a>
 
@@ -855,4 +856,6 @@
 | 17 | <pre>.   P v ~ P</pre> | E ~ | 16 |
 | 18 | <pre>.   P v Q</pre> | E v | 4, 9, 17 |
 | 19 | <pre>( ~ P -> Q ) -> ( P v Q )</pre> | subproof implication | 1 - 18 |
+
+# biconditional <a name="biconditional"></a>
 
