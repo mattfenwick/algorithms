@@ -98,9 +98,11 @@ func IBiconditional(l Term, r Term) *Rule {
 //	Left: (P <-> Q) -> (P -> Q)
 //	Right: (P <-> Q) -> (Q -> P)
 func EBiconditional(l Term, r Term, isLeft bool) *Rule {
+	name := "E <-> (R)"
 	result := Implication(r, l)
 	if isLeft {
+		name = "E <-> (L)"
 		result = Implication(l, r)
 	}
-	return NewRule("E <->", result, Biconditional(l, r))
+	return NewRule(name, result, Biconditional(l, r))
 }

@@ -52,6 +52,7 @@
     5. [( P v Q ) -> ( ~ P -> Q )](#proof-6-5)
     6. [( ~ P -> Q ) -> ( P v Q )](#proof-6-6)
 7. [biconditional](#biconditional)
+    1. [( ( P <-> Q ) ^ P ) -> Q](#proof-7-1)
 
 # basics <a name="basics"></a>
 
@@ -858,4 +859,15 @@
 | 19 | <pre>( ~ P -> Q ) -> ( P v Q )</pre> | subproof implication | 1 - 18 |
 
 # biconditional <a name="biconditional"></a>
+
+## ( ( P <-> Q ) ^ P ) -> Q <a name="proof-7-1"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ( P <-> Q ) ^ P</pre> | Assume |  |
+| 2 | <pre>.   P <-> Q</pre> | E ^ (L) | 1 |
+| 3 | <pre>.   P</pre> | E ^ (R) | 1 |
+| 4 | <pre>.   P -> Q</pre> | E <-> (L) | 2 |
+| 5 | <pre>.   Q</pre> | E -> | 4, 3 |
+| 6 | <pre>( ( P <-> Q ) ^ P ) -> Q</pre> | subproof implication | 1 - 5 |
 
