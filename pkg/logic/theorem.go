@@ -29,3 +29,8 @@ func ArrowDisjunctionTheorem(p Term, q Term) *Rule {
 func ArrowNegationTheorem(p Term, q Term) *Rule {
 	return NewRule("Theorem: arrow negation", And(p, Not(q)), Not(Implication(p, q)))
 }
+
+// ~ ( P <-> Q ) -> ( P <-> ~ Q )
+func BiconditionalNegationTheorem(p Term, q Term) *Rule {
+	return NewRule("Theorem: biconditional negation", Biconditional(p, Not(q)), Not(Biconditional(p, q)))
+}
