@@ -6,8 +6,11 @@
     2. [~ ( P ^ ~ P )](#proof-1-2)
     3. [P v ~ P](#proof-1-3)
     4. [( P ^ P ) -> P](#proof-1-4)
-    5. [( P v P ) -> P](#proof-1-5)
-    6. [( P -> ~ P ) -> ~ P](#proof-1-6)
+    5. [P -> ( P ^ P )](#proof-1-5)
+    6. [P -> ( P v P )](#proof-1-6)
+    7. [( P ^ Q ) -> ( P v Q )](#proof-1-7)
+    8. [( P v P ) -> P](#proof-1-8)
+    9. [( P -> ~ P ) -> ~ P](#proof-1-9)
 2. [arrows](#arrows)
     1. [( P -> Q ) -> ( ~ Q -> ~ P )](#proof-2-1)
     2. [( ~ Q -> ~ P ) -> ( P -> Q )](#proof-2-2)
@@ -102,7 +105,32 @@
 | 2 | <pre>.   P</pre> | E ^ (L) | 1 |
 | 3 | <pre>( P ^ P ) -> P</pre> | subproof implication | 1 - 2 |
 
-## ( P v P ) -> P <a name="proof-1-5"></a>
+## P -> ( P ^ P ) <a name="proof-1-5"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P</pre> | Assume |  |
+| 2 | <pre>.   P ^ P</pre> | I ^ | 1, 1 |
+| 3 | <pre>P -> ( P ^ P )</pre> | subproof implication | 1 - 2 |
+
+## P -> ( P v P ) <a name="proof-1-6"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P</pre> | Assume |  |
+| 2 | <pre>.   P v P</pre> | I v (L) | 1 |
+| 3 | <pre>P -> ( P v P )</pre> | subproof implication | 1 - 2 |
+
+## ( P ^ Q ) -> ( P v Q ) <a name="proof-1-7"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P ^ Q</pre> | Assume |  |
+| 2 | <pre>.   P</pre> | E ^ (L) | 1 |
+| 3 | <pre>.   P v Q</pre> | I v (L) | 2 |
+| 4 | <pre>( P ^ Q ) -> ( P v Q )</pre> | subproof implication | 1 - 3 |
+
+## ( P v P ) -> P <a name="proof-1-8"></a>
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
@@ -112,7 +140,7 @@
 | 4 | <pre>.   P</pre> | E v | 3, 3, 1 |
 | 5 | <pre>( P v P ) -> P</pre> | subproof implication | 1 - 4 |
 
-## ( P -> ~ P ) -> ~ P <a name="proof-1-6"></a>
+## ( P -> ~ P ) -> ~ P <a name="proof-1-9"></a>
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
