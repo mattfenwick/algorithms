@@ -1022,50 +1022,48 @@
 | 12 | <pre>.   .   .   P -> ( Q <-> R )</pre> | Reiterate | 2 |
 | 13 | <pre>.   .   .   Q <-> R</pre> | E -> | 12, 9 |
 | 14 | <pre>.   .   .   Q -> R</pre> | E <-> (L) | 13 |
-| 15 | <pre>.   .   .   ~ R -> ~ Q</pre> | Theorem: contrapositive | 14 |
+| 15 | <pre>.   .   .   R</pre> | E -> | 14, 11 |
 | 16 | <pre>.   .   .   ~ R</pre> | Reiterate | 7 |
-| 17 | <pre>.   .   .   ~ Q</pre> | E -> | 15, 16 |
-| 18 | <pre>.   .   ~ P</pre> | subproof contradiction | 9 - 17 |
-| 19 | <pre>.   .   ( Q <-> R ) -> P</pre> | Reiterate | 3 |
-| 20 | <pre>.   .   ~ P -> ~ ( Q <-> R )</pre> | Theorem: contrapositive | 19 |
-| 21 | <pre>.   .   ~ ( Q <-> R )</pre> | E -> | 20, 18 |
-| 22 | <pre>.   .   Q <-> ~ R</pre> | Theorem: biconditional negation | 21 |
-| 23 | <pre>.   .   ~ R -> Q</pre> | E <-> (R) | 22 |
-| 24 | <pre>.   .   Q</pre> | E -> | 23, 7 |
-| 25 | <pre>.   .   Q -> P</pre> | E <-> (R) | 6 |
-| 26 | <pre>.   .   ~ P -> ~ Q</pre> | Theorem: contrapositive | 25 |
-| 27 | <pre>.   .   ~ Q</pre> | E -> | 26, 18 |
-| 28 | <pre>.   ~ ~ ( ( P <-> Q ) -> R )</pre> | subproof contradiction | 4 - 27 |
-| 29 | <pre>.   ( P <-> Q ) -> R</pre> | E ~ | 28 |
-| 30 | <pre>.   .   ~ ( R -> ( P <-> Q ) )</pre> | Assume |  |
-| 31 | <pre>.   .   R ^ ~ ( P <-> Q )</pre> | Theorem: arrow negation | 30 |
-| 32 | <pre>.   .   R</pre> | E ^ (L) | 31 |
-| 33 | <pre>.   .   ~ ( P <-> Q )</pre> | E ^ (R) | 31 |
-| 34 | <pre>.   .   P <-> ~ Q</pre> | Theorem: biconditional negation | 33 |
-| 35 | <pre>.   .   P -> ~ Q</pre> | E <-> (L) | 34 |
-| 36 | <pre>.   .   .   P</pre> | Assume |  |
-| 37 | <pre>.   .   .   P -> ~ Q</pre> | Reiterate | 35 |
-| 38 | <pre>.   .   .   ~ Q</pre> | E -> | 37, 36 |
-| 39 | <pre>.   .   .   P -> ( Q <-> R )</pre> | Reiterate | 2 |
-| 40 | <pre>.   .   .   Q <-> R</pre> | E -> | 39, 36 |
-| 41 | <pre>.   .   .   R -> Q</pre> | E <-> (R) | 40 |
-| 42 | <pre>.   .   .   R</pre> | Reiterate | 32 |
-| 43 | <pre>.   .   .   Q</pre> | E -> | 41, 42 |
-| 44 | <pre>.   .   ~ P</pre> | subproof contradiction | 36 - 43 |
-| 45 | <pre>.   .   ~ Q -> P</pre> | E <-> (R) | 34 |
-| 46 | <pre>.   .   ~ P -> ~ ~ Q</pre> | Theorem: contrapositive | 45 |
-| 47 | <pre>.   .   ~ ~ Q</pre> | E -> | 46, 44 |
-| 48 | <pre>.   .   Q</pre> | E ~ | 47 |
-| 49 | <pre>.   .   ( Q <-> R ) -> P</pre> | Reiterate | 3 |
-| 50 | <pre>.   .   ~ P -> ~ ( Q <-> R )</pre> | Theorem: contrapositive | 49 |
-| 51 | <pre>.   .   ~ ( Q <-> R )</pre> | E -> | 50, 44 |
-| 52 | <pre>.   .   Q <-> ~ R</pre> | Theorem: biconditional negation | 51 |
-| 53 | <pre>.   .   Q -> ~ R</pre> | E <-> (L) | 52 |
-| 54 | <pre>.   .   ~ R</pre> | E -> | 53, 48 |
-| 55 | <pre>.   ~ ~ ( R -> ( P <-> Q ) )</pre> | subproof contradiction | 30 - 54 |
-| 56 | <pre>.   R -> ( P <-> Q )</pre> | E ~ | 55 |
-| 57 | <pre>.   ( P <-> Q ) <-> R</pre> | I <-> | 29, 56 |
-| 58 | <pre>( P <-> ( Q <-> R ) ) -> ( ( P <-> Q ) <-> R )</pre> | subproof implication | 1 - 57 |
+| 17 | <pre>.   .   ~ P</pre> | subproof contradiction | 9 - 16 |
+| 18 | <pre>.   .   ( Q <-> R ) -> P</pre> | Reiterate | 3 |
+| 19 | <pre>.   .   ~ P -> ~ ( Q <-> R )</pre> | Theorem: contrapositive | 18 |
+| 20 | <pre>.   .   ~ ( Q <-> R )</pre> | E -> | 19, 17 |
+| 21 | <pre>.   .   Q <-> ~ R</pre> | Theorem: biconditional negation | 20 |
+| 22 | <pre>.   .   ~ R -> Q</pre> | E <-> (R) | 21 |
+| 23 | <pre>.   .   Q</pre> | E -> | 22, 7 |
+| 24 | <pre>.   .   Q -> P</pre> | E <-> (R) | 6 |
+| 25 | <pre>.   .   P</pre> | E -> | 24, 23 |
+| 26 | <pre>.   ~ ~ ( ( P <-> Q ) -> R )</pre> | subproof contradiction | 4 - 25 |
+| 27 | <pre>.   ( P <-> Q ) -> R</pre> | E ~ | 26 |
+| 28 | <pre>.   .   ~ ( R -> ( P <-> Q ) )</pre> | Assume |  |
+| 29 | <pre>.   .   R ^ ~ ( P <-> Q )</pre> | Theorem: arrow negation | 28 |
+| 30 | <pre>.   .   R</pre> | E ^ (L) | 29 |
+| 31 | <pre>.   .   ~ ( P <-> Q )</pre> | E ^ (R) | 29 |
+| 32 | <pre>.   .   P <-> ~ Q</pre> | Theorem: biconditional negation | 31 |
+| 33 | <pre>.   .   P -> ~ Q</pre> | E <-> (L) | 32 |
+| 34 | <pre>.   .   .   P</pre> | Assume |  |
+| 35 | <pre>.   .   .   P -> ~ Q</pre> | Reiterate | 33 |
+| 36 | <pre>.   .   .   ~ Q</pre> | E -> | 35, 34 |
+| 37 | <pre>.   .   .   P -> ( Q <-> R )</pre> | Reiterate | 2 |
+| 38 | <pre>.   .   .   Q <-> R</pre> | E -> | 37, 34 |
+| 39 | <pre>.   .   .   R -> Q</pre> | E <-> (R) | 38 |
+| 40 | <pre>.   .   .   R</pre> | Reiterate | 30 |
+| 41 | <pre>.   .   .   Q</pre> | E -> | 39, 40 |
+| 42 | <pre>.   .   ~ P</pre> | subproof contradiction | 34 - 41 |
+| 43 | <pre>.   .   ~ Q -> P</pre> | E <-> (R) | 32 |
+| 44 | <pre>.   .   ~ P -> ~ ~ Q</pre> | Theorem: contrapositive | 43 |
+| 45 | <pre>.   .   ~ ~ Q</pre> | E -> | 44, 42 |
+| 46 | <pre>.   .   Q</pre> | E ~ | 45 |
+| 47 | <pre>.   .   ( Q <-> R ) -> P</pre> | Reiterate | 3 |
+| 48 | <pre>.   .   ~ P -> ~ ( Q <-> R )</pre> | Theorem: contrapositive | 47 |
+| 49 | <pre>.   .   ~ ( Q <-> R )</pre> | E -> | 48, 42 |
+| 50 | <pre>.   .   Q <-> ~ R</pre> | Theorem: biconditional negation | 49 |
+| 51 | <pre>.   .   Q -> ~ R</pre> | E <-> (L) | 50 |
+| 52 | <pre>.   .   ~ R</pre> | E -> | 51, 46 |
+| 53 | <pre>.   ~ ~ ( R -> ( P <-> Q ) )</pre> | subproof contradiction | 28 - 52 |
+| 54 | <pre>.   R -> ( P <-> Q )</pre> | E ~ | 53 |
+| 55 | <pre>.   ( P <-> Q ) <-> R</pre> | I <-> | 27, 54 |
+| 56 | <pre>( P <-> ( Q <-> R ) ) -> ( ( P <-> Q ) <-> R )</pre> | subproof implication | 1 - 55 |
 
 ## ( P <-> Q ) -> ( ~ P <-> ~ Q ) <a name="proof-7-8"></a>
 

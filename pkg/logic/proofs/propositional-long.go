@@ -866,9 +866,8 @@ var propositionalLongProofSections = []*ProofsSection{
 						&Reiterate{Term: Implication(P, Biconditional(Q, R))}, // P -> ( Q <-> R )
 						EImply(P, Biconditional(Q, R)),                        // Q <-> R
 						EBiconditional(Q, R, true),                            // Q -> R
-						ContrapositiveTheorem(Q, R),                           // ~ R -> ~ Q
+						EImply(Q, R),                                          // R
 						&Reiterate{Term: Not(R)},                              // ~ R
-						EImply(Not(R), Not(Q)),                                // ~ Q
 					), // ~ P
 					&Reiterate{Term: Implication(Biconditional(Q, R), P)}, // ( Q <-> R ) -> P
 					ContrapositiveTheorem(Biconditional(Q, R), P),         // ~ P -> ~ ( Q <-> R )
@@ -877,8 +876,7 @@ var propositionalLongProofSections = []*ProofsSection{
 					EBiconditional(Q, Not(R), false),                      // ~ R -> Q
 					EImply(Not(R), Q),                                     // Q
 					EBiconditional(P, Q, false),                           // Q -> P
-					ContrapositiveTheorem(Q, P),                           // ~ P -> ~ Q
-					EImply(Not(P), Not(Q)),                                // ~ Q
+					EImply(Q, P),                                          // P
 				), // ~ ~ ( ( P <-> Q ) -> R )
 				ENot(Implication(Biconditional(P, Q), R)), // ( P <-> Q ) -> R
 				NewProofContradiction(Not(Implication(R, Biconditional(P, Q))),
