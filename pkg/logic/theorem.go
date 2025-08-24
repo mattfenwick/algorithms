@@ -7,7 +7,7 @@ func ExcludedMiddleTheorem(t Term) *Rule {
 
 // ( P -> Q ) -> ( ~ Q -> ~ P )
 func ContrapositiveTheorem(p Term, q Term) *Rule {
-	return NewRule("Theorem: contapositive", Implication(Not(q), Not(p)), Implication(p, q))
+	return NewRule("Theorem: contrapositive", Implication(Not(q), Not(p)), Implication(p, q))
 }
 
 // ( ~ Q -> ~ P ) -> ( P -> Q )

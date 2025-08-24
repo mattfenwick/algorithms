@@ -849,8 +849,17 @@ var propositionalLongProofSections = []*ProofsSection{
 				IBiconditional(P, Not(Q)),
 			),
 		),
-	// TODO ( A <-> ( B <-> C ) ) -> ( ( A <-> B ) <-> C ) and vice versa
-	// TODO ( A <-> B ) -> ( ~ A <-> ~ B ) and vice versa
+		// TODO ( A <-> ( B <-> C ) ) -> ( ( A <-> B ) <-> C ) and vice versa
+		// TODO ( A <-> B ) -> ( ~ A <-> ~ B ) and vice versa
+		NewRootProof("( P <-> Q ) -> ( ~ P <-> ~ Q )",
+			NewProofImplication(Biconditional(P, Q),
+				EBiconditional(P, Q, true),
+				ContrapositiveTheorem(P, Q),
+				EBiconditional(P, Q, false),
+				ContrapositiveTheorem(Q, P),
+				IBiconditional(Not(P), Not(Q)),
+			),
+		),
 	// TODO no distributive
 	),
 }

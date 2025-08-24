@@ -58,6 +58,7 @@
     4. [( P <-> ~ Q ) -> ( ~ P <-> Q )](#proof-7-4)
     5. [( P <-> ~ Q ) -> ~ ( P <-> Q )](#proof-7-5)
     6. [~ ( P <-> Q ) -> ( P <-> ~ Q )](#proof-7-6)
+    7. [( P <-> Q ) -> ( ~ P <-> ~ Q )](#proof-7-7)
 
 # basics <a name="basics"></a>
 
@@ -1000,4 +1001,16 @@
 | 24 | <pre>.   ~ Q -> P</pre> | E ~ | 23 |
 | 25 | <pre>.   P <-> ~ Q</pre> | I <-> | 12, 24 |
 | 26 | <pre>~ ( P <-> Q ) -> ( P <-> ~ Q )</pre> | subproof implication | 1 - 25 |
+
+## ( P <-> Q ) -> ( ~ P <-> ~ Q ) <a name="proof-7-7"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P <-> Q</pre> | Assume |  |
+| 2 | <pre>.   P -> Q</pre> | E <-> (L) | 1 |
+| 3 | <pre>.   ~ Q -> ~ P</pre> | Theorem: contrapositive | 2 |
+| 4 | <pre>.   Q -> P</pre> | E <-> (R) | 1 |
+| 5 | <pre>.   ~ P -> ~ Q</pre> | Theorem: contrapositive | 4 |
+| 6 | <pre>.   ~ P <-> ~ Q</pre> | I <-> | 5, 3 |
+| 7 | <pre>( P <-> Q ) -> ( ~ P <-> ~ Q )</pre> | subproof implication | 1 - 6 |
 
