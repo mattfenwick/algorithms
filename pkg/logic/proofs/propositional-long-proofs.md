@@ -977,30 +977,16 @@
 | 13 | <pre>.   .   ~ P</pre> | Assume |  |
 | 14 | <pre>.   .   .   P <-> Q</pre> | Assume |  |
 | 15 | <pre>.   .   .   Q -> P</pre> | E <-> (R) | 14 |
-| 16 | <pre>.   .   .   .   Q</pre> | Assume |  |
-| 17 | <pre>.   .   .   .   Q -> P</pre> | Reiterate | 15 |
-| 18 | <pre>.   .   .   .   P</pre> | E -> | 17, 16 |
-| 19 | <pre>.   .   .   .   ~ P</pre> | Reiterate | 13 |
-| 20 | <pre>.   .   .   ~ Q</pre> | subproof contradiction | 16 - 19 |
-| 21 | <pre>.   .   .   ~ Q -> P</pre> | Reiterate | 3 |
-| 22 | <pre>.   .   .   .   ~ Q</pre> | Assume |  |
-| 23 | <pre>.   .   .   .   ~ Q -> P</pre> | Reiterate | 21 |
-| 24 | <pre>.   .   .   .   P</pre> | E -> | 23, 22 |
-| 25 | <pre>.   .   .   .   ~ P</pre> | Reiterate | 13 |
-| 26 | <pre>.   .   .   ~ ~ Q</pre> | subproof contradiction | 22 - 25 |
-| 27 | <pre>.   .   .   Q</pre> | E ~ | 26 |
-| 28 | <pre>.   .   ~ ( P <-> Q )</pre> | subproof contradiction | 14 - 27 |
-| 29 | <pre>.   ~ P -> ~ ( P <-> Q )</pre> | subproof implication | 13 - 28 |
-| 30 | <pre>.   .   ~ ( P v ~ P )</pre> | Assume |  |
-| 31 | <pre>.   .   .   P</pre> | Assume |  |
-| 32 | <pre>.   .   .   P v ~ P</pre> | I v (L) | 31 |
-| 33 | <pre>.   .   .   ~ ( P v ~ P )</pre> | Reiterate | 30 |
-| 34 | <pre>.   .   ~ P</pre> | subproof contradiction | 31 - 33 |
-| 35 | <pre>.   .   P v ~ P</pre> | I v (R) | 34 |
-| 36 | <pre>.   ~ ~ ( P v ~ P )</pre> | subproof contradiction | 30 - 35 |
-| 37 | <pre>.   P v ~ P</pre> | E ~ | 36 |
-| 38 | <pre>.   ~ ( P <-> Q )</pre> | E v | 12, 29, 37 |
-| 39 | <pre>( P <-> ~ Q ) -> ~ ( P <-> Q )</pre> | subproof implication | 1 - 38 |
+| 16 | <pre>.   .   .   ~ P -> ~ Q</pre> | Theorem: contrapositive | 15 |
+| 17 | <pre>.   .   .   ~ P</pre> | Reiterate | 13 |
+| 18 | <pre>.   .   .   ~ Q</pre> | E -> | 16, 17 |
+| 19 | <pre>.   .   .   ~ Q -> P</pre> | Reiterate | 3 |
+| 20 | <pre>.   .   .   P</pre> | E -> | 19, 18 |
+| 21 | <pre>.   .   ~ ( P <-> Q )</pre> | subproof contradiction | 14 - 20 |
+| 22 | <pre>.   ~ P -> ~ ( P <-> Q )</pre> | subproof implication | 13 - 21 |
+| 23 | <pre>.   P v ~ P</pre> | Theorem: excluded middle |  |
+| 24 | <pre>.   ~ ( P <-> Q )</pre> | E v | 12, 22, 23 |
+| 25 | <pre>( P <-> ~ Q ) -> ~ ( P <-> Q )</pre> | subproof implication | 1 - 24 |
 
 ## ~ ( P <-> Q ) -> ( P <-> ~ Q ) <a name="proof-7-6"></a>
 
