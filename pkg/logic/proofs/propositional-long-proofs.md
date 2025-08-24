@@ -58,9 +58,10 @@
     4. [( P <-> ~ Q ) -> ( ~ P <-> Q )](#proof-7-4)
     5. [( P <-> ~ Q ) -> ~ ( P <-> Q )](#proof-7-5)
     6. [~ ( P <-> Q ) -> ( P <-> ~ Q )](#proof-7-6)
-    7. [( P <-> ( Q <-> R ) ) -> ( ( P <-> Q ) <-> R )](#proof-7-7)
-    8. [( P <-> Q ) -> ( ~ P <-> ~ Q )](#proof-7-8)
-    9. [( ~ P <-> ~ Q ) -> ( P <-> Q )](#proof-7-9)
+    7. [( ( P <-> Q ) <-> R ) -> ( P <-> ( Q <-> R ) )](#proof-7-7)
+    8. [( P <-> ( Q <-> R ) ) -> ( ( P <-> Q ) <-> R )](#proof-7-8)
+    9. [( P <-> Q ) -> ( ~ P <-> ~ Q )](#proof-7-9)
+    10. [( ~ P <-> ~ Q ) -> ( P <-> Q )](#proof-7-10)
 
 # basics <a name="basics"></a>
 
@@ -1004,7 +1005,67 @@
 | 25 | <pre>.   P <-> ~ Q</pre> | I <-> | 12, 24 |
 | 26 | <pre>~ ( P <-> Q ) -> ( P <-> ~ Q )</pre> | subproof implication | 1 - 25 |
 
-## ( P <-> ( Q <-> R ) ) -> ( ( P <-> Q ) <-> R ) <a name="proof-7-7"></a>
+## ( ( P <-> Q ) <-> R ) -> ( P <-> ( Q <-> R ) ) <a name="proof-7-7"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ( P <-> Q ) <-> R</pre> | Assume |  |
+| 2 | <pre>.   ( P <-> Q ) -> R</pre> | E <-> (L) | 1 |
+| 3 | <pre>.   R -> ( P <-> Q )</pre> | E <-> (R) | 1 |
+| 4 | <pre>.   .   ~ ( P -> ( Q <-> R ) )</pre> | Assume |  |
+| 5 | <pre>.   .   P ^ ~ ( Q <-> R )</pre> | Theorem: arrow negation | 4 |
+| 6 | <pre>.   .   P</pre> | E ^ (L) | 5 |
+| 7 | <pre>.   .   ~ ( Q <-> R )</pre> | E ^ (R) | 5 |
+| 8 | <pre>.   .   Q <-> ~ R</pre> | Theorem: biconditional negation | 7 |
+| 9 | <pre>.   .   .   R</pre> | Assume |  |
+| 10 | <pre>.   .   .   R -> ( P <-> Q )</pre> | Reiterate | 3 |
+| 11 | <pre>.   .   .   P <-> Q</pre> | E -> | 10, 9 |
+| 12 | <pre>.   .   .   P -> Q</pre> | E <-> (L) | 11 |
+| 13 | <pre>.   .   .   P</pre> | Reiterate | 6 |
+| 14 | <pre>.   .   .   Q</pre> | E -> | 12, 13 |
+| 15 | <pre>.   .   .   Q <-> ~ R</pre> | Reiterate | 8 |
+| 16 | <pre>.   .   .   Q -> ~ R</pre> | E <-> (L) | 15 |
+| 17 | <pre>.   .   .   ~ R</pre> | E -> | 16, 14 |
+| 18 | <pre>.   .   ~ R</pre> | subproof contradiction | 9 - 17 |
+| 19 | <pre>.   .   ~ R -> Q</pre> | E <-> (R) | 8 |
+| 20 | <pre>.   .   Q</pre> | E -> | 19, 18 |
+| 21 | <pre>.   .   ( P <-> Q ) -> R</pre> | Reiterate | 2 |
+| 22 | <pre>.   .   ~ R -> ~ ( P <-> Q )</pre> | Theorem: contrapositive | 21 |
+| 23 | <pre>.   .   ~ ( P <-> Q )</pre> | E -> | 22, 18 |
+| 24 | <pre>.   .   P <-> ~ Q</pre> | Theorem: biconditional negation | 23 |
+| 25 | <pre>.   .   P -> ~ Q</pre> | E <-> (L) | 24 |
+| 26 | <pre>.   .   ~ Q</pre> | E -> | 25, 6 |
+| 27 | <pre>.   ~ ~ ( P -> ( Q <-> R ) )</pre> | subproof contradiction | 4 - 26 |
+| 28 | <pre>.   P -> ( Q <-> R )</pre> | E ~ | 27 |
+| 29 | <pre>.   .   ~ ( ( Q <-> R ) -> P )</pre> | Assume |  |
+| 30 | <pre>.   .   ( Q <-> R ) ^ ~ P</pre> | Theorem: arrow negation | 29 |
+| 31 | <pre>.   .   Q <-> R</pre> | E ^ (L) | 30 |
+| 32 | <pre>.   .   ~ P</pre> | E ^ (R) | 30 |
+| 33 | <pre>.   .   .   R</pre> | Assume |  |
+| 34 | <pre>.   .   .   R -> ( P <-> Q )</pre> | Reiterate | 3 |
+| 35 | <pre>.   .   .   Q <-> R</pre> | Reiterate | 31 |
+| 36 | <pre>.   .   .   R -> Q</pre> | E <-> (R) | 35 |
+| 37 | <pre>.   .   .   Q</pre> | E -> | 36, 33 |
+| 38 | <pre>.   .   .   P <-> Q</pre> | E -> | 34, 33 |
+| 39 | <pre>.   .   .   Q -> P</pre> | E <-> (R) | 38 |
+| 40 | <pre>.   .   .   P</pre> | E -> | 39, 37 |
+| 41 | <pre>.   .   .   ~ P</pre> | Reiterate | 32 |
+| 42 | <pre>.   .   ~ R</pre> | subproof contradiction | 33 - 41 |
+| 43 | <pre>.   .   Q -> R</pre> | E <-> (L) | 31 |
+| 44 | <pre>.   .   ~ R -> ~ Q</pre> | Theorem: contrapositive | 43 |
+| 45 | <pre>.   .   ~ Q</pre> | E -> | 44, 42 |
+| 46 | <pre>.   .   ( P <-> Q ) -> R</pre> | Reiterate | 2 |
+| 47 | <pre>.   .   ~ R -> ~ ( P <-> Q )</pre> | Theorem: contrapositive | 46 |
+| 48 | <pre>.   .   ~ ( P <-> Q )</pre> | E -> | 47, 42 |
+| 49 | <pre>.   .   P <-> ~ Q</pre> | Theorem: biconditional negation | 48 |
+| 50 | <pre>.   .   ~ Q -> P</pre> | E <-> (R) | 49 |
+| 51 | <pre>.   .   P</pre> | E -> | 50, 45 |
+| 52 | <pre>.   ~ ~ ( ( Q <-> R ) -> P )</pre> | subproof contradiction | 29 - 51 |
+| 53 | <pre>.   ( Q <-> R ) -> P</pre> | E ~ | 52 |
+| 54 | <pre>.   P <-> ( Q <-> R )</pre> | I <-> | 28, 53 |
+| 55 | <pre>( ( P <-> Q ) <-> R ) -> ( P <-> ( Q <-> R ) )</pre> | subproof implication | 1 - 54 |
+
+## ( P <-> ( Q <-> R ) ) -> ( ( P <-> Q ) <-> R ) <a name="proof-7-8"></a>
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
@@ -1065,7 +1126,7 @@
 | 55 | <pre>.   ( P <-> Q ) <-> R</pre> | I <-> | 27, 54 |
 | 56 | <pre>( P <-> ( Q <-> R ) ) -> ( ( P <-> Q ) <-> R )</pre> | subproof implication | 1 - 55 |
 
-## ( P <-> Q ) -> ( ~ P <-> ~ Q ) <a name="proof-7-8"></a>
+## ( P <-> Q ) -> ( ~ P <-> ~ Q ) <a name="proof-7-9"></a>
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
@@ -1077,7 +1138,7 @@
 | 6 | <pre>.   ~ P <-> ~ Q</pre> | I <-> | 5, 3 |
 | 7 | <pre>( P <-> Q ) -> ( ~ P <-> ~ Q )</pre> | subproof implication | 1 - 6 |
 
-## ( ~ P <-> ~ Q ) -> ( P <-> Q ) <a name="proof-7-9"></a>
+## ( ~ P <-> ~ Q ) -> ( P <-> Q ) <a name="proof-7-10"></a>
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
