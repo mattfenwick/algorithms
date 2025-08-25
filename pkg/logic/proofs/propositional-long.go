@@ -803,6 +803,11 @@ var propositionalLongProofSections = []*ProofsSection{
 				EOr(Not(R), Not(S), Or(Not(P), Not(Q))),
 			),
 		),
+		// TODO ( ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q ) ) -> R
+		// TODO ( ( ( P -> R ) v ( Q -> S ) ) ^ ( P ^ Q ) ) -> ( R v S )
+		// TODO ( ( ( P -> R ) v ( Q -> R ) ) ^ ~ R -> ( ~ P v ~ Q )
+		// TODO ( ( ( P -> R ) v ( Q -> S ) ) ^ ( P ^ ~ S ) ) -> ( R v ~ Q )
+		// TODO ( ( ( P -> R ) v ( Q -> S ) ) ^ ( ~ R ^ ~ S ) ) -> ( ~ P v ~ Q )
 	),
 
 	NewProofsSection("biconditional",
@@ -931,6 +936,31 @@ var propositionalLongProofSections = []*ProofsSection{
 			),
 			ENot(Or(Biconditional(P, Q), Not(Biconditional(P, Q)))),
 		),
+		NewRootProof("( P <-> ~ Q ) -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )",
+			NewProofImplication(Biconditional(P, Not(Q)),
+				EBiconditional(P, Not(Q), true),  // P -> ~ Q
+				EBiconditional(P, Not(Q), false), // ~ Q -> P
+				ContrapositiveTheorem(Not(Q), P), // ~ P -> ~ ~ Q
+				NewProofImplication(P,
+					IOr(P, Q, true),                          // P v Q
+					&Reiterate{Term: Implication(P, Not(Q))}, // P -> ~ Q
+					EImply(P, Not(Q)),                        // ~ Q
+					IOr(Not(P), Not(Q), false),               // ~ P v ~ Q
+					IAnd(Or(P, Q), Or(Not(P), Not(Q))),       // ( P v Q ) ^ ( ~ P v ~ Q )
+				), // P -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )
+				NewProofImplication(Not(P),
+					IOr(Not(P), Not(Q), true),                          // ~ P v ~ Q
+					&Reiterate{Term: Implication(Not(P), Not(Not(Q)))}, // ~ P -> ~ ~ Q
+					EImply(Not(P), Not(Not(Q))),                        // ~ ~ Q
+					ENot(Q),                                            // Q
+					IOr(P, Q, false),                                   // P v Q
+					IAnd(Or(P, Q), Or(Not(P), Not(Q))),                 // ( P v Q ) ^ ( ~ P v ~ Q )
+				), // ~ P -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )
+				ExcludedMiddleTheorem(P), // P v ~ P
+				EOr(P, Not(P), And(Or(P, Q), Or(Not(P), Not(Q)))),
+			),
+		),
+		// TODO ( ( P v Q ) ^ ( ~ P v ~ Q ) ) -> ( P <-> ~ Q )
 	// TODO no distributive
 	),
 	NewProofsSection("miscellaneous",

@@ -65,6 +65,7 @@
     6. [( P <-> Q ) -> ( ~ P <-> ~ Q )](#proof-7-6)
     7. [( ~ P <-> ~ Q ) -> ( P <-> Q )](#proof-7-7)
     8. [( P <-> Q ) v ~ ( P <-> Q )](#proof-7-8)
+    9. [( P <-> ~ Q ) -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )](#proof-7-9)
 8. [miscellaneous](#miscellaneous)
     1. [( ( P -> Q ) -> R ) -> ( ( P -> Q ) -> ( P -> R ) )](#proof-8-1)
     2. [~ ( P -> Q ) -> ( P ^ ~ Q )](#proof-8-2)
@@ -1147,6 +1148,33 @@
 | 6 | <pre>.   ( P <-> Q ) v ~ ( P <-> Q )</pre> | I v (R) | 5 |
 | 7 | <pre>~ ~ ( ( P <-> Q ) v ~ ( P <-> Q ) )</pre> | subproof contradiction | 1 - 6 |
 | 8 | <pre>( P <-> Q ) v ~ ( P <-> Q )</pre> | E ~ | 7 |
+
+## ( P <-> ~ Q ) -> ( ( P v Q ) ^ ( ~ P v ~ Q ) ) <a name="proof-7-9"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P <-> ~ Q</pre> | Assume |  |
+| 2 | <pre>.   P -> ~ Q</pre> | E <-> (L) | 1 |
+| 3 | <pre>.   ~ Q -> P</pre> | E <-> (R) | 1 |
+| 4 | <pre>.   ~ P -> ~ ~ Q</pre> | Theorem: contrapositive | 3 |
+| 5 | <pre>.   .   P</pre> | Assume |  |
+| 6 | <pre>.   .   P v Q</pre> | I v (L) | 5 |
+| 7 | <pre>.   .   P -> ~ Q</pre> | Reiterate | 2 |
+| 8 | <pre>.   .   ~ Q</pre> | E -> | 7, 5 |
+| 9 | <pre>.   .   ~ P v ~ Q</pre> | I v (R) | 8 |
+| 10 | <pre>.   .   ( P v Q ) ^ ( ~ P v ~ Q )</pre> | I ^ | 6, 9 |
+| 11 | <pre>.   P -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )</pre> | subproof implication | 5 - 10 |
+| 12 | <pre>.   .   ~ P</pre> | Assume |  |
+| 13 | <pre>.   .   ~ P v ~ Q</pre> | I v (L) | 12 |
+| 14 | <pre>.   .   ~ P -> ~ ~ Q</pre> | Reiterate | 4 |
+| 15 | <pre>.   .   ~ ~ Q</pre> | E -> | 14, 12 |
+| 16 | <pre>.   .   Q</pre> | E ~ | 15 |
+| 17 | <pre>.   .   P v Q</pre> | I v (R) | 16 |
+| 18 | <pre>.   .   ( P v Q ) ^ ( ~ P v ~ Q )</pre> | I ^ | 17, 13 |
+| 19 | <pre>.   ~ P -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )</pre> | subproof implication | 12 - 18 |
+| 20 | <pre>.   P v ~ P</pre> | Theorem: excluded middle |  |
+| 21 | <pre>.   ( P v Q ) ^ ( ~ P v ~ Q )</pre> | E v | 11, 19, 20 |
+| 22 | <pre>( P <-> ~ Q ) -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )</pre> | subproof implication | 1 - 21 |
 
 # miscellaneous <a name="miscellaneous"></a>
 
