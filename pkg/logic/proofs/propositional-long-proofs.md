@@ -59,7 +59,6 @@
     4. [( P ^ ~ Q ) -> ~ ( P -> Q )](#proof-6-4)
     5. [( P v Q ) -> ( ~ P -> Q )](#proof-6-5)
     6. [( ~ P -> Q ) -> ( P v Q )](#proof-6-6)
-    7. [( P <-> Q ) v ~ ( P <-> Q )](#proof-6-7)
 7. [biconditional](#biconditional)
     1. [( ( P <-> Q ) ^ P ) -> Q](#proof-7-1)
     2. [( ( P <-> Q ) ^ ~ P ) -> ~ Q](#proof-7-2)
@@ -68,6 +67,7 @@
     5. [~ ( P <-> Q ) -> ( P <-> ~ Q )](#proof-7-5)
     6. [( P <-> Q ) -> ( ~ P <-> ~ Q )](#proof-7-6)
     7. [( ~ P <-> ~ Q ) -> ( P <-> Q )](#proof-7-7)
+    8. [( P <-> Q ) v ~ ( P <-> Q )](#proof-7-8)
 
 # basics <a name="basics"></a>
 
@@ -1053,19 +1053,6 @@
 | 18 | <pre>.   P v Q</pre> | E v | 4, 9, 17 |
 | 19 | <pre>( ~ P -> Q ) -> ( P v Q )</pre> | subproof implication | 1 - 18 |
 
-## ( P <-> Q ) v ~ ( P <-> Q ) <a name="proof-6-7"></a>
-
-| Line | Formula | Justification | Lines used |
-| - | - | - | - |
-| 1 | <pre>.   ~ ( ( P <-> Q ) v ~ ( P <-> Q ) )</pre> | Assume |  |
-| 2 | <pre>.   .   P <-> Q</pre> | Assume |  |
-| 3 | <pre>.   .   ( P <-> Q ) v ~ ( P <-> Q )</pre> | I v (L) | 2 |
-| 4 | <pre>.   .   ~ ( ( P <-> Q ) v ~ ( P <-> Q ) )</pre> | Reiterate | 1 |
-| 5 | <pre>.   ~ ( P <-> Q )</pre> | subproof contradiction | 2 - 4 |
-| 6 | <pre>.   ( P <-> Q ) v ~ ( P <-> Q )</pre> | I v (R) | 5 |
-| 7 | <pre>~ ~ ( ( P <-> Q ) v ~ ( P <-> Q ) )</pre> | subproof contradiction | 1 - 6 |
-| 8 | <pre>( P <-> Q ) v ~ ( P <-> Q )</pre> | E ~ | 7 |
-
 # biconditional <a name="biconditional"></a>
 
 ## ( ( P <-> Q ) ^ P ) -> Q <a name="proof-7-1"></a>
@@ -1203,4 +1190,17 @@
 | 5 | <pre>.   P -> Q</pre> | Theorem: contrapositive (R) | 4 |
 | 6 | <pre>.   P <-> Q</pre> | I <-> | 5, 3 |
 | 7 | <pre>( ~ P <-> ~ Q ) -> ( P <-> Q )</pre> | subproof implication | 1 - 6 |
+
+## ( P <-> Q ) v ~ ( P <-> Q ) <a name="proof-7-8"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ~ ( ( P <-> Q ) v ~ ( P <-> Q ) )</pre> | Assume |  |
+| 2 | <pre>.   .   P <-> Q</pre> | Assume |  |
+| 3 | <pre>.   .   ( P <-> Q ) v ~ ( P <-> Q )</pre> | I v (L) | 2 |
+| 4 | <pre>.   .   ~ ( ( P <-> Q ) v ~ ( P <-> Q ) )</pre> | Reiterate | 1 |
+| 5 | <pre>.   ~ ( P <-> Q )</pre> | subproof contradiction | 2 - 4 |
+| 6 | <pre>.   ( P <-> Q ) v ~ ( P <-> Q )</pre> | I v (R) | 5 |
+| 7 | <pre>~ ~ ( ( P <-> Q ) v ~ ( P <-> Q ) )</pre> | subproof contradiction | 1 - 6 |
+| 8 | <pre>( P <-> Q ) v ~ ( P <-> Q )</pre> | E ~ | 7 |
 
