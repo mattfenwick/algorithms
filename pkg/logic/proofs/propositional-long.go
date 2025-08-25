@@ -960,7 +960,58 @@ var propositionalLongProofSections = []*ProofsSection{
 				EOr(P, Not(P), And(Or(P, Q), Or(Not(P), Not(Q)))),
 			),
 		),
-		// TODO ( ( P v Q ) ^ ( ~ P v ~ Q ) ) -> ( P <-> ~ Q )
+		NewRootProof("( ( P v Q ) ^ ( ~ P v ~ Q ) ) -> ( P <-> ~ Q )",
+			NewProofImplication(And(Or(P, Q), Or(Not(P), Not(Q))),
+				EAnd(Or(P, Q), Or(Not(P), Not(Q)), true),  // P v Q
+				EAnd(Or(P, Q), Or(Not(P), Not(Q)), false), // ~ P v ~ Q
+				NewProofImplication(Not(P),
+					NewProofContradiction(And(P, Q),
+						EAnd(P, Q, true),         // P
+						&Reiterate{Term: Not(P)}, // ~ P
+					), // ~ ( P ^ Q )
+				), // ~ P -> ~ ( P ^ Q )
+				NewProofImplication(Not(Q),
+					NewProofContradiction(And(P, Q),
+						EAnd(P, Q, false),        // Q
+						&Reiterate{Term: Not(Q)}, // ~ Q
+					), // ~ ( P ^ Q )
+				), // ~ Q -> ~ ( P ^ Q )
+				EOr(Not(P), Not(Q), Not(And(P, Q))), // ~ ( P ^ Q )
+				NewProofImplication(P,
+					NewProofContradiction(And(Not(P), Not(Q)),
+						EAnd(Not(P), Not(Q), true), // ~ P
+						&Reiterate{Term: P},        // P
+					), // ~ ( ~ P ^ ~ Q )
+				), // P -> ~ ( ~ P ^ ~ Q )
+				NewProofImplication(Q,
+					NewProofContradiction(And(Not(P), Not(Q)),
+						EAnd(Not(P), Not(Q), false), // ~ Q
+						&Reiterate{Term: Q},         // Q
+					), // ~ ( ~ P ^ ~ Q )
+				), // Q -> ~ ( ~ P ^ ~ Q )
+				EOr(P, Q, Not(And(Not(P), Not(Q)))), // ~ ( ~ P ^ ~ Q )
+				NewProofImplication(P,
+					NewProofContradiction(Q,
+						&Reiterate{Term: P},              // P
+						IAnd(P, Q),                       // P ^ Q
+						&Reiterate{Term: Not(And(P, Q))}, // ~ ( P ^ Q )
+					), // ~ Q
+				), // P -> ~ Q
+				NewProofImplication(Not(Q),
+					NewProofContradiction(Not(P),
+						&Reiterate{Term: Not(Q)},                   // ~ Q
+						IAnd(Not(P), Not(Q)),                       // ~ P ^ ~ Q
+						&Reiterate{Term: Not(And(Not(P), Not(Q)))}, // ~ ( ~ P ^ ~ Q )
+					), // ~ ~ P
+				), // ~ Q -> ~ ~ P
+				NewProofImplication(Not(Q),
+					&Reiterate{Term: Implication(Not(Q), Not(Not(P)))}, // ~ Q -> ~ ~ P
+					EImply(Not(Q), Not(Not(P))),                        // ~ ~ P
+					ENot(P),                                            // P
+				), // ~ Q -> P
+				IBiconditional(P, Not(Q)),
+			),
+		),
 	// TODO no distributive
 	),
 	NewProofsSection("miscellaneous",
