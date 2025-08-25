@@ -55,7 +55,7 @@ func NewProofContradiction(hypothesis Term, steps ...Step) *Proof {
 	if len(steps) == 0 {
 		panic(errors.Errorf("expected at least 1 step"))
 	}
-	steps = append([]Step{&Assumption{Term: hypothesis}}, steps...)
+	steps = append([]Step{&Assumption{Term: hypothesis, ProofType: ProofTypeContradiction}}, steps...)
 	results := map[string]bool{hypothesis.TermPrint(true): true}
 	for _, step := range steps[:len(steps)-1] {
 		results[step.StepResult().TermPrint(true)] = true
@@ -87,7 +87,7 @@ func NewProofContradiction(hypothesis Term, steps ...Step) *Proof {
 }
 
 func NewProofImplication(hypothesis Term, steps ...Step) *Proof {
-	steps = append([]Step{&Assumption{Term: hypothesis}}, steps...)
+	steps = append([]Step{&Assumption{Term: hypothesis, ProofType: ProofTypeImplication}}, steps...)
 	// last step is the result
 	last := steps[len(steps)-1]
 	result := Implication(hypothesis, last.StepResult())
@@ -114,7 +114,8 @@ func (r *Reiterate) StepName() string {
 
 // TODO do we really need this?
 type Assumption struct {
-	Term Term
+	Term      Term
+	ProofType ProofType
 }
 
 func (a *Assumption) StepResult() Term {
@@ -122,5 +123,5 @@ func (a *Assumption) StepResult() Term {
 }
 
 func (a *Assumption) StepName() string {
-	return "Assume"
+	return fmt.Sprintf("Assume %s", a.ProofType)
 }

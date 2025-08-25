@@ -80,14 +80,14 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P</pre> | Assume |  |
+| 1 | <pre>.   P</pre> | Assume Implication |  |
 | 2 | <pre>P -> P</pre> | subproof implication | 1 - 1 |
 
 ## ~ ( P ^ ~ P ) <a name="proof-1-2"></a>
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P ^ ~ P</pre> | Assume |  |
+| 1 | <pre>.   P ^ ~ P</pre> | Assume Contradiction |  |
 | 2 | <pre>.   P</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   ~ P</pre> | E ^ (R) | 1 |
 | 4 | <pre>~ ( P ^ ~ P )</pre> | subproof contradiction | 1 - 3 |
@@ -96,8 +96,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ ( P v ~ P )</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   ~ ( P v ~ P )</pre> | Assume Contradiction |  |
+| 2 | <pre>.   .   P</pre> | Assume Contradiction |  |
 | 3 | <pre>.   .   P v ~ P</pre> | I v (L) | 2 |
 | 4 | <pre>.   .   ~ ( P v ~ P )</pre> | Reiterate | 1 |
 | 5 | <pre>.   ~ P</pre> | subproof contradiction | 2 - 4 |
@@ -109,7 +109,7 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P ^ P</pre> | Assume |  |
+| 1 | <pre>.   P ^ P</pre> | Assume Implication |  |
 | 2 | <pre>.   P</pre> | E ^ (L) | 1 |
 | 3 | <pre>( P ^ P ) -> P</pre> | subproof implication | 1 - 2 |
 
@@ -117,7 +117,7 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P</pre> | Assume |  |
+| 1 | <pre>.   P</pre> | Assume Implication |  |
 | 2 | <pre>.   P ^ P</pre> | I ^ | 1, 1 |
 | 3 | <pre>P -> ( P ^ P )</pre> | subproof implication | 1 - 2 |
 
@@ -125,8 +125,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P v P</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   P v P</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   P -> P</pre> | subproof implication | 2 - 2 |
 | 4 | <pre>.   P</pre> | E v | 3, 3, 1 |
 | 5 | <pre>( P v P ) -> P</pre> | subproof implication | 1 - 4 |
@@ -135,7 +135,7 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P</pre> | Assume |  |
+| 1 | <pre>.   P</pre> | Assume Implication |  |
 | 2 | <pre>.   P v P</pre> | I v (L) | 1 |
 | 3 | <pre>P -> ( P v P )</pre> | subproof implication | 1 - 2 |
 
@@ -143,7 +143,7 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P ^ Q</pre> | Assume |  |
+| 1 | <pre>.   P ^ Q</pre> | Assume Implication |  |
 | 2 | <pre>.   P</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   P v Q</pre> | I v (L) | 2 |
 | 4 | <pre>( P ^ Q ) -> ( P v Q )</pre> | subproof implication | 1 - 3 |
@@ -152,8 +152,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P -> ~ P</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   P -> ~ P</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Contradiction |  |
 | 3 | <pre>.   .   P -> ~ P</pre> | Reiterate | 1 |
 | 4 | <pre>.   .   ~ P</pre> | E -> | 3, 2 |
 | 5 | <pre>.   ~ P</pre> | subproof contradiction | 2 - 4 |
@@ -165,9 +165,9 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P -> Q</pre> | Assume |  |
-| 2 | <pre>.   .   ~ Q</pre> | Assume |  |
-| 3 | <pre>.   .   .   P</pre> | Assume |  |
+| 1 | <pre>.   P -> Q</pre> | Assume Implication |  |
+| 2 | <pre>.   .   ~ Q</pre> | Assume Implication |  |
+| 3 | <pre>.   .   .   P</pre> | Assume Contradiction |  |
 | 4 | <pre>.   .   .   P -> Q</pre> | Reiterate | 1 |
 | 5 | <pre>.   .   .   Q</pre> | E -> | 4, 3 |
 | 6 | <pre>.   .   .   ~ Q</pre> | Reiterate | 2 |
@@ -179,9 +179,9 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ Q -> ~ P</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
-| 3 | <pre>.   .   .   ~ Q</pre> | Assume |  |
+| 1 | <pre>.   ~ Q -> ~ P</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
+| 3 | <pre>.   .   .   ~ Q</pre> | Assume Contradiction |  |
 | 4 | <pre>.   .   .   ~ Q -> ~ P</pre> | Reiterate | 1 |
 | 5 | <pre>.   .   .   ~ P</pre> | E -> | 4, 3 |
 | 6 | <pre>.   .   .   P</pre> | Reiterate | 2 |
@@ -194,8 +194,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   Q</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   Q</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   .   Q</pre> | Reiterate | 1 |
 | 4 | <pre>.   P -> Q</pre> | subproof implication | 2 - 3 |
 | 5 | <pre>Q -> ( P -> Q )</pre> | subproof implication | 1 - 4 |
@@ -204,12 +204,12 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ P</pre> | Assume |  |
-| 2 | <pre>.   .   ~ Q</pre> | Assume |  |
+| 1 | <pre>.   ~ P</pre> | Assume Implication |  |
+| 2 | <pre>.   .   ~ Q</pre> | Assume Implication |  |
 | 3 | <pre>.   .   ~ P</pre> | Reiterate | 1 |
 | 4 | <pre>.   ~ Q -> ~ P</pre> | subproof implication | 2 - 3 |
-| 5 | <pre>.   .   P</pre> | Assume |  |
-| 6 | <pre>.   .   .   ~ Q</pre> | Assume |  |
+| 5 | <pre>.   .   P</pre> | Assume Implication |  |
+| 6 | <pre>.   .   .   ~ Q</pre> | Assume Contradiction |  |
 | 7 | <pre>.   .   .   ~ Q -> ~ P</pre> | Reiterate | 4 |
 | 8 | <pre>.   .   .   P</pre> | Reiterate | 5 |
 | 9 | <pre>.   .   .   ~ P</pre> | E -> | 7, 6 |
@@ -222,8 +222,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P -> Q ) ^ ( Q -> R )</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   ( P -> Q ) ^ ( Q -> R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   .   ( P -> Q ) ^ ( Q -> R )</pre> | Reiterate | 1 |
 | 4 | <pre>.   .   P -> Q</pre> | E ^ (L) | 3 |
 | 5 | <pre>.   .   Q -> R</pre> | E ^ (R) | 3 |
@@ -236,9 +236,9 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P ^ Q ) -> R</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
-| 3 | <pre>.   .   .   Q</pre> | Assume |  |
+| 1 | <pre>.   ( P ^ Q ) -> R</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
+| 3 | <pre>.   .   .   Q</pre> | Assume Implication |  |
 | 4 | <pre>.   .   .   P</pre> | Reiterate | 2 |
 | 5 | <pre>.   .   .   P ^ Q</pre> | I ^ | 4, 3 |
 | 6 | <pre>.   .   .   ( P ^ Q ) -> R</pre> | Reiterate | 1 |
@@ -251,8 +251,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P -> ( Q -> R )</pre> | Assume |  |
-| 2 | <pre>.   .   P ^ Q</pre> | Assume |  |
+| 1 | <pre>.   P -> ( Q -> R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P ^ Q</pre> | Assume Implication |  |
 | 3 | <pre>.   .   P</pre> | E ^ (L) | 2 |
 | 4 | <pre>.   .   Q</pre> | E ^ (R) | 2 |
 | 5 | <pre>.   .   P -> ( Q -> R )</pre> | Reiterate | 1 |
@@ -265,8 +265,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P -> Q ) ^ ( P -> ~ Q )</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   ( P -> Q ) ^ ( P -> ~ Q )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Contradiction |  |
 | 3 | <pre>.   .   ( P -> Q ) ^ ( P -> ~ Q )</pre> | Reiterate | 1 |
 | 4 | <pre>.   .   P -> Q</pre> | E ^ (L) | 3 |
 | 5 | <pre>.   .   P -> ~ Q</pre> | E ^ (R) | 3 |
@@ -279,11 +279,11 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P -> Q ) ^ ( ~ P -> Q )</pre> | Assume |  |
+| 1 | <pre>.   ( P -> Q ) ^ ( ~ P -> Q )</pre> | Assume Implication |  |
 | 2 | <pre>.   P -> Q</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   ~ P -> Q</pre> | E ^ (R) | 1 |
-| 4 | <pre>.   .   ~ ( P v ~ P )</pre> | Assume |  |
-| 5 | <pre>.   .   .   P</pre> | Assume |  |
+| 4 | <pre>.   .   ~ ( P v ~ P )</pre> | Assume Contradiction |  |
+| 5 | <pre>.   .   .   P</pre> | Assume Contradiction |  |
 | 6 | <pre>.   .   .   P v ~ P</pre> | I v (L) | 5 |
 | 7 | <pre>.   .   .   ~ ( P v ~ P )</pre> | Reiterate | 4 |
 | 8 | <pre>.   .   ~ P</pre> | subproof contradiction | 5 - 7 |
@@ -297,9 +297,9 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P -> ( Q -> R )</pre> | Assume |  |
-| 2 | <pre>.   .   Q</pre> | Assume |  |
-| 3 | <pre>.   .   .   P</pre> | Assume |  |
+| 1 | <pre>.   P -> ( Q -> R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   Q</pre> | Assume Implication |  |
+| 3 | <pre>.   .   .   P</pre> | Assume Implication |  |
 | 4 | <pre>.   .   .   P -> ( Q -> R )</pre> | Reiterate | 1 |
 | 5 | <pre>.   .   .   Q -> R</pre> | E -> | 4, 3 |
 | 6 | <pre>.   .   .   Q</pre> | Reiterate | 2 |
@@ -312,8 +312,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P -> Q</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   P -> Q</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   .   P -> Q</pre> | Reiterate | 1 |
 | 4 | <pre>.   .   Q</pre> | E -> | 3, 2 |
 | 5 | <pre>.   .   Q v R</pre> | I v (L) | 4 |
@@ -324,8 +324,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P v Q ) -> R</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   ( P v Q ) -> R</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   .   P v Q</pre> | I v (L) | 2 |
 | 4 | <pre>.   .   ( P v Q ) -> R</pre> | Reiterate | 1 |
 | 5 | <pre>.   .   R</pre> | E -> | 4, 3 |
@@ -336,8 +336,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P -> R</pre> | Assume |  |
-| 2 | <pre>.   .   P ^ Q</pre> | Assume |  |
+| 1 | <pre>.   P -> R</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P ^ Q</pre> | Assume Implication |  |
 | 3 | <pre>.   .   P -> R</pre> | Reiterate | 1 |
 | 4 | <pre>.   .   P</pre> | E ^ (L) | 2 |
 | 5 | <pre>.   .   R</pre> | E -> | 3, 4 |
@@ -348,8 +348,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P -> ( Q ^ R )</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   P -> ( Q ^ R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   .   P -> ( Q ^ R )</pre> | Reiterate | 1 |
 | 4 | <pre>.   .   Q ^ R</pre> | E -> | 3, 2 |
 | 5 | <pre>.   .   Q</pre> | E ^ (L) | 4 |
@@ -362,7 +362,7 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P ^ Q</pre> | Assume |  |
+| 1 | <pre>.   P ^ Q</pre> | Assume Implication |  |
 | 2 | <pre>.   P</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   Q</pre> | E ^ (R) | 1 |
 | 4 | <pre>.   Q ^ P</pre> | I ^ | 3, 2 |
@@ -372,11 +372,11 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P v Q</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   P v Q</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   .   Q v P</pre> | I v (R) | 2 |
 | 4 | <pre>.   P -> ( Q v P )</pre> | subproof implication | 2 - 3 |
-| 5 | <pre>.   .   Q</pre> | Assume |  |
+| 5 | <pre>.   .   Q</pre> | Assume Implication |  |
 | 6 | <pre>.   .   Q v P</pre> | I v (L) | 5 |
 | 7 | <pre>.   Q -> ( Q v P )</pre> | subproof implication | 5 - 6 |
 | 8 | <pre>.   Q v P</pre> | E v | 4, 7, 1 |
@@ -386,7 +386,7 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P <-> Q</pre> | Assume |  |
+| 1 | <pre>.   P <-> Q</pre> | Assume Implication |  |
 | 2 | <pre>.   P -> Q</pre> | E <-> (L) | 1 |
 | 3 | <pre>.   Q -> P</pre> | E <-> (R) | 1 |
 | 4 | <pre>.   Q <-> P</pre> | I <-> | 3, 2 |
@@ -398,7 +398,7 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P ^ Q ) ^ R</pre> | Assume |  |
+| 1 | <pre>.   ( P ^ Q ) ^ R</pre> | Assume Implication |  |
 | 2 | <pre>.   P ^ Q</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   R</pre> | E ^ (R) | 1 |
 | 4 | <pre>.   P</pre> | E ^ (L) | 2 |
@@ -411,7 +411,7 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P ^ ( Q ^ R )</pre> | Assume |  |
+| 1 | <pre>.   P ^ ( Q ^ R )</pre> | Assume Implication |  |
 | 2 | <pre>.   P</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   Q ^ R</pre> | E ^ (R) | 1 |
 | 4 | <pre>.   Q</pre> | E ^ (L) | 3 |
@@ -424,18 +424,18 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P v Q ) v R</pre> | Assume |  |
-| 2 | <pre>.   .   P v Q</pre> | Assume |  |
-| 3 | <pre>.   .   .   P</pre> | Assume |  |
+| 1 | <pre>.   ( P v Q ) v R</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P v Q</pre> | Assume Implication |  |
+| 3 | <pre>.   .   .   P</pre> | Assume Implication |  |
 | 4 | <pre>.   .   .   P v ( Q v R )</pre> | I v (L) | 3 |
 | 5 | <pre>.   .   P -> ( P v ( Q v R ) )</pre> | subproof implication | 3 - 4 |
-| 6 | <pre>.   .   .   Q</pre> | Assume |  |
+| 6 | <pre>.   .   .   Q</pre> | Assume Implication |  |
 | 7 | <pre>.   .   .   Q v R</pre> | I v (L) | 6 |
 | 8 | <pre>.   .   .   P v ( Q v R )</pre> | I v (R) | 7 |
 | 9 | <pre>.   .   Q -> ( P v ( Q v R ) )</pre> | subproof implication | 6 - 8 |
 | 10 | <pre>.   .   P v ( Q v R )</pre> | E v | 5, 9, 2 |
 | 11 | <pre>.   ( P v Q ) -> ( P v ( Q v R ) )</pre> | subproof implication | 2 - 10 |
-| 12 | <pre>.   .   R</pre> | Assume |  |
+| 12 | <pre>.   .   R</pre> | Assume Implication |  |
 | 13 | <pre>.   .   Q v R</pre> | I v (R) | 12 |
 | 14 | <pre>.   .   P v ( Q v R )</pre> | I v (R) | 13 |
 | 15 | <pre>.   R -> ( P v ( Q v R ) )</pre> | subproof implication | 12 - 14 |
@@ -446,17 +446,17 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P v ( Q v R )</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   P v ( Q v R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   .   P v Q</pre> | I v (L) | 2 |
 | 4 | <pre>.   .   ( P v Q ) v R</pre> | I v (L) | 3 |
 | 5 | <pre>.   P -> ( ( P v Q ) v R )</pre> | subproof implication | 2 - 4 |
-| 6 | <pre>.   .   Q v R</pre> | Assume |  |
-| 7 | <pre>.   .   .   Q</pre> | Assume |  |
+| 6 | <pre>.   .   Q v R</pre> | Assume Implication |  |
+| 7 | <pre>.   .   .   Q</pre> | Assume Implication |  |
 | 8 | <pre>.   .   .   P v Q</pre> | I v (R) | 7 |
 | 9 | <pre>.   .   .   ( P v Q ) v R</pre> | I v (L) | 8 |
 | 10 | <pre>.   .   Q -> ( ( P v Q ) v R )</pre> | subproof implication | 7 - 9 |
-| 11 | <pre>.   .   .   R</pre> | Assume |  |
+| 11 | <pre>.   .   .   R</pre> | Assume Implication |  |
 | 12 | <pre>.   .   .   ( P v Q ) v R</pre> | I v (R) | 11 |
 | 13 | <pre>.   .   R -> ( ( P v Q ) v R )</pre> | subproof implication | 11 - 12 |
 | 14 | <pre>.   .   ( P v Q ) v R</pre> | E v | 10, 13, 6 |
@@ -468,15 +468,15 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P <-> Q ) <-> R</pre> | Assume |  |
+| 1 | <pre>.   ( P <-> Q ) <-> R</pre> | Assume Implication |  |
 | 2 | <pre>.   ( P <-> Q ) -> R</pre> | E <-> (L) | 1 |
 | 3 | <pre>.   R -> ( P <-> Q )</pre> | E <-> (R) | 1 |
-| 4 | <pre>.   .   ~ ( P -> ( Q <-> R ) )</pre> | Assume |  |
+| 4 | <pre>.   .   ~ ( P -> ( Q <-> R ) )</pre> | Assume Contradiction |  |
 | 5 | <pre>.   .   P ^ ~ ( Q <-> R )</pre> | Theorem: arrow negation | 4 |
 | 6 | <pre>.   .   P</pre> | E ^ (L) | 5 |
 | 7 | <pre>.   .   ~ ( Q <-> R )</pre> | E ^ (R) | 5 |
 | 8 | <pre>.   .   Q <-> ~ R</pre> | Theorem: biconditional negation | 7 |
-| 9 | <pre>.   .   .   R</pre> | Assume |  |
+| 9 | <pre>.   .   .   R</pre> | Assume Contradiction |  |
 | 10 | <pre>.   .   .   R -> ( P <-> Q )</pre> | Reiterate | 3 |
 | 11 | <pre>.   .   .   P <-> Q</pre> | E -> | 10, 9 |
 | 12 | <pre>.   .   .   P -> Q</pre> | E <-> (L) | 11 |
@@ -496,11 +496,11 @@
 | 26 | <pre>.   .   ~ Q</pre> | E -> | 25, 6 |
 | 27 | <pre>.   ~ ~ ( P -> ( Q <-> R ) )</pre> | subproof contradiction | 4 - 26 |
 | 28 | <pre>.   P -> ( Q <-> R )</pre> | E ~ | 27 |
-| 29 | <pre>.   .   ~ ( ( Q <-> R ) -> P )</pre> | Assume |  |
+| 29 | <pre>.   .   ~ ( ( Q <-> R ) -> P )</pre> | Assume Contradiction |  |
 | 30 | <pre>.   .   ( Q <-> R ) ^ ~ P</pre> | Theorem: arrow negation | 29 |
 | 31 | <pre>.   .   Q <-> R</pre> | E ^ (L) | 30 |
 | 32 | <pre>.   .   ~ P</pre> | E ^ (R) | 30 |
-| 33 | <pre>.   .   .   R</pre> | Assume |  |
+| 33 | <pre>.   .   .   R</pre> | Assume Contradiction |  |
 | 34 | <pre>.   .   .   R -> ( P <-> Q )</pre> | Reiterate | 3 |
 | 35 | <pre>.   .   .   Q <-> R</pre> | Reiterate | 31 |
 | 36 | <pre>.   .   .   R -> Q</pre> | E <-> (R) | 35 |
@@ -528,15 +528,15 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P <-> ( Q <-> R )</pre> | Assume |  |
+| 1 | <pre>.   P <-> ( Q <-> R )</pre> | Assume Implication |  |
 | 2 | <pre>.   P -> ( Q <-> R )</pre> | E <-> (L) | 1 |
 | 3 | <pre>.   ( Q <-> R ) -> P</pre> | E <-> (R) | 1 |
-| 4 | <pre>.   .   ~ ( ( P <-> Q ) -> R )</pre> | Assume |  |
+| 4 | <pre>.   .   ~ ( ( P <-> Q ) -> R )</pre> | Assume Contradiction |  |
 | 5 | <pre>.   .   ( P <-> Q ) ^ ~ R</pre> | Theorem: arrow negation | 4 |
 | 6 | <pre>.   .   P <-> Q</pre> | E ^ (L) | 5 |
 | 7 | <pre>.   .   ~ R</pre> | E ^ (R) | 5 |
 | 8 | <pre>.   .   P -> Q</pre> | E <-> (L) | 6 |
-| 9 | <pre>.   .   .   P</pre> | Assume |  |
+| 9 | <pre>.   .   .   P</pre> | Assume Contradiction |  |
 | 10 | <pre>.   .   .   P -> Q</pre> | Reiterate | 8 |
 | 11 | <pre>.   .   .   Q</pre> | E -> | 10, 9 |
 | 12 | <pre>.   .   .   P -> ( Q <-> R )</pre> | Reiterate | 2 |
@@ -555,13 +555,13 @@
 | 25 | <pre>.   .   P</pre> | E -> | 24, 23 |
 | 26 | <pre>.   ~ ~ ( ( P <-> Q ) -> R )</pre> | subproof contradiction | 4 - 25 |
 | 27 | <pre>.   ( P <-> Q ) -> R</pre> | E ~ | 26 |
-| 28 | <pre>.   .   ~ ( R -> ( P <-> Q ) )</pre> | Assume |  |
+| 28 | <pre>.   .   ~ ( R -> ( P <-> Q ) )</pre> | Assume Contradiction |  |
 | 29 | <pre>.   .   R ^ ~ ( P <-> Q )</pre> | Theorem: arrow negation | 28 |
 | 30 | <pre>.   .   R</pre> | E ^ (L) | 29 |
 | 31 | <pre>.   .   ~ ( P <-> Q )</pre> | E ^ (R) | 29 |
 | 32 | <pre>.   .   P <-> ~ Q</pre> | Theorem: biconditional negation | 31 |
 | 33 | <pre>.   .   P -> ~ Q</pre> | E <-> (L) | 32 |
-| 34 | <pre>.   .   .   P</pre> | Assume |  |
+| 34 | <pre>.   .   .   P</pre> | Assume Contradiction |  |
 | 35 | <pre>.   .   .   P -> ~ Q</pre> | Reiterate | 33 |
 | 36 | <pre>.   .   .   ~ Q</pre> | E -> | 35, 34 |
 | 37 | <pre>.   .   .   P -> ( Q <-> R )</pre> | Reiterate | 2 |
@@ -591,9 +591,9 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P -> ( Q -> R )</pre> | Assume |  |
-| 2 | <pre>.   .   P -> Q</pre> | Assume |  |
-| 3 | <pre>.   .   .   P</pre> | Assume |  |
+| 1 | <pre>.   P -> ( Q -> R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P -> Q</pre> | Assume Implication |  |
+| 3 | <pre>.   .   .   P</pre> | Assume Implication |  |
 | 4 | <pre>.   .   .   P -> ( Q -> R )</pre> | Reiterate | 1 |
 | 5 | <pre>.   .   .   Q -> R</pre> | E -> | 4, 3 |
 | 6 | <pre>.   .   .   P -> Q</pre> | Reiterate | 2 |
@@ -607,9 +607,9 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P -> Q ) -> ( P -> R )</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
-| 3 | <pre>.   .   .   Q</pre> | Assume |  |
+| 1 | <pre>.   ( P -> Q ) -> ( P -> R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
+| 3 | <pre>.   .   .   Q</pre> | Assume Implication |  |
 | 4 | <pre>.   .   .   ( P -> Q ) -> ( P -> R )</pre> | Reiterate | 1 |
 | 5 | <pre>.   .   .   P</pre> | Reiterate | 2 |
 | 6 | <pre>.   .   .   P -> Q</pre> | I -> | 5, 3 |
@@ -623,28 +623,28 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P -> ( Q v R )</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   P -> ( Q v R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   .   P -> ( Q v R )</pre> | Reiterate | 1 |
 | 4 | <pre>.   .   Q v R</pre> | E -> | 3, 2 |
-| 5 | <pre>.   .   .   Q</pre> | Assume |  |
+| 5 | <pre>.   .   .   Q</pre> | Assume Implication |  |
 | 6 | <pre>.   .   .   P</pre> | Reiterate | 2 |
 | 7 | <pre>.   .   .   P -> Q</pre> | I -> | 6, 5 |
 | 8 | <pre>.   .   .   ( P -> Q ) v ( P -> R )</pre> | I v (L) | 7 |
 | 9 | <pre>.   .   Q -> ( ( P -> Q ) v ( P -> R ) )</pre> | subproof implication | 5 - 8 |
-| 10 | <pre>.   .   .   R</pre> | Assume |  |
+| 10 | <pre>.   .   .   R</pre> | Assume Implication |  |
 | 11 | <pre>.   .   .   P</pre> | Reiterate | 2 |
 | 12 | <pre>.   .   .   P -> R</pre> | I -> | 11, 10 |
 | 13 | <pre>.   .   .   ( P -> Q ) v ( P -> R )</pre> | I v (R) | 12 |
 | 14 | <pre>.   .   R -> ( ( P -> Q ) v ( P -> R ) )</pre> | subproof implication | 10 - 13 |
 | 15 | <pre>.   .   ( P -> Q ) v ( P -> R )</pre> | E v | 9, 14, 4 |
 | 16 | <pre>.   P -> ( ( P -> Q ) v ( P -> R ) )</pre> | subproof implication | 2 - 15 |
-| 17 | <pre>.   .   ~ P</pre> | Assume |  |
-| 18 | <pre>.   .   .   ~ Q</pre> | Assume |  |
+| 17 | <pre>.   .   ~ P</pre> | Assume Implication |  |
+| 18 | <pre>.   .   .   ~ Q</pre> | Assume Implication |  |
 | 19 | <pre>.   .   .   ~ P</pre> | Reiterate | 17 |
 | 20 | <pre>.   .   ~ Q -> ~ P</pre> | subproof implication | 18 - 19 |
-| 21 | <pre>.   .   .   P</pre> | Assume |  |
-| 22 | <pre>.   .   .   .   ~ Q</pre> | Assume |  |
+| 21 | <pre>.   .   .   P</pre> | Assume Implication |  |
+| 22 | <pre>.   .   .   .   ~ Q</pre> | Assume Contradiction |  |
 | 23 | <pre>.   .   .   .   ~ Q -> ~ P</pre> | Reiterate | 20 |
 | 24 | <pre>.   .   .   .   ~ P</pre> | E -> | 23, 22 |
 | 25 | <pre>.   .   .   .   P</pre> | Reiterate | 21 |
@@ -653,8 +653,8 @@
 | 28 | <pre>.   .   P -> Q</pre> | subproof implication | 21 - 27 |
 | 29 | <pre>.   .   ( P -> Q ) v ( P -> R )</pre> | I v (L) | 28 |
 | 30 | <pre>.   ~ P -> ( ( P -> Q ) v ( P -> R ) )</pre> | subproof implication | 17 - 29 |
-| 31 | <pre>.   .   ~ ( P v ~ P )</pre> | Assume |  |
-| 32 | <pre>.   .   .   P</pre> | Assume |  |
+| 31 | <pre>.   .   ~ ( P v ~ P )</pre> | Assume Contradiction |  |
+| 32 | <pre>.   .   .   P</pre> | Assume Contradiction |  |
 | 33 | <pre>.   .   .   P v ~ P</pre> | I v (L) | 32 |
 | 34 | <pre>.   .   .   ~ ( P v ~ P )</pre> | Reiterate | 31 |
 | 35 | <pre>.   .   ~ P</pre> | subproof contradiction | 32 - 34 |
@@ -668,14 +668,14 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P -> Q ) v ( P -> R )</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
-| 3 | <pre>.   .   .   P -> Q</pre> | Assume |  |
+| 1 | <pre>.   ( P -> Q ) v ( P -> R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
+| 3 | <pre>.   .   .   P -> Q</pre> | Assume Implication |  |
 | 4 | <pre>.   .   .   P</pre> | Reiterate | 2 |
 | 5 | <pre>.   .   .   Q</pre> | E -> | 3, 4 |
 | 6 | <pre>.   .   .   Q v R</pre> | I v (L) | 5 |
 | 7 | <pre>.   .   ( P -> Q ) -> ( Q v R )</pre> | subproof implication | 3 - 6 |
-| 8 | <pre>.   .   .   P -> R</pre> | Assume |  |
+| 8 | <pre>.   .   .   P -> R</pre> | Assume Implication |  |
 | 9 | <pre>.   .   .   P</pre> | Reiterate | 2 |
 | 10 | <pre>.   .   .   R</pre> | E -> | 8, 9 |
 | 11 | <pre>.   .   .   Q v R</pre> | I v (R) | 10 |
@@ -689,13 +689,13 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P -> ( Q ^ R )</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   P -> ( Q ^ R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   .   P -> ( Q ^ R )</pre> | Reiterate | 1 |
 | 4 | <pre>.   .   Q ^ R</pre> | E -> | 3, 2 |
 | 5 | <pre>.   .   Q</pre> | E ^ (L) | 4 |
 | 6 | <pre>.   P -> Q</pre> | subproof implication | 2 - 5 |
-| 7 | <pre>.   .   P</pre> | Assume |  |
+| 7 | <pre>.   .   P</pre> | Assume Implication |  |
 | 8 | <pre>.   .   P -> ( Q ^ R )</pre> | Reiterate | 1 |
 | 9 | <pre>.   .   Q ^ R</pre> | E -> | 8, 7 |
 | 10 | <pre>.   .   R</pre> | E ^ (R) | 9 |
@@ -707,8 +707,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P -> Q ) ^ ( P -> R )</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   ( P -> Q ) ^ ( P -> R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   .   ( P -> Q ) ^ ( P -> R )</pre> | Reiterate | 1 |
 | 4 | <pre>.   .   P -> Q</pre> | E ^ (L) | 3 |
 | 5 | <pre>.   .   P -> R</pre> | E ^ (R) | 3 |
@@ -722,15 +722,15 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P ^ ( Q v R )</pre> | Assume |  |
+| 1 | <pre>.   P ^ ( Q v R )</pre> | Assume Implication |  |
 | 2 | <pre>.   P</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   Q v R</pre> | E ^ (R) | 1 |
-| 4 | <pre>.   .   Q</pre> | Assume |  |
+| 4 | <pre>.   .   Q</pre> | Assume Implication |  |
 | 5 | <pre>.   .   P</pre> | Reiterate | 2 |
 | 6 | <pre>.   .   P ^ Q</pre> | I ^ | 5, 4 |
 | 7 | <pre>.   .   ( P ^ Q ) v ( P ^ R )</pre> | I v (L) | 6 |
 | 8 | <pre>.   Q -> ( ( P ^ Q ) v ( P ^ R ) )</pre> | subproof implication | 4 - 7 |
-| 9 | <pre>.   .   R</pre> | Assume |  |
+| 9 | <pre>.   .   R</pre> | Assume Implication |  |
 | 10 | <pre>.   .   P</pre> | Reiterate | 2 |
 | 11 | <pre>.   .   P ^ R</pre> | I ^ | 10, 9 |
 | 12 | <pre>.   .   ( P ^ Q ) v ( P ^ R )</pre> | I v (R) | 11 |
@@ -742,14 +742,14 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P ^ Q ) v ( P ^ R )</pre> | Assume |  |
-| 2 | <pre>.   .   P ^ Q</pre> | Assume |  |
+| 1 | <pre>.   ( P ^ Q ) v ( P ^ R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P ^ Q</pre> | Assume Implication |  |
 | 3 | <pre>.   .   P</pre> | E ^ (L) | 2 |
 | 4 | <pre>.   .   Q</pre> | E ^ (R) | 2 |
 | 5 | <pre>.   .   Q v R</pre> | I v (L) | 4 |
 | 6 | <pre>.   .   P ^ ( Q v R )</pre> | I ^ | 3, 5 |
 | 7 | <pre>.   ( P ^ Q ) -> ( P ^ ( Q v R ) )</pre> | subproof implication | 2 - 6 |
-| 8 | <pre>.   .   P ^ R</pre> | Assume |  |
+| 8 | <pre>.   .   P ^ R</pre> | Assume Implication |  |
 | 9 | <pre>.   .   P</pre> | E ^ (L) | 8 |
 | 10 | <pre>.   .   R</pre> | E ^ (R) | 8 |
 | 11 | <pre>.   .   Q v R</pre> | I v (R) | 10 |
@@ -762,13 +762,13 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P v ( Q ^ R )</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   P v ( Q ^ R )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   .   P v Q</pre> | I v (L) | 2 |
 | 4 | <pre>.   .   P v R</pre> | I v (L) | 2 |
 | 5 | <pre>.   .   ( P v Q ) ^ ( P v R )</pre> | I ^ | 3, 4 |
 | 6 | <pre>.   P -> ( ( P v Q ) ^ ( P v R ) )</pre> | subproof implication | 2 - 5 |
-| 7 | <pre>.   .   Q ^ R</pre> | Assume |  |
+| 7 | <pre>.   .   Q ^ R</pre> | Assume Implication |  |
 | 8 | <pre>.   .   Q</pre> | E ^ (L) | 7 |
 | 9 | <pre>.   .   R</pre> | E ^ (R) | 7 |
 | 10 | <pre>.   .   P v Q</pre> | I v (R) | 8 |
@@ -782,18 +782,18 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P v Q ) ^ ( P v R )</pre> | Assume |  |
+| 1 | <pre>.   ( P v Q ) ^ ( P v R )</pre> | Assume Implication |  |
 | 2 | <pre>.   P v Q</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   P v R</pre> | E ^ (R) | 1 |
-| 4 | <pre>.   .   P</pre> | Assume |  |
+| 4 | <pre>.   .   P</pre> | Assume Implication |  |
 | 5 | <pre>.   .   P v ( Q ^ R )</pre> | I v (L) | 4 |
 | 6 | <pre>.   P -> ( P v ( Q ^ R ) )</pre> | subproof implication | 4 - 5 |
-| 7 | <pre>.   .   P</pre> | Assume |  |
-| 8 | <pre>.   .   .   ~ Q</pre> | Assume |  |
+| 7 | <pre>.   .   P</pre> | Assume Implication |  |
+| 8 | <pre>.   .   .   ~ Q</pre> | Assume Implication |  |
 | 9 | <pre>.   .   .   P</pre> | Reiterate | 7 |
 | 10 | <pre>.   .   ~ Q -> P</pre> | subproof implication | 8 - 9 |
-| 11 | <pre>.   .   .   ~ P</pre> | Assume |  |
-| 12 | <pre>.   .   .   .   ~ Q</pre> | Assume |  |
+| 11 | <pre>.   .   .   ~ P</pre> | Assume Implication |  |
+| 12 | <pre>.   .   .   .   ~ Q</pre> | Assume Contradiction |  |
 | 13 | <pre>.   .   .   .   ~ Q -> P</pre> | Reiterate | 10 |
 | 14 | <pre>.   .   .   .   ~ P</pre> | Reiterate | 11 |
 | 15 | <pre>.   .   .   .   P</pre> | E -> | 13, 12 |
@@ -801,12 +801,12 @@
 | 17 | <pre>.   .   .   Q</pre> | E ~ | 16 |
 | 18 | <pre>.   .   ~ P -> Q</pre> | subproof implication | 11 - 17 |
 | 19 | <pre>.   P -> ( ~ P -> Q )</pre> | subproof implication | 7 - 18 |
-| 20 | <pre>.   .   P</pre> | Assume |  |
-| 21 | <pre>.   .   .   ~ R</pre> | Assume |  |
+| 20 | <pre>.   .   P</pre> | Assume Implication |  |
+| 21 | <pre>.   .   .   ~ R</pre> | Assume Implication |  |
 | 22 | <pre>.   .   .   P</pre> | Reiterate | 20 |
 | 23 | <pre>.   .   ~ R -> P</pre> | subproof implication | 21 - 22 |
-| 24 | <pre>.   .   .   ~ P</pre> | Assume |  |
-| 25 | <pre>.   .   .   .   ~ R</pre> | Assume |  |
+| 24 | <pre>.   .   .   ~ P</pre> | Assume Implication |  |
+| 25 | <pre>.   .   .   .   ~ R</pre> | Assume Contradiction |  |
 | 26 | <pre>.   .   .   .   ~ R -> P</pre> | Reiterate | 23 |
 | 27 | <pre>.   .   .   .   ~ P</pre> | Reiterate | 24 |
 | 28 | <pre>.   .   .   .   P</pre> | E -> | 26, 25 |
@@ -814,17 +814,17 @@
 | 30 | <pre>.   .   .   R</pre> | E ~ | 29 |
 | 31 | <pre>.   .   ~ P -> R</pre> | subproof implication | 24 - 30 |
 | 32 | <pre>.   P -> ( ~ P -> R )</pre> | subproof implication | 20 - 31 |
-| 33 | <pre>.   .   ~ P</pre> | Assume |  |
+| 33 | <pre>.   .   ~ P</pre> | Assume Implication |  |
 | 34 | <pre>.   .   P v Q</pre> | Reiterate | 2 |
 | 35 | <pre>.   .   P v R</pre> | Reiterate | 3 |
-| 36 | <pre>.   .   .   Q</pre> | Assume |  |
+| 36 | <pre>.   .   .   Q</pre> | Assume Implication |  |
 | 37 | <pre>.   .   .   ~ P</pre> | Reiterate | 33 |
 | 38 | <pre>.   .   .   ~ P -> Q</pre> | I -> | 37, 36 |
 | 39 | <pre>.   .   Q -> ( ~ P -> Q )</pre> | subproof implication | 36 - 38 |
 | 40 | <pre>.   .   P -> ( ~ P -> Q )</pre> | Reiterate | 19 |
 | 41 | <pre>.   .   ~ P -> Q</pre> | E v | 40, 39, 34 |
 | 42 | <pre>.   .   Q</pre> | E -> | 41, 33 |
-| 43 | <pre>.   .   .   R</pre> | Assume |  |
+| 43 | <pre>.   .   .   R</pre> | Assume Implication |  |
 | 44 | <pre>.   .   .   ~ P</pre> | Reiterate | 33 |
 | 45 | <pre>.   .   .   ~ P -> R</pre> | I -> | 44, 43 |
 | 46 | <pre>.   .   R -> ( ~ P -> R )</pre> | subproof implication | 43 - 45 |
@@ -834,8 +834,8 @@
 | 50 | <pre>.   .   Q ^ R</pre> | I ^ | 42, 49 |
 | 51 | <pre>.   .   P v ( Q ^ R )</pre> | I v (R) | 50 |
 | 52 | <pre>.   ~ P -> ( P v ( Q ^ R ) )</pre> | subproof implication | 33 - 51 |
-| 53 | <pre>.   .   ~ ( P v ~ P )</pre> | Assume |  |
-| 54 | <pre>.   .   .   P</pre> | Assume |  |
+| 53 | <pre>.   .   ~ ( P v ~ P )</pre> | Assume Contradiction |  |
+| 54 | <pre>.   .   .   P</pre> | Assume Contradiction |  |
 | 55 | <pre>.   .   .   P v ~ P</pre> | I v (L) | 54 |
 | 56 | <pre>.   .   .   ~ ( P v ~ P )</pre> | Reiterate | 53 |
 | 57 | <pre>.   .   ~ P</pre> | subproof contradiction | 54 - 56 |
@@ -849,12 +849,12 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ ( P v Q )</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   ~ ( P v Q )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Contradiction |  |
 | 3 | <pre>.   .   P v Q</pre> | I v (L) | 2 |
 | 4 | <pre>.   .   ~ ( P v Q )</pre> | Reiterate | 1 |
 | 5 | <pre>.   ~ P</pre> | subproof contradiction | 2 - 4 |
-| 6 | <pre>.   .   Q</pre> | Assume |  |
+| 6 | <pre>.   .   Q</pre> | Assume Contradiction |  |
 | 7 | <pre>.   .   P v Q</pre> | I v (R) | 6 |
 | 8 | <pre>.   .   ~ ( P v Q )</pre> | Reiterate | 1 |
 | 9 | <pre>.   ~ Q</pre> | subproof contradiction | 6 - 8 |
@@ -865,20 +865,20 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ P ^ ~ Q</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
-| 3 | <pre>.   .   .   ~ P ^ ~ Q</pre> | Assume |  |
+| 1 | <pre>.   ~ P ^ ~ Q</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
+| 3 | <pre>.   .   .   ~ P ^ ~ Q</pre> | Assume Contradiction |  |
 | 4 | <pre>.   .   .   ~ P</pre> | E ^ (L) | 3 |
 | 5 | <pre>.   .   .   P</pre> | Reiterate | 2 |
 | 6 | <pre>.   .   ~ ( ~ P ^ ~ Q )</pre> | subproof contradiction | 3 - 5 |
 | 7 | <pre>.   P -> ~ ( ~ P ^ ~ Q )</pre> | subproof implication | 2 - 6 |
-| 8 | <pre>.   .   Q</pre> | Assume |  |
-| 9 | <pre>.   .   .   ~ P ^ ~ Q</pre> | Assume |  |
+| 8 | <pre>.   .   Q</pre> | Assume Implication |  |
+| 9 | <pre>.   .   .   ~ P ^ ~ Q</pre> | Assume Contradiction |  |
 | 10 | <pre>.   .   .   ~ Q</pre> | E ^ (R) | 9 |
 | 11 | <pre>.   .   .   Q</pre> | Reiterate | 8 |
 | 12 | <pre>.   .   ~ ( ~ P ^ ~ Q )</pre> | subproof contradiction | 9 - 11 |
 | 13 | <pre>.   Q -> ~ ( ~ P ^ ~ Q )</pre> | subproof implication | 8 - 12 |
-| 14 | <pre>.   .   P v Q</pre> | Assume |  |
+| 14 | <pre>.   .   P v Q</pre> | Assume Contradiction |  |
 | 15 | <pre>.   .   P -> ~ ( ~ P ^ ~ Q )</pre> | Reiterate | 7 |
 | 16 | <pre>.   .   Q -> ~ ( ~ P ^ ~ Q )</pre> | Reiterate | 13 |
 | 17 | <pre>.   .   ~ ( ~ P ^ ~ Q )</pre> | E v | 15, 16, 14 |
@@ -890,14 +890,14 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ ( P ^ Q )</pre> | Assume |  |
-| 2 | <pre>.   .   ~ ( ~ P v ~ Q )</pre> | Assume |  |
-| 3 | <pre>.   .   .   ~ P</pre> | Assume |  |
+| 1 | <pre>.   ~ ( P ^ Q )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   ~ ( ~ P v ~ Q )</pre> | Assume Contradiction |  |
+| 3 | <pre>.   .   .   ~ P</pre> | Assume Contradiction |  |
 | 4 | <pre>.   .   .   ~ P v ~ Q</pre> | I v (L) | 3 |
 | 5 | <pre>.   .   .   ~ ( ~ P v ~ Q )</pre> | Reiterate | 2 |
 | 6 | <pre>.   .   ~ ~ P</pre> | subproof contradiction | 3 - 5 |
 | 7 | <pre>.   .   P</pre> | E ~ | 6 |
-| 8 | <pre>.   .   .   ~ Q</pre> | Assume |  |
+| 8 | <pre>.   .   .   ~ Q</pre> | Assume Contradiction |  |
 | 9 | <pre>.   .   .   ~ P v ~ Q</pre> | I v (R) | 8 |
 | 10 | <pre>.   .   .   ~ ( ~ P v ~ Q )</pre> | Reiterate | 2 |
 | 11 | <pre>.   .   ~ ~ Q</pre> | subproof contradiction | 8 - 10 |
@@ -912,15 +912,15 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ P v ~ Q</pre> | Assume |  |
-| 2 | <pre>.   .   ~ P</pre> | Assume |  |
-| 3 | <pre>.   .   .   P ^ Q</pre> | Assume |  |
+| 1 | <pre>.   ~ P v ~ Q</pre> | Assume Implication |  |
+| 2 | <pre>.   .   ~ P</pre> | Assume Implication |  |
+| 3 | <pre>.   .   .   P ^ Q</pre> | Assume Contradiction |  |
 | 4 | <pre>.   .   .   P</pre> | E ^ (L) | 3 |
 | 5 | <pre>.   .   .   ~ P</pre> | Reiterate | 2 |
 | 6 | <pre>.   .   ~ ( P ^ Q )</pre> | subproof contradiction | 3 - 5 |
 | 7 | <pre>.   ~ P -> ~ ( P ^ Q )</pre> | subproof implication | 2 - 6 |
-| 8 | <pre>.   .   ~ Q</pre> | Assume |  |
-| 9 | <pre>.   .   .   P ^ Q</pre> | Assume |  |
+| 8 | <pre>.   .   ~ Q</pre> | Assume Implication |  |
+| 9 | <pre>.   .   .   P ^ Q</pre> | Assume Contradiction |  |
 | 10 | <pre>.   .   .   Q</pre> | E ^ (R) | 9 |
 | 11 | <pre>.   .   .   ~ Q</pre> | Reiterate | 8 |
 | 12 | <pre>.   .   ~ ( P ^ Q )</pre> | subproof contradiction | 9 - 11 |
@@ -934,17 +934,17 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q )</pre> | Assume |  |
+| 1 | <pre>.   ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q )</pre> | Assume Implication |  |
 | 2 | <pre>.   ( P -> R ) ^ ( Q -> S )</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   P v Q</pre> | E ^ (R) | 1 |
 | 4 | <pre>.   P -> R</pre> | E ^ (L) | 2 |
 | 5 | <pre>.   Q -> S</pre> | E ^ (R) | 2 |
-| 6 | <pre>.   .   P</pre> | Assume |  |
+| 6 | <pre>.   .   P</pre> | Assume Implication |  |
 | 7 | <pre>.   .   P -> R</pre> | Reiterate | 4 |
 | 8 | <pre>.   .   R</pre> | E -> | 7, 6 |
 | 9 | <pre>.   .   R v S</pre> | I v (L) | 8 |
 | 10 | <pre>.   P -> ( R v S )</pre> | subproof implication | 6 - 9 |
-| 11 | <pre>.   .   Q</pre> | Assume |  |
+| 11 | <pre>.   .   Q</pre> | Assume Implication |  |
 | 12 | <pre>.   .   Q -> S</pre> | Reiterate | 5 |
 | 13 | <pre>.   .   S</pre> | E -> | 12, 11 |
 | 14 | <pre>.   .   R v S</pre> | I v (R) | 13 |
@@ -956,18 +956,18 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v Q )</pre> | Assume |  |
+| 1 | <pre>.   ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v Q )</pre> | Assume Implication |  |
 | 2 | <pre>.   ( P -> R ) ^ ( Q -> S )</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   ~ R v Q</pre> | E ^ (R) | 1 |
 | 4 | <pre>.   P -> R</pre> | E ^ (L) | 2 |
 | 5 | <pre>.   Q -> S</pre> | E ^ (R) | 2 |
-| 6 | <pre>.   .   ~ R</pre> | Assume |  |
+| 6 | <pre>.   .   ~ R</pre> | Assume Implication |  |
 | 7 | <pre>.   .   P -> R</pre> | Reiterate | 4 |
 | 8 | <pre>.   .   ~ R -> ~ P</pre> | Theorem: contrapositive | 7 |
 | 9 | <pre>.   .   ~ P</pre> | E -> | 8, 6 |
 | 10 | <pre>.   .   ~ P v S</pre> | I v (L) | 9 |
 | 11 | <pre>.   ~ R -> ( ~ P v S )</pre> | subproof implication | 6 - 10 |
-| 12 | <pre>.   .   Q</pre> | Assume |  |
+| 12 | <pre>.   .   Q</pre> | Assume Implication |  |
 | 13 | <pre>.   .   Q -> S</pre> | Reiterate | 5 |
 | 14 | <pre>.   .   S</pre> | E -> | 13, 12 |
 | 15 | <pre>.   .   ~ P v S</pre> | I v (R) | 14 |
@@ -979,18 +979,18 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v ~ S )</pre> | Assume |  |
+| 1 | <pre>.   ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v ~ S )</pre> | Assume Implication |  |
 | 2 | <pre>.   ( P -> R ) ^ ( Q -> S )</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   ~ R v ~ S</pre> | E ^ (R) | 1 |
 | 4 | <pre>.   P -> R</pre> | E ^ (L) | 2 |
 | 5 | <pre>.   Q -> S</pre> | E ^ (R) | 2 |
-| 6 | <pre>.   .   ~ R</pre> | Assume |  |
+| 6 | <pre>.   .   ~ R</pre> | Assume Implication |  |
 | 7 | <pre>.   .   P -> R</pre> | Reiterate | 4 |
 | 8 | <pre>.   .   ~ R -> ~ P</pre> | Theorem: contrapositive | 7 |
 | 9 | <pre>.   .   ~ P</pre> | E -> | 8, 6 |
 | 10 | <pre>.   .   ~ P v ~ Q</pre> | I v (L) | 9 |
 | 11 | <pre>.   ~ R -> ( ~ P v ~ Q )</pre> | subproof implication | 6 - 10 |
-| 12 | <pre>.   .   ~ S</pre> | Assume |  |
+| 12 | <pre>.   .   ~ S</pre> | Assume Implication |  |
 | 13 | <pre>.   .   Q -> S</pre> | Reiterate | 5 |
 | 14 | <pre>.   .   ~ S -> ~ Q</pre> | Theorem: contrapositive | 13 |
 | 15 | <pre>.   .   ~ Q</pre> | E -> | 14, 12 |
@@ -1005,7 +1005,7 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P <-> Q ) ^ P</pre> | Assume |  |
+| 1 | <pre>.   ( P <-> Q ) ^ P</pre> | Assume Implication |  |
 | 2 | <pre>.   P <-> Q</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   P</pre> | E ^ (R) | 1 |
 | 4 | <pre>.   P -> Q</pre> | E <-> (L) | 2 |
@@ -1016,11 +1016,11 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P <-> Q ) ^ ~ P</pre> | Assume |  |
+| 1 | <pre>.   ( P <-> Q ) ^ ~ P</pre> | Assume Implication |  |
 | 2 | <pre>.   P <-> Q</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   ~ P</pre> | E ^ (R) | 1 |
 | 4 | <pre>.   Q -> P</pre> | E <-> (R) | 2 |
-| 5 | <pre>.   .   Q</pre> | Assume |  |
+| 5 | <pre>.   .   Q</pre> | Assume Contradiction |  |
 | 6 | <pre>.   .   ~ P</pre> | Reiterate | 3 |
 | 7 | <pre>.   .   Q -> P</pre> | Reiterate | 4 |
 | 8 | <pre>.   .   P</pre> | E -> | 7, 5 |
@@ -1031,18 +1031,18 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P <-> ~ Q</pre> | Assume |  |
+| 1 | <pre>.   P <-> ~ Q</pre> | Assume Implication |  |
 | 2 | <pre>.   P -> ~ Q</pre> | E <-> (L) | 1 |
-| 3 | <pre>.   .   Q</pre> | Assume |  |
-| 4 | <pre>.   .   .   P</pre> | Assume |  |
+| 3 | <pre>.   .   Q</pre> | Assume Implication |  |
+| 4 | <pre>.   .   .   P</pre> | Assume Contradiction |  |
 | 5 | <pre>.   .   .   P -> ~ Q</pre> | Reiterate | 2 |
 | 6 | <pre>.   .   .   ~ Q</pre> | E -> | 5, 4 |
 | 7 | <pre>.   .   .   Q</pre> | Reiterate | 3 |
 | 8 | <pre>.   .   ~ P</pre> | subproof contradiction | 4 - 7 |
 | 9 | <pre>.   Q -> ~ P</pre> | subproof implication | 3 - 8 |
 | 10 | <pre>.   ~ Q -> P</pre> | E <-> (R) | 1 |
-| 11 | <pre>.   .   ~ P</pre> | Assume |  |
-| 12 | <pre>.   .   .   ~ Q</pre> | Assume |  |
+| 11 | <pre>.   .   ~ P</pre> | Assume Implication |  |
+| 12 | <pre>.   .   .   ~ Q</pre> | Assume Contradiction |  |
 | 13 | <pre>.   .   .   ~ Q -> P</pre> | Reiterate | 10 |
 | 14 | <pre>.   .   .   P</pre> | E -> | 13, 12 |
 | 15 | <pre>.   .   .   ~ P</pre> | Reiterate | 11 |
@@ -1056,11 +1056,11 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P <-> ~ Q</pre> | Assume |  |
+| 1 | <pre>.   P <-> ~ Q</pre> | Assume Implication |  |
 | 2 | <pre>.   P -> ~ Q</pre> | E <-> (L) | 1 |
 | 3 | <pre>.   ~ Q -> P</pre> | E <-> (R) | 1 |
-| 4 | <pre>.   .   P</pre> | Assume |  |
-| 5 | <pre>.   .   .   P <-> Q</pre> | Assume |  |
+| 4 | <pre>.   .   P</pre> | Assume Implication |  |
+| 5 | <pre>.   .   .   P <-> Q</pre> | Assume Contradiction |  |
 | 6 | <pre>.   .   .   P -> ~ Q</pre> | Reiterate | 2 |
 | 7 | <pre>.   .   .   P -> Q</pre> | E <-> (L) | 5 |
 | 8 | <pre>.   .   .   P</pre> | Reiterate | 4 |
@@ -1068,8 +1068,8 @@
 | 10 | <pre>.   .   .   ~ Q</pre> | E -> | 6, 8 |
 | 11 | <pre>.   .   ~ ( P <-> Q )</pre> | subproof contradiction | 5 - 10 |
 | 12 | <pre>.   P -> ~ ( P <-> Q )</pre> | subproof implication | 4 - 11 |
-| 13 | <pre>.   .   ~ P</pre> | Assume |  |
-| 14 | <pre>.   .   .   P <-> Q</pre> | Assume |  |
+| 13 | <pre>.   .   ~ P</pre> | Assume Implication |  |
+| 14 | <pre>.   .   .   P <-> Q</pre> | Assume Contradiction |  |
 | 15 | <pre>.   .   .   Q -> P</pre> | E <-> (R) | 14 |
 | 16 | <pre>.   .   .   ~ P -> ~ Q</pre> | Theorem: contrapositive | 15 |
 | 17 | <pre>.   .   .   ~ P</pre> | Reiterate | 13 |
@@ -1086,8 +1086,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ ( P <-> Q )</pre> | Assume |  |
-| 2 | <pre>.   .   ~ ( P -> ~ Q )</pre> | Assume |  |
+| 1 | <pre>.   ~ ( P <-> Q )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   ~ ( P -> ~ Q )</pre> | Assume Contradiction |  |
 | 3 | <pre>.   .   P ^ ~ ~ Q</pre> | Theorem: arrow negation | 2 |
 | 4 | <pre>.   .   P</pre> | E ^ (L) | 3 |
 | 5 | <pre>.   .   ~ ~ Q</pre> | E ^ (R) | 3 |
@@ -1098,7 +1098,7 @@
 | 10 | <pre>.   .   ~ ( P <-> Q )</pre> | Reiterate | 1 |
 | 11 | <pre>.   ~ ~ ( P -> ~ Q )</pre> | subproof contradiction | 2 - 10 |
 | 12 | <pre>.   P -> ~ Q</pre> | E ~ | 11 |
-| 13 | <pre>.   .   ~ ( ~ Q -> P )</pre> | Assume |  |
+| 13 | <pre>.   .   ~ ( ~ Q -> P )</pre> | Assume Contradiction |  |
 | 14 | <pre>.   .   ~ Q ^ ~ P</pre> | Theorem: arrow negation | 13 |
 | 15 | <pre>.   .   ~ Q</pre> | E ^ (L) | 14 |
 | 16 | <pre>.   .   ~ P</pre> | E ^ (R) | 14 |
@@ -1117,7 +1117,7 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P <-> Q</pre> | Assume |  |
+| 1 | <pre>.   P <-> Q</pre> | Assume Implication |  |
 | 2 | <pre>.   P -> Q</pre> | E <-> (L) | 1 |
 | 3 | <pre>.   ~ Q -> ~ P</pre> | Theorem: contrapositive | 2 |
 | 4 | <pre>.   Q -> P</pre> | E <-> (R) | 1 |
@@ -1129,7 +1129,7 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ P <-> ~ Q</pre> | Assume |  |
+| 1 | <pre>.   ~ P <-> ~ Q</pre> | Assume Implication |  |
 | 2 | <pre>.   ~ P -> ~ Q</pre> | E <-> (L) | 1 |
 | 3 | <pre>.   Q -> P</pre> | Theorem: contrapositive (R) | 2 |
 | 4 | <pre>.   ~ Q -> ~ P</pre> | E <-> (R) | 1 |
@@ -1141,8 +1141,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ ( ( P <-> Q ) v ~ ( P <-> Q ) )</pre> | Assume |  |
-| 2 | <pre>.   .   P <-> Q</pre> | Assume |  |
+| 1 | <pre>.   ~ ( ( P <-> Q ) v ~ ( P <-> Q ) )</pre> | Assume Contradiction |  |
+| 2 | <pre>.   .   P <-> Q</pre> | Assume Contradiction |  |
 | 3 | <pre>.   .   ( P <-> Q ) v ~ ( P <-> Q )</pre> | I v (L) | 2 |
 | 4 | <pre>.   .   ~ ( ( P <-> Q ) v ~ ( P <-> Q ) )</pre> | Reiterate | 1 |
 | 5 | <pre>.   ~ ( P <-> Q )</pre> | subproof contradiction | 2 - 4 |
@@ -1154,18 +1154,18 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P <-> ~ Q</pre> | Assume |  |
+| 1 | <pre>.   P <-> ~ Q</pre> | Assume Implication |  |
 | 2 | <pre>.   P -> ~ Q</pre> | E <-> (L) | 1 |
 | 3 | <pre>.   ~ Q -> P</pre> | E <-> (R) | 1 |
 | 4 | <pre>.   ~ P -> ~ ~ Q</pre> | Theorem: contrapositive | 3 |
-| 5 | <pre>.   .   P</pre> | Assume |  |
+| 5 | <pre>.   .   P</pre> | Assume Implication |  |
 | 6 | <pre>.   .   P v Q</pre> | I v (L) | 5 |
 | 7 | <pre>.   .   P -> ~ Q</pre> | Reiterate | 2 |
 | 8 | <pre>.   .   ~ Q</pre> | E -> | 7, 5 |
 | 9 | <pre>.   .   ~ P v ~ Q</pre> | I v (R) | 8 |
 | 10 | <pre>.   .   ( P v Q ) ^ ( ~ P v ~ Q )</pre> | I ^ | 6, 9 |
 | 11 | <pre>.   P -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )</pre> | subproof implication | 5 - 10 |
-| 12 | <pre>.   .   ~ P</pre> | Assume |  |
+| 12 | <pre>.   .   ~ P</pre> | Assume Implication |  |
 | 13 | <pre>.   .   ~ P v ~ Q</pre> | I v (L) | 12 |
 | 14 | <pre>.   .   ~ P -> ~ ~ Q</pre> | Reiterate | 4 |
 | 15 | <pre>.   .   ~ ~ Q</pre> | E -> | 14, 12 |
@@ -1181,50 +1181,50 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P v Q ) ^ ( ~ P v ~ Q )</pre> | Assume |  |
+| 1 | <pre>.   ( P v Q ) ^ ( ~ P v ~ Q )</pre> | Assume Implication |  |
 | 2 | <pre>.   P v Q</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   ~ P v ~ Q</pre> | E ^ (R) | 1 |
-| 4 | <pre>.   .   ~ P</pre> | Assume |  |
-| 5 | <pre>.   .   .   P ^ Q</pre> | Assume |  |
+| 4 | <pre>.   .   ~ P</pre> | Assume Implication |  |
+| 5 | <pre>.   .   .   P ^ Q</pre> | Assume Contradiction |  |
 | 6 | <pre>.   .   .   P</pre> | E ^ (L) | 5 |
 | 7 | <pre>.   .   .   ~ P</pre> | Reiterate | 4 |
 | 8 | <pre>.   .   ~ ( P ^ Q )</pre> | subproof contradiction | 5 - 7 |
 | 9 | <pre>.   ~ P -> ~ ( P ^ Q )</pre> | subproof implication | 4 - 8 |
-| 10 | <pre>.   .   ~ Q</pre> | Assume |  |
-| 11 | <pre>.   .   .   P ^ Q</pre> | Assume |  |
+| 10 | <pre>.   .   ~ Q</pre> | Assume Implication |  |
+| 11 | <pre>.   .   .   P ^ Q</pre> | Assume Contradiction |  |
 | 12 | <pre>.   .   .   Q</pre> | E ^ (R) | 11 |
 | 13 | <pre>.   .   .   ~ Q</pre> | Reiterate | 10 |
 | 14 | <pre>.   .   ~ ( P ^ Q )</pre> | subproof contradiction | 11 - 13 |
 | 15 | <pre>.   ~ Q -> ~ ( P ^ Q )</pre> | subproof implication | 10 - 14 |
 | 16 | <pre>.   ~ ( P ^ Q )</pre> | E v | 9, 15, 3 |
-| 17 | <pre>.   .   P</pre> | Assume |  |
-| 18 | <pre>.   .   .   ~ P ^ ~ Q</pre> | Assume |  |
+| 17 | <pre>.   .   P</pre> | Assume Implication |  |
+| 18 | <pre>.   .   .   ~ P ^ ~ Q</pre> | Assume Contradiction |  |
 | 19 | <pre>.   .   .   ~ P</pre> | E ^ (L) | 18 |
 | 20 | <pre>.   .   .   P</pre> | Reiterate | 17 |
 | 21 | <pre>.   .   ~ ( ~ P ^ ~ Q )</pre> | subproof contradiction | 18 - 20 |
 | 22 | <pre>.   P -> ~ ( ~ P ^ ~ Q )</pre> | subproof implication | 17 - 21 |
-| 23 | <pre>.   .   Q</pre> | Assume |  |
-| 24 | <pre>.   .   .   ~ P ^ ~ Q</pre> | Assume |  |
+| 23 | <pre>.   .   Q</pre> | Assume Implication |  |
+| 24 | <pre>.   .   .   ~ P ^ ~ Q</pre> | Assume Contradiction |  |
 | 25 | <pre>.   .   .   ~ Q</pre> | E ^ (R) | 24 |
 | 26 | <pre>.   .   .   Q</pre> | Reiterate | 23 |
 | 27 | <pre>.   .   ~ ( ~ P ^ ~ Q )</pre> | subproof contradiction | 24 - 26 |
 | 28 | <pre>.   Q -> ~ ( ~ P ^ ~ Q )</pre> | subproof implication | 23 - 27 |
 | 29 | <pre>.   ~ ( ~ P ^ ~ Q )</pre> | E v | 22, 28, 2 |
-| 30 | <pre>.   .   P</pre> | Assume |  |
-| 31 | <pre>.   .   .   Q</pre> | Assume |  |
+| 30 | <pre>.   .   P</pre> | Assume Implication |  |
+| 31 | <pre>.   .   .   Q</pre> | Assume Contradiction |  |
 | 32 | <pre>.   .   .   P</pre> | Reiterate | 30 |
 | 33 | <pre>.   .   .   P ^ Q</pre> | I ^ | 32, 31 |
 | 34 | <pre>.   .   .   ~ ( P ^ Q )</pre> | Reiterate | 16 |
 | 35 | <pre>.   .   ~ Q</pre> | subproof contradiction | 31 - 34 |
 | 36 | <pre>.   P -> ~ Q</pre> | subproof implication | 30 - 35 |
-| 37 | <pre>.   .   ~ Q</pre> | Assume |  |
-| 38 | <pre>.   .   .   ~ P</pre> | Assume |  |
+| 37 | <pre>.   .   ~ Q</pre> | Assume Implication |  |
+| 38 | <pre>.   .   .   ~ P</pre> | Assume Contradiction |  |
 | 39 | <pre>.   .   .   ~ Q</pre> | Reiterate | 37 |
 | 40 | <pre>.   .   .   ~ P ^ ~ Q</pre> | I ^ | 38, 39 |
 | 41 | <pre>.   .   .   ~ ( ~ P ^ ~ Q )</pre> | Reiterate | 29 |
 | 42 | <pre>.   .   ~ ~ P</pre> | subproof contradiction | 38 - 41 |
 | 43 | <pre>.   ~ Q -> ~ ~ P</pre> | subproof implication | 37 - 42 |
-| 44 | <pre>.   .   ~ Q</pre> | Assume |  |
+| 44 | <pre>.   .   ~ Q</pre> | Assume Implication |  |
 | 45 | <pre>.   .   ~ Q -> ~ ~ P</pre> | Reiterate | 43 |
 | 46 | <pre>.   .   ~ ~ P</pre> | E -> | 45, 44 |
 | 47 | <pre>.   .   P</pre> | E ~ | 46 |
@@ -1238,11 +1238,11 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ( P -> Q ) -> R</pre> | Assume |  |
-| 2 | <pre>.   .   P -> Q</pre> | Assume |  |
+| 1 | <pre>.   ( P -> Q ) -> R</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P -> Q</pre> | Assume Implication |  |
 | 3 | <pre>.   .   ( P -> Q ) -> R</pre> | Reiterate | 1 |
 | 4 | <pre>.   .   R</pre> | E -> | 3, 2 |
-| 5 | <pre>.   .   .   P</pre> | Assume |  |
+| 5 | <pre>.   .   .   P</pre> | Assume Implication |  |
 | 6 | <pre>.   .   .   R</pre> | Reiterate | 4 |
 | 7 | <pre>.   .   P -> R</pre> | subproof implication | 5 - 6 |
 | 8 | <pre>.   ( P -> Q ) -> ( P -> R )</pre> | subproof implication | 2 - 7 |
@@ -1252,13 +1252,13 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ ( P -> Q )</pre> | Assume |  |
-| 2 | <pre>.   .   ~ P</pre> | Assume |  |
-| 3 | <pre>.   .   .   ~ Q</pre> | Assume |  |
+| 1 | <pre>.   ~ ( P -> Q )</pre> | Assume Implication |  |
+| 2 | <pre>.   .   ~ P</pre> | Assume Contradiction |  |
+| 3 | <pre>.   .   .   ~ Q</pre> | Assume Implication |  |
 | 4 | <pre>.   .   .   ~ P</pre> | Reiterate | 2 |
 | 5 | <pre>.   .   ~ Q -> ~ P</pre> | subproof implication | 3 - 4 |
-| 6 | <pre>.   .   .   P</pre> | Assume |  |
-| 7 | <pre>.   .   .   .   ~ Q</pre> | Assume |  |
+| 6 | <pre>.   .   .   P</pre> | Assume Implication |  |
+| 7 | <pre>.   .   .   .   ~ Q</pre> | Assume Contradiction |  |
 | 8 | <pre>.   .   .   .   ~ Q -> ~ P</pre> | Reiterate | 5 |
 | 9 | <pre>.   .   .   .   P</pre> | Reiterate | 6 |
 | 10 | <pre>.   .   .   .   ~ P</pre> | E -> | 8, 7 |
@@ -1268,8 +1268,8 @@
 | 14 | <pre>.   .   ~ ( P -> Q )</pre> | Reiterate | 1 |
 | 15 | <pre>.   ~ ~ P</pre> | subproof contradiction | 2 - 14 |
 | 16 | <pre>.   P</pre> | E ~ | 15 |
-| 17 | <pre>.   .   Q</pre> | Assume |  |
-| 18 | <pre>.   .   .   P</pre> | Assume |  |
+| 17 | <pre>.   .   Q</pre> | Assume Contradiction |  |
+| 18 | <pre>.   .   .   P</pre> | Assume Implication |  |
 | 19 | <pre>.   .   .   Q</pre> | Reiterate | 17 |
 | 20 | <pre>.   .   P -> Q</pre> | subproof implication | 18 - 19 |
 | 21 | <pre>.   .   ~ ( P -> Q )</pre> | Reiterate | 1 |
@@ -1281,8 +1281,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P ^ ~ Q</pre> | Assume |  |
-| 2 | <pre>.   .   P -> Q</pre> | Assume |  |
+| 1 | <pre>.   P ^ ~ Q</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P -> Q</pre> | Assume Contradiction |  |
 | 3 | <pre>.   .   P ^ ~ Q</pre> | Reiterate | 1 |
 | 4 | <pre>.   .   P</pre> | E ^ (L) | 3 |
 | 5 | <pre>.   .   ~ Q</pre> | E ^ (R) | 3 |
@@ -1294,18 +1294,18 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   P v Q</pre> | Assume |  |
-| 2 | <pre>.   .   Q</pre> | Assume |  |
-| 3 | <pre>.   .   .   ~ P</pre> | Assume |  |
+| 1 | <pre>.   P v Q</pre> | Assume Implication |  |
+| 2 | <pre>.   .   Q</pre> | Assume Implication |  |
+| 3 | <pre>.   .   .   ~ P</pre> | Assume Implication |  |
 | 4 | <pre>.   .   .   Q</pre> | Reiterate | 2 |
 | 5 | <pre>.   .   ~ P -> Q</pre> | subproof implication | 3 - 4 |
 | 6 | <pre>.   Q -> ( ~ P -> Q )</pre> | subproof implication | 2 - 5 |
-| 7 | <pre>.   .   P</pre> | Assume |  |
-| 8 | <pre>.   .   .   ~ Q</pre> | Assume |  |
+| 7 | <pre>.   .   P</pre> | Assume Implication |  |
+| 8 | <pre>.   .   .   ~ Q</pre> | Assume Implication |  |
 | 9 | <pre>.   .   .   P</pre> | Reiterate | 7 |
 | 10 | <pre>.   .   ~ Q -> P</pre> | subproof implication | 8 - 9 |
-| 11 | <pre>.   .   .   ~ P</pre> | Assume |  |
-| 12 | <pre>.   .   .   .   ~ Q</pre> | Assume |  |
+| 11 | <pre>.   .   .   ~ P</pre> | Assume Implication |  |
+| 12 | <pre>.   .   .   .   ~ Q</pre> | Assume Contradiction |  |
 | 13 | <pre>.   .   .   .   ~ Q -> P</pre> | Reiterate | 10 |
 | 14 | <pre>.   .   .   .   ~ P</pre> | Reiterate | 11 |
 | 15 | <pre>.   .   .   .   P</pre> | E -> | 13, 12 |
@@ -1320,17 +1320,17 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ P -> Q</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
+| 1 | <pre>.   ~ P -> Q</pre> | Assume Implication |  |
+| 2 | <pre>.   .   P</pre> | Assume Implication |  |
 | 3 | <pre>.   .   P v Q</pre> | I v (L) | 2 |
 | 4 | <pre>.   P -> ( P v Q )</pre> | subproof implication | 2 - 3 |
-| 5 | <pre>.   .   ~ P</pre> | Assume |  |
+| 5 | <pre>.   .   ~ P</pre> | Assume Implication |  |
 | 6 | <pre>.   .   ~ P -> Q</pre> | Reiterate | 1 |
 | 7 | <pre>.   .   Q</pre> | E -> | 6, 5 |
 | 8 | <pre>.   .   P v Q</pre> | I v (R) | 7 |
 | 9 | <pre>.   ~ P -> ( P v Q )</pre> | subproof implication | 5 - 8 |
-| 10 | <pre>.   .   ~ ( P v ~ P )</pre> | Assume |  |
-| 11 | <pre>.   .   .   P</pre> | Assume |  |
+| 10 | <pre>.   .   ~ ( P v ~ P )</pre> | Assume Contradiction |  |
+| 11 | <pre>.   .   .   P</pre> | Assume Contradiction |  |
 | 12 | <pre>.   .   .   P v ~ P</pre> | I v (L) | 11 |
 | 13 | <pre>.   .   .   ~ ( P v ~ P )</pre> | Reiterate | 10 |
 | 14 | <pre>.   .   ~ P</pre> | subproof contradiction | 11 - 13 |
