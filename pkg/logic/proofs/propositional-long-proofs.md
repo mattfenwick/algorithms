@@ -21,9 +21,11 @@
     7. [( P -> ( Q -> R ) ) -> ( ( P ^ Q ) -> R )](#proof-2-7)
     8. [( ( P -> Q ) ^ ( P -> ~ Q ) ) -> ~ P](#proof-2-8)
     9. [( ( P -> Q ) ^ ( ~ P -> Q ) ) -> Q](#proof-2-9)
-    10. [( P -> Q ) -> ( P -> ( Q v R ) )](#proof-2-10)
-    11. [( P -> R ) -> ( ( P ^ Q ) -> R )](#proof-2-11)
-    12. [( P -> ( Q -> R ) ) -> ( Q -> ( P -> R ) )](#proof-2-12)
+    10. [( P -> ( Q -> R ) ) -> ( Q -> ( P -> R ) )](#proof-2-10)
+    11. [( P -> Q ) -> ( P -> ( Q v R ) )](#proof-2-11)
+    12. [( ( P v Q ) -> R ) -> ( P -> R )](#proof-2-12)
+    13. [( P -> R ) -> ( ( P ^ Q ) -> R )](#proof-2-13)
+    14. [( P -> ( Q ^ R ) ) -> ( P -> Q )](#proof-2-14)
 3. [commutativity](#commutativity)
     1. [( P ^ Q ) -> ( Q ^ P )](#proof-3-1)
     2. [( P v Q ) -> ( Q v P )](#proof-3-2)
@@ -285,31 +287,7 @@
 | 12 | <pre>.   Q</pre> | E v | 2, 3, 11 |
 | 13 | <pre>( ( P -> Q ) ^ ( ~ P -> Q ) ) -> Q</pre> | subproof implication | 1 - 12 |
 
-## ( P -> Q ) -> ( P -> ( Q v R ) ) <a name="proof-2-10"></a>
-
-| Line | Formula | Justification | Lines used |
-| - | - | - | - |
-| 1 | <pre>.   P -> Q</pre> | Assume |  |
-| 2 | <pre>.   .   P</pre> | Assume |  |
-| 3 | <pre>.   .   P -> Q</pre> | Reiterate | 1 |
-| 4 | <pre>.   .   Q</pre> | E -> | 3, 2 |
-| 5 | <pre>.   .   Q v R</pre> | I v (L) | 4 |
-| 6 | <pre>.   P -> ( Q v R )</pre> | subproof implication | 2 - 5 |
-| 7 | <pre>( P -> Q ) -> ( P -> ( Q v R ) )</pre> | subproof implication | 1 - 6 |
-
-## ( P -> R ) -> ( ( P ^ Q ) -> R ) <a name="proof-2-11"></a>
-
-| Line | Formula | Justification | Lines used |
-| - | - | - | - |
-| 1 | <pre>.   P -> R</pre> | Assume |  |
-| 2 | <pre>.   .   P ^ Q</pre> | Assume |  |
-| 3 | <pre>.   .   P -> R</pre> | Reiterate | 1 |
-| 4 | <pre>.   .   P</pre> | E ^ (L) | 2 |
-| 5 | <pre>.   .   R</pre> | E -> | 3, 4 |
-| 6 | <pre>.   ( P ^ Q ) -> R</pre> | subproof implication | 2 - 5 |
-| 7 | <pre>( P -> R ) -> ( ( P ^ Q ) -> R )</pre> | subproof implication | 1 - 6 |
-
-## ( P -> ( Q -> R ) ) -> ( Q -> ( P -> R ) ) <a name="proof-2-12"></a>
+## ( P -> ( Q -> R ) ) -> ( Q -> ( P -> R ) ) <a name="proof-2-10"></a>
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
@@ -323,6 +301,54 @@
 | 8 | <pre>.   .   P -> R</pre> | subproof implication | 3 - 7 |
 | 9 | <pre>.   Q -> ( P -> R )</pre> | subproof implication | 2 - 8 |
 | 10 | <pre>( P -> ( Q -> R ) ) -> ( Q -> ( P -> R ) )</pre> | subproof implication | 1 - 9 |
+
+## ( P -> Q ) -> ( P -> ( Q v R ) ) <a name="proof-2-11"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P -> Q</pre> | Assume |  |
+| 2 | <pre>.   .   P</pre> | Assume |  |
+| 3 | <pre>.   .   P -> Q</pre> | Reiterate | 1 |
+| 4 | <pre>.   .   Q</pre> | E -> | 3, 2 |
+| 5 | <pre>.   .   Q v R</pre> | I v (L) | 4 |
+| 6 | <pre>.   P -> ( Q v R )</pre> | subproof implication | 2 - 5 |
+| 7 | <pre>( P -> Q ) -> ( P -> ( Q v R ) )</pre> | subproof implication | 1 - 6 |
+
+## ( ( P v Q ) -> R ) -> ( P -> R ) <a name="proof-2-12"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ( P v Q ) -> R</pre> | Assume |  |
+| 2 | <pre>.   .   P</pre> | Assume |  |
+| 3 | <pre>.   .   P v Q</pre> | I v (L) | 2 |
+| 4 | <pre>.   .   ( P v Q ) -> R</pre> | Reiterate | 1 |
+| 5 | <pre>.   .   R</pre> | E -> | 4, 3 |
+| 6 | <pre>.   P -> R</pre> | subproof implication | 2 - 5 |
+| 7 | <pre>( ( P v Q ) -> R ) -> ( P -> R )</pre> | subproof implication | 1 - 6 |
+
+## ( P -> R ) -> ( ( P ^ Q ) -> R ) <a name="proof-2-13"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P -> R</pre> | Assume |  |
+| 2 | <pre>.   .   P ^ Q</pre> | Assume |  |
+| 3 | <pre>.   .   P -> R</pre> | Reiterate | 1 |
+| 4 | <pre>.   .   P</pre> | E ^ (L) | 2 |
+| 5 | <pre>.   .   R</pre> | E -> | 3, 4 |
+| 6 | <pre>.   ( P ^ Q ) -> R</pre> | subproof implication | 2 - 5 |
+| 7 | <pre>( P -> R ) -> ( ( P ^ Q ) -> R )</pre> | subproof implication | 1 - 6 |
+
+## ( P -> ( Q ^ R ) ) -> ( P -> Q ) <a name="proof-2-14"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   P -> ( Q ^ R )</pre> | Assume |  |
+| 2 | <pre>.   .   P</pre> | Assume |  |
+| 3 | <pre>.   .   P -> ( Q ^ R )</pre> | Reiterate | 1 |
+| 4 | <pre>.   .   Q ^ R</pre> | E -> | 3, 2 |
+| 5 | <pre>.   .   Q</pre> | E ^ (L) | 4 |
+| 6 | <pre>.   P -> Q</pre> | subproof implication | 2 - 5 |
+| 7 | <pre>( P -> ( Q ^ R ) ) -> ( P -> Q )</pre> | subproof implication | 1 - 6 |
 
 # commutativity <a name="commutativity"></a>
 
