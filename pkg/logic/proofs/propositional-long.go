@@ -742,7 +742,7 @@ var propositionalLongProofSections = []*ProofsSection{
 			),
 		),
 	),
-	NewProofsSection("miscellaneous",
+	NewProofsSection("disjunction",
 		NewRootProof("( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S )",
 			NewProofImplication(And(And(Implication(P, R), Implication(Q, S)), Or(P, Q)),
 				EAnd(And(Implication(P, R), Implication(Q, S)), Or(P, Q), true),
@@ -762,6 +762,49 @@ var propositionalLongProofSections = []*ProofsSection{
 				EOr(P, Q, Or(R, S)),
 			),
 		),
+		NewRootProof("( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v Q ) ) -> ( ~ P v S )",
+			NewProofImplication(And(And(Implication(P, R), Implication(Q, S)), Or(Not(R), Q)),
+				EAnd(And(Implication(P, R), Implication(Q, S)), Or(Not(R), Q), true),
+				EAnd(And(Implication(P, R), Implication(Q, S)), Or(Not(R), Q), false), // ~ R v Q
+				EAnd(Implication(P, R), Implication(Q, S), true),                      // P -> R
+				EAnd(Implication(P, R), Implication(Q, S), false),                     // Q -> S
+				NewProofImplication(Not(R),
+					&Reiterate{Term: Implication(P, R)},
+					ContrapositiveTheorem(P, R), // ~ R -> ~ P
+					EImply(Not(R), Not(P)),      // ~ P
+					IOr(Not(P), S, true),
+				), // ~ R -> ( ~ P v S )
+				NewProofImplication(Q,
+					&Reiterate{Term: Implication(Q, S)},
+					EImply(Q, S),
+					IOr(Not(P), S, false),
+				), // Q -> ( ~ P v S )
+				EOr(Not(R), Q, Or(Not(P), S)),
+			),
+		),
+		NewRootProof("( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v ~ S ) ) -> ( ~ P v ~ Q )",
+			NewProofImplication(And(And(Implication(P, R), Implication(Q, S)), Or(Not(R), Not(S))),
+				EAnd(And(Implication(P, R), Implication(Q, S)), Or(Not(R), Not(S)), true),
+				EAnd(And(Implication(P, R), Implication(Q, S)), Or(Not(R), Not(S)), false), // ~ R v ~ S
+				EAnd(Implication(P, R), Implication(Q, S), true),                           // P -> R
+				EAnd(Implication(P, R), Implication(Q, S), false),                          // Q -> S
+				NewProofImplication(Not(R),
+					&Reiterate{Term: Implication(P, R)},
+					ContrapositiveTheorem(P, R), // ~ R -> ~ P
+					EImply(Not(R), Not(P)),      // ~ P
+					IOr(Not(P), Not(Q), true),
+				), // ~ R -> ( ~ P v ~ Q )
+				NewProofImplication(Not(S),
+					&Reiterate{Term: Implication(Q, S)},
+					ContrapositiveTheorem(Q, S), // ~ S -> ~ Q
+					EImply(Not(S), Not(Q)),      // ~ Q
+					IOr(Not(P), Not(Q), false),
+				), // ~ S -> ( ~ P v ~ Q )
+				EOr(Not(R), Not(S), Or(Not(P), Not(Q))),
+			),
+		),
+	),
+	NewProofsSection("miscellaneous",
 		// TODO may be wrong ?  this isn't the implication distributive formula according to wikipedia
 		NewRootProof("( ( P -> Q ) -> R ) -> ( ( P -> Q ) -> ( P -> R ) )",
 			NewProofImplication(Implication(Implication(P, Q), R),
