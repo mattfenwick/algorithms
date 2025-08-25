@@ -56,6 +56,8 @@
     1. [( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S )](#proof-6-1)
     2. [( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v Q ) ) -> ( ~ P v S )](#proof-6-2)
     3. [( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v ~ S ) ) -> ( ~ P v ~ Q )](#proof-6-3)
+    4. [( ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q ) ) -> R](#proof-6-4)
+    5. [( ( ( P -> R ) v ( Q -> R ) ) ^ ~ R ) -> ( ~ P v ~ Q )](#proof-6-5)
 7. [biconditional](#biconditional)
     1. [( ( P <-> Q ) ^ P ) -> Q](#proof-7-1)
     2. [( ( P <-> Q ) ^ ~ P ) -> ~ Q](#proof-7-2)
@@ -998,6 +1000,48 @@
 | 17 | <pre>.   ~ S -> ( ~ P v ~ Q )</pre> | subproof implication | 12 - 16 |
 | 18 | <pre>.   ~ P v ~ Q</pre> | E v | 11, 17, 3 |
 | 19 | <pre>( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v ~ S ) ) -> ( ~ P v ~ Q )</pre> | subproof implication | 1 - 18 |
+
+## ( ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q ) ) -> R <a name="proof-6-4"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q )</pre> | Assume Implication |  |
+| 2 | <pre>.   ( P -> R ) v ( Q -> R )</pre> | E ^ (L) | 1 |
+| 3 | <pre>.   P ^ Q</pre> | E ^ (R) | 1 |
+| 4 | <pre>.   P</pre> | E ^ (L) | 3 |
+| 5 | <pre>.   Q</pre> | E ^ (R) | 3 |
+| 6 | <pre>.   .   P -> R</pre> | Assume Implication |  |
+| 7 | <pre>.   .   P</pre> | Reiterate | 4 |
+| 8 | <pre>.   .   R</pre> | E -> | 6, 7 |
+| 9 | <pre>.   ( P -> R ) -> R</pre> | subproof implication | 6 - 8 |
+| 10 | <pre>.   .   Q -> R</pre> | Assume Implication |  |
+| 11 | <pre>.   .   Q</pre> | Reiterate | 5 |
+| 12 | <pre>.   .   R</pre> | E -> | 10, 11 |
+| 13 | <pre>.   ( Q -> R ) -> R</pre> | subproof implication | 10 - 12 |
+| 14 | <pre>.   R</pre> | E v | 9, 13, 2 |
+| 15 | <pre>( ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q ) ) -> R</pre> | subproof implication | 1 - 14 |
+
+## ( ( ( P -> R ) v ( Q -> R ) ) ^ ~ R ) -> ( ~ P v ~ Q ) <a name="proof-6-5"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ( ( P -> R ) v ( Q -> R ) ) ^ ~ R</pre> | Assume Implication |  |
+| 2 | <pre>.   ( P -> R ) v ( Q -> R )</pre> | E ^ (L) | 1 |
+| 3 | <pre>.   ~ R</pre> | E ^ (R) | 1 |
+| 4 | <pre>.   .   P -> R</pre> | Assume Implication |  |
+| 5 | <pre>.   .   ~ R</pre> | Reiterate | 3 |
+| 6 | <pre>.   .   ~ R -> ~ P</pre> | Theorem: contrapositive | 4 |
+| 7 | <pre>.   .   ~ P</pre> | E -> | 6, 5 |
+| 8 | <pre>.   .   ~ P v ~ Q</pre> | I v (L) | 7 |
+| 9 | <pre>.   ( P -> R ) -> ( ~ P v ~ Q )</pre> | subproof implication | 4 - 8 |
+| 10 | <pre>.   .   Q -> R</pre> | Assume Implication |  |
+| 11 | <pre>.   .   ~ R</pre> | Reiterate | 3 |
+| 12 | <pre>.   .   ~ R -> ~ Q</pre> | Theorem: contrapositive | 10 |
+| 13 | <pre>.   .   ~ Q</pre> | E -> | 12, 11 |
+| 14 | <pre>.   .   ~ P v ~ Q</pre> | I v (R) | 13 |
+| 15 | <pre>.   ( Q -> R ) -> ( ~ P v ~ Q )</pre> | subproof implication | 10 - 14 |
+| 16 | <pre>.   ~ P v ~ Q</pre> | E v | 9, 15, 2 |
+| 17 | <pre>( ( ( P -> R ) v ( Q -> R ) ) ^ ~ R ) -> ( ~ P v ~ Q )</pre> | subproof implication | 1 - 16 |
 
 # biconditional <a name="biconditional"></a>
 

@@ -741,6 +741,10 @@ var propositionalLongProofSections = []*ProofsSection{
 				EOr(Not(P), Not(Q), Not(And(P, Q))),
 			),
 		),
+		// TODO https://en.wikipedia.org/wiki/Distributive_property#Truth_functional_connectives
+		// TODO double distribution
+		// TODO ( ( P ^ Q ) v ( R ^ S ) ) <-> ( ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) ) )
+		// TODO ( ( P v Q ) ^ ( R v S ) ) <-> ( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) )
 	),
 	NewProofsSection("disjunction",
 		NewRootProof("( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S )",
@@ -803,9 +807,43 @@ var propositionalLongProofSections = []*ProofsSection{
 				EOr(Not(R), Not(S), Or(Not(P), Not(Q))),
 			),
 		),
-		// TODO ( ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q ) ) -> R
+		NewRootProof("( ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q ) ) -> R",
+			NewProofImplication(And(Or(Implication(P, R), Implication(Q, R)), And(P, Q)),
+				EAnd(Or(Implication(P, R), Implication(Q, R)), And(P, Q), true),  // ( P -> R ) v ( Q -> R)
+				EAnd(Or(Implication(P, R), Implication(Q, R)), And(P, Q), false), // P ^ Q
+				EAnd(P, Q, true),  // P
+				EAnd(P, Q, false), // Q
+				NewProofImplication(Implication(P, R),
+					&Reiterate{Term: P},
+					EImply(P, R),
+				), // ( P -> R ) -> R
+				NewProofImplication(Implication(Q, R),
+					&Reiterate{Term: Q},
+					EImply(Q, R),
+				), // ( Q -> R ) -> R
+				EOr(Implication(P, R), Implication(Q, R), R),
+			),
+		),
 		// TODO ( ( ( P -> R ) v ( Q -> S ) ) ^ ( P ^ Q ) ) -> ( R v S )
-		// TODO ( ( ( P -> R ) v ( Q -> R ) ) ^ ~ R -> ( ~ P v ~ Q )
+		NewRootProof("( ( ( P -> R ) v ( Q -> R ) ) ^ ~ R ) -> ( ~ P v ~ Q )",
+			NewProofImplication(And(Or(Implication(P, R), Implication(Q, R)), Not(R)),
+				EAnd(Or(Implication(P, R), Implication(Q, R)), Not(R), true),  // ( P -> R ) v ( Q -> R)
+				EAnd(Or(Implication(P, R), Implication(Q, R)), Not(R), false), // ~ R
+				NewProofImplication(Implication(P, R),
+					&Reiterate{Term: Not(R)},
+					ContrapositiveTheorem(P, R),
+					EImply(Not(R), Not(P)),
+					IOr(Not(P), Not(Q), true),
+				), // ( P -> R ) -> ( ~ P v ~ Q )
+				NewProofImplication(Implication(Q, R),
+					&Reiterate{Term: Not(R)},
+					ContrapositiveTheorem(Q, R),
+					EImply(Not(R), Not(Q)),
+					IOr(Not(P), Not(Q), false),
+				), // ( Q -> R ) -> ( ~ P v ~ Q )
+				EOr(Implication(P, R), Implication(Q, R), Or(Not(P), Not(Q))),
+			),
+		),
 		// TODO ( ( ( P -> R ) v ( Q -> S ) ) ^ ( P ^ ~ S ) ) -> ( R v ~ Q )
 		// TODO ( ( ( P -> R ) v ( Q -> S ) ) ^ ( ~ R ^ ~ S ) ) -> ( ~ P v ~ Q )
 	),
