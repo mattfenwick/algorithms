@@ -241,7 +241,8 @@ var propositionalLongProofSections = []*ProofsSection{
 				EAnd(P, Q, true),
 				EAnd(P, Q, false),
 				IAnd(Q, P),
-			)),
+			),
+		),
 		NewRootProof("( P v Q ) -> ( Q v P )",
 			NewProofImplication(
 				Or(P, Q),
@@ -250,7 +251,15 @@ var propositionalLongProofSections = []*ProofsSection{
 				NewProofImplication(Q,
 					IOr(Q, P, true)),
 				EOr(P, Q, Or(Q, P)),
-			)),
+			),
+		),
+		NewRootProof("( P <-> Q ) -> ( Q <-> P )",
+			NewProofImplication(Biconditional(P, Q),
+				EBiconditional(P, Q, true),
+				EBiconditional(P, Q, false),
+				IBiconditional(Q, P),
+			),
+		),
 	),
 	NewProofsSection("associativity",
 		NewRootProof("( ( P ^ Q ) ^ R ) -> ( P ^ ( Q ^ R ) )",
@@ -309,6 +318,122 @@ var propositionalLongProofSections = []*ProofsSection{
 					EOr(Q, R, Or(Or(P, Q), R)),
 				),
 				EOr(P, Or(Q, R), Or(Or(P, Q), R)),
+			),
+		),
+		NewRootProof("( ( P <-> Q ) <-> R ) -> ( P <-> ( Q <-> R ) )",
+			NewProofImplication(Biconditional(Biconditional(P, Q), R),
+				EBiconditional(Biconditional(P, Q), R, true),  // ( P <-> Q ) -> R
+				EBiconditional(Biconditional(P, Q), R, false), // R -> ( P <-> Q )
+				NewProofContradiction(Not(Implication(P, Biconditional(Q, R))),
+					ArrowNegationTheorem(P, Biconditional(Q, R)), // P ^ ~ ( Q <-> R )
+					EAnd(P, Not(Biconditional(Q, R)), true),      // P
+					EAnd(P, Not(Biconditional(Q, R)), false),     // ~ ( Q <-> R )
+					BiconditionalNegationTheorem(Q, R),           // Q <-> ~ R
+					NewProofContradiction(R,
+						&Reiterate{Term: Implication(R, Biconditional(P, Q))}, // R -> ( P <-> Q )
+						EImply(R, Biconditional(P, Q)),                        // P <-> Q
+						EBiconditional(P, Q, true),                            // P -> Q
+						&Reiterate{Term: P},                                   // P
+						EImply(P, Q),                                          // Q
+						&Reiterate{Term: Biconditional(Q, Not(R))},            // Q <-> ~ R
+						EBiconditional(Q, Not(R), true),                       // Q -> ~ R
+						EImply(Q, Not(R)),                                     // ~ R
+					), // ~ R
+					EBiconditional(Q, Not(R), false),                      // ~ R -> Q
+					EImply(Not(R), Q),                                     // Q
+					&Reiterate{Term: Implication(Biconditional(P, Q), R)}, // ( P <-> Q ) -> R
+					ContrapositiveTheorem(Biconditional(P, Q), R),         // ~ R -> ~ ( P <-> Q )
+					EImply(Not(R), Not(Biconditional(P, Q))),              // ~ ( P <-> Q )
+					BiconditionalNegationTheorem(P, Q),                    // P <-> ~ Q
+					EBiconditional(P, Not(Q), true),                       // P -> ~ Q
+					EImply(P, Not(Q)),                                     // ~ Q
+				), // ~ ~ ( P -> ( Q <-> R ) )
+				ENot(Implication(P, Biconditional(Q, R))), // P -> ( Q <-> R )
+				NewProofContradiction(Not(Implication(Biconditional(Q, R), P)),
+					ArrowNegationTheorem(Biconditional(Q, R), P), // ( Q <-> R ) ^ ~ P
+					EAnd(Biconditional(Q, R), Not(P), true),      // Q <-> R
+					EAnd(Biconditional(Q, R), Not(P), false),     // ~ P
+					NewProofContradiction(R,
+						&Reiterate{Term: Implication(R, Biconditional(P, Q))}, // R -> ( P <-> Q )
+						&Reiterate{Term: Biconditional(Q, R)},                 // Q <-> R
+						EBiconditional(Q, R, false),                           // R -> Q
+						EImply(R, Q),                                          // Q
+						EImply(R, Biconditional(P, Q)),                        // P <-> Q
+						EBiconditional(P, Q, false),                           // Q -> P
+						EImply(Q, P),                                          // P
+						&Reiterate{Term: Not(P)},                              // ~ P
+					), // ~ R
+					EBiconditional(Q, R, true),                            // Q -> R
+					ContrapositiveTheorem(Q, R),                           // ~ R -> ~ Q
+					EImply(Not(R), Not(Q)),                                // ~ Q
+					&Reiterate{Term: Implication(Biconditional(P, Q), R)}, // ( P <-> Q ) -> R
+					ContrapositiveTheorem(Biconditional(P, Q), R),         // ~ R -> ~ ( P <-> Q)
+					EImply(Not(R), Not(Biconditional(P, Q))),              // ~ ( P <-> Q )
+					BiconditionalNegationTheorem(P, Q),                    // P <-> ~ Q
+					EBiconditional(P, Not(Q), false),                      // ~ Q -> P
+					EImply(Not(Q), P),                                     // P
+				), // ~ ~ ( ( Q <-> R ) -> P )
+				ENot(Implication(Biconditional(Q, R), P)), // ( Q <-> R ) -> P
+				IBiconditional(P, Biconditional(Q, R)),    // P <-> ( Q <-> R )
+			),
+		),
+		NewRootProof("( P <-> ( Q <-> R ) ) -> ( ( P <-> Q ) <-> R )",
+			NewProofImplication(Biconditional(P, Biconditional(Q, R)),
+				EBiconditional(P, Biconditional(Q, R), true),  // P -> ( Q <-> R )
+				EBiconditional(P, Biconditional(Q, R), false), // ( Q <-> R ) -> P
+				// prove: ( P <-> Q ) -> R
+				NewProofContradiction(Not(Implication(Biconditional(P, Q), R)),
+					ArrowNegationTheorem(Biconditional(P, Q), R), // ( P <-> Q ) ^ ~ R
+					EAnd(Biconditional(P, Q), Not(R), true),      // P <-> Q
+					EAnd(Biconditional(P, Q), Not(R), false),     // ~ R
+					EBiconditional(P, Q, true),                   // P -> Q
+					NewProofContradiction(P,
+						&Reiterate{Term: Implication(P, Q)}, // P -> Q
+						EImply(P, Q),                        // Q
+						&Reiterate{Term: Implication(P, Biconditional(Q, R))}, // P -> ( Q <-> R )
+						EImply(P, Biconditional(Q, R)),                        // Q <-> R
+						EBiconditional(Q, R, true),                            // Q -> R
+						EImply(Q, R),                                          // R
+						&Reiterate{Term: Not(R)},                              // ~ R
+					), // ~ P
+					&Reiterate{Term: Implication(Biconditional(Q, R), P)}, // ( Q <-> R ) -> P
+					ContrapositiveTheorem(Biconditional(Q, R), P),         // ~ P -> ~ ( Q <-> R )
+					EImply(Not(P), Not(Biconditional(Q, R))),              // ~ ( Q <-> R )
+					BiconditionalNegationTheorem(Q, R),                    // Q <-> ~ R
+					EBiconditional(Q, Not(R), false),                      // ~ R -> Q
+					EImply(Not(R), Q),                                     // Q
+					EBiconditional(P, Q, false),                           // Q -> P
+					EImply(Q, P),                                          // P
+				), // ~ ~ ( ( P <-> Q ) -> R )
+				ENot(Implication(Biconditional(P, Q), R)), // ( P <-> Q ) -> R
+				NewProofContradiction(Not(Implication(R, Biconditional(P, Q))),
+					ArrowNegationTheorem(R, Biconditional(P, Q)), // R ^ ~ ( P <-> Q )
+					EAnd(R, Not(Biconditional(P, Q)), true),      // R
+					EAnd(R, Not(Biconditional(P, Q)), false),     // ~ ( P <-> Q )
+					BiconditionalNegationTheorem(P, Q),           // P <-> ~ Q
+					EBiconditional(P, Not(Q), true),              // P -> ~ Q
+					NewProofContradiction(P,
+						&Reiterate{Term: Implication(P, Not(Q))},              // P -> ~ Q
+						EImply(P, Not(Q)),                                     // ~ Q
+						&Reiterate{Term: Implication(P, Biconditional(Q, R))}, // P -> ( Q <-> R )
+						EImply(P, Biconditional(Q, R)),                        // Q <-> R
+						EBiconditional(Q, R, false),                           // R -> Q
+						&Reiterate{Term: R},                                   // R
+						EImply(R, Q),                                          // Q
+					), // ~ P
+					EBiconditional(P, Not(Q), false), // ~ Q -> P
+					ContrapositiveTheorem(Not(Q), P), // ~ P -> ~ ~ Q
+					EImply(Not(P), Not(Not(Q))),      // ~ ~ Q
+					ENot(Q),                          // Q
+					&Reiterate{Term: Implication(Biconditional(Q, R), P)}, // ( Q <-> R ) -> P
+					ContrapositiveTheorem(Biconditional(Q, R), P),         // ~ P -> ~ ( Q <-> R )
+					EImply(Not(P), Not(Biconditional(Q, R))),              // ~ ( Q <-> R )
+					BiconditionalNegationTheorem(Q, R),                    // Q <-> ~ R
+					EBiconditional(Q, Not(R), true),                       // Q -> ~ R
+					EImply(Q, Not(R)),                                     // ~ R
+				), // ~ ~ ( R -> ( P <-> Q ) )
+				ENot(Implication(R, Biconditional(P, Q))), // R -> ( P <-> Q )
+				IBiconditional(Biconditional(P, Q), R),
 			),
 		),
 	),
@@ -783,13 +908,6 @@ var propositionalLongProofSections = []*ProofsSection{
 				),
 			),
 		),
-		NewRootProof("( P <-> Q ) -> ( Q <-> P )",
-			NewProofImplication(Biconditional(P, Q),
-				EBiconditional(P, Q, true),
-				EBiconditional(P, Q, false),
-				IBiconditional(Q, P),
-			),
-		),
 		NewRootProof("( P <-> ~ Q ) -> ( ~ P <-> Q )",
 			NewProofImplication(Biconditional(P, Not(Q)),
 				EBiconditional(P, Not(Q), true), // P -> ~ Q
@@ -865,122 +983,6 @@ var propositionalLongProofSections = []*ProofsSection{
 				),
 				ENot(Implication(Not(Q), P)),
 				IBiconditional(P, Not(Q)),
-			),
-		),
-		NewRootProof("( ( P <-> Q ) <-> R ) -> ( P <-> ( Q <-> R ) )",
-			NewProofImplication(Biconditional(Biconditional(P, Q), R),
-				EBiconditional(Biconditional(P, Q), R, true),  // ( P <-> Q ) -> R
-				EBiconditional(Biconditional(P, Q), R, false), // R -> ( P <-> Q )
-				NewProofContradiction(Not(Implication(P, Biconditional(Q, R))),
-					ArrowNegationTheorem(P, Biconditional(Q, R)), // P ^ ~ ( Q <-> R )
-					EAnd(P, Not(Biconditional(Q, R)), true),      // P
-					EAnd(P, Not(Biconditional(Q, R)), false),     // ~ ( Q <-> R )
-					BiconditionalNegationTheorem(Q, R),           // Q <-> ~ R
-					NewProofContradiction(R,
-						&Reiterate{Term: Implication(R, Biconditional(P, Q))}, // R -> ( P <-> Q )
-						EImply(R, Biconditional(P, Q)),                        // P <-> Q
-						EBiconditional(P, Q, true),                            // P -> Q
-						&Reiterate{Term: P},                                   // P
-						EImply(P, Q),                                          // Q
-						&Reiterate{Term: Biconditional(Q, Not(R))},            // Q <-> ~ R
-						EBiconditional(Q, Not(R), true),                       // Q -> ~ R
-						EImply(Q, Not(R)),                                     // ~ R
-					), // ~ R
-					EBiconditional(Q, Not(R), false),                      // ~ R -> Q
-					EImply(Not(R), Q),                                     // Q
-					&Reiterate{Term: Implication(Biconditional(P, Q), R)}, // ( P <-> Q ) -> R
-					ContrapositiveTheorem(Biconditional(P, Q), R),         // ~ R -> ~ ( P <-> Q )
-					EImply(Not(R), Not(Biconditional(P, Q))),              // ~ ( P <-> Q )
-					BiconditionalNegationTheorem(P, Q),                    // P <-> ~ Q
-					EBiconditional(P, Not(Q), true),                       // P -> ~ Q
-					EImply(P, Not(Q)),                                     // ~ Q
-				), // ~ ~ ( P -> ( Q <-> R ) )
-				ENot(Implication(P, Biconditional(Q, R))), // P -> ( Q <-> R )
-				NewProofContradiction(Not(Implication(Biconditional(Q, R), P)),
-					ArrowNegationTheorem(Biconditional(Q, R), P), // ( Q <-> R ) ^ ~ P
-					EAnd(Biconditional(Q, R), Not(P), true),      // Q <-> R
-					EAnd(Biconditional(Q, R), Not(P), false),     // ~ P
-					NewProofContradiction(R,
-						&Reiterate{Term: Implication(R, Biconditional(P, Q))}, // R -> ( P <-> Q )
-						&Reiterate{Term: Biconditional(Q, R)},                 // Q <-> R
-						EBiconditional(Q, R, false),                           // R -> Q
-						EImply(R, Q),                                          // Q
-						EImply(R, Biconditional(P, Q)),                        // P <-> Q
-						EBiconditional(P, Q, false),                           // Q -> P
-						EImply(Q, P),                                          // P
-						&Reiterate{Term: Not(P)},                              // ~ P
-					), // ~ R
-					EBiconditional(Q, R, true),                            // Q -> R
-					ContrapositiveTheorem(Q, R),                           // ~ R -> ~ Q
-					EImply(Not(R), Not(Q)),                                // ~ Q
-					&Reiterate{Term: Implication(Biconditional(P, Q), R)}, // ( P <-> Q ) -> R
-					ContrapositiveTheorem(Biconditional(P, Q), R),         // ~ R -> ~ ( P <-> Q)
-					EImply(Not(R), Not(Biconditional(P, Q))),              // ~ ( P <-> Q )
-					BiconditionalNegationTheorem(P, Q),                    // P <-> ~ Q
-					EBiconditional(P, Not(Q), false),                      // ~ Q -> P
-					EImply(Not(Q), P),                                     // P
-				), // ~ ~ ( ( Q <-> R ) -> P )
-				ENot(Implication(Biconditional(Q, R), P)), // ( Q <-> R ) -> P
-				IBiconditional(P, Biconditional(Q, R)),    // P <-> ( Q <-> R )
-			),
-		),
-		NewRootProof("( P <-> ( Q <-> R ) ) -> ( ( P <-> Q ) <-> R )",
-			NewProofImplication(Biconditional(P, Biconditional(Q, R)),
-				EBiconditional(P, Biconditional(Q, R), true),  // P -> ( Q <-> R )
-				EBiconditional(P, Biconditional(Q, R), false), // ( Q <-> R ) -> P
-				// prove: ( P <-> Q ) -> R
-				NewProofContradiction(Not(Implication(Biconditional(P, Q), R)),
-					ArrowNegationTheorem(Biconditional(P, Q), R), // ( P <-> Q ) ^ ~ R
-					EAnd(Biconditional(P, Q), Not(R), true),      // P <-> Q
-					EAnd(Biconditional(P, Q), Not(R), false),     // ~ R
-					EBiconditional(P, Q, true),                   // P -> Q
-					NewProofContradiction(P,
-						&Reiterate{Term: Implication(P, Q)}, // P -> Q
-						EImply(P, Q),                        // Q
-						&Reiterate{Term: Implication(P, Biconditional(Q, R))}, // P -> ( Q <-> R )
-						EImply(P, Biconditional(Q, R)),                        // Q <-> R
-						EBiconditional(Q, R, true),                            // Q -> R
-						EImply(Q, R),                                          // R
-						&Reiterate{Term: Not(R)},                              // ~ R
-					), // ~ P
-					&Reiterate{Term: Implication(Biconditional(Q, R), P)}, // ( Q <-> R ) -> P
-					ContrapositiveTheorem(Biconditional(Q, R), P),         // ~ P -> ~ ( Q <-> R )
-					EImply(Not(P), Not(Biconditional(Q, R))),              // ~ ( Q <-> R )
-					BiconditionalNegationTheorem(Q, R),                    // Q <-> ~ R
-					EBiconditional(Q, Not(R), false),                      // ~ R -> Q
-					EImply(Not(R), Q),                                     // Q
-					EBiconditional(P, Q, false),                           // Q -> P
-					EImply(Q, P),                                          // P
-				), // ~ ~ ( ( P <-> Q ) -> R )
-				ENot(Implication(Biconditional(P, Q), R)), // ( P <-> Q ) -> R
-				NewProofContradiction(Not(Implication(R, Biconditional(P, Q))),
-					ArrowNegationTheorem(R, Biconditional(P, Q)), // R ^ ~ ( P <-> Q )
-					EAnd(R, Not(Biconditional(P, Q)), true),      // R
-					EAnd(R, Not(Biconditional(P, Q)), false),     // ~ ( P <-> Q )
-					BiconditionalNegationTheorem(P, Q),           // P <-> ~ Q
-					EBiconditional(P, Not(Q), true),              // P -> ~ Q
-					NewProofContradiction(P,
-						&Reiterate{Term: Implication(P, Not(Q))},              // P -> ~ Q
-						EImply(P, Not(Q)),                                     // ~ Q
-						&Reiterate{Term: Implication(P, Biconditional(Q, R))}, // P -> ( Q <-> R )
-						EImply(P, Biconditional(Q, R)),                        // Q <-> R
-						EBiconditional(Q, R, false),                           // R -> Q
-						&Reiterate{Term: R},                                   // R
-						EImply(R, Q),                                          // Q
-					), // ~ P
-					EBiconditional(P, Not(Q), false), // ~ Q -> P
-					ContrapositiveTheorem(Not(Q), P), // ~ P -> ~ ~ Q
-					EImply(Not(P), Not(Not(Q))),      // ~ ~ Q
-					ENot(Q),                          // Q
-					&Reiterate{Term: Implication(Biconditional(Q, R), P)}, // ( Q <-> R ) -> P
-					ContrapositiveTheorem(Biconditional(Q, R), P),         // ~ P -> ~ ( Q <-> R )
-					EImply(Not(P), Not(Biconditional(Q, R))),              // ~ ( Q <-> R )
-					BiconditionalNegationTheorem(Q, R),                    // Q <-> ~ R
-					EBiconditional(Q, Not(R), true),                       // Q -> ~ R
-					EImply(Q, Not(R)),                                     // ~ R
-				), // ~ ~ ( R -> ( P <-> Q ) )
-				ENot(Implication(R, Biconditional(P, Q))), // R -> ( P <-> Q )
-				IBiconditional(Biconditional(P, Q), R),
 			),
 		),
 		NewRootProof("( P <-> Q ) -> ( ~ P <-> ~ Q )",
