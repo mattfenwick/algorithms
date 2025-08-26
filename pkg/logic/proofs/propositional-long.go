@@ -66,21 +66,14 @@ var propositionalLongProofSections = []*ProofsSection{
 				NewProofContradiction(Not(P),
 					NewProofImplication(Not(Q),
 						&Reiterate{Term: Not(P)},
-					),
-					NewProofImplication(P,
-						NewProofContradiction(Not(Q),
-							&Reiterate{Term: Implication(Not(Q), Not(P))},
-							&Reiterate{Term: P},
-							EImply(Not(Q), Not(P))),
-						ENot(Q),
-					),
+					), // ~ Q -> ~ P
+					ContrapositiveTheorem(Not(Q), Not(P)), // P -> Q
 					&Reiterate{Term: Not(Implication(P, Q))},
-				),
-				ENot(P),
+				), // ~ ~ P
+				ENot(P), // P
 				NewProofContradiction(Q,
-					NewProofImplication(P,
-						&Reiterate{Term: Q},
-					),
+					&Reiterate{Term: P},
+					IImply(P, Q),
 					&Reiterate{Term: Not(Implication(P, Q))},
 				),
 				IAnd(P, Not(Q)),
@@ -113,30 +106,23 @@ var propositionalLongProofSections = []*ProofsSection{
 		// NewRootProof("( ~ P v Q ) -> ( P -> Q )"),
 		NewRootProof("( P v Q ) -> ( ~ P -> Q )",
 			NewProofImplication(Or(P, Q),
-				// Q -> ( ~ P -> Q )
-				NewProofImplication(
-					Q,
+				NewProofImplication(Q,
 					NewProofImplication(Not(P),
-						&Reiterate{Term: Q})),
-				// P -> ( ~ P -> Q )
+						&Reiterate{Term: Q},
+					),
+				), // Q -> ( ~ P -> Q )
 				NewProofImplication(P,
 					NewProofImplication(Not(Q),
 						&Reiterate{Term: P},
-					),
-					NewProofImplication(Not(P),
-						NewProofContradiction(Not(Q),
-							&Reiterate{Term: Implication(Not(Q), P)},
-							&Reiterate{Term: Not(P)},
-							EImply(Not(Q), P)),
-						ENot(Q)),
-				),
+					), // ~ Q -> P
+					ContrapositiveTheorem(Not(Q), P), // ~ P -> Q
+				), // P -> ( ~ P -> Q )
 				EOr(P, Q, Implication(Not(P), Q)),
 			),
 		),
 		NewRootProof("( ~ P -> Q ) -> ( P v Q )",
 			NewProofImplication(Implication(Not(P), Q),
-				NewProofImplication(
-					P,
+				NewProofImplication(P,
 					IOr(P, Q, true),
 				),
 				NewProofImplication(Not(P),
@@ -144,16 +130,7 @@ var propositionalLongProofSections = []*ProofsSection{
 					EImply(Not(P), Q),
 					IOr(P, Q, false),
 				),
-				NewProofContradiction(
-					Not(Or(P, Not(P))),
-					NewProofContradiction(
-						P,
-						IOr(P, Not(P), true),
-						&Reiterate{Term: Not(Or(P, Not(P)))},
-					),
-					IOr(P, Not(P), false),
-				),
-				ENot(Or(P, Not(P))),
+				ExcludedMiddleTheorem(P),
 				EOr(P, Not(P), Or(P, Q)),
 			),
 		),
