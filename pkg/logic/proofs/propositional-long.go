@@ -520,10 +520,9 @@ var propositionalLongProofSections = []*ProofsSection{
 						&Reiterate{Term: R},                                   // R
 						EImply(R, Q),                                          // Q
 					), // ~ P
-					EBiconditional(P, Not(Q), false), // ~ Q -> P
-					ContrapositiveTheorem(Not(Q), P), // ~ P -> ~ ~ Q
-					EImply(Not(P), Not(Not(Q))),      // ~ ~ Q
-					ENot(Q),                          // Q
+					EBiconditional(P, Not(Q), false),                      // ~ Q -> P
+					ContrapositiveTheorem(Not(Q), P),                      // ~ P -> Q
+					EImply(Not(P), Q),                                     // Q
 					&Reiterate{Term: Implication(Biconditional(Q, R), P)}, // ( Q <-> R ) -> P
 					ContrapositiveTheorem(Biconditional(Q, R), P),         // ~ P -> ~ ( Q <-> R )
 					EImply(Not(P), Not(Biconditional(Q, R))),              // ~ ( Q <-> R )
@@ -1035,9 +1034,9 @@ var propositionalLongProofSections = []*ProofsSection{
 					EAnd(Not(Q), Not(P), true),
 					EAnd(Not(Q), Not(P), false),
 					IImply(Not(P), Not(Q)),
-					ContrapositiveRTheorem(Q, P),
+					ContrapositiveTheorem(Not(P), Not(Q)),
 					IImply(Not(Q), Not(P)),
-					ContrapositiveRTheorem(P, Q),
+					ContrapositiveTheorem(Not(Q), Not(P)),
 					IBiconditional(P, Q),
 					&Reiterate{Term: Not(Biconditional(P, Q))},
 				),
@@ -1057,9 +1056,9 @@ var propositionalLongProofSections = []*ProofsSection{
 		NewRootProof("( ~ P <-> ~ Q ) -> ( P <-> Q )",
 			NewProofImplication(Biconditional(Not(P), Not(Q)),
 				EBiconditional(Not(P), Not(Q), true),
-				ContrapositiveRTheorem(Q, P),
+				ContrapositiveTheorem(Not(P), Not(Q)),
 				EBiconditional(Not(P), Not(Q), false),
-				ContrapositiveRTheorem(P, Q),
+				ContrapositiveTheorem(Not(Q), Not(P)),
 				IBiconditional(P, Q),
 			),
 		),
@@ -1077,7 +1076,7 @@ var propositionalLongProofSections = []*ProofsSection{
 			NewProofImplication(Biconditional(P, Not(Q)),
 				EBiconditional(P, Not(Q), true),  // P -> ~ Q
 				EBiconditional(P, Not(Q), false), // ~ Q -> P
-				ContrapositiveTheorem(Not(Q), P), // ~ P -> ~ ~ Q
+				ContrapositiveTheorem(Not(Q), P), // ~ P -> Q
 				NewProofImplication(P,
 					IOr(P, Q, true),                          // P v Q
 					&Reiterate{Term: Implication(P, Not(Q))}, // P -> ~ Q
@@ -1086,12 +1085,11 @@ var propositionalLongProofSections = []*ProofsSection{
 					IAnd(Or(P, Q), Or(Not(P), Not(Q))),       // ( P v Q ) ^ ( ~ P v ~ Q )
 				), // P -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )
 				NewProofImplication(Not(P),
-					IOr(Not(P), Not(Q), true),                          // ~ P v ~ Q
-					&Reiterate{Term: Implication(Not(P), Not(Not(Q)))}, // ~ P -> ~ ~ Q
-					EImply(Not(P), Not(Not(Q))),                        // ~ ~ Q
-					ENot(Q),                                            // Q
-					IOr(P, Q, false),                                   // P v Q
-					IAnd(Or(P, Q), Or(Not(P), Not(Q))),                 // ( P v Q ) ^ ( ~ P v ~ Q )
+					IOr(Not(P), Not(Q), true),                // ~ P v ~ Q
+					&Reiterate{Term: Implication(Not(P), Q)}, // ~ P -> Q
+					EImply(Not(P), Q),                        // Q
+					IOr(P, Q, false),                         // P v Q
+					IAnd(Or(P, Q), Or(Not(P), Not(Q))),       // ( P v Q ) ^ ( ~ P v ~ Q )
 				), // ~ P -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )
 				ExcludedMiddleTheorem(P), // P v ~ P
 				EOr(P, Not(P), And(Or(P, Q), Or(Not(P), Not(Q)))),

@@ -1,18 +1,29 @@
 package logic
 
+func removeDoubleNegative(t Term) Term {
+	switch a := t.(type) {
+	case *NotTerm:
+		switch b := a.Arg.(type) {
+		case *NotTerm:
+			return b.Arg
+		}
+	}
+	return t
+}
+
 // P v ~ P
 func ExcludedMiddleTheorem(t Term) *Rule {
 	return NewRule("Theorem: excluded middle", Or(t, Not(t)))
 }
 
-// ( P -> Q ) -> ( ~ Q -> ~ P )
+// ( P   ->   Q ) -> ( ~ Q -> ~ P )
+// ( ~ P ->   Q ) -> ( ~ Q ->   P )
+// ( P   -> ~ Q ) -> (   Q -> ~ P )
+// ( ~ P -> ~ Q ) -> (   Q ->   P )
 func ContrapositiveTheorem(p Term, q Term) *Rule {
-	return NewRule("Theorem: contrapositive", Implication(Not(q), Not(p)), Implication(p, q))
-}
-
-// ( ~ Q -> ~ P ) -> ( P -> Q )
-func ContrapositiveRTheorem(p Term, q Term) *Rule {
-	return NewRule("Theorem: contrapositive (R)", Implication(p, q), Implication(Not(q), Not(p)))
+	return NewRule("Theorem: contrapositive",
+		Implication(removeDoubleNegative(Not(q)), removeDoubleNegative(Not(p))),
+		Implication(p, q))
 }
 
 // ( ( P v Q ) ^ ~ P ) -> Q
