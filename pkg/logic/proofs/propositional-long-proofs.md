@@ -283,15 +283,8 @@
 | 2 | <pre>.   .   ~ Q</pre> | Assume Implication |  |
 | 3 | <pre>.   .   ~ P</pre> | Reiterate | 1 |
 | 4 | <pre>.   ~ Q -> ~ P</pre> | subproof implication | 2 - 3 |
-| 5 | <pre>.   .   P</pre> | Assume Implication |  |
-| 6 | <pre>.   .   .   ~ Q</pre> | Assume Contradiction |  |
-| 7 | <pre>.   .   .   ~ Q -> ~ P</pre> | Reiterate | 4 |
-| 8 | <pre>.   .   .   P</pre> | Reiterate | 5 |
-| 9 | <pre>.   .   .   ~ P</pre> | E -> | 7, 6 |
-| 10 | <pre>.   .   ~ ~ Q</pre> | subproof contradiction | 6 - 9 |
-| 11 | <pre>.   .   Q</pre> | E ~ | 10 |
-| 12 | <pre>.   P -> Q</pre> | subproof implication | 5 - 11 |
-| 13 | <pre>~ P -> ( P -> Q )</pre> | subproof implication | 1 - 12 |
+| 5 | <pre>.   P -> Q</pre> | Theorem: contrapositive | 4 |
+| 6 | <pre>~ P -> ( P -> Q )</pre> | subproof implication | 1 - 5 |
 
 ## ( ( P -> Q ) ^ ( Q -> R ) ) -> ( P -> R ) <a name="proof-3-3"></a>
 
@@ -357,16 +350,9 @@
 | 1 | <pre>.   ( P -> Q ) ^ ( ~ P -> Q )</pre> | Assume Implication |  |
 | 2 | <pre>.   P -> Q</pre> | E ^ (L) | 1 |
 | 3 | <pre>.   ~ P -> Q</pre> | E ^ (R) | 1 |
-| 4 | <pre>.   .   ~ ( P v ~ P )</pre> | Assume Contradiction |  |
-| 5 | <pre>.   .   .   P</pre> | Assume Contradiction |  |
-| 6 | <pre>.   .   .   P v ~ P</pre> | I v (L) | 5 |
-| 7 | <pre>.   .   .   ~ ( P v ~ P )</pre> | Reiterate | 4 |
-| 8 | <pre>.   .   ~ P</pre> | subproof contradiction | 5 - 7 |
-| 9 | <pre>.   .   P v ~ P</pre> | I v (R) | 8 |
-| 10 | <pre>.   ~ ~ ( P v ~ P )</pre> | subproof contradiction | 4 - 9 |
-| 11 | <pre>.   P v ~ P</pre> | E ~ | 10 |
-| 12 | <pre>.   Q</pre> | E v | 2, 3, 11 |
-| 13 | <pre>( ( P -> Q ) ^ ( ~ P -> Q ) ) -> Q</pre> | subproof implication | 1 - 12 |
+| 4 | <pre>.   P v ~ P</pre> | Theorem: excluded middle |  |
+| 5 | <pre>.   Q</pre> | E v | 2, 3, 4 |
+| 6 | <pre>( ( P -> Q ) ^ ( ~ P -> Q ) ) -> Q</pre> | subproof implication | 1 - 5 |
 
 ## ( P -> ( Q -> R ) ) -> ( Q -> ( P -> R ) ) <a name="proof-3-8"></a>
 
@@ -717,26 +703,12 @@
 | 18 | <pre>.   .   .   ~ Q</pre> | Assume Implication |  |
 | 19 | <pre>.   .   .   ~ P</pre> | Reiterate | 17 |
 | 20 | <pre>.   .   ~ Q -> ~ P</pre> | subproof implication | 18 - 19 |
-| 21 | <pre>.   .   .   P</pre> | Assume Implication |  |
-| 22 | <pre>.   .   .   .   ~ Q</pre> | Assume Contradiction |  |
-| 23 | <pre>.   .   .   .   ~ Q -> ~ P</pre> | Reiterate | 20 |
-| 24 | <pre>.   .   .   .   ~ P</pre> | E -> | 23, 22 |
-| 25 | <pre>.   .   .   .   P</pre> | Reiterate | 21 |
-| 26 | <pre>.   .   .   ~ ~ Q</pre> | subproof contradiction | 22 - 25 |
-| 27 | <pre>.   .   .   Q</pre> | E ~ | 26 |
-| 28 | <pre>.   .   P -> Q</pre> | subproof implication | 21 - 27 |
-| 29 | <pre>.   .   ( P -> Q ) v ( P -> R )</pre> | I v (L) | 28 |
-| 30 | <pre>.   ~ P -> ( ( P -> Q ) v ( P -> R ) )</pre> | subproof implication | 17 - 29 |
-| 31 | <pre>.   .   ~ ( P v ~ P )</pre> | Assume Contradiction |  |
-| 32 | <pre>.   .   .   P</pre> | Assume Contradiction |  |
-| 33 | <pre>.   .   .   P v ~ P</pre> | I v (L) | 32 |
-| 34 | <pre>.   .   .   ~ ( P v ~ P )</pre> | Reiterate | 31 |
-| 35 | <pre>.   .   ~ P</pre> | subproof contradiction | 32 - 34 |
-| 36 | <pre>.   .   P v ~ P</pre> | I v (R) | 35 |
-| 37 | <pre>.   ~ ~ ( P v ~ P )</pre> | subproof contradiction | 31 - 36 |
-| 38 | <pre>.   P v ~ P</pre> | E ~ | 37 |
-| 39 | <pre>.   ( P -> Q ) v ( P -> R )</pre> | E v | 16, 30, 38 |
-| 40 | <pre>( P -> ( Q v R ) ) -> ( ( P -> Q ) v ( P -> R ) )</pre> | subproof implication | 1 - 39 |
+| 21 | <pre>.   .   P -> Q</pre> | Theorem: contrapositive | 20 |
+| 22 | <pre>.   .   ( P -> Q ) v ( P -> R )</pre> | I v (L) | 21 |
+| 23 | <pre>.   ~ P -> ( ( P -> Q ) v ( P -> R ) )</pre> | subproof implication | 17 - 22 |
+| 24 | <pre>.   P v ~ P</pre> | Theorem: excluded middle |  |
+| 25 | <pre>.   ( P -> Q ) v ( P -> R )</pre> | E v | 16, 23, 24 |
+| 26 | <pre>( P -> ( Q v R ) ) -> ( ( P -> Q ) v ( P -> R ) )</pre> | subproof implication | 1 - 25 |
 
 ## ( ( P -> Q ) v ( P -> R ) ) -> ( P -> ( Q v R ) ) <a name="proof-6-4"></a>
 
@@ -866,58 +838,37 @@
 | 8 | <pre>.   .   .   ~ Q</pre> | Assume Implication |  |
 | 9 | <pre>.   .   .   P</pre> | Reiterate | 7 |
 | 10 | <pre>.   .   ~ Q -> P</pre> | subproof implication | 8 - 9 |
-| 11 | <pre>.   .   .   ~ P</pre> | Assume Implication |  |
-| 12 | <pre>.   .   .   .   ~ Q</pre> | Assume Contradiction |  |
-| 13 | <pre>.   .   .   .   ~ Q -> P</pre> | Reiterate | 10 |
-| 14 | <pre>.   .   .   .   ~ P</pre> | Reiterate | 11 |
-| 15 | <pre>.   .   .   .   P</pre> | E -> | 13, 12 |
-| 16 | <pre>.   .   .   ~ ~ Q</pre> | subproof contradiction | 12 - 15 |
-| 17 | <pre>.   .   .   Q</pre> | E ~ | 16 |
-| 18 | <pre>.   .   ~ P -> Q</pre> | subproof implication | 11 - 17 |
-| 19 | <pre>.   P -> ( ~ P -> Q )</pre> | subproof implication | 7 - 18 |
-| 20 | <pre>.   .   P</pre> | Assume Implication |  |
-| 21 | <pre>.   .   .   ~ R</pre> | Assume Implication |  |
-| 22 | <pre>.   .   .   P</pre> | Reiterate | 20 |
-| 23 | <pre>.   .   ~ R -> P</pre> | subproof implication | 21 - 22 |
-| 24 | <pre>.   .   .   ~ P</pre> | Assume Implication |  |
-| 25 | <pre>.   .   .   .   ~ R</pre> | Assume Contradiction |  |
-| 26 | <pre>.   .   .   .   ~ R -> P</pre> | Reiterate | 23 |
-| 27 | <pre>.   .   .   .   ~ P</pre> | Reiterate | 24 |
-| 28 | <pre>.   .   .   .   P</pre> | E -> | 26, 25 |
-| 29 | <pre>.   .   .   ~ ~ R</pre> | subproof contradiction | 25 - 28 |
-| 30 | <pre>.   .   .   R</pre> | E ~ | 29 |
-| 31 | <pre>.   .   ~ P -> R</pre> | subproof implication | 24 - 30 |
-| 32 | <pre>.   P -> ( ~ P -> R )</pre> | subproof implication | 20 - 31 |
-| 33 | <pre>.   .   ~ P</pre> | Assume Implication |  |
-| 34 | <pre>.   .   P v Q</pre> | Reiterate | 2 |
-| 35 | <pre>.   .   P v R</pre> | Reiterate | 3 |
-| 36 | <pre>.   .   .   Q</pre> | Assume Implication |  |
-| 37 | <pre>.   .   .   ~ P</pre> | Reiterate | 33 |
-| 38 | <pre>.   .   .   ~ P -> Q</pre> | I -> | 37, 36 |
-| 39 | <pre>.   .   Q -> ( ~ P -> Q )</pre> | subproof implication | 36 - 38 |
-| 40 | <pre>.   .   P -> ( ~ P -> Q )</pre> | Reiterate | 19 |
-| 41 | <pre>.   .   ~ P -> Q</pre> | E v | 40, 39, 34 |
-| 42 | <pre>.   .   Q</pre> | E -> | 41, 33 |
-| 43 | <pre>.   .   .   R</pre> | Assume Implication |  |
-| 44 | <pre>.   .   .   ~ P</pre> | Reiterate | 33 |
-| 45 | <pre>.   .   .   ~ P -> R</pre> | I -> | 44, 43 |
-| 46 | <pre>.   .   R -> ( ~ P -> R )</pre> | subproof implication | 43 - 45 |
-| 47 | <pre>.   .   P -> ( ~ P -> R )</pre> | Reiterate | 32 |
-| 48 | <pre>.   .   ~ P -> R</pre> | E v | 47, 46, 35 |
-| 49 | <pre>.   .   R</pre> | E -> | 48, 33 |
-| 50 | <pre>.   .   Q ^ R</pre> | I ^ | 42, 49 |
-| 51 | <pre>.   .   P v ( Q ^ R )</pre> | I v (R) | 50 |
-| 52 | <pre>.   ~ P -> ( P v ( Q ^ R ) )</pre> | subproof implication | 33 - 51 |
-| 53 | <pre>.   .   ~ ( P v ~ P )</pre> | Assume Contradiction |  |
-| 54 | <pre>.   .   .   P</pre> | Assume Contradiction |  |
-| 55 | <pre>.   .   .   P v ~ P</pre> | I v (L) | 54 |
-| 56 | <pre>.   .   .   ~ ( P v ~ P )</pre> | Reiterate | 53 |
-| 57 | <pre>.   .   ~ P</pre> | subproof contradiction | 54 - 56 |
-| 58 | <pre>.   .   P v ~ P</pre> | I v (R) | 57 |
-| 59 | <pre>.   ~ ~ ( P v ~ P )</pre> | subproof contradiction | 53 - 58 |
-| 60 | <pre>.   P v ~ P</pre> | E ~ | 59 |
-| 61 | <pre>.   P v ( Q ^ R )</pre> | E v | 6, 52, 60 |
-| 62 | <pre>( ( P v Q ) ^ ( P v R ) ) -> ( P v ( Q ^ R ) )</pre> | subproof implication | 1 - 61 |
+| 11 | <pre>.   .   ~ P -> Q</pre> | Theorem: contrapositive | 10 |
+| 12 | <pre>.   P -> ( ~ P -> Q )</pre> | subproof implication | 7 - 11 |
+| 13 | <pre>.   .   P</pre> | Assume Implication |  |
+| 14 | <pre>.   .   .   ~ R</pre> | Assume Implication |  |
+| 15 | <pre>.   .   .   P</pre> | Reiterate | 13 |
+| 16 | <pre>.   .   ~ R -> P</pre> | subproof implication | 14 - 15 |
+| 17 | <pre>.   .   ~ P -> R</pre> | Theorem: contrapositive | 16 |
+| 18 | <pre>.   P -> ( ~ P -> R )</pre> | subproof implication | 13 - 17 |
+| 19 | <pre>.   .   ~ P</pre> | Assume Implication |  |
+| 20 | <pre>.   .   P v Q</pre> | Reiterate | 2 |
+| 21 | <pre>.   .   P v R</pre> | Reiterate | 3 |
+| 22 | <pre>.   .   .   Q</pre> | Assume Implication |  |
+| 23 | <pre>.   .   .   ~ P</pre> | Reiterate | 19 |
+| 24 | <pre>.   .   .   ~ P -> Q</pre> | I -> | 23, 22 |
+| 25 | <pre>.   .   Q -> ( ~ P -> Q )</pre> | subproof implication | 22 - 24 |
+| 26 | <pre>.   .   P -> ( ~ P -> Q )</pre> | Reiterate | 12 |
+| 27 | <pre>.   .   ~ P -> Q</pre> | E v | 26, 25, 20 |
+| 28 | <pre>.   .   Q</pre> | E -> | 27, 19 |
+| 29 | <pre>.   .   .   R</pre> | Assume Implication |  |
+| 30 | <pre>.   .   .   ~ P</pre> | Reiterate | 19 |
+| 31 | <pre>.   .   .   ~ P -> R</pre> | I -> | 30, 29 |
+| 32 | <pre>.   .   R -> ( ~ P -> R )</pre> | subproof implication | 29 - 31 |
+| 33 | <pre>.   .   P -> ( ~ P -> R )</pre> | Reiterate | 18 |
+| 34 | <pre>.   .   ~ P -> R</pre> | E v | 33, 32, 21 |
+| 35 | <pre>.   .   R</pre> | E -> | 34, 19 |
+| 36 | <pre>.   .   Q ^ R</pre> | I ^ | 28, 35 |
+| 37 | <pre>.   .   P v ( Q ^ R )</pre> | I v (R) | 36 |
+| 38 | <pre>.   ~ P -> ( P v ( Q ^ R ) )</pre> | subproof implication | 19 - 37 |
+| 39 | <pre>.   P v ~ P</pre> | Theorem: excluded middle |  |
+| 40 | <pre>.   P v ( Q ^ R )</pre> | E v | 6, 38, 39 |
+| 41 | <pre>( ( P v Q ) ^ ( P v R ) ) -> ( P v ( Q ^ R ) )</pre> | subproof implication | 1 - 40 |
 
 ## ~ ( P v Q ) -> ( ~ P ^ ~ Q ) <a name="proof-6-11"></a>
 
