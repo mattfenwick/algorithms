@@ -530,7 +530,7 @@
 | 2 | <pre>.   ( P <-> Q ) -> R</pre> | E <-> (L) | 1 |
 | 3 | <pre>.   R -> ( P <-> Q )</pre> | E <-> (R) | 1 |
 | 4 | <pre>.   .   ~ ( P -> ( Q <-> R ) )</pre> | Assume Contradiction |  |
-| 5 | <pre>.   .   P ^ ~ ( Q <-> R )</pre> | Theorem: arrow negation | 4 |
+| 5 | <pre>.   .   P ^ ~ ( Q <-> R )</pre> | Theorem: (~ ->) to ^ | 4 |
 | 6 | <pre>.   .   P</pre> | E ^ (L) | 5 |
 | 7 | <pre>.   .   ~ ( Q <-> R )</pre> | E ^ (R) | 5 |
 | 8 | <pre>.   .   Q <-> ~ R</pre> | Theorem: biconditional negation | 7 |
@@ -554,7 +554,7 @@
 | 26 | <pre>.   .   ~ Q</pre> | E -> | 25, 6 |
 | 27 | <pre>.   P -> ( Q <-> R )</pre> | subproof contradiction | 4 - 26 |
 | 28 | <pre>.   .   ~ ( ( Q <-> R ) -> P )</pre> | Assume Contradiction |  |
-| 29 | <pre>.   .   ( Q <-> R ) ^ ~ P</pre> | Theorem: arrow negation | 28 |
+| 29 | <pre>.   .   ( Q <-> R ) ^ ~ P</pre> | Theorem: (~ ->) to ^ | 28 |
 | 30 | <pre>.   .   Q <-> R</pre> | E ^ (L) | 29 |
 | 31 | <pre>.   .   ~ P</pre> | E ^ (R) | 29 |
 | 32 | <pre>.   .   .   R</pre> | Assume Contradiction |  |
@@ -588,7 +588,7 @@
 | 2 | <pre>.   P -> ( Q <-> R )</pre> | E <-> (L) | 1 |
 | 3 | <pre>.   ( Q <-> R ) -> P</pre> | E <-> (R) | 1 |
 | 4 | <pre>.   .   ~ ( ( P <-> Q ) -> R )</pre> | Assume Contradiction |  |
-| 5 | <pre>.   .   ( P <-> Q ) ^ ~ R</pre> | Theorem: arrow negation | 4 |
+| 5 | <pre>.   .   ( P <-> Q ) ^ ~ R</pre> | Theorem: (~ ->) to ^ | 4 |
 | 6 | <pre>.   .   P <-> Q</pre> | E ^ (L) | 5 |
 | 7 | <pre>.   .   ~ R</pre> | E ^ (R) | 5 |
 | 8 | <pre>.   .   P -> Q</pre> | E <-> (L) | 6 |
@@ -611,7 +611,7 @@
 | 25 | <pre>.   .   P</pre> | E -> | 24, 23 |
 | 26 | <pre>.   ( P <-> Q ) -> R</pre> | subproof contradiction | 4 - 25 |
 | 27 | <pre>.   .   ~ ( R -> ( P <-> Q ) )</pre> | Assume Contradiction |  |
-| 28 | <pre>.   .   R ^ ~ ( P <-> Q )</pre> | Theorem: arrow negation | 27 |
+| 28 | <pre>.   .   R ^ ~ ( P <-> Q )</pre> | Theorem: (~ ->) to ^ | 27 |
 | 29 | <pre>.   .   R</pre> | E ^ (L) | 28 |
 | 30 | <pre>.   .   ~ ( P <-> Q )</pre> | E ^ (R) | 28 |
 | 31 | <pre>.   .   P <-> ~ Q</pre> | Theorem: biconditional negation | 30 |
@@ -1132,7 +1132,7 @@
 | - | - | - | - |
 | 1 | <pre>.   ~ ( P <-> Q )</pre> | Assume Implication |  |
 | 2 | <pre>.   .   ~ ( P -> ~ Q )</pre> | Assume Contradiction |  |
-| 3 | <pre>.   .   P ^ Q</pre> | Theorem: arrow negation | 2 |
+| 3 | <pre>.   .   P ^ Q</pre> | Theorem: (~ ->) to ^ | 2 |
 | 4 | <pre>.   .   P</pre> | E ^ (L) | 3 |
 | 5 | <pre>.   .   Q</pre> | E ^ (R) | 3 |
 | 6 | <pre>.   .   P -> Q</pre> | I -> | 4, 5 |
@@ -1141,7 +1141,7 @@
 | 9 | <pre>.   .   ~ ( P <-> Q )</pre> | Reiterate | 1 |
 | 10 | <pre>.   P -> ~ Q</pre> | subproof contradiction | 2 - 9 |
 | 11 | <pre>.   .   ~ ( ~ Q -> P )</pre> | Assume Contradiction |  |
-| 12 | <pre>.   .   ~ Q ^ ~ P</pre> | Theorem: arrow negation | 11 |
+| 12 | <pre>.   .   ~ Q ^ ~ P</pre> | Theorem: (~ ->) to ^ | 11 |
 | 13 | <pre>.   .   ~ Q</pre> | E ^ (L) | 12 |
 | 14 | <pre>.   .   ~ P</pre> | E ^ (R) | 12 |
 | 15 | <pre>.   .   ~ P -> ~ Q</pre> | I -> | 14, 13 |

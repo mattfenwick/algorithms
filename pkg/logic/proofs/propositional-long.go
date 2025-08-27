@@ -384,10 +384,10 @@ var propositionalLongProofSections = []*ProofsSection{
 				EBiconditional(Biconditional(P, Q), R, true),  // ( P <-> Q ) -> R
 				EBiconditional(Biconditional(P, Q), R, false), // R -> ( P <-> Q )
 				NewProofContradiction(Not(Implication(P, Biconditional(Q, R))),
-					ArrowNegationTheorem(P, Biconditional(Q, R)), // P ^ ~ ( Q <-> R )
-					EAnd(P, Not(Biconditional(Q, R)), true),      // P
-					EAnd(P, Not(Biconditional(Q, R)), false),     // ~ ( Q <-> R )
-					BiconditionalNegationTheorem(Q, R),           // Q <-> ~ R
+					ArrowConjunctionTheorem(P, Biconditional(Q, R), true), // P ^ ~ ( Q <-> R )
+					EAnd(P, Not(Biconditional(Q, R)), true),               // P
+					EAnd(P, Not(Biconditional(Q, R)), false),              // ~ ( Q <-> R )
+					BiconditionalNegationTheorem(Q, R),                    // Q <-> ~ R
 					NewProofContradiction(R,
 						&Reiterate{Term: Implication(R, Biconditional(P, Q))}, // R -> ( P <-> Q )
 						EImply(R, Biconditional(P, Q)),                        // P <-> Q
@@ -408,9 +408,9 @@ var propositionalLongProofSections = []*ProofsSection{
 					EImply(P, Not(Q)),                                     // ~ Q
 				), // ( P -> ( Q <-> R ) )
 				NewProofContradiction(Not(Implication(Biconditional(Q, R), P)),
-					ArrowNegationTheorem(Biconditional(Q, R), P), // ( Q <-> R ) ^ ~ P
-					EAnd(Biconditional(Q, R), Not(P), true),      // Q <-> R
-					EAnd(Biconditional(Q, R), Not(P), false),     // ~ P
+					ArrowConjunctionTheorem(Biconditional(Q, R), P, true), // ( Q <-> R ) ^ ~ P
+					EAnd(Biconditional(Q, R), Not(P), true),               // Q <-> R
+					EAnd(Biconditional(Q, R), Not(P), false),              // ~ P
 					NewProofContradiction(R,
 						&Reiterate{Term: Implication(R, Biconditional(P, Q))}, // R -> ( P <-> Q )
 						&Reiterate{Term: Biconditional(Q, R)},                 // Q <-> R
@@ -431,7 +431,7 @@ var propositionalLongProofSections = []*ProofsSection{
 					EBiconditional(P, Not(Q), false),                      // ~ Q -> P
 					EImply(Not(Q), P),                                     // P
 				), // ( ( Q <-> R ) -> P )
-				IBiconditional(P, Biconditional(Q, R)),    // P <-> ( Q <-> R )
+				IBiconditional(P, Biconditional(Q, R)), // P <-> ( Q <-> R )
 			),
 		),
 		NewRootProof("( P <-> ( Q <-> R ) ) -> ( ( P <-> Q ) <-> R )",
@@ -440,10 +440,10 @@ var propositionalLongProofSections = []*ProofsSection{
 				EBiconditional(P, Biconditional(Q, R), false), // ( Q <-> R ) -> P
 				// prove: ( P <-> Q ) -> R
 				NewProofContradiction(Not(Implication(Biconditional(P, Q), R)),
-					ArrowNegationTheorem(Biconditional(P, Q), R), // ( P <-> Q ) ^ ~ R
-					EAnd(Biconditional(P, Q), Not(R), true),      // P <-> Q
-					EAnd(Biconditional(P, Q), Not(R), false),     // ~ R
-					EBiconditional(P, Q, true),                   // P -> Q
+					ArrowConjunctionTheorem(Biconditional(P, Q), R, true), // ( P <-> Q ) ^ ~ R
+					EAnd(Biconditional(P, Q), Not(R), true),               // P <-> Q
+					EAnd(Biconditional(P, Q), Not(R), false),              // ~ R
+					EBiconditional(P, Q, true),                            // P -> Q
 					NewProofContradiction(P,
 						&Reiterate{Term: Implication(P, Q)}, // P -> Q
 						EImply(P, Q),                        // Q
@@ -463,11 +463,11 @@ var propositionalLongProofSections = []*ProofsSection{
 					EImply(Q, P),                                          // P
 				), // ( ( P <-> Q ) -> R )
 				NewProofContradiction(Not(Implication(R, Biconditional(P, Q))),
-					ArrowNegationTheorem(R, Biconditional(P, Q)), // R ^ ~ ( P <-> Q )
-					EAnd(R, Not(Biconditional(P, Q)), true),      // R
-					EAnd(R, Not(Biconditional(P, Q)), false),     // ~ ( P <-> Q )
-					BiconditionalNegationTheorem(P, Q),           // P <-> ~ Q
-					EBiconditional(P, Not(Q), true),              // P -> ~ Q
+					ArrowConjunctionTheorem(R, Biconditional(P, Q), true), // R ^ ~ ( P <-> Q )
+					EAnd(R, Not(Biconditional(P, Q)), true),               // R
+					EAnd(R, Not(Biconditional(P, Q)), false),              // ~ ( P <-> Q )
+					BiconditionalNegationTheorem(P, Q),                    // P <-> ~ Q
+					EBiconditional(P, Not(Q), true),                       // P -> ~ Q
 					NewProofContradiction(P,
 						&Reiterate{Term: Implication(P, Not(Q))},              // P -> ~ Q
 						EImply(P, Not(Q)),                                     // ~ Q
@@ -920,7 +920,7 @@ var propositionalLongProofSections = []*ProofsSection{
 		NewRootProof("~ ( P <-> Q ) -> ( P <-> ~ Q )",
 			NewProofImplication(Not(Biconditional(P, Q)),
 				NewProofContradiction(Not(Implication(P, Not(Q))),
-					ArrowNegationTheorem(P, Not(Q)),
+					ArrowConjunctionTheorem(P, Not(Q), true),
 					EAnd(P, Q, true),
 					EAnd(P, Q, false),
 					IImply(P, Q),
@@ -929,7 +929,7 @@ var propositionalLongProofSections = []*ProofsSection{
 					&Reiterate{Term: Not(Biconditional(P, Q))},
 				),
 				NewProofContradiction(Not(Implication(Not(Q), P)),
-					ArrowNegationTheorem(Not(Q), P),
+					ArrowConjunctionTheorem(Not(Q), P, true),
 					EAnd(Not(Q), Not(P), true),
 					EAnd(Not(Q), Not(P), false),
 					IImply(Not(P), Not(Q)),
