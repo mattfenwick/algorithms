@@ -76,6 +76,8 @@
     10. [( ( P v Q ) ^ ( ~ P v ~ Q ) ) -> ( P <-> ~ Q )](#proof-8-10)
 9. [miscellaneous](#miscellaneous)
     1. [( ( P -> Q ) -> R ) -> ( ( P -> Q ) -> ( P -> R ) )](#proof-9-1)
+    2. [( P -> Q ) v ( Q -> R )](#proof-9-2)
+    3. [( P -> Q ) v ( Q -> P )](#proof-9-3)
 
 # theorems <a name="theorems"></a>
 
@@ -1281,4 +1283,32 @@
 | 7 | <pre>.   .   P -> R</pre> | subproof implication | 5 - 6 |
 | 8 | <pre>.   ( P -> Q ) -> ( P -> R )</pre> | subproof implication | 2 - 7 |
 | 9 | <pre>( ( P -> Q ) -> R ) -> ( ( P -> Q ) -> ( P -> R ) )</pre> | subproof implication | 1 - 8 |
+
+## ( P -> Q ) v ( Q -> R ) <a name="proof-9-2"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ~ ( ( P -> Q ) v ( Q -> R ) )</pre> | Assume Contradiction |  |
+| 2 | <pre>.   ~ ( P -> Q ) ^ ~ ( Q -> R )</pre> | DeMorgan's theorem: (~ v) to ^ | 1 |
+| 3 | <pre>.   ~ ( P -> Q )</pre> | E ^ (L) | 2 |
+| 4 | <pre>.   ~ ( Q -> R )</pre> | E ^ (R) | 2 |
+| 5 | <pre>.   P ^ ~ Q</pre> | Theorem: (~ ->) to ^ | 3 |
+| 6 | <pre>.   ~ Q</pre> | E ^ (R) | 5 |
+| 7 | <pre>.   Q ^ ~ R</pre> | Theorem: (~ ->) to ^ | 4 |
+| 8 | <pre>.   Q</pre> | E ^ (L) | 7 |
+| 9 | <pre>( P -> Q ) v ( Q -> R )</pre> | subproof contradiction | 1 - 8 |
+
+## ( P -> Q ) v ( Q -> P ) <a name="proof-9-3"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ~ ( ( P -> Q ) v ( Q -> P ) )</pre> | Assume Contradiction |  |
+| 2 | <pre>.   ~ ( P -> Q ) ^ ~ ( Q -> P )</pre> | DeMorgan's theorem: (~ v) to ^ | 1 |
+| 3 | <pre>.   ~ ( P -> Q )</pre> | E ^ (L) | 2 |
+| 4 | <pre>.   ~ ( Q -> P )</pre> | E ^ (R) | 2 |
+| 5 | <pre>.   P ^ ~ Q</pre> | Theorem: (~ ->) to ^ | 3 |
+| 6 | <pre>.   ~ Q</pre> | E ^ (R) | 5 |
+| 7 | <pre>.   Q ^ ~ P</pre> | Theorem: (~ ->) to ^ | 4 |
+| 8 | <pre>.   Q</pre> | E ^ (L) | 7 |
+| 9 | <pre>( P -> Q ) v ( Q -> P )</pre> | subproof contradiction | 1 - 8 |
 

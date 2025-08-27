@@ -1060,28 +1060,27 @@ var propositionalLongProofSections = []*ProofsSection{
 		// 		NewProofImplication(Implication(P, Q)),
 		// 	),
 		// ),
-		// 		NewRootProof("( P -> Q ) v ( Q -> R )",
-		// 			NewProofContradiction(Not(Or(Implication(P, Q), Implication(Q, R))),
-		// 				// ~ ( P -> Q ) ^ ~ ( Q -> R )
-		// 				// ~ ( P -> Q )
-		// 				// P ^ ~ Q
-		// 				// ~ Q
-		//              // Q -> R
-		// 				// Q ^ ~ R
-		// 				// Q
-		// 			// ( P -> Q ) v ( Q -> R )
-		// 		),
-		// 	),
-		// NewRootProof("( P -> Q ) v ( Q -> P )",
-		// 			NewProofContradiction(Not(Or(Implication(P, Q), Implication(Q, P))),
-		// 				// ~ ( P -> Q ) ^ ~ ( Q -> P )
-		// 				// ( P ^ ~ Q ) ^ ( Q ^ ~ P )
-		// 				// P ^ ~ Q
-		// 				// ~ Q
-		// 				// Q ^ ~ P
-		// 				// Q
-		// 			// ( P -> Q ) v ( Q -> P )
-		// ),
-		// ),
+		NewRootProof("( P -> Q ) v ( Q -> R )",
+			NewProofContradiction(Not(Or(Implication(P, Q), Implication(Q, R))),
+				DeMorgansOrToAndTheorem(Implication(P, Q), Implication(Q, R), true), // ~ ( P -> Q ) ^ ~ ( Q -> R )
+				EAnd(Not(Implication(P, Q)), Not(Implication(Q, R)), true),          // ~ ( P -> Q )
+				EAnd(Not(Implication(P, Q)), Not(Implication(Q, R)), false),         // ~ ( Q -> R )
+				ArrowConjunctionTheorem(P, Q, true),                                 // P ^ ~ Q
+				EAnd(P, Not(Q), false),                                              // ~ Q
+				ArrowConjunctionTheorem(Q, R, true),                                 // Q ^ ~ R
+				EAnd(Q, Not(R), true),                                               // Q
+			), // ( P -> Q ) v ( Q -> R )
+		),
+		NewRootProof("( P -> Q ) v ( Q -> P )",
+			NewProofContradiction(Not(Or(Implication(P, Q), Implication(Q, P))),
+				DeMorgansOrToAndTheorem(Implication(P, Q), Implication(Q, P), true), // ~ ( P -> Q ) ^ ~ ( Q -> P )
+				EAnd(Not(Implication(P, Q)), Not(Implication(Q, P)), true),          // ~ ( P -> Q )
+				EAnd(Not(Implication(P, Q)), Not(Implication(Q, P)), false),         // ~ ( Q -> P )
+				ArrowConjunctionTheorem(P, Q, true),                                 // P ^ ~ Q
+				EAnd(P, Not(Q), false),                                              // ~ Q
+				ArrowConjunctionTheorem(Q, P, true),                                 // Q ^ ~ P
+				EAnd(Q, Not(P), true),                                               // Q
+			), // ( P -> Q ) v ( Q -> P )
+		),
 	),
 }
