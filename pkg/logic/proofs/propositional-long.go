@@ -31,7 +31,7 @@ var propositionalLongProofSections = []*ProofsSection{
 				IOr(P, Not(P), false),
 			),
 		),
-		NewRootProof("( P -> Q ) -> ( ~ Q -> ~ P )",
+		NewRootProof("( P -> Q ) <-> ( ~ Q -> ~ P )",
 			NewProofImplication(
 				Implication(P, Q),
 				NewProofImplication(
@@ -44,8 +44,6 @@ var propositionalLongProofSections = []*ProofsSection{
 					),
 				),
 			),
-		),
-		NewRootProof("( ~ Q -> ~ P ) -> ( P -> Q )",
 			NewProofImplication(
 				Implication(Not(Q), Not(P)),
 				NewProofImplication(
@@ -58,6 +56,7 @@ var propositionalLongProofSections = []*ProofsSection{
 					),
 				),
 			),
+			IBiconditional(Implication(P, Q), Implication(Not(Q), Not(P))),
 		),
 		NewRootProof("~ ( P -> Q ) -> ( P ^ ~ Q )",
 			NewProofImplication(Not(Implication(P, Q)),
