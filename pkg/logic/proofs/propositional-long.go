@@ -30,7 +30,6 @@ var propositionalLongProofSections = []*ProofsSection{
 				),
 				IOr(P, Not(P), false),
 			),
-			ENot(Or(P, Not(P))),
 		),
 		NewRootProof("( P -> Q ) -> ( ~ Q -> ~ P )",
 			NewProofImplication(
@@ -57,7 +56,6 @@ var propositionalLongProofSections = []*ProofsSection{
 						EImply(Not(Q), Not(P)),
 						&Reiterate{Term: P},
 					),
-					ENot(Q),
 				),
 			),
 		),
@@ -69,8 +67,7 @@ var propositionalLongProofSections = []*ProofsSection{
 					), // ~ Q -> ~ P
 					ContrapositiveTheorem(Not(Q), Not(P)), // P -> Q
 					&Reiterate{Term: Not(Implication(P, Q))},
-				), // ~ ~ P
-				ENot(P), // P
+				), // P
 				NewProofContradiction(Q,
 					&Reiterate{Term: P},
 					IImply(P, Q),
@@ -409,8 +406,7 @@ var propositionalLongProofSections = []*ProofsSection{
 					BiconditionalNegationTheorem(P, Q),                    // P <-> ~ Q
 					EBiconditional(P, Not(Q), true),                       // P -> ~ Q
 					EImply(P, Not(Q)),                                     // ~ Q
-				), // ~ ~ ( P -> ( Q <-> R ) )
-				ENot(Implication(P, Biconditional(Q, R))), // P -> ( Q <-> R )
+				), // ( P -> ( Q <-> R ) )
 				NewProofContradiction(Not(Implication(Biconditional(Q, R), P)),
 					ArrowNegationTheorem(Biconditional(Q, R), P), // ( Q <-> R ) ^ ~ P
 					EAnd(Biconditional(Q, R), Not(P), true),      // Q <-> R
@@ -434,8 +430,7 @@ var propositionalLongProofSections = []*ProofsSection{
 					BiconditionalNegationTheorem(P, Q),                    // P <-> ~ Q
 					EBiconditional(P, Not(Q), false),                      // ~ Q -> P
 					EImply(Not(Q), P),                                     // P
-				), // ~ ~ ( ( Q <-> R ) -> P )
-				ENot(Implication(Biconditional(Q, R), P)), // ( Q <-> R ) -> P
+				), // ( ( Q <-> R ) -> P )
 				IBiconditional(P, Biconditional(Q, R)),    // P <-> ( Q <-> R )
 			),
 		),
@@ -466,8 +461,7 @@ var propositionalLongProofSections = []*ProofsSection{
 					EImply(Not(R), Q),                                     // Q
 					EBiconditional(P, Q, false),                           // Q -> P
 					EImply(Q, P),                                          // P
-				), // ~ ~ ( ( P <-> Q ) -> R )
-				ENot(Implication(Biconditional(P, Q), R)), // ( P <-> Q ) -> R
+				), // ( ( P <-> Q ) -> R )
 				NewProofContradiction(Not(Implication(R, Biconditional(P, Q))),
 					ArrowNegationTheorem(R, Biconditional(P, Q)), // R ^ ~ ( P <-> Q )
 					EAnd(R, Not(Biconditional(P, Q)), true),      // R
@@ -492,8 +486,7 @@ var propositionalLongProofSections = []*ProofsSection{
 					BiconditionalNegationTheorem(Q, R),                    // Q <-> ~ R
 					EBiconditional(Q, Not(R), true),                       // Q -> ~ R
 					EImply(Q, Not(R)),                                     // ~ R
-				), // ~ ~ ( R -> ( P <-> Q ) )
-				ENot(Implication(R, Biconditional(P, Q))), // R -> ( P <-> Q )
+				), // ( R -> ( P <-> Q ) )
 				IBiconditional(Biconditional(P, Q), R),
 			),
 		),
@@ -734,16 +727,13 @@ var propositionalLongProofSections = []*ProofsSection{
 						IOr(Not(P), Not(Q), true),
 						&Reiterate{Term: Not(Or(Not(P), Not(Q)))},
 					),
-					ENot(P),
 					NewProofContradiction(Not(Q),
 						IOr(Not(P), Not(Q), false),
 						&Reiterate{Term: Not(Or(Not(P), Not(Q)))},
 					),
-					ENot(Q),
 					IAnd(P, Q),
 					&Reiterate{Term: Not(And(P, Q))},
 				),
-				ENot(Or(Not(P), Not(Q))),
 			),
 		),
 		NewRootProof("( ~ P v ~ Q ) -> ~ ( P ^ Q )",
@@ -931,15 +921,13 @@ var propositionalLongProofSections = []*ProofsSection{
 			NewProofImplication(Not(Biconditional(P, Q)),
 				NewProofContradiction(Not(Implication(P, Not(Q))),
 					ArrowNegationTheorem(P, Not(Q)),
-					EAnd(P, Not(Not(Q)), true),
-					EAnd(P, Not(Not(Q)), false),
-					ENot(Q),
+					EAnd(P, Q, true),
+					EAnd(P, Q, false),
 					IImply(P, Q),
 					IImply(Q, P),
 					IBiconditional(P, Q),
 					&Reiterate{Term: Not(Biconditional(P, Q))},
 				),
-				ENot(Implication(P, Not(Q))),
 				NewProofContradiction(Not(Implication(Not(Q), P)),
 					ArrowNegationTheorem(Not(Q), P),
 					EAnd(Not(Q), Not(P), true),
@@ -951,7 +939,6 @@ var propositionalLongProofSections = []*ProofsSection{
 					IBiconditional(P, Q),
 					&Reiterate{Term: Not(Biconditional(P, Q))},
 				),
-				ENot(Implication(Not(Q), P)),
 				IBiconditional(P, Not(Q)),
 			),
 		),
@@ -981,7 +968,6 @@ var propositionalLongProofSections = []*ProofsSection{
 				),
 				IOr(Biconditional(P, Q), Not(Biconditional(P, Q)), false),
 			),
-			ENot(Or(Biconditional(P, Q), Not(Biconditional(P, Q)))),
 		),
 		NewRootProof("( P <-> ~ Q ) -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )",
 			NewProofImplication(Biconditional(P, Not(Q)),
@@ -1048,8 +1034,7 @@ var propositionalLongProofSections = []*ProofsSection{
 						&Reiterate{Term: Not(Q)},                   // ~ Q
 						IAnd(Not(P), Not(Q)),                       // ~ P ^ ~ Q
 						&Reiterate{Term: Not(And(Not(P), Not(Q)))}, // ~ ( ~ P ^ ~ Q )
-					), // ~ ~ P
-					ENot(P), // P
+					), // P
 				), // ~ Q -> P
 				IBiconditional(P, Not(Q)),
 			),
@@ -1074,6 +1059,29 @@ var propositionalLongProofSections = []*ProofsSection{
 		// 	NewProofImplication(Implication(Implication(P, Q), Implication(P, R)),
 		// 		NewProofImplication(Implication(P, Q)),
 		// 	),
+		// ),
+		// 		NewRootProof("( P -> Q ) v ( Q -> R )",
+		// 			NewProofContradiction(Not(Or(Implication(P, Q), Implication(Q, R))),
+		// 				// ~ ( P -> Q ) ^ ~ ( Q -> R )
+		// 				// ~ ( P -> Q )
+		// 				// P ^ ~ Q
+		// 				// ~ Q
+		//              // Q -> R
+		// 				// Q ^ ~ R
+		// 				// Q
+		// 			// ( P -> Q ) v ( Q -> R )
+		// 		),
+		// 	),
+		// NewRootProof("( P -> Q ) v ( Q -> P )",
+		// 			NewProofContradiction(Not(Or(Implication(P, Q), Implication(Q, P))),
+		// 				// ~ ( P -> Q ) ^ ~ ( Q -> P )
+		// 				// ( P ^ ~ Q ) ^ ( Q ^ ~ P )
+		// 				// P ^ ~ Q
+		// 				// ~ Q
+		// 				// Q ^ ~ P
+		// 				// Q
+		// 			// ( P -> Q ) v ( Q -> P )
+		// ),
 		// ),
 	),
 }

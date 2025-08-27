@@ -77,7 +77,16 @@ func NewProofContradiction(hypothesis Term, steps ...Step) *Proof {
 			last.TermPrint(true),
 			resultsJson))
 	}
-	result := Not(hypothesis)
+	// avoid introducing double negative. if hypothesis is:
+	//    ~ Z, result is Z
+	//    Z, result is ~ Z
+	var result Term
+	switch a := hypothesis.(type) {
+	case *NotTerm:
+		result = a.Arg
+	default:
+		result = Not(hypothesis)
+	}
 	return &Proof{
 		ExpectedResult: result.TermPrint(true),
 		Steps:          steps,
