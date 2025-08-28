@@ -1,6 +1,7 @@
 package main
 
 import (
+	firstorderproofs "github.com/mattfenwick/algorithms/pkg/logic/firstorder/proofs"
 	"github.com/mattfenwick/algorithms/pkg/logic/proofs"
 	"github.com/mattfenwick/algorithms/pkg/pratt"
 	"github.com/mattfenwick/algorithms/pkg/schema"
@@ -87,7 +88,8 @@ func RunSchema(path string, readAll bool) {
 }
 
 type LogicArgs struct {
-	ProofPath string
+	ProofPath  string
+	FirstOrder bool
 }
 
 func SetupLogicCommand() *cobra.Command {
@@ -100,12 +102,17 @@ func SetupLogicCommand() *cobra.Command {
 		},
 	}
 	command.Flags().StringVar(&args.ProofPath, "proof-path", "pkg/logic/proofs", "dir path to which markdown file of proofs will be written")
+	command.Flags().BoolVar(&args.FirstOrder, "first-order", false, "if false, 0th order. if true, 1st-order")
 
 	return command
 }
 
 func RunLogic(args *LogicArgs) {
-	proofs.Run(args.ProofPath)
+	if args.FirstOrder {
+		firstorderproofs.Run()
+	} else {
+		proofs.Run(args.ProofPath)
+	}
 }
 
 func SetUpLogger(logLevelStr string) error {
