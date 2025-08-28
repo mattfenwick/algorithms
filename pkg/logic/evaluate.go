@@ -6,7 +6,7 @@ import (
 
 func Evaluate(node Term, env map[string]bool) (bool, error) {
 	switch t := node.(type) {
-	case *VarTerm:
+	case *PropTerm:
 		val, ok := env[t.Name]
 		if !ok {
 			return false, errors.Errorf("undefined variable: %s", t.Name)

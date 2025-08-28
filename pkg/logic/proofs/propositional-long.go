@@ -3,10 +3,10 @@ package proofs
 import . "github.com/mattfenwick/algorithms/pkg/logic"
 
 var (
-	P = Var("P")
-	Q = Var("Q")
-	R = Var("R")
-	S = Var("S")
+	P = Prop("P")
+	Q = Prop("Q")
+	R = Prop("R")
+	S = Prop("S")
 )
 
 type ProofsSection struct {

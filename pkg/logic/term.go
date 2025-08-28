@@ -15,11 +15,11 @@ type Term interface {
 	TermPrint(isRoot bool) string
 }
 
-type VarTerm struct {
+type PropTerm struct {
 	Name string
 }
 
-func (v *VarTerm) TermPrint(isRoot bool) string {
+func (v *PropTerm) TermPrint(isRoot bool) string {
 	return v.Name
 }
 
@@ -62,8 +62,8 @@ func (o *BinOpTerm) TermPrint(isRoot bool) string {
 	return strings.Join(out, " ")
 }
 
-func Var(name string) *VarTerm {
-	return &VarTerm{Name: name}
+func Prop(name string) *PropTerm {
+	return &PropTerm{Name: name}
 }
 
 func Not(arg Term) *NotTerm {

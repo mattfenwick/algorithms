@@ -71,7 +71,7 @@ func findVarsAndExpressions(term Term) ([]string, []Term) {
 	case *NotTerm:
 		vars, exprs = findVarsAndExpressions(t.Arg)
 		exprs = append(exprs, t)
-	case *VarTerm:
+	case *PropTerm:
 		vars = append(vars, t.Name)
 	case *BinOpTerm:
 		vars, exprs = findVarsAndExpressions(t.LeftArg)
