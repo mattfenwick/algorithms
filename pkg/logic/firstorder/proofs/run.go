@@ -89,7 +89,7 @@ func printSomeTruthTables() {
 }
 
 func Run() {
-	if true {
+	if false {
 		// TODO what to do with this?
 		printSomeTruthTables()
 		os.Exit(1)

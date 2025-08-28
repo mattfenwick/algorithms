@@ -106,3 +106,21 @@ func EBiconditional(l Term, r Term, isLeft bool) *Rule {
 	}
 	return NewRule(name, result, Biconditional(l, r))
 }
+
+// preconditions: ∀x.( Q(x) )
+// result: Q(a) -- from substituting: ∀x.( Q(x) )[x -> a]
+func EForall(term Term, varName string, arg string) *Rule {
+	return NewRule("E ∀",
+		substituteVar(term, varName, arg),
+		Forall(varName, term),
+	)
+}
+
+// preconditions: Q(a)
+// result: ∃x.( Q(x) ) -- from substituting: Q(a)[a -> x]
+func IExistential(term Term, arg string, varName string) *Rule {
+	return NewRule("I ∃",
+		Existential(varName, substituteVar(term, arg, varName)),
+		term,
+	)
+}

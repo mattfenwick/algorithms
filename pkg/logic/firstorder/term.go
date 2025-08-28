@@ -68,7 +68,7 @@ func (n *NotTerm) TermPrint(isRoot bool) string {
 }
 
 type QuantifiedTerm struct {
-	Arg        string
+	Var        string
 	Body       Term
 	Quantifier Quantifier
 }
@@ -88,17 +88,17 @@ type QuantifiedTerm struct {
 // maybe okay
 //
 //	∀x.(P(y)) -- iff y is bound in an enclosing quantified term
-func NewQuantifiedTerm(arg string, term Term, quantifier Quantifier) *QuantifiedTerm {
+func NewQuantifiedTerm(varName string, term Term, quantifier Quantifier) *QuantifiedTerm {
 	// TODO shadowing
-	return &QuantifiedTerm{Arg: arg, Body: term, Quantifier: quantifier}
+	return &QuantifiedTerm{Var: varName, Body: term, Quantifier: quantifier}
 }
 
-func Forall(arg string, term Term) *QuantifiedTerm {
-	return NewQuantifiedTerm(arg, term, ForallQuantifier)
+func Forall(varName string, term Term) *QuantifiedTerm {
+	return NewQuantifiedTerm(varName, term, ForallQuantifier)
 }
 
-func Existential(arg string, term Term) *QuantifiedTerm {
-	return NewQuantifiedTerm(arg, term, ExistentialQuantifier)
+func Existential(varName string, term Term) *QuantifiedTerm {
+	return NewQuantifiedTerm(varName, term, ExistentialQuantifier)
 }
 
 func (f *QuantifiedTerm) TermPrint(isRoot bool) string {
@@ -115,34 +115,34 @@ func (f *QuantifiedTerm) TermPrint(isRoot bool) string {
 		panic(errors.Errorf("invalid quantifier %s", f.Quantifier))
 	}
 	// intentionally cause subterm to leave off outer parens
-	return fmt.Sprintf("%s%s.( %s )", symbol, f.Arg, f.Body.TermPrint(true))
+	return fmt.Sprintf("%s%s.( %s )", symbol, f.Var, f.Body.TermPrint(true))
 }
 
 func (f *QuantifiedTerm) Substitute(obj string) Term {
-	return substituteVar(f.Body, f.Arg, obj)
+	return substituteVar(f.Body, f.Var, obj)
 }
 
-func substituteVar(term Term, varName string, obj string) Term {
+func substituteVar(term Term, from string, to string) Term {
 	switch t := term.(type) {
 	case *NotTerm:
-		return &NotTerm{Term: substituteVar(t.Term, varName, obj)}
+		return &NotTerm{Term: substituteVar(t.Term, from, to)}
 	case *BinOpTerm:
 		return &BinOpTerm{
 			Op:    t.Op,
-			Left:  substituteVar(t.Left, varName, obj),
-			Right: substituteVar(t.Right, varName, obj),
+			Left:  substituteVar(t.Left, from, to),
+			Right: substituteVar(t.Right, from, to),
 		}
 	case *PropTerm:
 		return &PropTerm{
 			Name: t.Name,
 			Args: slice.Map(func(p *PropArg) *PropArg {
-				if p.Var == varName {
+				if p.Var == from {
 					if p.Object != nil {
 						panic(errors.Errorf("cannot substitute for proparg %+v: already substituted", p))
 					}
 					return &PropArg{
 						Var:    p.Var,
-						Object: &obj,
+						Object: &to,
 					}
 				}
 				return p
@@ -150,8 +150,8 @@ func substituteVar(term Term, varName string, obj string) Term {
 		}
 	case *QuantifiedTerm:
 		return &QuantifiedTerm{
-			Arg:        t.Arg,
-			Body:       substituteVar(t.Body, varName, obj),
+			Var:        t.Var,
+			Body:       substituteVar(t.Body, from, to),
 			Quantifier: t.Quantifier,
 		}
 	default:
