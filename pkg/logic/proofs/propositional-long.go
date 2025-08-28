@@ -194,6 +194,57 @@ var propositionalLongProofSections = []*ProofsSection{
 			),
 			IBiconditional(Not(And(P, Q)), Or(Not(P), Not(Q))),
 		),
+		NewRootProof("( P <-> ~ Q ) <-> ~ ( P <-> Q )",
+			NewProofImplication(Biconditional(P, Not(Q)),
+				EBiconditional(P, Not(Q), true),  // P -> ~ Q
+				EBiconditional(P, Not(Q), false), // ~ Q -> P
+				NewProofImplication(P,
+					NewProofContradiction(Biconditional(P, Q),
+						&Reiterate{Term: Implication(P, Not(Q))}, // P -> ~ Q
+						EBiconditional(P, Q, true),               // P -> Q
+						&Reiterate{Term: P},                      // P
+						EImply(P, Q),                             // Q
+						EImply(P, Not(Q)),                        // ~ Q
+					), // ~ ( P <-> Q )
+				), // P -> ~ ( P <-> Q )
+				NewProofImplication(Not(P),
+					NewProofContradiction(Biconditional(P, Q),
+						EBiconditional(P, Q, false),              // Q -> P
+						ContrapositiveTheorem(Q, P),              // ~ P -> ~ Q
+						&Reiterate{Term: Not(P)},                 // ~ P
+						EImply(Not(P), Not(Q)),                   // ~ Q
+						&Reiterate{Term: Implication(Not(Q), P)}, // ~ Q -> P
+						EImply(Not(Q), P),                        // P
+					), // ~ ( P <-> Q )
+				), // ~ P -> ~ ( P <-> Q )
+				ExcludedMiddleTheorem(P), // P v ~ P
+				EOr(P, Not(P), Not(Biconditional(P, Q))),
+			),
+			NewProofImplication(Not(Biconditional(P, Q)),
+				NewProofContradiction(Not(Implication(P, Not(Q))),
+					ArrowConjunctionTheorem(P, Not(Q), true),
+					EAnd(P, Q, true),
+					EAnd(P, Q, false),
+					IImply(P, Q),
+					IImply(Q, P),
+					IBiconditional(P, Q),
+					&Reiterate{Term: Not(Biconditional(P, Q))},
+				),
+				NewProofContradiction(Not(Implication(Not(Q), P)),
+					ArrowConjunctionTheorem(Not(Q), P, true),
+					EAnd(Not(Q), Not(P), true),
+					EAnd(Not(Q), Not(P), false),
+					IImply(Not(P), Not(Q)),
+					ContrapositiveTheorem(Not(P), Not(Q)),
+					IImply(Not(Q), Not(P)),
+					ContrapositiveTheorem(Not(Q), Not(P)),
+					IBiconditional(P, Q),
+					&Reiterate{Term: Not(Biconditional(P, Q))},
+				),
+				IBiconditional(P, Not(Q)),
+			),
+			IBiconditional(Biconditional(P, Not(Q)), Not(Biconditional(P, Q))),
+		),
 	),
 	NewProofsSection("basics",
 		NewRootProof(
@@ -882,58 +933,6 @@ var propositionalLongProofSections = []*ProofsSection{
 				EBiconditional(P, Not(Q), false), // ~ Q -> P
 				ContrapositiveTheorem(Not(Q), P), // ~ P -> Q
 				IBiconditional(Not(P), Q),
-			),
-		),
-		NewRootProof("( P <-> ~ Q ) -> ~ ( P <-> Q )",
-			NewProofImplication(Biconditional(P, Not(Q)),
-				EBiconditional(P, Not(Q), true),  // P -> ~ Q
-				EBiconditional(P, Not(Q), false), // ~ Q -> P
-				NewProofImplication(P,
-					NewProofContradiction(Biconditional(P, Q),
-						&Reiterate{Term: Implication(P, Not(Q))}, // P -> ~ Q
-						EBiconditional(P, Q, true),               // P -> Q
-						&Reiterate{Term: P},                      // P
-						EImply(P, Q),                             // Q
-						EImply(P, Not(Q)),                        // ~ Q
-					), // ~ ( P <-> Q )
-				), // P -> ~ ( P <-> Q )
-				NewProofImplication(Not(P),
-					NewProofContradiction(Biconditional(P, Q),
-						EBiconditional(P, Q, false),              // Q -> P
-						ContrapositiveTheorem(Q, P),              // ~ P -> ~ Q
-						&Reiterate{Term: Not(P)},                 // ~ P
-						EImply(Not(P), Not(Q)),                   // ~ Q
-						&Reiterate{Term: Implication(Not(Q), P)}, // ~ Q -> P
-						EImply(Not(Q), P),                        // P
-					), // ~ ( P <-> Q )
-				), // ~ P -> ~ ( P <-> Q )
-				ExcludedMiddleTheorem(P), // P v ~ P
-				EOr(P, Not(P), Not(Biconditional(P, Q))),
-			),
-		),
-		NewRootProof("~ ( P <-> Q ) -> ( P <-> ~ Q )",
-			NewProofImplication(Not(Biconditional(P, Q)),
-				NewProofContradiction(Not(Implication(P, Not(Q))),
-					ArrowConjunctionTheorem(P, Not(Q), true),
-					EAnd(P, Q, true),
-					EAnd(P, Q, false),
-					IImply(P, Q),
-					IImply(Q, P),
-					IBiconditional(P, Q),
-					&Reiterate{Term: Not(Biconditional(P, Q))},
-				),
-				NewProofContradiction(Not(Implication(Not(Q), P)),
-					ArrowConjunctionTheorem(Not(Q), P, true),
-					EAnd(Not(Q), Not(P), true),
-					EAnd(Not(Q), Not(P), false),
-					IImply(Not(P), Not(Q)),
-					ContrapositiveTheorem(Not(P), Not(Q)),
-					IImply(Not(Q), Not(P)),
-					ContrapositiveTheorem(Not(Q), Not(P)),
-					IBiconditional(P, Q),
-					&Reiterate{Term: Not(Biconditional(P, Q))},
-				),
-				IBiconditional(P, Not(Q)),
 			),
 		),
 		NewRootProof("( P <-> Q ) -> ( ~ P <-> ~ Q )",
