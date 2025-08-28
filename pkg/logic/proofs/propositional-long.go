@@ -392,8 +392,7 @@ var propositionalLongProofSections = []*ProofsSection{
 			),
 			IBiconditional(Implication(Or(P, Q), R), And(Implication(P, R), Implication(Q, R))),
 		),
-		// TODO vvv add the backwards as well and turn this into a <->
-		NewRootProof("( ( P -> R ) v ( Q -> R ) ) -> ( ( P ^ Q ) -> R )",
+		NewRootProof("( ( P -> R ) v ( Q -> R ) ) <-> ( ( P ^ Q ) -> R )",
 			NewProofImplication(Or(Implication(P, R), Implication(Q, R)),
 				NewProofImplication(Implication(P, R),
 					NewProofImplication(And(P, Q),
@@ -411,8 +410,24 @@ var propositionalLongProofSections = []*ProofsSection{
 				),
 				EOr(Implication(P, R), Implication(Q, R), Implication(And(P, Q), R)),
 			),
-			//			NewProofImplication(Implication(And(P, Q), R),
-		// ),
+			NewProofImplication(Implication(And(P, Q), R),
+				NewProofContradiction(Not(Or(Implication(P, R), Implication(Q, R))),
+					DeMorgansOrToAndTheorem(
+						Implication(P, R),
+						Implication(Q, R), true), // ~ ( P -> R ) ^ ~ (Q -> R )
+					EAnd(Not(Implication(P, R)), Not(Implication(Q, R)), true),  // ~ ( P -> R )
+					EAnd(Not(Implication(P, R)), Not(Implication(Q, R)), false), // ~ ( Q -> R )
+					ArrowConjunctionTheorem(P, R, true),                         // P ^ ~ R
+					EAnd(P, Not(R), true),                                       // P
+					EAnd(P, Not(R), false),                                      // ~ R
+					ArrowConjunctionTheorem(Q, R, true),                         // Q ^ ~ R
+					EAnd(Q, Not(R), true),                                       // Q
+					&Reiterate{Term: Implication(And(P, Q), R)},                 // ( P ^ Q ) -> R
+					IAnd(P, Q),           // P ^ Q
+					EImply(And(P, Q), R), // R
+				), // ( P -> R ) v ( Q -> R )
+			),
+			IBiconditional(Or(Implication(P, R), Implication(Q, R)), Implication(And(P, Q), R)),
 		),
 	),
 	NewProofsSection("commutativity",

@@ -25,7 +25,7 @@
     6. [( ( P -> Q ) ^ ( ~ P -> Q ) ) -> Q](#proof-3-6)
     7. [( P -> ( Q -> R ) ) -> ( Q -> ( P -> R ) )](#proof-3-7)
     8. [( ( P v Q ) -> R ) <-> ( ( P -> R ) ^ ( Q -> R ) )](#proof-3-8)
-    9. [( ( P -> R ) v ( Q -> R ) ) -> ( ( P ^ Q ) -> R )](#proof-3-9)
+    9. [( ( P -> R ) v ( Q -> R ) ) <-> ( ( P ^ Q ) -> R )](#proof-3-9)
 4. [commutativity](#commutativity)
     1. [( P ^ Q ) -> ( Q ^ P )](#proof-4-1)
     2. [( P v Q ) -> ( Q v P )](#proof-4-2)
@@ -483,7 +483,7 @@
 | 21 | <pre>( ( P -> R ) ^ ( Q -> R ) ) -> ( ( P v Q ) -> R )</pre> | subproof implication | 14 - 20 |
 | 22 | <pre>( ( P v Q ) -> R ) <-> ( ( P -> R ) ^ ( Q -> R ) )</pre> | I <-> | 13, 21 |
 
-## ( ( P -> R ) v ( Q -> R ) ) -> ( ( P ^ Q ) -> R ) <a name="proof-3-9"></a>
+## ( ( P -> R ) v ( Q -> R ) ) <-> ( ( P ^ Q ) -> R ) <a name="proof-3-9"></a>
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
@@ -504,6 +504,22 @@
 | 15 | <pre>.   ( Q -> R ) -> ( ( P ^ Q ) -> R )</pre> | subproof implication | 9 - 14 |
 | 16 | <pre>.   ( P ^ Q ) -> R</pre> | E v | 8, 15, 1 |
 | 17 | <pre>( ( P -> R ) v ( Q -> R ) ) -> ( ( P ^ Q ) -> R )</pre> | subproof implication | 1 - 16 |
+| 18 | <pre>.   ( P ^ Q ) -> R</pre> | Assume Implication |  |
+| 19 | <pre>.   .   ~ ( ( P -> R ) v ( Q -> R ) )</pre> | Assume Contradiction |  |
+| 20 | <pre>.   .   ~ ( P -> R ) ^ ~ ( Q -> R )</pre> | DeMorgan's theorem: (~ v) to ^ | 19 |
+| 21 | <pre>.   .   ~ ( P -> R )</pre> | E ^ (L) | 20 |
+| 22 | <pre>.   .   ~ ( Q -> R )</pre> | E ^ (R) | 20 |
+| 23 | <pre>.   .   P ^ ~ R</pre> | Theorem: (~ ->) to ^ | 21 |
+| 24 | <pre>.   .   P</pre> | E ^ (L) | 23 |
+| 25 | <pre>.   .   ~ R</pre> | E ^ (R) | 23 |
+| 26 | <pre>.   .   Q ^ ~ R</pre> | Theorem: (~ ->) to ^ | 22 |
+| 27 | <pre>.   .   Q</pre> | E ^ (L) | 26 |
+| 28 | <pre>.   .   ( P ^ Q ) -> R</pre> | Reiterate | 18 |
+| 29 | <pre>.   .   P ^ Q</pre> | I ^ | 24, 27 |
+| 30 | <pre>.   .   R</pre> | E -> | 28, 29 |
+| 31 | <pre>.   ( P -> R ) v ( Q -> R )</pre> | subproof contradiction | 19 - 30 |
+| 32 | <pre>( ( P ^ Q ) -> R ) -> ( ( P -> R ) v ( Q -> R ) )</pre> | subproof implication | 18 - 31 |
+| 33 | <pre>( ( P -> R ) v ( Q -> R ) ) <-> ( ( P ^ Q ) -> R )</pre> | I <-> | 17, 32 |
 
 # commutativity <a name="commutativity"></a>
 
