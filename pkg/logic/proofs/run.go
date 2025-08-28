@@ -6,10 +6,31 @@ import (
 	"strings"
 
 	"github.com/mattfenwick/algorithms/pkg/logic"
+	. "github.com/mattfenwick/algorithms/pkg/logic"
 	"github.com/mattfenwick/collections/pkg/file"
+	"github.com/olekukonko/tablewriter"
 )
 
+func printSomeTruthTables() {
+	terms := []Term{
+		Implication(P, Or(Q, R)),
+		Or(Implication(P, Q), Implication(P, R)),
+		Implication(And(P, Q), R),
+		Or(Implication(P, R), Implication(Q, R)),
+	}
+	for _, t := range terms {
+		fmt.Println(TruthTable(t).ToFormattedTable(func(t *tablewriter.Table) {
+			t.SetAlignment(tablewriter.ALIGN_CENTER)
+		}))
+	}
+}
+
 func Run(proofDir string) {
+	if false {
+		// TODO what to do with this?
+		printSomeTruthTables()
+	}
+
 	proofPath := path.Join(proofDir, "propositional-long-proofs.md")
 	for _, section := range propositionalLongProofSections {
 		fmt.Printf("working on section %s\n", section.Name)
