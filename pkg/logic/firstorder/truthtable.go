@@ -29,8 +29,8 @@ func mappings(xs []string, vars map[string]bool) []map[string]bool {
 	return out
 }
 
-func TruthTable(term Term, env *Env) *utils.Table {
-	rawVars, exprs := findVarsAndExpressions(term)
+func TruthTable(formula Formula, env *Env) *utils.Table {
+	rawVars, exprs := findVarsAndExpressions(formula)
 	vars := slice.Sort(set.FromSlice(rawVars).ToSlice())
 	var rows [][]string
 	for _, mapping := range mappings(vars, map[string]bool{}) {
@@ -63,16 +63,16 @@ func TruthTable(term Term, env *Env) *utils.Table {
 		}
 		rows = append(rows, row)
 	}
-	headers := append(vars, slice.Map(func(t Term) string { return t.TermPrint(true) }, exprs)...)
+	headers := append(vars, slice.Map(func(t Formula) string { return t.FormulaPrint(true) }, exprs)...)
 	return utils.NewTable(headers, rows...)
 }
 
-func TruthTableFromTerms(env *Env, termsRow ...[]Term) *utils.Table {
+func TruthTableFromFormulas(env *Env, formulasRow ...[]Formula) *utils.Table {
 	var rows [][]string
-	for _, terms := range termsRow {
+	for _, formulas := range formulasRow {
 		var row []string
-		for _, term := range terms {
-			result, err := env.Evaluate(term)
+		for _, formula := range formulas {
+			result, err := env.Evaluate(formula)
 			if err != nil {
 				panic(err)
 			}
@@ -81,38 +81,38 @@ func TruthTableFromTerms(env *Env, termsRow ...[]Term) *utils.Table {
 			if !result {
 				value = "F"
 			}
-			row = append(row, term.TermPrint(true)+"\n"+value)
+			row = append(row, formula.FormulaPrint(true)+"\n"+value)
 		}
 		rows = append(rows, row)
 	}
-	headers := slice.Map(func(t Term) string { return "" }, termsRow[0])
+	headers := slice.Map(func(t Formula) string { return "" }, formulasRow[0])
 	return utils.NewTable(headers, rows...)
 }
 
-func findVarsAndExpressions(term Term) ([]string, []Term) {
+func findVarsAndExpressions(formula Formula) ([]string, []Formula) {
 	vars := []string{}
-	exprs := []Term{}
-	switch t := term.(type) {
-	case *NotTerm:
-		vars, exprs = findVarsAndExpressions(t.Term)
+	exprs := []Formula{}
+	switch t := formula.(type) {
+	case *NotFormula:
+		vars, exprs = findVarsAndExpressions(t.Formula)
 		exprs = append(exprs, t)
-	case *PropTerm:
+	case *PredicateFormula:
 		if len(t.Args) == 0 {
 			vars = append(vars, t.Name)
 		}
 		// only do things like P or Q; skip things like P(x) or Q(x)
-	case *BinOpTerm:
+	case *BinOpFormula:
 		vars, exprs = findVarsAndExpressions(t.Left)
 		rightVars, rightExprs := findVarsAndExpressions(t.Right)
 		vars = append(vars, rightVars...)
 		exprs = append(exprs, rightExprs...)
 		exprs = append(exprs, t)
-	case *QuantifiedTerm:
-		// ignore exprs from inside quantified term since they won't be substituted
+	case *QuantifiedFormula:
+		// ignore exprs from inside quantified formula since they won't be substituted
 		vars, _ = findVarsAndExpressions(t.Body)
 		exprs = append(exprs, t)
 	default:
-		panic(errors.Errorf("invalid term type: %T", term))
+		panic(errors.Errorf("invalid formula type: %T", formula))
 	}
 	return vars, exprs
 }

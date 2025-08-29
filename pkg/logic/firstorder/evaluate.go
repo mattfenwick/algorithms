@@ -21,22 +21,22 @@ func NewEnv(propToTruth map[string]bool, domain ...string) *Env {
 	}
 }
 
-func (e *Env) Evaluate(node Term) (bool, error) {
+func (e *Env) Evaluate(node Formula) (bool, error) {
 	switch t := node.(type) {
-	case *PropTerm:
-		propString := t.TermPrint(true)
+	case *PredicateFormula:
+		propString := t.FormulaPrint(true)
 		val, ok := e.PropToTruth[propString]
 		if !ok {
 			return false, errors.Errorf("undefined Prop: %s", propString)
 		}
 		return val, nil
-	case *NotTerm:
-		val, err := e.Evaluate(t.Term)
+	case *NotFormula:
+		val, err := e.Evaluate(t.Formula)
 		if err != nil {
 			return false, err
 		}
 		return !val, nil
-	case *BinOpTerm:
+	case *BinOpFormula:
 		switch t.Op {
 		default:
 			l, err := e.Evaluate(t.Left)
@@ -59,13 +59,13 @@ func (e *Env) Evaluate(node Term) (bool, error) {
 			}
 			return false, errors.Errorf("invalid bin op: %+v", t)
 		}
-	case *QuantifiedTerm:
+	case *QuantifiedFormula:
 		var trues, falses []string
 		for _, obj := range e.Domain.ToSlice() {
 			// substitute obj in to body
-			term := t.Substitute(obj)
+			formula := t.Substitute(obj)
 			// evaluate body
-			value, err := e.Evaluate(term)
+			value, err := e.Evaluate(formula)
 			if err != nil {
 				return false, err
 			}
@@ -75,7 +75,7 @@ func (e *Env) Evaluate(node Term) (bool, error) {
 				falses = append(falses, obj)
 			}
 		}
-		fmt.Printf("quantifier %s results: %+v, %+v\n", t.TermPrint(true), falses, trues)
+		fmt.Printf("quantifier %s results: %+v, %+v\n", t.FormulaPrint(true), falses, trues)
 		switch t.Quantifier {
 		case ForallQuantifier:
 			return len(falses) == 0, nil
@@ -86,6 +86,6 @@ func (e *Env) Evaluate(node Term) (bool, error) {
 		}
 
 	default:
-		panic(errors.Errorf("invalid term type: %+v", t))
+		panic(errors.Errorf("invalid formula type: %+v", t))
 	}
 }

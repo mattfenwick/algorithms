@@ -11,13 +11,8 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
-type example struct {
-	Term Term
-	Env  *Env
-}
-
 func printSomeTruthTables() {
-	terms := [][]Term{
+	formulas := [][]Formula{
 		{
 			Existential("x", Prop("P")),
 			Existential("x", Not(Prop("P"))),
@@ -53,7 +48,7 @@ func printSomeTruthTables() {
 		{},
 		{"a", "b", "c"},
 	}
-	// for it, term := range terms {
+	// for it, formula := range formulas {
 	// 	for id, d := range domains {
 	// 		env := NewEnv(map[string]bool{
 	// 			"Q(a)": true,
@@ -63,8 +58,8 @@ func printSomeTruthTables() {
 	// 			"R(b)": false,
 	// 			"R(c)": false,
 	// 		}, d...)
-	// 		fmt.Printf("[%d, %d] for domain %+v, %s:\n", it, id, d, term.TermPrint(true))
-	// 		fmt.Println(TruthTable(term, env).ToFormattedTable(func(t *tablewriter.Table) {
+	// 		fmt.Printf("[%d, %d] for domain %+v, %s:\n", it, id, d, formula.formulaPrint(true))
+	// 		fmt.Println(TruthTable(formula, env).ToFormattedTable(func(t *tablewriter.Table) {
 	// 			t.SetAlignment(tablewriter.ALIGN_CENTER)
 	// 			t.SetAutoFormatHeaders(false)
 	// 		}))
@@ -81,7 +76,7 @@ func printSomeTruthTables() {
 			"R(c)": false,
 		}, d...)
 		fmt.Printf("[%d] for domain %+v\n", id, d)
-		fmt.Println(TruthTableFromTerms(env, terms...).ToFormattedTable(func(t *tablewriter.Table) {
+		fmt.Println(TruthTableFromFormulas(env, formulas...).ToFormattedTable(func(t *tablewriter.Table) {
 			t.SetAlignment(tablewriter.ALIGN_CENTER)
 			t.SetAutoFormatHeaders(false)
 		}))

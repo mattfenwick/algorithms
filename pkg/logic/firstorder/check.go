@@ -15,13 +15,13 @@ type EvaluatedStep struct {
 	Depth          int
 	LineReferences string
 	Step           Step
-	ScopeTerms     []string
+	ScopeFormulas  []string
 }
 
 type Scope struct {
-	Depth     int
-	Parent    *Scope
-	TrueTerms map[string]int
+	Depth        int
+	Parent       *Scope
+	TrueFormulas map[string]int
 }
 
 func NewScope(parent *Scope) *Scope {
@@ -30,13 +30,13 @@ func NewScope(parent *Scope) *Scope {
 		depth = parent.Depth + 1
 	}
 	return &Scope{
-		Depth:     depth,
-		Parent:    parent,
-		TrueTerms: map[string]int{}}
+		Depth:        depth,
+		Parent:       parent,
+		TrueFormulas: map[string]int{}}
 }
 
 func (e *Scope) Find(key string) (int, bool) {
-	line, ok := e.TrueTerms[key]
+	line, ok := e.TrueFormulas[key]
 	return line, ok
 }
 
@@ -52,21 +52,21 @@ func (e *Scope) FindInParent(key string) (int, bool) {
 }
 
 func (e *Scope) Add(key string, line int) error {
-	if _, ok := e.TrueTerms[key]; ok {
+	if _, ok := e.TrueFormulas[key]; ok {
 		return errors.Errorf("unable to add key '%s', already present", key)
 	}
-	e.TrueTerms[key] = line
+	e.TrueFormulas[key] = line
 	return nil
 }
 
-func (e *Scope) GetTrueTerms() []string {
-	return slice.Sort(dict.Keys(e.TrueTerms))
+func (e *Scope) GetTrueFormulas() []string {
+	return slice.Sort(dict.Keys(e.TrueFormulas))
 }
 
 func (e *Scope) Print(indent int) {
 	fmt.Printf("%s%s\n",
 		strings.Join(slice.Replicate(indent*2, " "), ""),
-		strings.Join(e.GetTrueTerms(), ","))
+		strings.Join(e.GetTrueFormulas(), ","))
 	if e.Parent != nil {
 		e.Parent.Print(indent + 1)
 	}
@@ -87,7 +87,7 @@ func (c *CheckedProof) PrintSteps() {
 		fmt.Printf("%s%d: %s    %s: %s\n",
 			indent,
 			i+1,
-			step.Step.StepResult().TermPrint(true),
+			step.Step.StepResult().FormulaPrint(true),
 			step.Step.StepName(),
 			step.LineReferences)
 	}
@@ -99,7 +99,7 @@ func (c *CheckedProof) BuildStepTable() string {
 		indent := strings.Repeat("  | ", step.Depth)
 		table.AddRow([]string{
 			fmt.Sprintf("%d", i+1),
-			fmt.Sprintf("%s%s", indent, step.Step.StepResult().TermPrint(true)),
+			fmt.Sprintf("%s%s", indent, step.Step.StepResult().FormulaPrint(true)),
 			step.Step.StepName(),
 			step.LineReferences,
 		})
@@ -115,7 +115,7 @@ func (c *CheckedProof) BuildStepMarkdownTable() string {
 		indent := strings.Repeat(".   ", step.Depth)
 		table.AddRow([]string{
 			fmt.Sprintf("%d", i+1),
-			fmt.Sprintf("<pre>%s%s</pre>", indent, step.Step.StepResult().TermPrint(true)),
+			fmt.Sprintf("<pre>%s%s</pre>", indent, step.Step.StepResult().FormulaPrint(true)),
 			step.Step.StepName(),
 			step.LineReferences,
 		})
@@ -131,7 +131,7 @@ func CheckProof(proof *Proof) (*CheckedProof, error) {
 	if err != nil {
 		return checked, err
 	}
-	result := checked.Steps[len(checked.Steps)-1].Step.StepResult().TermPrint(true)
+	result := checked.Steps[len(checked.Steps)-1].Step.StepResult().FormulaPrint(true)
 	if result != proof.ExpectedResult {
 		return checked, errors.Errorf("proof expected result '%s' does not match actual result '%s'", proof.ExpectedResult, result)
 	}
@@ -149,7 +149,7 @@ func CheckProofHelper(proof *Proof, parentScope *Scope, checked *CheckedProof) e
 }
 
 func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
-	trueTerms := scope.GetTrueTerms()
+	trueFormulas := scope.GetTrueFormulas()
 	lineRefs := ""
 	shouldAdd := true
 	switch t := step.(type) {
@@ -162,7 +162,7 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 		endLine := len(checked.Steps)
 		lineRefs = fmt.Sprintf("%d - %d", startLine, endLine)
 	case *Reiterate:
-		key := t.Term.TermPrint(true)
+		key := t.Formula.FormulaPrint(true)
 		lineRef, ok := scope.FindInParent(key)
 		if !ok {
 			return errors.Errorf("missing or untrue premise '%s' in parent(s)", key)
@@ -183,17 +183,17 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 	default:
 		return errors.Errorf("invalid step type %+v", t)
 	}
-	addedLine := checked.Add(&EvaluatedStep{LineReferences: lineRefs, Depth: scope.Depth, Step: step, ScopeTerms: trueTerms})
+	addedLine := checked.Add(&EvaluatedStep{LineReferences: lineRefs, Depth: scope.Depth, Step: step, ScopeFormulas: trueFormulas})
 	if !shouldAdd {
 		return nil
 	}
-	return scope.Add(step.StepResult().TermPrint(true), addedLine)
+	return scope.Add(step.StepResult().FormulaPrint(true), addedLine)
 }
 
-func findLineRefs(scope *Scope, preconditions []Term, findInParent bool) (string, error) {
+func findLineRefs(scope *Scope, preconditions []Formula, findInParent bool) (string, error) {
 	var linesUsed []int
 	for _, n := range preconditions {
-		key := n.TermPrint(true)
+		key := n.FormulaPrint(true)
 		var lineRef int
 		var ok bool
 		if findInParent {

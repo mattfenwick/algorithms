@@ -9,7 +9,7 @@ import (
 )
 
 type Step interface {
-	StepResult() Term
+	StepResult() Formula
 	StepName() string
 }
 
@@ -42,11 +42,11 @@ func (p ProofType) Name() string {
 type Proof struct {
 	ExpectedResult string
 	Steps          []Step
-	Result         Term
+	Result         Formula
 	ProofType      ProofType
 }
 
-func (p *Proof) StepResult() Term {
+func (p *Proof) StepResult() Formula {
 	return p.Result
 }
 
@@ -63,84 +63,84 @@ func NewRootProof(expectedResult string, steps ...Step) *Proof {
 	}
 }
 
-func NewProofContradiction(hypothesis Term, steps ...Step) *Proof {
+func NewProofContradiction(hypothesis Formula, steps ...Step) *Proof {
 	if len(steps) == 0 {
 		panic(errors.Errorf("expected at least 1 step"))
 	}
-	steps = append([]Step{&Assumption{Term: hypothesis, ProofType: ProofTypeContradiction}}, steps...)
-	results := map[string]bool{hypothesis.TermPrint(true): true}
+	steps = append([]Step{&Assumption{Formula: hypothesis, ProofType: ProofTypeContradiction}}, steps...)
+	results := map[string]bool{hypothesis.FormulaPrint(true): true}
 	for _, step := range steps[:len(steps)-1] {
-		results[step.StepResult().TermPrint(true)] = true
+		results[step.StepResult().FormulaPrint(true)] = true
 	}
 	last := steps[len(steps)-1].StepResult()
 	foundPositive, foundNegative := false, false
 	switch t := last.(type) {
-	case *NotTerm:
-		_, foundPositive = results[t.Term.TermPrint(true)]
+	case *NotFormula:
+		_, foundPositive = results[t.Formula.FormulaPrint(true)]
 	}
-	_, foundNegative = results[Not(last).TermPrint(true)]
+	_, foundNegative = results[Not(last).FormulaPrint(true)]
 	if !foundNegative && !foundPositive {
 		resultsJson, err := json.MarshalWithOptions(results, &json.MarshalOptions{EscapeHTML: false, Indent: true, Sort: true})
 		if err != nil {
 			fmt.Printf("unable to marshal json for results: %+v\n", err)
 		}
 		panic(errors.Errorf(
-			"subproof contradiction must end with negation of some previous term -- '%s' not found in scope\n  previous terms: %s",
-			last.TermPrint(true),
+			"subproof contradiction must end with negation of some previous formula -- '%s' not found in scope\n  previous formulas: %s",
+			last.FormulaPrint(true),
 			resultsJson))
 	}
 	// avoid introducing double negative. if hypothesis is:
 	//    ~ Z, result is Z
 	//    Z, result is ~ Z
-	var result Term
+	var result Formula
 	switch a := hypothesis.(type) {
-	case *NotTerm:
-		result = a.Term
+	case *NotFormula:
+		result = a.Formula
 	default:
 		result = Not(hypothesis)
 	}
 	return &Proof{
-		ExpectedResult: result.TermPrint(true),
+		ExpectedResult: result.FormulaPrint(true),
 		Steps:          steps,
 		Result:         result,
 		ProofType:      ProofTypeContradiction,
 	}
 }
 
-func NewProofImplication(hypothesis Term, steps ...Step) *Proof {
-	steps = append([]Step{&Assumption{Term: hypothesis, ProofType: ProofTypeImplication}}, steps...)
+func NewProofImplication(hypothesis Formula, steps ...Step) *Proof {
+	steps = append([]Step{&Assumption{Formula: hypothesis, ProofType: ProofTypeImplication}}, steps...)
 	// last step is the result
 	last := steps[len(steps)-1]
 	result := Implication(hypothesis, last.StepResult())
 	return &Proof{
-		ExpectedResult: result.TermPrint(true),
+		ExpectedResult: result.FormulaPrint(true),
 		Steps:          steps,
 		Result:         result,
 		ProofType:      ProofTypeImplication,
 	}
 }
 
-func NewProofExistentialElim(varName string, existential *QuantifiedTerm, steps ...Step) *Proof {
+func NewProofExistentialElim(varName string, existential *QuantifiedFormula, steps ...Step) *Proof {
 	if existential.Quantifier != ExistentialQuantifier {
 		panic(errors.Errorf("existential quantifier required, found '%s'", existential.Quantifier))
 	}
 	// TODO check that there's no shadowing.  so these must have different var names from hypothesis:
 	//   subordinate proofs
-	//   existential and forall terms
+	//   existential and forall formulas
 	//   forall instantiation
 	steps = append([]Step{
 		&QuantifierAssumption{
-			Term:          substituteVar(existential.Body, existential.Var, varName),
+			Formula:       substituteVar(existential.Body, existential.Var, varName),
 			ProofType:     ProofTypeExistentialElimination,
-			Preconditions: []Term{existential},
+			Preconditions: []Formula{existential},
 		},
 	}, steps...)
 	// verify reiterations don't mention hypothesis
 	for _, step := range steps {
 		switch t := step.(type) {
 		case *Reiterate:
-			if containsQuantifierHypothesis(t.Term, varName) {
-				panic(errors.Errorf("hypothesis '%s' used in reiteration '%s'", varName, t.Term.TermPrint(true)))
+			if containsQuantifierHypothesis(t.Formula, varName) {
+				panic(errors.Errorf("hypothesis '%s' used in reiteration '%s'", varName, t.Formula.FormulaPrint(true)))
 			}
 		}
 	}
@@ -149,28 +149,28 @@ func NewProofExistentialElim(varName string, existential *QuantifiedTerm, steps 
 	result := last.StepResult()
 	// verify hypothesis isn't used in result
 	if containsQuantifierHypothesis(result, varName) {
-		panic(errors.Errorf("hypothesis '%s' used in result '%s'", varName, result.TermPrint(true)))
+		panic(errors.Errorf("hypothesis '%s' used in result '%s'", varName, result.FormulaPrint(true)))
 	}
 	return &Proof{
-		ExpectedResult: result.TermPrint(true),
+		ExpectedResult: result.FormulaPrint(true),
 		Steps:          steps,
 		Result:         result,
 		ProofType:      ProofTypeExistentialElimination,
 	}
 }
 
-func containsQuantifierHypothesis(term Term, hypothesis string) bool {
-	switch t := term.(type) {
-	case *NotTerm:
-		return containsQuantifierHypothesis(t.Term, hypothesis)
-	case *PropTerm:
-		return slice.Any(func(p *PropArg) bool { return p.Var == hypothesis }, t.Args)
-	case *BinOpTerm:
+func containsQuantifierHypothesis(formula Formula, hypothesis string) bool {
+	switch t := formula.(type) {
+	case *NotFormula:
+		return containsQuantifierHypothesis(t.Formula, hypothesis)
+	case *PredicateFormula:
+		return slice.Any(func(p *PredicateArg) bool { return p.Var == hypothesis }, t.Args)
+	case *BinOpFormula:
 		return containsQuantifierHypothesis(t.Left, hypothesis) || containsQuantifierHypothesis(t.Right, hypothesis)
-	case *QuantifiedTerm:
+	case *QuantifiedFormula:
 		return containsQuantifierHypothesis(t.Body, hypothesis)
 	default:
-		panic(errors.Errorf("invalid term type: %T", term))
+		panic(errors.Errorf("invalid formula type: %T", formula))
 	}
 }
 
@@ -181,20 +181,20 @@ func NewProofForallIntro(varName string, hypothesis string, steps ...Step) *Proo
 	last := steps[len(steps)-1]
 	result := Forall(varName, substituteVar(last.StepResult(), hypothesis, varName))
 	return &Proof{
-		ExpectedResult: result.TermPrint(true),
+		ExpectedResult: result.FormulaPrint(true),
 		Steps:          steps,
 		Result:         result,
 		ProofType:      ProofTypeForallIntroduction,
 	}
 }
 
-// Reiterate pulls in a term from an enclosing scope
+// Reiterate pulls in a formula from an enclosing scope
 type Reiterate struct {
-	Term Term
+	Formula Formula
 }
 
-func (r *Reiterate) StepResult() Term {
-	return r.Term
+func (r *Reiterate) StepResult() Formula {
+	return r.Formula
 }
 
 func (r *Reiterate) StepName() string {
@@ -202,12 +202,12 @@ func (r *Reiterate) StepName() string {
 }
 
 type Assumption struct {
-	Term      Term
+	Formula   Formula
 	ProofType ProofType
 }
 
-func (a *Assumption) StepResult() Term {
-	return a.Term
+func (a *Assumption) StepResult() Formula {
+	return a.Formula
 }
 
 func (a *Assumption) StepName() string {
@@ -215,13 +215,13 @@ func (a *Assumption) StepName() string {
 }
 
 type QuantifierAssumption struct {
-	Term          Term
+	Formula       Formula
 	ProofType     ProofType
-	Preconditions []Term
+	Preconditions []Formula
 }
 
-func (a *QuantifierAssumption) StepResult() Term {
-	return a.Term
+func (a *QuantifierAssumption) StepResult() Formula {
+	return a.Formula
 }
 
 func (a *QuantifierAssumption) StepName() string {

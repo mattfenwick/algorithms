@@ -1,12 +1,12 @@
 package logic
 
 type Rule struct {
-	Preconditions []Term
-	Result        Term
+	Preconditions []Formula
+	Result        Formula
 	Name          string
 }
 
-func (r *Rule) StepResult() Term {
+func (r *Rule) StepResult() Formula {
 	return r.Result
 }
 
@@ -14,7 +14,7 @@ func (r *Rule) StepName() string {
 	return r.Name
 }
 
-func (r *Rule) StandardForm() Term {
+func (r *Rule) StandardForm() Formula {
 	pres, result := r.Preconditions, r.Result
 	left := pres[0]
 	for _, l := range pres[1:] {
@@ -23,22 +23,22 @@ func (r *Rule) StandardForm() Term {
 	return Implication(left, result)
 }
 
-func NewRule(name string, result Term, preconditions ...Term) *Rule {
+func NewRule(name string, result Formula, preconditions ...Formula) *Rule {
 	return &Rule{Preconditions: preconditions, Result: result, Name: name}
 }
 
 // I -> -- P, Q => P -> Q
-func IImply(ifTerm Term, then Term) *Rule {
-	return NewRule("I ->", Implication(ifTerm, then), ifTerm, then)
+func IImply(iff Formula, then Formula) *Rule {
+	return NewRule("I ->", Implication(iff, then), iff, then)
 }
 
 // E -> -- (P -> Q), P => Q
-func EImply(ifTerm Term, then Term) *Rule {
-	return NewRule("E ->", then, Implication(ifTerm, then), ifTerm)
+func EImply(iff Formula, then Formula) *Rule {
+	return NewRule("E ->", then, Implication(iff, then), iff)
 }
 
 // I ^ -- P, Q => P ^ Q
-func IAnd(left Term, right Term) *Rule {
+func IAnd(left Formula, right Formula) *Rule {
 	return NewRule("I ^", And(left, right), left, right)
 }
 
@@ -46,7 +46,7 @@ func IAnd(left Term, right Term) *Rule {
 //
 //	Left : P ^ Q => P
 //	Right: P ^ Q => Q
-func EAnd(left Term, right Term, isLeft bool) *Rule {
+func EAnd(left Formula, right Formula, isLeft bool) *Rule {
 	result := right
 	name := "E ^ (R)"
 	if isLeft {
@@ -60,7 +60,7 @@ func EAnd(left Term, right Term, isLeft bool) *Rule {
 //
 //	Left: P -> P v Q
 //	Right: Q -> P v Q
-func IOr(left Term, right Term, isLeft bool) *Rule {
+func IOr(left Formula, right Formula, isLeft bool) *Rule {
 	pre := right
 	name := "I v (R)"
 	if isLeft {
@@ -71,7 +71,7 @@ func IOr(left Term, right Term, isLeft bool) *Rule {
 }
 
 // E v -- P -> R, Q -> R, P v Q -> R
-func EOr(if1 Term, if2 Term, then Term) *Rule {
+func EOr(if1 Formula, if2 Formula, then Formula) *Rule {
 	return NewRule("E v", then,
 		Implication(if1, then),
 		Implication(if2, then),
@@ -79,17 +79,17 @@ func EOr(if1 Term, if2 Term, then Term) *Rule {
 }
 
 // I ~ -- P -> ~~P
-func INot(term Term) *Rule {
-	return NewRule("I ~", Not(Not(term)), term)
+func INot(formula Formula) *Rule {
+	return NewRule("I ~", Not(Not(formula)), formula)
 }
 
 // E ~ -- ~~P -> P
-func ENot(term Term) *Rule {
-	return NewRule("E ~", term, Not(Not(term)))
+func ENot(formula Formula) *Rule {
+	return NewRule("E ~", formula, Not(Not(formula)))
 }
 
 // I <-> -- (P -> Q), (Q -> P) => P <-> Q
-func IBiconditional(l Term, r Term) *Rule {
+func IBiconditional(l Formula, r Formula) *Rule {
 	return NewRule("I <->", Biconditional(l, r), Implication(l, r), Implication(r, l))
 }
 
@@ -97,7 +97,7 @@ func IBiconditional(l Term, r Term) *Rule {
 //
 //	Left: (P <-> Q) -> (P -> Q)
 //	Right: (P <-> Q) -> (Q -> P)
-func EBiconditional(l Term, r Term, isLeft bool) *Rule {
+func EBiconditional(l Formula, r Formula, isLeft bool) *Rule {
 	name := "E <-> (R)"
 	result := Implication(r, l)
 	if isLeft {
@@ -109,18 +109,18 @@ func EBiconditional(l Term, r Term, isLeft bool) *Rule {
 
 // preconditions: ∀x.( Q(x) )
 // result: Q(a) -- from substituting: ∀x.( Q(x) )[x -> a]
-func EForall(term Term, varName string, arg string) *Rule {
+func EForall(formula Formula, varName string, arg string) *Rule {
 	return NewRule("E ∀",
-		substituteVar(term, varName, arg),
-		Forall(varName, term),
+		substituteVar(formula, varName, arg),
+		Forall(varName, formula),
 	)
 }
 
 // preconditions: Q(a)
 // result: ∃x.( Q(x) ) -- from substituting: Q(a)[a -> x]
-func IExistential(term Term, from string, to string) *Rule {
+func IExistential(formula Formula, from string, to string) *Rule {
 	return NewRule("I ∃",
-		Existential(to, substituteVar(term, from, to)),
-		term,
+		Existential(to, substituteVar(formula, from, to)),
+		formula,
 	)
 }
