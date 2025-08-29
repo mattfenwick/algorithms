@@ -39,6 +39,24 @@ var proofs = []*ProofsSection{
 				IExistential(Prop("Q", "a"), "a", "x"),
 			),
 		),
+		// TODO might not be possible to prove?
+		// NewRootProof("( P -> ∃x.( Q(x) ) ) -> ∃x.( P -> Q(x) )",
+		// 	NewProofImplication(Implication(P, Existential("x", Prop("Q", "x")),
+		// 		IExistential(Prop("Q", "a"), "a", "x"),
+		// 	),
+		// ),
+		NewRootProof("∃x.( P -> Q(x) ) -> ( P -> ∃y.( Q(y) ) )",
+			NewProofImplication(Existential("x", Implication(P, Prop("Q", "x"))),
+				NewProofImplication(P,
+					&Reiterate{Term: Existential("x", Implication(P, Prop("Q", "x")))},
+					NewProofExistentialElim("a", Existential("x", Implication(P, Prop("Q", "x"))),
+						&Reiterate{Term: P},                    // P
+						EImply(P, Prop("Q", "a")),              // Q(a)
+						IExistential(Prop("Q", "a"), "a", "y"), // ∃y.( Q(y) )
+					), // ∃y.( Q(y) )
+				), // P -> ∃y.( Q(y) )
+			),
+		),
 		NewRootProof("∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R",
 			NewProofImplication(Existential("x", And(Prop("Q", "x"), Implication(Prop("Q", "x"), R))),
 				NewProofExistentialElim("a",
@@ -76,5 +94,22 @@ var proofs = []*ProofsSection{
 		// 		EAnd(R, Prop("Q", "a"), true),            // R
 		// 	),
 		// ),
+		NewRootProof("∀x.( P(x) ^ Q(x) ) -> ( ∀y.( P(y) ) ^ ∀z.( Q(z) ) )",
+			NewProofImplication(Forall("x", And(Prop("P", "x"), Prop("Q", "x"))),
+				NewProofForallIntro("y", "a",
+					&Reiterate{Term: Forall("x", And(Prop("P", "x"), Prop("Q", "x")))}, // ∀x.( P(x) ^ Q(x) )
+					// TODO are we actually checking if 'a' is "in scope" before doing this?
+					EForall(And(Prop("P", "x"), Prop("Q", "x")), "x", "a"), // P(a) ^ Q(a)
+					EAnd(Prop("P", "a"), Prop("Q", "a"), true),             // P(a)
+				), // ∀y.( P(y)
+				NewProofForallIntro("z", "a",
+					&Reiterate{Term: Forall("x", And(Prop("P", "x"), Prop("Q", "x")))}, // ∀x.( P(x) ^ Q(x) )
+					// TODO are we actually checking if 'a' is "in scope" before doing this?
+					EForall(And(Prop("P", "x"), Prop("Q", "x")), "x", "a"), // P(a) ^ Q(a)
+					EAnd(Prop("P", "a"), Prop("Q", "a"), false),            // Q(a)
+				), // ∀z.( Q(z)
+				IAnd(Forall("y", Prop("P", "y")), Forall("z", Prop("Q", "z"))),
+			),
+		),
 	),
 }
