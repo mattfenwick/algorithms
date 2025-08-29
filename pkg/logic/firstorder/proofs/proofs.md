@@ -5,6 +5,8 @@
     1. [P v ~ P](#proof-1-1)
     2. [∀x.( Q(x) ) -> Q(a)](#proof-1-2)
     3. [Q(a) -> ∃x.( Q(x) )](#proof-1-3)
+    4. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-1-4)
+    5. [( ∀y.( Q(y) ) ^ ∃x.( Q(x) -> R ) ) -> R](#proof-1-5)
 
 # basics <a name="basics"></a>
 
@@ -12,8 +14,8 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ~ ( P v ~ P )</pre> | Assume Contradiction |  |
-| 2 | <pre>.   .   P</pre> | Assume Contradiction |  |
+| 1 | <pre>.   ~ ( P v ~ P )</pre> | Assume: contradiction |  |
+| 2 | <pre>.   .   P</pre> | Assume: contradiction |  |
 | 3 | <pre>.   .   P v ~ P</pre> | I v (L) | 2 |
 | 4 | <pre>.   .   ~ ( P v ~ P )</pre> | Reiterate | 1 |
 | 5 | <pre>.   ~ P</pre> | subproof contradiction | 2 - 4 |
@@ -24,7 +26,7 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   ∀x.( Q(x) )</pre> | Assume Implication |  |
+| 1 | <pre>.   ∀x.( Q(x) )</pre> | Assume: implication |  |
 | 2 | <pre>.   Q(a)</pre> | E ∀ | 1 |
 | 3 | <pre>∀x.( Q(x) ) -> Q(a)</pre> | subproof implication | 1 - 2 |
 
@@ -32,7 +34,33 @@
 
 | Line | Formula | Justification | Lines used |
 | - | - | - | - |
-| 1 | <pre>.   Q(a)</pre> | Assume Implication |  |
+| 1 | <pre>.   Q(a)</pre> | Assume: implication |  |
 | 2 | <pre>.   ∃x.( Q(x) )</pre> | I ∃ | 1 |
 | 3 | <pre>Q(a) -> ∃x.( Q(x) )</pre> | subproof implication | 1 - 2 |
+
+## ∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R <a name="proof-1-4"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ∃x.( Q(x) ^ ( Q(x) -> R ) )</pre> | Assume: implication |  |
+| 2 | <pre>.   .   Q(a) ^ ( Q(a) -> R )</pre> | Assume: ∃ elimination | 1 |
+| 3 | <pre>.   .   Q(a)</pre> | E ^ (L) | 2 |
+| 4 | <pre>.   .   Q(a) -> R</pre> | E ^ (R) | 2 |
+| 5 | <pre>.   .   R</pre> | E -> | 4, 3 |
+| 6 | <pre>.   R</pre> | subproof ∃ elimination | 2 - 5 |
+| 7 | <pre>∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R</pre> | subproof implication | 1 - 6 |
+
+## ( ∀y.( Q(y) ) ^ ∃x.( Q(x) -> R ) ) -> R <a name="proof-1-5"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ∀y.( Q(y) ) ^ ∃x.( Q(x) -> R )</pre> | Assume: implication |  |
+| 2 | <pre>.   ∀y.( Q(y) )</pre> | E ^ (L) | 1 |
+| 3 | <pre>.   ∃x.( Q(x) -> R )</pre> | E ^ (R) | 1 |
+| 4 | <pre>.   .   Q(a) -> R</pre> | Assume: ∃ elimination | 3 |
+| 5 | <pre>.   .   ∀y.( Q(y) )</pre> | Reiterate | 2 |
+| 6 | <pre>.   .   Q(a)</pre> | E ∀ | 5 |
+| 7 | <pre>.   .   R</pre> | E -> | 4, 6 |
+| 8 | <pre>.   R</pre> | subproof ∃ elimination | 4 - 7 |
+| 9 | <pre>( ∀y.( Q(y) ) ^ ∃x.( Q(x) -> R ) ) -> R</pre> | subproof implication | 1 - 8 |
 

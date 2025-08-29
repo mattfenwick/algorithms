@@ -34,8 +34,7 @@ type Term interface {
 }
 
 type PropArg struct {
-	Var    string
-	Object *string
+	Var string
 }
 
 // PropTerm without args is used by 0th-order
@@ -50,9 +49,6 @@ func (v *PropTerm) TermPrint(isRoot bool) string {
 		return v.Name
 	}
 	return fmt.Sprintf("%s(%s)", v.Name, strings.Join(slice.Map(func(p *PropArg) string {
-		if p.Object != nil {
-			return *p.Object
-		}
 		return p.Var
 	}, v.Args), ","))
 }
@@ -137,13 +133,7 @@ func substituteVar(term Term, from string, to string) Term {
 			Name: t.Name,
 			Args: slice.Map(func(p *PropArg) *PropArg {
 				if p.Var == from {
-					if p.Object != nil {
-						panic(errors.Errorf("cannot substitute for proparg %+v: already substituted", p))
-					}
-					return &PropArg{
-						Var:    p.Var,
-						Object: &to,
-					}
+					return &PropArg{Var: to}
 				}
 				return p
 			}, t.Args),
@@ -181,7 +171,7 @@ func (o *BinOpTerm) TermPrint(isRoot bool) string {
 
 func Prop(name string, args ...string) *PropTerm {
 	return &PropTerm{Name: name, Args: slice.Map(func(a string) *PropArg {
-		return &PropArg{Var: a, Object: nil}
+		return &PropArg{Var: a}
 	}, args)}
 }
 

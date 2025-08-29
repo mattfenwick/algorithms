@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/mattfenwick/collections/pkg/json"
+	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
 )
 
@@ -15,10 +16,28 @@ type Step interface {
 type ProofType string
 
 const (
-	ProofTypeRoot          ProofType = "Root"
-	ProofTypeContradiction ProofType = "Contradiction"
-	ProofTypeImplication   ProofType = "Implication"
+	ProofTypeRoot                   ProofType = "Root"
+	ProofTypeContradiction          ProofType = "Contradiction"
+	ProofTypeImplication            ProofType = "Implication"
+	ProofTypeForallIntroduction     ProofType = "Forall Introduction"
+	ProofTypeExistentialElimination ProofType = "Existential Elimination"
 )
+
+func (p ProofType) Name() string {
+	switch p {
+	case ProofTypeContradiction:
+		return "contradiction"
+	case ProofTypeImplication:
+		return "implication"
+	case ProofTypeExistentialElimination:
+		return "∃ elimination"
+	case ProofTypeForallIntroduction:
+		return "∀ introduction"
+	default:
+		panic(errors.Errorf("no Name defined for proof type '%s'", p))
+	}
+
+}
 
 type Proof struct {
 	ExpectedResult string
@@ -32,14 +51,7 @@ func (p *Proof) StepResult() Term {
 }
 
 func (p *Proof) StepName() string {
-	switch p.ProofType {
-	case ProofTypeContradiction:
-		return "subproof contradiction"
-	case ProofTypeImplication:
-		return "subproof implication"
-	default:
-		panic(errors.Errorf("no StepName defined for proof type '%s'", p.ProofType))
-	}
+	return fmt.Sprintf("subproof %s", p.ProofType.Name())
 }
 
 func NewRootProof(expectedResult string, steps ...Step) *Proof {
@@ -108,6 +120,74 @@ func NewProofImplication(hypothesis Term, steps ...Step) *Proof {
 	}
 }
 
+func NewProofExistentialElim(varName string, existential *QuantifiedTerm, steps ...Step) *Proof {
+	if existential.Quantifier != ExistentialQuantifier {
+		panic(errors.Errorf("existential quantifier required, found '%s'", existential.Quantifier))
+	}
+	// TODO check that there's no shadowing.  so these must have different var names from hypothesis:
+	//   subordinate proofs
+	//   existential and forall terms
+	//   forall instantiation
+	steps = append([]Step{
+		&QuantifierAssumption{
+			Term:          substituteVar(existential.Body, existential.Var, varName),
+			ProofType:     ProofTypeExistentialElimination,
+			Preconditions: []Term{existential},
+		},
+	}, steps...)
+	// verify reiterations don't mention hypothesis
+	for _, step := range steps {
+		switch t := step.(type) {
+		case *Reiterate:
+			if containsQuantifierHypothesis(t.Term, varName) {
+				panic(errors.Errorf("hypothesis '%s' used in reiteration '%s'", varName, t.Term.TermPrint(true)))
+			}
+		}
+	}
+	// last step is the result and must not refer to the hypothesis
+	last := steps[len(steps)-1]
+	result := last.StepResult()
+	// verify hypothesis isn't used in result
+	if containsQuantifierHypothesis(result, varName) {
+		panic(errors.Errorf("hypothesis '%s' used in result '%s'", varName, result.TermPrint(true)))
+	}
+	return &Proof{
+		ExpectedResult: result.TermPrint(true),
+		Steps:          steps,
+		Result:         result,
+		ProofType:      ProofTypeExistentialElimination,
+	}
+}
+
+func containsQuantifierHypothesis(term Term, hypothesis string) bool {
+	switch t := term.(type) {
+	case *NotTerm:
+		return containsQuantifierHypothesis(t.Term, hypothesis)
+	case *PropTerm:
+		return slice.Any(func(p *PropArg) bool { return p.Var == hypothesis }, t.Args)
+	case *BinOpTerm:
+		return containsQuantifierHypothesis(t.Left, hypothesis) || containsQuantifierHypothesis(t.Right, hypothesis)
+	case *QuantifiedTerm:
+		return containsQuantifierHypothesis(t.Body, hypothesis)
+	default:
+		panic(errors.Errorf("invalid term type: %T", term))
+	}
+}
+
+func NewProofForallIntro(varName string, hypothesis string, steps ...Step) *Proof {
+	// TODO shadowing
+	// TODO verify reiterations don't mention hypothesis
+	// last step is the result
+	last := steps[len(steps)-1]
+	result := Forall(varName, substituteVar(last.StepResult(), hypothesis, varName))
+	return &Proof{
+		ExpectedResult: result.TermPrint(true),
+		Steps:          steps,
+		Result:         result,
+		ProofType:      ProofTypeExistentialElimination,
+	}
+}
+
 // Reiterate pulls in a term from an enclosing scope
 type Reiterate struct {
 	Term Term
@@ -121,7 +201,6 @@ func (r *Reiterate) StepName() string {
 	return "Reiterate"
 }
 
-// TODO do we really need this?
 type Assumption struct {
 	Term      Term
 	ProofType ProofType
@@ -132,5 +211,19 @@ func (a *Assumption) StepResult() Term {
 }
 
 func (a *Assumption) StepName() string {
-	return fmt.Sprintf("Assume %s", a.ProofType)
+	return fmt.Sprintf("Assume: %s", a.ProofType.Name())
+}
+
+type QuantifierAssumption struct {
+	Term          Term
+	ProofType     ProofType
+	Preconditions []Term
+}
+
+func (a *QuantifierAssumption) StepResult() Term {
+	return a.Term
+}
+
+func (a *QuantifierAssumption) StepName() string {
+	return fmt.Sprintf("Assume: %s", a.ProofType.Name())
 }

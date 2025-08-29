@@ -166,20 +166,18 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 			return errors.Errorf("missing or untrue premise '%s' in parent(s)", key)
 		}
 		lineRefs = fmt.Sprintf("%d", lineRef)
-	case *Rule:
-		var linesUsed []int
-		for _, n := range t.Preconditions {
-			key := n.TermPrint(true)
-			lineRef, ok := scope.Find(key)
-			if !ok {
-				return errors.Errorf("missing or untrue premise '%s'", key)
-			}
-			linesUsed = append(linesUsed, lineRef)
+	case *QuantifierAssumption:
+		var err error
+		lineRefs, err = findLineRefs(scope, t.Preconditions, true)
+		if err != nil {
+			return err
 		}
-		// purposely not sorting `linesUsed`, which means they can show up seemingly out of order
-		//   for example, '3, 2'
-		//   but this matches the actual order they're used in by the rule, so imo it's a good thing
-		lineRefs = strings.Join(slice.Map(intToString, linesUsed), ", ")
+	case *Rule:
+		var err error
+		lineRefs, err = findLineRefs(scope, t.Preconditions, false)
+		if err != nil {
+			return err
+		}
 	default:
 		return errors.Errorf("invalid step type %+v", t)
 	}
@@ -188,6 +186,28 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 		return nil
 	}
 	return scope.Add(step.StepResult().TermPrint(true), addedLine)
+}
+
+func findLineRefs(scope *Scope, preconditions []Term, findInParent bool) (string, error) {
+	var linesUsed []int
+	for _, n := range preconditions {
+		key := n.TermPrint(true)
+		var lineRef int
+		var ok bool
+		if findInParent {
+			lineRef, ok = scope.FindInParent(key)
+		} else {
+			lineRef, ok = scope.Find(key)
+		}
+		if !ok {
+			return "", errors.Errorf("missing or untrue premise '%s'", key)
+		}
+		linesUsed = append(linesUsed, lineRef)
+	}
+	// purposely not sorting `linesUsed`, which means they can show up seemingly out of order
+	//   for example, '3, 2'
+	//   but this matches the actual order they're used in by the rule, so imo it's a good thing
+	return strings.Join(slice.Map(intToString, linesUsed), ", "), nil
 }
 
 func intToString(i int) string {
