@@ -184,7 +184,7 @@ func NewProofForallIntro(varName string, hypothesis string, steps ...Step) *Proo
 		ExpectedResult: result.TermPrint(true),
 		Steps:          steps,
 		Result:         result,
-		ProofType:      ProofTypeExistentialElimination,
+		ProofType:      ProofTypeForallIntroduction,
 	}
 }
 

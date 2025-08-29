@@ -89,11 +89,11 @@
 | 2 | <pre>.   .   ∀x.( P(x) ^ Q(x) )</pre> | Reiterate | 1 |
 | 3 | <pre>.   .   P(a) ^ Q(a)</pre> | E ∀ | 2 |
 | 4 | <pre>.   .   P(a)</pre> | E ^ (L) | 3 |
-| 5 | <pre>.   ∀y.( P(y) )</pre> | subproof ∃ elimination | 2 - 4 |
+| 5 | <pre>.   ∀y.( P(y) )</pre> | subproof ∀ introduction | 2 - 4 |
 | 6 | <pre>.   .   ∀x.( P(x) ^ Q(x) )</pre> | Reiterate | 1 |
 | 7 | <pre>.   .   P(a) ^ Q(a)</pre> | E ∀ | 6 |
 | 8 | <pre>.   .   Q(a)</pre> | E ^ (R) | 7 |
-| 9 | <pre>.   ∀z.( Q(z) )</pre> | subproof ∃ elimination | 6 - 8 |
+| 9 | <pre>.   ∀z.( Q(z) )</pre> | subproof ∀ introduction | 6 - 8 |
 | 10 | <pre>.   ∀y.( P(y) ) ^ ∀z.( Q(z) )</pre> | I ^ | 5, 9 |
 | 11 | <pre>∀x.( P(x) ^ Q(x) ) -> ( ∀y.( P(y) ) ^ ∀z.( Q(z) ) )</pre> | subproof implication | 1 - 10 |
 
