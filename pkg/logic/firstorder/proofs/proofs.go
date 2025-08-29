@@ -7,6 +7,13 @@ var (
 	Q = Prop("Q")
 	R = Prop("R")
 	S = Prop("S")
+
+	T = Prop("T") // True
+	F = Prop("F") // False
+
+	Qa = Prop("Q", "a")
+	Qb = Prop("Q", "b")
+	Qx = Prop("Q", "x")
 )
 
 type ProofsSection struct {
@@ -39,22 +46,49 @@ var proofs = []*ProofsSection{
 				IExistential(Prop("Q", "a"), "a", "x"),
 			),
 		),
-		// TODO might not be possible to prove?
-		// NewRootProof("( P -> ∃x.( Q(x) ) ) -> ∃x.( P -> Q(x) )",
-		// 	NewProofImplication(Implication(P, Existential("x", Prop("Q", "x")),
-		// 		IExistential(Prop("Q", "a"), "a", "x"),
-		// 	),
-		// ),
-		NewRootProof("∃x.( P -> Q(x) ) -> ( P -> ∃y.( Q(y) ) )",
-			NewProofImplication(Existential("x", Implication(P, Prop("Q", "x"))),
+		NewRootProof("( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )",
+			NewProofImplication(And(Existential("x", T), Implication(P, Existential("x", Qx))),
+				EAnd(Existential("x", T), Implication(P, Existential("x", Qx)), true),  // ∃x.( T )
+				EAnd(Existential("x", T), Implication(P, Existential("x", Qx)), false), // P -> ∃x.( Q(x) )
+				NewProofExistentialElim("a", Existential("x", T),
+					NewProofImplication(P,
+						&Reiterate{Term: Implication(P, Existential("x", Qx))}, // P -> ∃x.( Q(x) )
+						EImply(P, Existential("x", Qx)),                        // ∃x.( Q(x)
+						NewProofExistentialElim("b", Existential("x", Qx),
+							&Reiterate{Term: P}, // P
+							IImply(P, Qb),       // P -> Q(b)
+							IExistential(Implication(P, Qb), "b", "x"), // ∃x.( P -> Q(x) )
+						), // ∃x.( P -> Q(x) )
+					), // P -> ∃x.( P -> Q(x) )
+					NewProofImplication(Not(P),
+						NewProofImplication(Not(Qa),
+							&Reiterate{Term: Not(P)},
+						), // ~ Q(a) -> ~ P
+						ContrapositiveTheorem(Not(Qa), Not(P)),     // P -> Q(a)
+						IExistential(Implication(P, Qa), "a", "x"), // ∃x.( P -> Q(x) )
+					), // ~ P -> ∃x.( P -> Q(x) )
+					ExcludedMiddleTheorem(P), // P v ~ P
+					EOr(P, Not(P), Existential("x", Implication(P, Qx))),
+				),
+			),
+			NewProofImplication(Existential("x", Implication(P, Qx)),
 				NewProofImplication(P,
-					&Reiterate{Term: Existential("x", Implication(P, Prop("Q", "x")))},
-					NewProofExistentialElim("a", Existential("x", Implication(P, Prop("Q", "x"))),
-						&Reiterate{Term: P},                    // P
-						EImply(P, Prop("Q", "a")),              // Q(a)
-						IExistential(Prop("Q", "a"), "a", "y"), // ∃y.( Q(y) )
-					), // ∃y.( Q(y) )
-				), // P -> ∃y.( Q(y) )
+					&Reiterate{Term: Existential("x", Implication(P, Qx))},
+					NewProofExistentialElim("a", Existential("x", Implication(P, Qx)),
+						&Reiterate{Term: P},        // P
+						EImply(P, Qa),              // Q(a)
+						IExistential(Qa, "a", "x"), // ∃x.( Q(x) )
+					), // ∃x.( Q(x) )
+				), // P -> ∃x.( Q(x) )
+				NewProofExistentialElim("a", Existential("x", Implication(P, Qx)),
+					&Reiterate{Term: T},       // T
+					IExistential(T, "a", "x"), // ∃x.( T )
+				), // ∃x.( T )
+				IAnd(Existential("x", T), Implication(P, Existential("x", Qx))),
+			),
+			IBiconditional(
+				And(Existential("x", T), Implication(P, Existential("x", Qx))),
+				Existential("x", Implication(P, Qx)),
 			),
 		),
 		NewRootProof("∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R",

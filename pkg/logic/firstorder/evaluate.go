@@ -13,6 +13,8 @@ type Env struct {
 }
 
 func NewEnv(propToTruth map[string]bool, domain ...string) *Env {
+	propToTruth["T"] = true
+	propToTruth["F"] = false
 	return &Env{
 		PropToTruth: propToTruth,
 		Domain:      set.FromSlice(domain),

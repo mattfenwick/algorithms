@@ -125,7 +125,9 @@ func (c *CheckedProof) BuildStepMarkdownTable() string {
 
 func CheckProof(proof *Proof) (*CheckedProof, error) {
 	checked := &CheckedProof{}
-	err := CheckProofHelper(proof, nil, checked)
+	rootScope := NewScope(nil)
+	rootScope.Add("T", 0)
+	err := CheckProofHelper(proof, rootScope, checked)
 	if err != nil {
 		return checked, err
 	}

@@ -118,9 +118,9 @@ func EForall(term Term, varName string, arg string) *Rule {
 
 // preconditions: Q(a)
 // result: ∃x.( Q(x) ) -- from substituting: Q(a)[a -> x]
-func IExistential(term Term, arg string, varName string) *Rule {
+func IExistential(term Term, from string, to string) *Rule {
 	return NewRule("I ∃",
-		Existential(varName, substituteVar(term, arg, varName)),
+		Existential(to, substituteVar(term, from, to)),
 		term,
 	)
 }
