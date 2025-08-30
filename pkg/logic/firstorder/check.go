@@ -14,7 +14,7 @@ import (
 type EvaluatedStep struct {
 	Depth          int
 	LineReferences string
-	Step           Step
+	Step           any // Step or *DefineTermVar
 	ScopeFormulas  []string
 	TermVars       []string
 }
@@ -115,17 +115,23 @@ func (c *CheckedProof) Add(step *EvaluatedStep) int {
 func (c *CheckedProof) PrintSteps() {
 	for i, step := range c.Steps {
 		indent := strings.Repeat("  ", step.Depth)
-		result := ""
-		stepResult := step.Step.StepResult()
-		if stepResult != nil {
-			result = (*stepResult).FormulaPrint(true)
+		var result, termVar, stepName string
+		switch t := step.Step.(type) {
+		case Step:
+			result = t.StepResult().FormulaPrint(true)
+			stepName = t.StepName()
+		case *DefineTermVar:
+			termVar = t.Name
+			stepName = t.StepName()
 		}
-		fmt.Printf("%s%d: %s    %s: %s\n",
+		fmt.Printf("%s%d: %s    %s: %s, %s\n",
 			indent,
 			i+1,
 			result,
-			step.Step.StepName(),
-			step.LineReferences)
+			stepName,
+			step.LineReferences,
+			termVar,
+		)
 	}
 }
 
@@ -133,21 +139,20 @@ func (c *CheckedProof) BuildStepTable() string {
 	table := utils.NewTable([]string{"Line", "Formula", "Term var", "Justification", "Lines used"})
 	for i, step := range c.Steps {
 		indent := strings.Repeat("  | ", step.Depth)
-		result := ""
-		termVar := ""
-		stepResult := step.Step.StepResult()
-		if stepResult != nil {
-			result = (*stepResult).FormulaPrint(true)
-		}
-		stepTermVar := step.Step.StepDefineTermVar()
-		if stepTermVar != nil {
-			termVar = *stepTermVar
+		var result, termVar, stepName string
+		switch t := step.Step.(type) {
+		case Step:
+			result = t.StepResult().FormulaPrint(true)
+			stepName = t.StepName()
+		case *DefineTermVar:
+			termVar = t.Name
+			stepName = t.StepName()
 		}
 		table.AddRow([]string{
 			fmt.Sprintf("%d", i+1),
 			fmt.Sprintf("%s%s", indent, result),
 			termVar,
-			step.Step.StepName(),
+			stepName,
 			step.LineReferences,
 		})
 	}
@@ -160,22 +165,21 @@ func (c *CheckedProof) BuildStepMarkdownTable() string {
 	table := utils.NewTable([]string{"Line", "Formula", "Term var", "Justification", "Lines used"})
 	for i, step := range c.Steps {
 		indent := strings.Repeat(".   ", step.Depth)
-		result := ""
-		termVar := ""
-		stepResult := step.Step.StepResult()
-		if stepResult != nil {
-			result = (*stepResult).FormulaPrint(true)
-		}
-		stepTermVar := step.Step.StepDefineTermVar()
-		if stepTermVar != nil {
-			termVar = *stepTermVar
+		var result, termVar, stepName string
+		switch t := step.Step.(type) {
+		case Step:
+			result = t.StepResult().FormulaPrint(true)
+			stepName = t.StepName()
+		case *DefineTermVar:
+			termVar = t.Name
+			stepName = t.StepName()
 		}
 
 		table.AddRow([]string{
 			fmt.Sprintf("%d", i+1),
 			fmt.Sprintf("<pre>%s%s</pre>", indent, result),
 			termVar,
-			step.Step.StepName(),
+			stepName,
 			step.LineReferences,
 		})
 	}
@@ -190,16 +194,34 @@ func CheckRootProof(proof *Proof) (*CheckedProof, error) {
 	if err != nil {
 		return checked, err
 	}
-	result := *checked.Steps[len(checked.Steps)-1].Step.StepResult()
-	resultString := result.FormulaPrint(true)
-	if resultString != proof.ExpectedResult {
-		return checked, errors.Errorf("proof expected result '%s' does not match actual result '%s'", proof.ExpectedResult, resultString)
+	last := checked.Steps[len(checked.Steps)-1]
+	switch t := last.Step.(type) {
+	case Step:
+		result := t.StepResult()
+		resultString := result.FormulaPrint(true)
+		if resultString != proof.ExpectedResult {
+			return checked, errors.Errorf("proof expected result '%s' does not match actual result '%s'", proof.ExpectedResult, resultString)
+		}
+		return checked, nil
+	default:
+		return checked, errors.Errorf("proof must end with a Step, instead found %T", last.Step)
 	}
-	return checked, nil
 }
 
 func CheckProofHelper(proof *Proof, parentScope *Scope, checked *CheckedProof) error {
 	scope := NewScope(parentScope)
+	if proof.TermVar != nil {
+		addedLine := checked.Add(&EvaluatedStep{
+			LineReferences: "",
+			Depth:          scope.Depth,
+			Step:           &DefineTermVar{Name: *proof.TermVar},
+			ScopeFormulas:  scope.GetTrueFormulas(),
+			TermVars:       scope.GetTermVars(),
+		})
+		if err := scope.AddTermVar(*proof.TermVar, addedLine); err != nil {
+			return err
+		}
+	}
 	for _, step := range proof.Steps {
 		if err := CheckStep(step, scope, checked); err != nil {
 			return err
@@ -253,15 +275,6 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 				lineRefs = fmt.Sprintf("%s, %s", lineRefs, intToString(lineRef))
 			}
 		}
-	case *TermVar:
-		addedLine := checked.Add(&EvaluatedStep{
-			LineReferences: lineRefs,
-			Depth:          scope.Depth,
-			Step:           step,
-			ScopeFormulas:  trueFormulas,
-			TermVars:       termVars,
-		})
-		return scope.AddTermVar(t.Name, addedLine)
 	default:
 		return errors.Errorf("invalid step type %+v", t)
 	}
@@ -275,7 +288,7 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 	if !shouldAddFormula {
 		return nil
 	}
-	return scope.AddFormula((*step.StepResult()).FormulaPrint(true), addedLine)
+	return scope.AddFormula(step.StepResult().FormulaPrint(true), addedLine)
 }
 
 func findLineRefs(scope *Scope, preconditions []Formula, findInParent bool) (string, error) {
@@ -302,4 +315,12 @@ func findLineRefs(scope *Scope, preconditions []Formula, findInParent bool) (str
 
 func intToString(i int) string {
 	return fmt.Sprintf("%d", i)
+}
+
+type DefineTermVar struct {
+	Name string
+}
+
+func (d *DefineTermVar) StepName() string {
+	return "define term var"
 }

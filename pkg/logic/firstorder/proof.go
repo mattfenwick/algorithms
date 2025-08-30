@@ -9,8 +9,7 @@ import (
 )
 
 type Step interface {
-	StepResult() *Formula
-	StepDefineTermVar() *string
+	StepResult() Formula
 	StepName() string
 }
 
@@ -45,14 +44,11 @@ type Proof struct {
 	Steps          []Step
 	Result         Formula
 	ProofType      ProofType
+	TermVar        *string
 }
 
-func (p *Proof) StepResult() *Formula {
-	return &p.Result
-}
-
-func (p *Proof) StepDefineTermVar() *string {
-	return nil
+func (p *Proof) StepResult() Formula {
+	return p.Result
 }
 
 func (p *Proof) StepName() string {
@@ -63,7 +59,7 @@ func RootProof(expectedResult string, steps ...Step) *Proof {
 	return &Proof{
 		ExpectedResult: expectedResult,
 		Steps:          steps,
-		Result:         *steps[len(steps)-1].StepResult(),
+		Result:         steps[len(steps)-1].StepResult(),
 		ProofType:      ProofTypeRoot,
 	}
 }
@@ -75,11 +71,9 @@ func ContraProof(hypothesis Formula, steps ...Step) *Proof {
 	steps = append([]Step{&Assumption{Formula: hypothesis, ProofType: ProofTypeContradiction}}, steps...)
 	results := map[string]bool{hypothesis.FormulaPrint(true): true}
 	for _, step := range steps[:len(steps)-1] {
-		if result := step.StepResult(); result != nil {
-			results[(*result).FormulaPrint(true)] = true
-		}
+		results[step.StepResult().FormulaPrint(true)] = true
 	}
-	last := *steps[len(steps)-1].StepResult()
+	last := steps[len(steps)-1].StepResult()
 	foundPositive, foundNegative := false, false
 	switch t := last.(type) {
 	case *NotFormula:
@@ -118,7 +112,7 @@ func ArrowProof(hypothesis Formula, steps ...Step) *Proof {
 	steps = append([]Step{&Assumption{Formula: hypothesis, ProofType: ProofTypeImplication}}, steps...)
 	// last step is the result
 	last := steps[len(steps)-1]
-	result := Arrow(hypothesis, *last.StepResult())
+	result := Arrow(hypothesis, last.StepResult())
 	return &Proof{
 		ExpectedResult: result.FormulaPrint(true),
 		Steps:          steps,
@@ -127,7 +121,7 @@ func ArrowProof(hypothesis Formula, steps ...Step) *Proof {
 	}
 }
 
-func ExistElimProof(varName string, existential *QuantifiedFormula, steps ...Step) *Proof {
+func ExistElimProof(termVar string, existential *QuantifiedFormula, steps ...Step) *Proof {
 	if existential.Quantifier != ExistentialQuantifier {
 		panic(errors.Errorf("existential quantifier required, found '%s'", existential.Quantifier))
 	}
@@ -136,9 +130,8 @@ func ExistElimProof(varName string, existential *QuantifiedFormula, steps ...Ste
 	//   existential and forall formulas
 	//   forall instantiation
 	steps = append([]Step{
-		&TermVar{Name: varName},
 		&QuantifierAssumption{
-			Formula:       substituteVar(existential.Body, existential.Var, varName),
+			Formula:       substituteVar(existential.Body, existential.Var, termVar),
 			ProofType:     ProofTypeExistentialElimination,
 			Preconditions: []Formula{existential},
 		},
@@ -147,23 +140,24 @@ func ExistElimProof(varName string, existential *QuantifiedFormula, steps ...Ste
 	for _, step := range steps {
 		switch t := step.(type) {
 		case *Reiterate:
-			if containsQuantifierHypothesis(t.Formula, varName) {
-				panic(errors.Errorf("hypothesis '%s' used in reiteration '%s'", varName, t.Formula.FormulaPrint(true)))
+			if containsQuantifierHypothesis(t.Formula, termVar) {
+				panic(errors.Errorf("hypothesis '%s' used in reiteration '%s'", termVar, t.Formula.FormulaPrint(true)))
 			}
 		}
 	}
 	// last step is the result and must not refer to the hypothesis
 	last := steps[len(steps)-1]
-	result := *last.StepResult()
+	result := last.StepResult()
 	// verify hypothesis isn't used in result
-	if containsQuantifierHypothesis(result, varName) {
-		panic(errors.Errorf("hypothesis '%s' used in result '%s'", varName, result.FormulaPrint(true)))
+	if containsQuantifierHypothesis(result, termVar) {
+		panic(errors.Errorf("hypothesis '%s' used in result '%s'", termVar, result.FormulaPrint(true)))
 	}
 	return &Proof{
 		ExpectedResult: result.FormulaPrint(true),
 		Steps:          steps,
 		Result:         result,
 		ProofType:      ProofTypeExistentialElimination,
+		TermVar:        &termVar,
 	}
 }
 
@@ -182,20 +176,18 @@ func containsQuantifierHypothesis(formula Formula, hypothesis string) bool {
 	}
 }
 
-func ForallIntroProof(varName string, hypothesis string, steps ...Step) *Proof {
+func ForallIntroProof(boundVar string, hypothesisTermVar string, steps ...Step) *Proof {
 	// TODO shadowing
-	// TODO verify reiterations don't mention hypothesis
+	// TODO verify reiterations don't mention hypothesisTermVar
 	// last step is the result
-	steps = append([]Step{
-		&TermVar{Name: hypothesis},
-	}, steps...)
 	last := steps[len(steps)-1]
-	result := Forall(varName, substituteVar(*last.StepResult(), hypothesis, varName))
+	result := Forall(boundVar, substituteVar(last.StepResult(), hypothesisTermVar, boundVar))
 	return &Proof{
 		ExpectedResult: result.FormulaPrint(true),
 		Steps:          steps,
 		Result:         result,
 		ProofType:      ProofTypeForallIntroduction,
+		TermVar:        &hypothesisTermVar,
 	}
 }
 
@@ -204,12 +196,8 @@ type Reiterate struct {
 	Formula Formula
 }
 
-func (r *Reiterate) StepResult() *Formula {
-	return &r.Formula
-}
-
-func (t *Reiterate) StepDefineTermVar() *string {
-	return nil
+func (r *Reiterate) StepResult() Formula {
+	return r.Formula
 }
 
 func (r *Reiterate) StepName() string {
@@ -221,12 +209,8 @@ type Assumption struct {
 	ProofType ProofType
 }
 
-func (a *Assumption) StepResult() *Formula {
-	return &a.Formula
-}
-
-func (a *Assumption) StepDefineTermVar() *string {
-	return nil
+func (a *Assumption) StepResult() Formula {
+	return a.Formula
 }
 
 func (a *Assumption) StepName() string {
@@ -239,30 +223,10 @@ type QuantifierAssumption struct {
 	Preconditions []Formula
 }
 
-func (a *QuantifierAssumption) StepResult() *Formula {
-	return &a.Formula
-}
-
-func (a *QuantifierAssumption) StepDefineTermVar() *string {
-	return nil
+func (a *QuantifierAssumption) StepResult() Formula {
+	return a.Formula
 }
 
 func (a *QuantifierAssumption) StepName() string {
 	return fmt.Sprintf("Assume: %s", a.ProofType.Name())
-}
-
-type TermVar struct {
-	Name string
-}
-
-func (t *TermVar) StepResult() *Formula {
-	return nil
-}
-
-func (t *TermVar) StepDefineTermVar() *string {
-	return &t.Name
-}
-
-func (t *TermVar) StepName() string {
-	return "Term var"
 }

@@ -7,12 +7,8 @@ type Rule struct {
 	UseTermVar    *string
 }
 
-func (r *Rule) StepResult() *Formula {
-	return &r.Result
-}
-
-func (r *Rule) StepDefineTermVar() *string {
-	return nil
+func (r *Rule) StepResult() Formula {
+	return r.Result
 }
 
 func (r *Rule) StepName() string {
