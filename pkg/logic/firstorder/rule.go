@@ -25,7 +25,7 @@ func (r *Rule) StandardForm() Formula {
 	for _, l := range pres[1:] {
 		left = And(left, l)
 	}
-	return Implication(left, result)
+	return Arrow(left, result)
 }
 
 func NewRule(name string, result Formula, preconditions ...Formula) *Rule {
@@ -34,12 +34,12 @@ func NewRule(name string, result Formula, preconditions ...Formula) *Rule {
 
 // I -> -- P, Q => P -> Q
 func IImply(iff Formula, then Formula) *Rule {
-	return NewRule("I ->", Implication(iff, then), iff, then)
+	return NewRule("I ->", Arrow(iff, then), iff, then)
 }
 
 // E -> -- (P -> Q), P => Q
 func EImply(iff Formula, then Formula) *Rule {
-	return NewRule("E ->", then, Implication(iff, then), iff)
+	return NewRule("E ->", then, Arrow(iff, then), iff)
 }
 
 // I ^ -- P, Q => P ^ Q
@@ -78,8 +78,8 @@ func IOr(left Formula, right Formula, isLeft bool) *Rule {
 // E v -- P -> R, Q -> R, P v Q -> R
 func EOr(if1 Formula, if2 Formula, then Formula) *Rule {
 	return NewRule("E v", then,
-		Implication(if1, then),
-		Implication(if2, then),
+		Arrow(if1, then),
+		Arrow(if2, then),
 		Or(if1, if2))
 }
 
@@ -94,22 +94,22 @@ func ENot(formula Formula) *Rule {
 }
 
 // I <-> -- (P -> Q), (Q -> P) => P <-> Q
-func IBiconditional(l Formula, r Formula) *Rule {
-	return NewRule("I <->", Biconditional(l, r), Implication(l, r), Implication(r, l))
+func IDArrow(l Formula, r Formula) *Rule {
+	return NewRule("I <->", DArrow(l, r), Arrow(l, r), Arrow(r, l))
 }
 
 // E <-> -- Left and Right versions
 //
 //	Left: (P <-> Q) -> (P -> Q)
 //	Right: (P <-> Q) -> (Q -> P)
-func EBiconditional(l Formula, r Formula, isLeft bool) *Rule {
+func EDArrow(l Formula, r Formula, isLeft bool) *Rule {
 	name := "E <-> (R)"
-	result := Implication(r, l)
+	result := Arrow(r, l)
 	if isLeft {
 		name = "E <-> (L)"
-		result = Implication(l, r)
+		result = Arrow(l, r)
 	}
-	return NewRule(name, result, Biconditional(l, r))
+	return NewRule(name, result, DArrow(l, r))
 }
 
 // preconditions: ∀x.( Q(x) )
@@ -125,9 +125,9 @@ func EForall(formula Formula, from string, to string) *Rule {
 
 // preconditions: Q(a)
 // result: ∃x.( Q(x) ) -- from substituting: Q(a)[a -> x]
-func IExistential(formula Formula, from string, to string) *Rule {
+func IExist(formula Formula, from string, to string) *Rule {
 	return NewRule("I ∃",
-		Existential(to, substituteVar(formula, from, to)),
+		Exist(to, substituteVar(formula, from, to)),
 		formula,
 	)
 }

@@ -93,7 +93,7 @@ func Forall(varName string, formula Formula) *QuantifiedFormula {
 	return NewQuantifiedFormula(varName, formula, ForallQuantifier)
 }
 
-func Existential(varName string, formula Formula) *QuantifiedFormula {
+func Exist(varName string, formula Formula) *QuantifiedFormula {
 	return NewQuantifiedFormula(varName, formula, ExistentialQuantifier)
 }
 
@@ -169,7 +169,7 @@ func (o *BinOpFormula) FormulaPrint(isRoot bool) string {
 	return strings.Join(out, " ")
 }
 
-func Prop(name string, args ...string) *PredicateFormula {
+func Pred(name string, args ...string) *PredicateFormula {
 	return &PredicateFormula{Name: name, Args: slice.Map(func(a string) *PredicateArg {
 		return &PredicateArg{Var: a}
 	}, args)}
@@ -187,10 +187,10 @@ func Or(l, r Formula) *BinOpFormula {
 	return &BinOpFormula{Op: OrOp, Left: l, Right: r}
 }
 
-func Implication(l, r Formula) *BinOpFormula {
+func Arrow(l, r Formula) *BinOpFormula {
 	return &BinOpFormula{Op: ImplicationOp, Left: l, Right: r}
 }
 
-func Biconditional(l, r Formula) *BinOpFormula {
+func DArrow(l, r Formula) *BinOpFormula {
 	return &BinOpFormula{Op: BiconditionalOp, Left: l, Right: r}
 }

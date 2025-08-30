@@ -22,20 +22,20 @@ func ExcludedMiddleTheorem(t Formula) *Rule {
 // ( ~ P -> ~ Q ) -> (   Q ->   P )
 func ContrapositiveTheorem(p Formula, q Formula) *Rule {
 	return NewRule("Theorem: contrapositive",
-		Implication(removeDoubleNegative(Not(q)), removeDoubleNegative(Not(p))),
-		Implication(p, q))
+		Arrow(removeDoubleNegative(Not(q)), removeDoubleNegative(Not(p))),
+		Arrow(p, q))
 }
 
 // (   P -> Q ) -> ( ~ P v Q )
 // ( ~ P -> Q ) -> (   P v Q )
 func ArrowDisjunctionTheorem(p Formula, q Formula) *Rule {
-	return NewRule("Theorem: -> to v", Or(removeDoubleNegative(Not(p)), q), Implication(p, q))
+	return NewRule("Theorem: -> to v", Or(removeDoubleNegative(Not(p)), q), Arrow(p, q))
 }
 
 // (   P v Q ) -> ( ~ P -> Q )
 // ( ~ P v Q ) -> (   P -> Q )
 func DisjunctionArrowTheorem(p Formula, q Formula) *Rule {
-	return NewRule("Theorem: v to ->", Implication(removeDoubleNegative(p), q), Or(p, q))
+	return NewRule("Theorem: v to ->", Arrow(removeDoubleNegative(p), q), Or(p, q))
 }
 
 // ArrowConjunctionTheorem handles these patterns:
@@ -50,9 +50,9 @@ func DisjunctionArrowTheorem(p Formula, q Formula) *Rule {
 //		( ~ P -> ~ Q ) -> ~ ( ~ P ^   Q )
 func ArrowConjunctionTheorem(p Formula, q Formula, isArrowNegated bool) *Rule {
 	if isArrowNegated {
-		return NewRule("Theorem: (~ ->) to ^", And(p, removeDoubleNegative(Not(q))), Not(Implication(p, q)))
+		return NewRule("Theorem: (~ ->) to ^", And(p, removeDoubleNegative(Not(q))), Not(Arrow(p, q)))
 	} else {
-		return NewRule("Theorem: -> to (~ ^)", Not(And(p, removeDoubleNegative(Not(q)))), Implication(p, q))
+		return NewRule("Theorem: -> to (~ ^)", Not(And(p, removeDoubleNegative(Not(q)))), Arrow(p, q))
 	}
 }
 
@@ -68,18 +68,18 @@ func ArrowConjunctionTheorem(p Formula, q Formula, isArrowNegated bool) *Rule {
 //	~ ( ~ P ^   Q ) ->   ( ~ P -> ~ Q )
 func ConjunctionArrowTheorem(p Formula, q Formula, isConjunctionNegated bool) *Rule {
 	if isConjunctionNegated {
-		return NewRule("Theorem: (~ ^) to ->", Implication(p, removeDoubleNegative(Not(q))), Not(And(p, q)))
+		return NewRule("Theorem: (~ ^) to ->", Arrow(p, removeDoubleNegative(Not(q))), Not(And(p, q)))
 	} else {
-		return NewRule("Theorem: ^ to (~ ->)", Not(Implication(p, removeDoubleNegative(Not(q)))), And(p, q))
+		return NewRule("Theorem: ^ to (~ ->)", Not(Arrow(p, removeDoubleNegative(Not(q)))), And(p, q))
 	}
 }
 
 // ~ ( P <->   Q ) -> ( P <-> ~ Q )
 // ~ ( P <-> ~ Q ) -> ( P <->   Q )
 func BiconditionalNegationTheorem(p Formula, q Formula) *Rule {
-	return NewRule("Theorem: biconditional negation",
-		Biconditional(p, removeDoubleNegative(Not(q))),
-		Not(Biconditional(p, q)))
+	return NewRule("Theorem: <-> negation",
+		DArrow(p, removeDoubleNegative(Not(q))),
+		Not(DArrow(p, q)))
 }
 
 // DeMorgansAndToOrTheorem handles:

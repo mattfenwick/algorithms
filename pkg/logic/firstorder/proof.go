@@ -59,7 +59,7 @@ func (p *Proof) StepName() string {
 	return fmt.Sprintf("subproof %s", p.ProofType.Name())
 }
 
-func NewRootProof(expectedResult string, steps ...Step) *Proof {
+func RootProof(expectedResult string, steps ...Step) *Proof {
 	return &Proof{
 		ExpectedResult: expectedResult,
 		Steps:          steps,
@@ -68,7 +68,7 @@ func NewRootProof(expectedResult string, steps ...Step) *Proof {
 	}
 }
 
-func NewProofContradiction(hypothesis Formula, steps ...Step) *Proof {
+func ContraProof(hypothesis Formula, steps ...Step) *Proof {
 	if len(steps) == 0 {
 		panic(errors.Errorf("expected at least 1 step"))
 	}
@@ -114,11 +114,11 @@ func NewProofContradiction(hypothesis Formula, steps ...Step) *Proof {
 	}
 }
 
-func NewProofImplication(hypothesis Formula, steps ...Step) *Proof {
+func ArrowProof(hypothesis Formula, steps ...Step) *Proof {
 	steps = append([]Step{&Assumption{Formula: hypothesis, ProofType: ProofTypeImplication}}, steps...)
 	// last step is the result
 	last := steps[len(steps)-1]
-	result := Implication(hypothesis, *last.StepResult())
+	result := Arrow(hypothesis, *last.StepResult())
 	return &Proof{
 		ExpectedResult: result.FormulaPrint(true),
 		Steps:          steps,
@@ -127,7 +127,7 @@ func NewProofImplication(hypothesis Formula, steps ...Step) *Proof {
 	}
 }
 
-func NewProofExistentialElim(varName string, existential *QuantifiedFormula, steps ...Step) *Proof {
+func ExistElimProof(varName string, existential *QuantifiedFormula, steps ...Step) *Proof {
 	if existential.Quantifier != ExistentialQuantifier {
 		panic(errors.Errorf("existential quantifier required, found '%s'", existential.Quantifier))
 	}
@@ -182,7 +182,7 @@ func containsQuantifierHypothesis(formula Formula, hypothesis string) bool {
 	}
 }
 
-func NewProofForallIntro(varName string, hypothesis string, steps ...Step) *Proof {
+func ForallIntroProof(varName string, hypothesis string, steps ...Step) *Proof {
 	// TODO shadowing
 	// TODO verify reiterations don't mention hypothesis
 	// last step is the result
