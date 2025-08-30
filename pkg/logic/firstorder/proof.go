@@ -10,7 +10,7 @@ import (
 
 type Step interface {
 	StepResult() *Formula
-	StepTermVar() *string
+	StepDefineTermVar() *string
 	StepName() string
 }
 
@@ -51,7 +51,7 @@ func (p *Proof) StepResult() *Formula {
 	return &p.Result
 }
 
-func (p *Proof) StepTermVar() *string {
+func (p *Proof) StepDefineTermVar() *string {
 	return nil
 }
 
@@ -208,7 +208,7 @@ func (r *Reiterate) StepResult() *Formula {
 	return &r.Formula
 }
 
-func (t *Reiterate) StepTermVar() *string {
+func (t *Reiterate) StepDefineTermVar() *string {
 	return nil
 }
 
@@ -225,7 +225,7 @@ func (a *Assumption) StepResult() *Formula {
 	return &a.Formula
 }
 
-func (a *Assumption) StepTermVar() *string {
+func (a *Assumption) StepDefineTermVar() *string {
 	return nil
 }
 
@@ -243,7 +243,7 @@ func (a *QuantifierAssumption) StepResult() *Formula {
 	return &a.Formula
 }
 
-func (a *QuantifierAssumption) StepTermVar() *string {
+func (a *QuantifierAssumption) StepDefineTermVar() *string {
 	return nil
 }
 
@@ -259,7 +259,7 @@ func (t *TermVar) StepResult() *Formula {
 	return nil
 }
 
-func (t *TermVar) StepTermVar() *string {
+func (t *TermVar) StepDefineTermVar() *string {
 	return &t.Name
 }
 

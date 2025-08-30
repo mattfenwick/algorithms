@@ -47,6 +47,17 @@ func (e *Scope) AddTermVar(varName string, line int) error {
 	return nil
 }
 
+func (e *Scope) FindTermVar(key string) (int, bool) {
+	line, ok := e.TermVars[key]
+	if ok {
+		return line, ok
+	}
+	if e.Parent == nil {
+		return 0, false
+	}
+	return e.Parent.FindTermVar(key)
+}
+
 func (e *Scope) GetTermVars() []string {
 	var parentTermVars []string
 	if e.Parent != nil {
@@ -128,7 +139,7 @@ func (c *CheckedProof) BuildStepTable() string {
 		if stepResult != nil {
 			result = (*stepResult).FormulaPrint(true)
 		}
-		stepTermVar := step.Step.StepTermVar()
+		stepTermVar := step.Step.StepDefineTermVar()
 		if stepTermVar != nil {
 			termVar = *stepTermVar
 		}
@@ -155,7 +166,7 @@ func (c *CheckedProof) BuildStepMarkdownTable() string {
 		if stepResult != nil {
 			result = (*stepResult).FormulaPrint(true)
 		}
-		stepTermVar := step.Step.StepTermVar()
+		stepTermVar := step.Step.StepDefineTermVar()
 		if stepTermVar != nil {
 			termVar = *stepTermVar
 		}
@@ -229,6 +240,18 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 		lineRefs, err = findLineRefs(scope, t.Preconditions, false)
 		if err != nil {
 			return err
+		}
+		if t.UseTermVar != nil {
+			lineRef, ok := scope.FindTermVar(*t.UseTermVar)
+			if !ok {
+				return errors.Errorf("unable to find term var '%s' in scope", *t.UseTermVar)
+			}
+			if lineRefs == "" {
+				lineRefs = intToString(lineRef)
+			} else {
+				// TODO hmm the line refs now may not be in order because the term var is looked up last
+				lineRefs = fmt.Sprintf("%s, %s", lineRefs, intToString(lineRef))
+			}
 		}
 	case *TermVar:
 		addedLine := checked.Add(&EvaluatedStep{

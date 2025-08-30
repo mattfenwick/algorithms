@@ -4,13 +4,14 @@ type Rule struct {
 	Preconditions []Formula
 	Result        Formula
 	Name          string
+	UseTermVar    *string
 }
 
 func (r *Rule) StepResult() *Formula {
 	return &r.Result
 }
 
-func (r *Rule) StepTermVar() *string {
+func (r *Rule) StepDefineTermVar() *string {
 	return nil
 }
 
@@ -113,11 +114,13 @@ func EBiconditional(l Formula, r Formula, isLeft bool) *Rule {
 
 // preconditions: ∀x.( Q(x) )
 // result: Q(a) -- from substituting: ∀x.( Q(x) )[x -> a]
-func EForall(formula Formula, varName string, arg string) *Rule {
-	return NewRule("E ∀",
-		substituteVar(formula, varName, arg),
-		Forall(varName, formula),
+func EForall(formula Formula, from string, to string) *Rule {
+	rule := NewRule("E ∀",
+		substituteVar(formula, from, to),
+		Forall(from, formula),
 	)
+	rule.UseTermVar = &to
+	return rule
 }
 
 // preconditions: Q(a)
