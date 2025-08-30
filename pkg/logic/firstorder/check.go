@@ -136,7 +136,7 @@ func (c *CheckedProof) PrintSteps() {
 }
 
 func (c *CheckedProof) BuildStepTable() string {
-	table := utils.NewTable([]string{"Line", "Formula", "Term var", "Justification", "Lines used"})
+	table := utils.NewTable([]string{"Line", "Term var", "Formula", "Justification", "Lines used"})
 	for i, step := range c.Steps {
 		indent := strings.Repeat("  | ", step.Depth)
 		var result, termVar, stepName string
@@ -150,8 +150,8 @@ func (c *CheckedProof) BuildStepTable() string {
 		}
 		table.AddRow([]string{
 			fmt.Sprintf("%d", i+1),
-			fmt.Sprintf("%s%s", indent, result),
 			termVar,
+			fmt.Sprintf("%s%s", indent, result),
 			stepName,
 			step.LineReferences,
 		})
@@ -162,7 +162,7 @@ func (c *CheckedProof) BuildStepTable() string {
 }
 
 func (c *CheckedProof) BuildStepMarkdownTable() string {
-	table := utils.NewTable([]string{"Line", "Formula", "Term var", "Justification", "Lines used"})
+	table := utils.NewTable([]string{"Line", "Term var", "Formula", "Justification", "Lines used"})
 	for i, step := range c.Steps {
 		indent := strings.Repeat(".   ", step.Depth)
 		var result, termVar, stepName string
@@ -177,8 +177,8 @@ func (c *CheckedProof) BuildStepMarkdownTable() string {
 
 		table.AddRow([]string{
 			fmt.Sprintf("%d", i+1),
-			fmt.Sprintf("<pre>%s%s</pre>", indent, result),
 			termVar,
+			fmt.Sprintf("<pre>%s%s</pre>", indent, result),
 			stepName,
 			step.LineReferences,
 		})
