@@ -139,18 +139,17 @@ func (c *CheckedProof) BuildStepTable() string {
 	table := utils.NewTable([]string{"Line", "Term var", "Formula", "Justification", "Lines used"})
 	for i, step := range c.Steps {
 		indent := strings.Repeat("  | ", step.Depth)
-		var result, termVar, stepName string
+		var result, stepName string
 		switch t := step.Step.(type) {
 		case Step:
 			result = t.StepResult().FormulaPrint(true)
 			stepName = t.StepName()
 		case *DefineTermVar:
-			termVar = t.Name
 			stepName = t.StepName()
 		}
 		table.AddRow([]string{
 			fmt.Sprintf("%d", i+1),
-			termVar,
+			strings.Join(step.TermVars, ", "),
 			fmt.Sprintf("%s%s", indent, result),
 			stepName,
 			step.LineReferences,
@@ -165,19 +164,18 @@ func (c *CheckedProof) BuildStepMarkdownTable() string {
 	table := utils.NewTable([]string{"Line", "Term var", "Formula", "Justification", "Lines used"})
 	for i, step := range c.Steps {
 		indent := strings.Repeat(".   ", step.Depth)
-		var result, termVar, stepName string
+		var result, stepName string
 		switch t := step.Step.(type) {
 		case Step:
 			result = t.StepResult().FormulaPrint(true)
 			stepName = t.StepName()
 		case *DefineTermVar:
-			termVar = t.Name
 			stepName = t.StepName()
 		}
 
 		table.AddRow([]string{
 			fmt.Sprintf("%d", i+1),
-			termVar,
+			strings.Join(step.TermVars, ", "),
 			fmt.Sprintf("<pre>%s%s</pre>", indent, result),
 			stepName,
 			step.LineReferences,
