@@ -214,11 +214,12 @@ func CheckProofHelper(proof *Proof, parentScope *Scope, checked *CheckedProof) e
 			Depth:          scope.Depth,
 			Step:           &DefineTermVar{Name: *proof.TermVar},
 			ScopeFormulas:  scope.GetTrueFormulas(),
-			TermVars:       scope.GetTermVars(),
 		})
 		if err := scope.AddTermVar(*proof.TermVar, addedLine); err != nil {
 			return err
 		}
+		// bit of a hack, but makes for nicer output
+		checked.Steps[len(checked.Steps)-1].TermVars = scope.GetTermVars()
 	}
 	for _, step := range proof.Steps {
 		if err := CheckStep(step, scope, checked); err != nil {
