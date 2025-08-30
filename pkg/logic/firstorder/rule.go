@@ -6,8 +6,12 @@ type Rule struct {
 	Name          string
 }
 
-func (r *Rule) StepResult() Formula {
-	return r.Result
+func (r *Rule) StepResult() *Formula {
+	return &r.Result
+}
+
+func (r *Rule) StepTermVar() *string {
+	return nil
 }
 
 func (r *Rule) StepName() string {

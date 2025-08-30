@@ -95,7 +95,7 @@ func Run() {
 	for _, section := range proofs {
 		fmt.Printf("working on section %s\n", section.Name)
 		for _, eg := range section.Proofs {
-			checked, err := CheckProof(eg)
+			checked, err := CheckRootProof(eg)
 			fmt.Printf("\n\nresult from proof '%s': %s\n", eg.ExpectedResult, err)
 			if err == nil {
 				checked.PrintSteps()
@@ -134,7 +134,7 @@ func GenerateProofsMarkdown() string {
 }
 
 func generateMarkdownForProof(sectionIndex int, proofIndex int, proof *Proof) string {
-	checked, err := CheckProof(proof)
+	checked, err := CheckRootProof(proof)
 	if err != nil {
 		fmt.Println(checked.BuildStepTable())
 		panic(err)
