@@ -7,8 +7,9 @@
     3. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-1-3)
     4. [( ∀y.( Q(y) ) ^ ∃x.( Q(x) -> R ) ) -> R](#proof-1-4)
     5. [∀x.( P(x) ^ Q(x) ) -> ( ∀y.( P(y) ) ^ ∀z.( Q(z) ) )](#proof-1-5)
-    6. [∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )](#proof-1-6)
-    7. [~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) )](#proof-1-7)
+2. [DeMorgan's](#DeMorgan's)
+    1. [∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )](#proof-2-1)
+    2. [~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) )](#proof-2-2)
 
 # basics <a name="basics"></a>
 
@@ -119,7 +120,9 @@
 | 12 |  | <pre>.   ∀y.( P(y) ) ^ ∀z.( Q(z) )</pre> | I ^ | 6, 11 |
 | 13 |  | <pre>∀x.( P(x) ^ Q(x) ) -> ( ∀y.( P(y) ) ^ ∀z.( Q(z) ) )</pre> | subproof implication | 1 - 12 |
 
-## ∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) ) <a name="proof-1-6"></a>
+# DeMorgan's <a name="DeMorgan's"></a>
+
+## ∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) ) <a name="proof-2-1"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -141,7 +144,7 @@
 | 16 |  | <pre>~ ∃x.( Q(x) ) -> ∀x.( ~ Q(x) )</pre> | subproof implication | 9 - 15 |
 | 17 |  | <pre>∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )</pre> | I <-> | 8, 16 |
 
-## ~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) ) <a name="proof-1-7"></a>
+## ~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) ) <a name="proof-2-2"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |

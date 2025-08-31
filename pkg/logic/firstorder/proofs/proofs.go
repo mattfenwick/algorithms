@@ -136,13 +136,11 @@ var proofs = []*ProofsSection{
 			ArrowProof(Forall("x", And(Px, Qx)),
 				ForallIntroProof("y", "a",
 					&Reiterate{Formula: Forall("x", And(Px, Qx))}, // ∀x.( P(x) ^ Q(x) )
-					// TODO are we actually checking if 'a' is "in scope" before doing this?
 					EForall(And(Px, Qx), "x", "a"), // P(a) ^ Q(a)
 					EAnd(Pa, Qa, true),             // P(a)
 				), // ∀y.( P(y)
 				ForallIntroProof("z", "a",
 					&Reiterate{Formula: Forall("x", And(Px, Qx))}, // ∀x.( P(x) ^ Q(x) )
-					// TODO are we actually checking if 'a' is "in scope" before doing this?
 					EForall(And(Px, Qx), "x", "a"), // P(a) ^ Q(a)
 					EAnd(Pa, Qa, false),            // Q(a)
 				), // ∀z.( Q(z)
@@ -167,7 +165,9 @@ var proofs = []*ProofsSection{
 		// 		),
 		// 	),
 		// ),
+	),
 
+	NewProofsSection("DeMorgan's",
 		RootProof("∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )",
 			ArrowProof(Forall("x", Not(Qx)),
 				ExistContraProof("a", Exist("x", Qx),
