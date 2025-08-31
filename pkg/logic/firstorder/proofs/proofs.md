@@ -157,10 +157,10 @@
 | 1 |  | <pre>.   ~ ∀x.( Q(x) )</pre> | Assume: implication |  |
 | 2 |  | <pre>.   .   ~ ∃x.( ~ Q(x) )</pre> | Assume: contradiction |  |
 | 3 | a | <pre>.   .   .   </pre> | define term var |  |
-| 4 | a | <pre>.   .   .   .   ~ Q(x)</pre> | Assume: contradiction |  |
+| 4 | a | <pre>.   .   .   .   ~ Q(a)</pre> | Assume: contradiction |  |
 | 5 | a | <pre>.   .   .   .   ∃x.( ~ Q(x) )</pre> | I ∃ | 4 |
 | 6 | a | <pre>.   .   .   .   ~ ∃x.( ~ Q(x) )</pre> | Reiterate | 2 |
-| 7 | a | <pre>.   .   .   Q(x)</pre> | subproof contradiction | 4 - 6 |
+| 7 | a | <pre>.   .   .   Q(a)</pre> | subproof contradiction | 4 - 6 |
 | 8 |  | <pre>.   .   ∀x.( Q(x) )</pre> | subproof ∀ introduction | 3 - 7 |
 | 9 |  | <pre>.   .   ~ ∀x.( Q(x) )</pre> | Reiterate | 1 |
 | 10 |  | <pre>.   ∃x.( ~ Q(x) )</pre> | subproof contradiction | 2 - 9 |

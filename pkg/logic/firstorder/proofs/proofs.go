@@ -175,24 +175,24 @@ var proofs = []*ProofsSection{
 			IDArrow(Forall("x", Not(Qx)), Not(Exist("x", Qx))),
 		),
 		RootProof("~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) )",
-			ArrowProof(Not(Forall("x", Qx)),
-				ContraProof(Not(Exist("x", Not(Qx))),
+			ArrowProof(Not(Forall("x", Qx)), // ~ ∀x.( Q(x) )
+				ContraProof(Not(Exist("x", Not(Qx))), // ~ ∃x.( ~ Q(x) )
 					ForallIntroProof("x", "a",
-						ContraProof(Not(Qx),
-							IExist(Not(Qx), "a", "x"),
-							&Reiterate{Formula: Not(Exist("x", Not(Qx)))},
+						ContraProof(Not(Qa), // ~ Q(a)
+							IExist(Not(Qa), "a", "x"),                     // ∃x.( ~ Q(x) )
+							&Reiterate{Formula: Not(Exist("x", Not(Qx)))}, // ~ ∃x.( ~ Q(x) )
 						), // Q(a)
 					), // ∀x.( Q(x) )
-					&Reiterate{Formula: Not(Forall("x", Qx))},
-				),
+					&Reiterate{Formula: Not(Forall("x", Qx))}, // ~ ∀x.( Q(x) )
+				), // ∃x.( ~ Q(x) )
 			),
-			ArrowProof(Exist("x", Not(Qx)),
-				ExistElimProof("a", Exist("x", Not(Qx)),
-					ContraProof(Forall("x", Qx),
-						EForall(Qx, "x", "a"),
-						&Reiterate{Formula: Not(Qa)},
-					),
-				),
+			ArrowProof(Exist("x", Not(Qx)), // ∃x.( ~ Q(x) )
+				ExistElimProof("a", Exist("x", Not(Qx)), // ~ Q(a)
+					ContraProof(Forall("x", Qx), // ∀x.( Q(x) )
+						EForall(Qx, "x", "a"),        // Q(a)
+						&Reiterate{Formula: Not(Qa)}, // ~ Q(a)
+					), // ~ ∀x.( Q(x) )
+				), // ~ // ∀x.( Q(x) )
 			),
 			IDArrow(Not(Forall("x", Qx)), Exist("x", Not(Qx))),
 		),
