@@ -8,8 +8,7 @@
     4. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-1-4)
     5. [( ∀y.( Q(y) ) ^ ∃x.( Q(x) -> R ) ) -> R](#proof-1-5)
     6. [∀x.( P(x) ^ Q(x) ) -> ( ∀y.( P(y) ) ^ ∀z.( Q(z) ) )](#proof-1-6)
-    7. [∀x.( ~ Q(x) ) -> ~ ∃x.( Q(x) )](#proof-1-7)
-    8. [~ ∃x.( Q(x) ) -> ∀x.( ~ Q(x) )](#proof-1-8)
+    7. [∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )](#proof-1-7)
 
 # basics <a name="basics"></a>
 
@@ -128,7 +127,7 @@
 | 12 |  | <pre>.   ∀y.( P(y) ) ^ ∀z.( Q(z) )</pre> | I ^ | 6, 11 |
 | 13 |  | <pre>∀x.( P(x) ^ Q(x) ) -> ( ∀y.( P(y) ) ^ ∀z.( Q(z) ) )</pre> | subproof implication | 1 - 12 |
 
-## ∀x.( ~ Q(x) ) -> ~ ∃x.( Q(x) ) <a name="proof-1-7"></a>
+## ∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) ) <a name="proof-1-7"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -139,17 +138,13 @@
 | 5 | a | <pre>.   .   ~ Q(a)</pre> | E ∀ | 4, 2 |
 | 6 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | subproof ∃ elimination | 2 - 5 |
 | 7 |  | <pre>∀x.( ~ Q(x) ) -> ~ ∃x.( Q(x) )</pre> | subproof implication | 1 - 6 |
-
-## ~ ∃x.( Q(x) ) -> ∀x.( ~ Q(x) ) <a name="proof-1-8"></a>
-
-| Line | Term var | Formula | Justification | Lines used |
-| - | - | - | - | - |
-| 1 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | Assume: implication |  |
-| 2 | a | <pre>.   .   </pre> | define term var |  |
-| 3 | a | <pre>.   .   .   Q(a)</pre> | Assume: contradiction |  |
-| 4 | a | <pre>.   .   .   ∃x.( Q(x) )</pre> | I ∃ | 3 |
-| 5 | a | <pre>.   .   .   ~ ∃x.( Q(x) )</pre> | Reiterate | 1 |
-| 6 | a | <pre>.   .   ~ Q(a)</pre> | subproof contradiction | 3 - 5 |
-| 7 |  | <pre>.   ∀x.( ~ Q(x) )</pre> | subproof ∀ introduction | 2 - 6 |
-| 8 |  | <pre>~ ∃x.( Q(x) ) -> ∀x.( ~ Q(x) )</pre> | subproof implication | 1 - 7 |
+| 8 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | Assume: implication |  |
+| 9 | a | <pre>.   .   </pre> | define term var |  |
+| 10 | a | <pre>.   .   .   Q(a)</pre> | Assume: contradiction |  |
+| 11 | a | <pre>.   .   .   ∃x.( Q(x) )</pre> | I ∃ | 10 |
+| 12 | a | <pre>.   .   .   ~ ∃x.( Q(x) )</pre> | Reiterate | 8 |
+| 13 | a | <pre>.   .   ~ Q(a)</pre> | subproof contradiction | 10 - 12 |
+| 14 |  | <pre>.   ∀x.( ~ Q(x) )</pre> | subproof ∀ introduction | 9 - 13 |
+| 15 |  | <pre>~ ∃x.( Q(x) ) -> ∀x.( ~ Q(x) )</pre> | subproof implication | 8 - 14 |
+| 16 |  | <pre>∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )</pre> | I <-> | 7, 15 |
 
