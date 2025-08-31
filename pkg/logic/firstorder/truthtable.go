@@ -97,7 +97,7 @@ func findVarsAndExpressions(formula Formula) ([]string, []Formula) {
 		vars, exprs = findVarsAndExpressions(t.Formula)
 		exprs = append(exprs, t)
 	case *PredicateFormula:
-		if len(t.Args) == 0 {
+		if len(t.Terms) == 0 {
 			vars = append(vars, t.Name)
 		}
 		// only do things like P or Q; skip things like P(x) or Q(x)

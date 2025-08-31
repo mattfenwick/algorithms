@@ -156,7 +156,7 @@ func existProof(termVar string, existential *QuantifiedFormula, steps []Step, is
 		steps = append([]Step{
 			&Assumption{Formula: existential, ProofType: proofType},
 			&QuantifierAssumption{
-				Formula:       substituteVar(existential.Body, existential.Var, termVar),
+				Formula:       InstantiateFormula(existential.Body, existential.Var, termVar),
 				ProofType:     proofType,
 				Preconditions: []Formula{},
 			},
@@ -166,7 +166,7 @@ func existProof(termVar string, existential *QuantifiedFormula, steps []Step, is
 		// exisential elim DOES require the existential as a precondition
 		steps = append([]Step{
 			&QuantifierAssumption{
-				Formula:       substituteVar(existential.Body, existential.Var, termVar),
+				Formula:       InstantiateFormula(existential.Body, existential.Var, termVar),
 				ProofType:     proofType,
 				Preconditions: []Formula{existential},
 			},
@@ -213,7 +213,7 @@ func containsQuantifierHypothesis(formula Formula, hypothesis string) bool {
 	case *NotFormula:
 		return containsQuantifierHypothesis(t.Formula, hypothesis)
 	case *PredicateFormula:
-		return slice.Any(func(p *PredicateArg) bool { return p.Var == hypothesis }, t.Args)
+		return slice.Any(func(p *TermVar) bool { return p.Name == hypothesis }, t.Terms)
 	case *BinOpFormula:
 		return containsQuantifierHypothesis(t.Left, hypothesis) || containsQuantifierHypothesis(t.Right, hypothesis)
 	case *QuantifiedFormula:
@@ -228,7 +228,7 @@ func ForallIntroProof(boundVar string, hypothesisTermVar string, steps ...Step) 
 	// TODO verify reiterations don't mention hypothesisTermVar
 	// last step is the result
 	last := steps[len(steps)-1]
-	result := Forall(boundVar, substituteVar(last.StepResult(), hypothesisTermVar, boundVar))
+	result := Forall(boundVar, GeneralizeFormula(last.StepResult(), hypothesisTermVar, boundVar))
 	return &Proof{
 		ExpectedResult: result.FormulaPrint(true),
 		Steps:          steps,

@@ -11,9 +11,17 @@ var (
 	T = Pred("T") // True
 	F = Pred("F") // False
 
-	Qa = Pred("Q", "a")
-	Qb = Pred("Q", "b")
-	Qx = Pred("Q", "x")
+	Qa = Pred("Q", &TermVar{Name: "a", IsBound: false})
+	Qb = Pred("Q", &TermVar{Name: "b", IsBound: false})
+	Qx = Pred("Q", &TermVar{Name: "x", IsBound: true})
+	Qy = Pred("Q", &TermVar{Name: "y", IsBound: true})
+	Qz = Pred("Q", &TermVar{Name: "z", IsBound: true})
+
+	Pa = Pred("P", &TermVar{Name: "a", IsBound: false})
+	Pb = Pred("P", &TermVar{Name: "b", IsBound: false})
+	Px = Pred("P", &TermVar{Name: "x", IsBound: true})
+	Py = Pred("P", &TermVar{Name: "y", IsBound: true})
+	Pz = Pred("P", &TermVar{Name: "z", IsBound: true})
 )
 
 type ProofsSection struct {
@@ -42,8 +50,8 @@ var proofs = []*ProofsSection{
 		// 	),
 		// ),
 		RootProof("Q(a) -> ∃x.( Q(x) )",
-			ArrowProof(Pred("Q", "a"),
-				IExist(Pred("Q", "a"), "a", "x"),
+			ArrowProof(Qa,
+				IExist(Qa, "a", "x"),
 			),
 		),
 		RootProof("( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )",
@@ -92,24 +100,24 @@ var proofs = []*ProofsSection{
 			),
 		),
 		RootProof("∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R",
-			ArrowProof(Exist("x", And(Pred("Q", "x"), Arrow(Pred("Q", "x"), R))),
+			ArrowProof(Exist("x", And(Qx, Arrow(Qx, R))),
 				ExistElimProof("a",
-					Exist("x", And(Pred("Q", "x"), Arrow(Pred("Q", "x"), R))), // Q(a) ^ Q(a) -> R
-					EAnd(Pred("Q", "a"), Arrow(Pred("Q", "a"), R), true),      // Q(a)
-					EAnd(Pred("Q", "a"), Arrow(Pred("Q", "a"), R), false),     // Q(a) -> R
-					EImply(Pred("Q", "a"), R),                                 // R
+					Exist("x", And(Qx, Arrow(Qx, R))), // Q(a) ^ Q(a) -> R
+					EAnd(Qa, Arrow(Qa, R), true),      // Q(a)
+					EAnd(Qa, Arrow(Qa, R), false),     // Q(a) -> R
+					EImply(Qa, R),                     // R
 				),
 			),
 		),
 		RootProof("( ∀y.( Q(y) ) ^ ∃x.( Q(x) -> R ) ) -> R",
-			ArrowProof(And(Forall("y", Pred("Q", "y")), Exist("x", Arrow(Pred("Q", "x"), R))),
-				EAnd(Forall("y", Pred("Q", "y")), Exist("x", Arrow(Pred("Q", "x"), R)), true),  // ∀y.( Q(y) )
-				EAnd(Forall("y", Pred("Q", "y")), Exist("x", Arrow(Pred("Q", "x"), R)), false), // ∃x.( Q(x) -> R )
+			ArrowProof(And(Forall("y", Qy), Exist("x", Arrow(Qx, R))),
+				EAnd(Forall("y", Qy), Exist("x", Arrow(Qx, R)), true),  // ∀y.( Q(y) )
+				EAnd(Forall("y", Qy), Exist("x", Arrow(Qx, R)), false), // ∃x.( Q(x) -> R )
 				ExistElimProof("a",
-					Exist("x", Arrow(Pred("Q", "x"), R)),             // Q(a) -> R
-					&Reiterate{Formula: Forall("y", Pred("Q", "y"))}, // ∀y.( Q(y) )
-					EForall(Pred("Q", "y"), "y", "a"),                // Q(a)
-					EImply(Pred("Q", "a"), R),                        // R
+					Exist("x", Arrow(Qx, R)),             // Q(a) -> R
+					&Reiterate{Formula: Forall("y", Qy)}, // ∀y.( Q(y) )
+					EForall(Qy, "y", "a"),                // Q(a)
+					EImply(Qa, R),                        // R
 				),
 			),
 		),
@@ -122,28 +130,28 @@ var proofs = []*ProofsSection{
 		// 	),
 		// ),
 		RootProof("∀x.( P(x) ^ Q(x) ) -> ( ∀y.( P(y) ) ^ ∀z.( Q(z) ) )",
-			ArrowProof(Forall("x", And(Pred("P", "x"), Pred("Q", "x"))),
+			ArrowProof(Forall("x", And(Px, Qx)),
 				ForallIntroProof("y", "a",
-					&Reiterate{Formula: Forall("x", And(Pred("P", "x"), Pred("Q", "x")))}, // ∀x.( P(x) ^ Q(x) )
+					&Reiterate{Formula: Forall("x", And(Px, Qx))}, // ∀x.( P(x) ^ Q(x) )
 					// TODO are we actually checking if 'a' is "in scope" before doing this?
-					EForall(And(Pred("P", "x"), Pred("Q", "x")), "x", "a"), // P(a) ^ Q(a)
-					EAnd(Pred("P", "a"), Pred("Q", "a"), true),             // P(a)
+					EForall(And(Px, Qx), "x", "a"), // P(a) ^ Q(a)
+					EAnd(Pa, Qa, true),             // P(a)
 				), // ∀y.( P(y)
 				ForallIntroProof("z", "a",
-					&Reiterate{Formula: Forall("x", And(Pred("P", "x"), Pred("Q", "x")))}, // ∀x.( P(x) ^ Q(x) )
+					&Reiterate{Formula: Forall("x", And(Px, Qx))}, // ∀x.( P(x) ^ Q(x) )
 					// TODO are we actually checking if 'a' is "in scope" before doing this?
-					EForall(And(Pred("P", "x"), Pred("Q", "x")), "x", "a"), // P(a) ^ Q(a)
-					EAnd(Pred("P", "a"), Pred("Q", "a"), false),            // Q(a)
+					EForall(And(Px, Qx), "x", "a"), // P(a) ^ Q(a)
+					EAnd(Pa, Qa, false),            // Q(a)
 				), // ∀z.( Q(z)
-				IAnd(Forall("y", Pred("P", "y")), Forall("z", Pred("Q", "z"))),
+				IAnd(Forall("y", Py), Forall("z", Qz)),
 			),
 		),
 
 		// RootProof("∃x.( R ^ Q(x) ) -> R",
 		// 	ArrowProof(Exist("x", And(R, Qx)), // ∃x.( R ^ Q(x) )
 		// 		ExistElimProof("a",
-		// 			Exist("x", And(R, Pred("Q", "x"))), // R ^ Q(a)
-		// 			EAnd(R, Pred("Q", "a"), true),      // R
+		// 			Exist("x", And(R, Qx)), // R ^ Q(a)
+		// 			EAnd(R, Qa, true),      // R
 		// 		),
 		// 	),
 		// ),

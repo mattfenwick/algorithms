@@ -233,7 +233,6 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 	trueFormulas := scope.GetTrueFormulas()
 	termVars := scope.GetTermVars()
 	lineRefs := ""
-	shouldAddFormula := true
 	switch t := step.(type) {
 	case *Assumption:
 	case *Proof:
@@ -284,10 +283,12 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 		ScopeFormulas:  trueFormulas,
 		TermVars:       termVars,
 	})
-	if !shouldAddFormula {
-		return nil
-	}
-	return scope.AddFormula(step.StepResult().FormulaPrint(true), addedLine)
+	result := step.StepResult()
+	// make sure all TermVar usages are valid
+	// if err := scope.CheckTermVars(result); err != nil {
+	// 	return err
+	// }
+	return scope.AddFormula(result.FormulaPrint(true), addedLine)
 }
 
 func findLineRefs(scope *Scope, preconditions []Formula, findInParent bool) (string, error) {

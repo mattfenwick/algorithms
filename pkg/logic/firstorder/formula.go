@@ -33,24 +33,88 @@ type Formula interface {
 	FormulaPrint(isRoot bool) string
 }
 
-type PredicateArg struct {
-	Var string
+// GeneralizeFormula: Q(a)[x -> a] => ∃x.( Q(x) )
+func GeneralizeFormula(formula Formula, from string, to string) Formula {
+	return substituteVar(formula, from, to, true)
+}
+
+// InstantiateFormula: ∃x.( Q(x) )[x -> a] => Q(a)
+func InstantiateFormula(formula Formula, from string, to string) Formula {
+	return substituteVar(formula, from, to, false)
+}
+
+// substituteVar can generalize or instantiate
+// - generalize: Q(a)[x -> a] => ∃x.( Q(x) )
+// - instantiate: ∃x.( Q(x) )[x -> a] => Q(a)
+func substituteVar(formula Formula, from string, to string, generalize bool) Formula {
+	switch t := formula.(type) {
+	case *NotFormula:
+		return &NotFormula{Formula: substituteVar(t.Formula, from, to, generalize)}
+	case *BinOpFormula:
+		return &BinOpFormula{
+			Op:    t.Op,
+			Left:  substituteVar(t.Left, from, to, generalize),
+			Right: substituteVar(t.Right, from, to, generalize),
+		}
+	case *PredicateFormula:
+		return &PredicateFormula{
+			Name: t.Name,
+			Terms: slice.Map(func(p *TermVar) *TermVar {
+				if p.Name == from {
+					if generalize {
+						if p.IsBound {
+							panic(errors.Errorf("unable to generalize term var '%s' to '%s': already bound", from, to))
+						}
+						return BoundTermVar(to)
+					} else {
+						if !p.IsBound {
+							panic(errors.Errorf("unable to instantiate term var '%s' to '%s': already instantiated", from, to))
+						}
+						return FreeTermVar(to)
+					}
+				}
+				return p
+			}, t.Terms),
+		}
+	case *QuantifiedFormula:
+		return &QuantifiedFormula{
+			Var:        t.Var,
+			Body:       substituteVar(t.Body, from, to, generalize),
+			Quantifier: t.Quantifier,
+		}
+	default:
+		panic(errors.Errorf("invalid formula type: %T", t))
+	}
+}
+
+type TermVar struct {
+	Name string
+	// IsBound is true for 'x' and false for 'a' in ∃x.( ~ Q(x) ^ P(a) )
+	IsBound bool
+}
+
+func BoundTermVar(name string) *TermVar {
+	return &TermVar{Name: name, IsBound: true}
+}
+
+func FreeTermVar(name string) *TermVar {
+	return &TermVar{Name: name, IsBound: false}
 }
 
 // PredicateFormula without args is used by 0th-order
 // PredicateFormula with args is used by ∀/∃
 type PredicateFormula struct {
-	Name string
-	Args []*PredicateArg
+	Name  string
+	Terms []*TermVar
 }
 
 func (v *PredicateFormula) FormulaPrint(isRoot bool) string {
-	if len(v.Args) == 0 {
+	if len(v.Terms) == 0 {
 		return v.Name
 	}
-	return fmt.Sprintf("%s(%s)", v.Name, strings.Join(slice.Map(func(p *PredicateArg) string {
-		return p.Var
-	}, v.Args), ","))
+	return fmt.Sprintf("%s(%s)", v.Name, strings.Join(slice.Map(func(p *TermVar) string {
+		return p.Name
+	}, v.Terms), ","))
 }
 
 type NotFormula struct {
@@ -115,38 +179,8 @@ func (f *QuantifiedFormula) FormulaPrint(isRoot bool) string {
 }
 
 func (f *QuantifiedFormula) Substitute(obj string) Formula {
-	return substituteVar(f.Body, f.Var, obj)
-}
-
-func substituteVar(formula Formula, from string, to string) Formula {
-	switch t := formula.(type) {
-	case *NotFormula:
-		return &NotFormula{Formula: substituteVar(t.Formula, from, to)}
-	case *BinOpFormula:
-		return &BinOpFormula{
-			Op:    t.Op,
-			Left:  substituteVar(t.Left, from, to),
-			Right: substituteVar(t.Right, from, to),
-		}
-	case *PredicateFormula:
-		return &PredicateFormula{
-			Name: t.Name,
-			Args: slice.Map(func(p *PredicateArg) *PredicateArg {
-				if p.Var == from {
-					return &PredicateArg{Var: to}
-				}
-				return p
-			}, t.Args),
-		}
-	case *QuantifiedFormula:
-		return &QuantifiedFormula{
-			Var:        t.Var,
-			Body:       substituteVar(t.Body, from, to),
-			Quantifier: t.Quantifier,
-		}
-	default:
-		panic(errors.Errorf("invalid formula type: %T", t))
-	}
+	// TODO this feels wrong, shouldn't it drop the quantifier wrapper?
+	return InstantiateFormula(f.Body, f.Var, obj)
 }
 
 type BinOpFormula struct {
@@ -169,10 +203,8 @@ func (o *BinOpFormula) FormulaPrint(isRoot bool) string {
 	return strings.Join(out, " ")
 }
 
-func Pred(name string, args ...string) *PredicateFormula {
-	return &PredicateFormula{Name: name, Args: slice.Map(func(a string) *PredicateArg {
-		return &PredicateArg{Var: a}
-	}, args)}
+func Pred(name string, termVars ...*TermVar) *PredicateFormula {
+	return &PredicateFormula{Name: name, Terms: termVars}
 }
 
 func Not(arg Formula) *NotFormula {

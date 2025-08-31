@@ -112,7 +112,7 @@ func EDArrow(l Formula, r Formula, isLeft bool) *Rule {
 // result: Q(a) -- from substituting: ∀x.( Q(x) )[x -> a]
 func EForall(formula Formula, from string, to string) *Rule {
 	rule := NewRule("E ∀",
-		substituteVar(formula, from, to),
+		InstantiateFormula(formula, from, to),
 		Forall(from, formula),
 	)
 	rule.UseTermVar = &to
@@ -123,7 +123,7 @@ func EForall(formula Formula, from string, to string) *Rule {
 // result: ∃x.( Q(x) ) -- from substituting: Q(a)[a -> x]
 func IExist(formula Formula, from string, to string) *Rule {
 	return NewRule("I ∃",
-		Exist(to, substituteVar(formula, from, to)),
+		Exist(to, GeneralizeFormula(formula, from, to)),
 		formula,
 	)
 }
