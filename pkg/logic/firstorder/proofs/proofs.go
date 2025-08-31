@@ -52,7 +52,7 @@ var proofs = []*ProofsSection{
 			ContrapositiveTheorem(Not(Q), Not(And(P, Not(P)))), // ( P ^ ~ P ) -> Q
 		),
 	),
-	NewProofsSection("some quantifiers",
+	NewProofsSection("quantifiers",
 		RootProof("( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )",
 			ArrowProof(And(Exist("x", T), Arrow(P, Exist("x", Qx))),
 				EAnd(Exist("x", T), Arrow(P, Exist("x", Qx)), true),  // ∃x.( T )

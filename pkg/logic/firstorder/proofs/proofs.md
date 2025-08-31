@@ -4,7 +4,7 @@
 1. [basics](#basics)
     1. [P v ~ P](#proof-1-1)
     2. [( P ^ ~ P ) -> Q](#proof-1-2)
-2. [some quantifiers](#some quantifiers)
+2. [quantifiers](#quantifiers)
     1. [( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )](#proof-2-1)
     2. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-2-2)
     3. [( ∀y.( Q(y) ) ^ ∃x.( Q(x) -> R ) ) -> R](#proof-2-3)
@@ -42,7 +42,7 @@
 | 4 |  | <pre>~ Q -> ~ ( P ^ ~ P )</pre> | subproof implication | 2 - 3 |
 | 5 |  | <pre>( P ^ ~ P ) -> Q</pre> | Theorem: contrapositive | 4 |
 
-# some quantifiers <a name="some quantifiers"></a>
+# quantifiers <a name="quantifiers"></a>
 
 ## ( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) ) <a name="proof-2-1"></a>
 
