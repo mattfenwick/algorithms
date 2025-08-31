@@ -44,16 +44,19 @@ var proofs = []*ProofsSection{
 				IOr(P, Not(P), false),
 			),
 		),
+
+		// the following two are not allowed -- a is free and not in scope
 		// NewRootProof("∀x.( Q(x) ) -> Q(a)",
 		// 	NewProofImplication(Forall("x", Prop("Q", "x")),
 		// 		EForall(Prop("Q", "x"), "x", "a"),
 		// 	),
 		// ),
-		RootProof("Q(a) -> ∃x.( Q(x) )",
-			ArrowProof(Qa,
-				IExist(Qa, "a", "x"),
-			),
-		),
+		// RootProof("Q(a) -> ∃x.( Q(x) )",
+		// 	ArrowProof(Qa,
+		// 		IExist(Qa, "a", "x"),
+		// 	),
+		// ),
+
 		RootProof("( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )",
 			ArrowProof(And(Exist("x", T), Arrow(P, Exist("x", Qx))),
 				EAnd(Exist("x", T), Arrow(P, Exist("x", Qx)), true),  // ∃x.( T )

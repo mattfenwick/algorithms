@@ -6,6 +6,8 @@ import (
 
 	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/mattfenwick/collections/pkg/dict"
+	"github.com/mattfenwick/collections/pkg/json"
+	"github.com/mattfenwick/collections/pkg/set"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/olekukonko/tablewriter"
 	"github.com/pkg/errors"
@@ -285,9 +287,13 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 	})
 	result := step.StepResult()
 	// make sure all TermVar usages are valid
-	// if err := scope.CheckTermVars(result); err != nil {
-	// 	return err
-	// }
+	usage := CheckTermVarsInScope(result, set.FromSlice(scope.GetTermVars()))
+	if usage.ViolationCount() > 0 {
+		panic(errors.Errorf("found %d term var usage violations in '%s': %s",
+			usage.ViolationCount(),
+			result.FormulaPrint(true),
+			json.MustMarshalToString(usage)))
+	}
 	return scope.AddFormula(result.FormulaPrint(true), addedLine)
 }
 

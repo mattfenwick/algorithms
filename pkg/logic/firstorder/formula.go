@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mattfenwick/collections/pkg/set"
 	"github.com/mattfenwick/collections/pkg/slice"
 	"github.com/pkg/errors"
 )
@@ -82,6 +83,68 @@ func substituteVar(formula Formula, from string, to string, generalize bool) For
 			Body:       substituteVar(t.Body, from, to, generalize),
 			Quantifier: t.Quantifier,
 		}
+	default:
+		panic(errors.Errorf("invalid formula type: %T", t))
+	}
+}
+
+func CheckTermVarsInScope(formula Formula, freeTermVars *set.Set[string]) *TermVarUsage {
+	t := &TermVarUsage{}
+	checkTermVarsInScopeHelper(formula, freeTermVars, set.Empty[string](), t)
+	return t
+}
+
+type TermVarUsage struct {
+	FreeViolations      []string
+	BoundViolations     []string
+	ShadowingViolations [][2]*TermVar
+}
+
+func (tvu *TermVarUsage)ViolationCount() int {
+	return len(tvu.FreeViolations) + len(tvu.BoundViolations) + len(tvu.ShadowingViolations)
+}
+
+func (tvu *TermVarUsage) AddViolation(t *TermVar) {
+	if t.IsBound {
+		tvu.BoundViolations = append(tvu.BoundViolations, t.Name)
+	} else {
+		tvu.FreeViolations = append(tvu.FreeViolations, t.Name)
+	}
+}
+
+func (tvu *TermVarUsage) AddShadowingViolation(outer *TermVar, inner *TermVar) {
+	tvu.ShadowingViolations = append(tvu.ShadowingViolations, [2]*TermVar{outer, inner})
+}
+
+func checkTermVarsInScopeHelper(formula Formula, freeTermVars *set.Set[string], boundTermVars *set.Set[string], tvu *TermVarUsage) {
+	switch t := formula.(type) {
+	case *NotFormula:
+		checkTermVarsInScopeHelper(t.Formula, freeTermVars, boundTermVars, tvu)
+	case *BinOpFormula:
+		checkTermVarsInScopeHelper(t.Left, freeTermVars, boundTermVars, tvu)
+		checkTermVarsInScopeHelper(t.Right, freeTermVars, boundTermVars, tvu)
+	case *PredicateFormula:
+		for _, term := range t.Terms {
+			if term.IsBound {
+				if !boundTermVars.Contains(term.Name) {
+					tvu.AddViolation(term)
+				}
+			} else {
+				if !freeTermVars.Contains(term.Name) {
+					tvu.AddViolation(term)
+				}
+			}
+		}
+	case *QuantifiedFormula:
+		btv := set.FromSlice(boundTermVars.ToSlice())
+		if freeTermVars.Contains(t.Var) {
+			tvu.AddShadowingViolation(FreeTermVar(t.Var), BoundTermVar(t.Var))
+		}
+		added := btv.Add(t.Var)
+		if !added {
+			tvu.AddShadowingViolation(BoundTermVar(t.Var), BoundTermVar(t.Var))
+		}
+		checkTermVarsInScopeHelper(t.Body, freeTermVars, btv, tvu)
 	default:
 		panic(errors.Errorf("invalid formula type: %T", t))
 	}
