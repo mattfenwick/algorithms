@@ -12,6 +12,8 @@
 2. [DeMorgan's](#DeMorgan's)
     1. [∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )](#proof-2-1)
     2. [~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) )](#proof-2-2)
+3. [distributive](#distributive)
+    1. [∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) )](#proof-3-1)
 
 # basics <a name="basics"></a>
 
@@ -200,4 +202,35 @@
 | 19 |  | <pre>.   ~ ∀x.( Q(x) )</pre> | subproof ∃ elimination | 13 - 18 |
 | 20 |  | <pre>∃x.( ~ Q(x) ) -> ~ ∀x.( Q(x) )</pre> | subproof implication | 12 - 19 |
 | 21 |  | <pre>~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) )</pre> | I <-> | 11, 20 |
+
+# distributive <a name="distributive"></a>
+
+## ∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) ) <a name="proof-3-1"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∀x.( P(x) ^ Q(x) )</pre> | Assume: implication |  |
+| 2 | a | <pre>.   .   </pre> | define term var |  |
+| 3 | a | <pre>.   .   ∀x.( P(x) ^ Q(x) )</pre> | Reiterate | 1 |
+| 4 | a | <pre>.   .   P(a) ^ Q(a)</pre> | E ∀ | 3, 2 |
+| 5 | a | <pre>.   .   P(a)</pre> | E ^ (L) | 4 |
+| 6 |  | <pre>.   ∀x.( P(x) )</pre> | subproof ∀ introduction | 2 - 5 |
+| 7 | a | <pre>.   .   </pre> | define term var |  |
+| 8 | a | <pre>.   .   ∀x.( P(x) ^ Q(x) )</pre> | Reiterate | 1 |
+| 9 | a | <pre>.   .   P(a) ^ Q(a)</pre> | E ∀ | 8, 7 |
+| 10 | a | <pre>.   .   Q(a)</pre> | E ^ (R) | 9 |
+| 11 |  | <pre>.   ∀x.( Q(x) )</pre> | subproof ∀ introduction | 7 - 10 |
+| 12 |  | <pre>.   ∀x.( P(x) ) ^ ∀x.( Q(x) )</pre> | I ^ | 6, 11 |
+| 13 |  | <pre>∀x.( P(x) ^ Q(x) ) -> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) )</pre> | subproof implication | 1 - 12 |
+| 14 |  | <pre>.   ∀x.( P(x) ) ^ ∀x.( Q(x) )</pre> | Assume: implication |  |
+| 15 | a | <pre>.   .   </pre> | define term var |  |
+| 16 | a | <pre>.   .   ∀x.( P(x) ) ^ ∀x.( Q(x) )</pre> | Reiterate | 14 |
+| 17 | a | <pre>.   .   ∀x.( P(x) )</pre> | E ^ (L) | 16 |
+| 18 | a | <pre>.   .   ∀x.( Q(x) )</pre> | E ^ (R) | 16 |
+| 19 | a | <pre>.   .   P(a)</pre> | E ∀ | 17, 15 |
+| 20 | a | <pre>.   .   Q(a)</pre> | E ∀ | 18, 15 |
+| 21 | a | <pre>.   .   P(a) ^ Q(a)</pre> | I ^ | 19, 20 |
+| 22 |  | <pre>.   ∀x.( P(x) ^ Q(x) )</pre> | subproof ∀ introduction | 15 - 21 |
+| 23 |  | <pre>( ∀x.( P(x) ) ^ ∀x.( Q(x) ) ) -> ∀x.( P(x) ^ Q(x) )</pre> | subproof implication | 14 - 22 |
+| 24 |  | <pre>∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) )</pre> | I <-> | 13, 23 |
 

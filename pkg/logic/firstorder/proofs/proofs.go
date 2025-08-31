@@ -203,4 +203,35 @@ var proofs = []*ProofsSection{
 			IDArrow(Not(Forall("x", Qx)), Exist("x", Not(Qx))),
 		),
 	),
+	NewProofsSection("distributive",
+		RootProof("∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) )",
+			ArrowProof(Forall("x", And(Px, Qx)),
+				ForallIntroProof("x", "a",
+					&Reiterate{Formula: Forall("x", And(Px, Qx))},
+					EForall(And(Px, Qx), "x", "a"),
+					EAnd(Pa, Qa, true), // P(a)
+				), // ∀x.( P(x) )
+				ForallIntroProof("x", "a",
+					&Reiterate{Formula: Forall("x", And(Px, Qx))},
+					EForall(And(Px, Qx), "x", "a"),
+					EAnd(Pa, Qa, false), // Q(a)
+				), // ∀x.( Q(x) )
+				IAnd(Forall("x", Px), Forall("x", Qx)),
+			),
+			ArrowProof(And(Forall("x", Px), Forall("x", Qx)),
+				ForallIntroProof("x", "a",
+					&Reiterate{Formula: And(Forall("x", Px), Forall("x", Qx))},
+					EAnd(Forall("x", Px), Forall("x", Qx), true),  // ∀x.( P(x) )
+					EAnd(Forall("x", Px), Forall("x", Qx), false), // ∀x.( Q(x) )
+					EForall(Px, "x", "a"),                         // P(a)
+					EForall(Qx, "x", "a"),                         // Q(a)
+					IAnd(Pa, Qa),
+				),
+			),
+			IDArrow(
+				Forall("x", And(Px, Qx)),
+				And(Forall("x", Px), Forall("x", Qx)),
+			),
+		),
+	),
 }

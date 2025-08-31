@@ -100,7 +100,7 @@ type TermVarUsage struct {
 	ShadowingViolations [][2]*TermVar
 }
 
-func (tvu *TermVarUsage)ViolationCount() int {
+func (tvu *TermVarUsage) ViolationCount() int {
 	return len(tvu.FreeViolations) + len(tvu.BoundViolations) + len(tvu.ShadowingViolations)
 }
 
