@@ -16,6 +16,11 @@ func ExcludedMiddleTheorem(t Formula) *Rule {
 	return NewRule("Theorem: excluded middle", Or(t, Not(t)))
 }
 
+// ~ ( P ^ ~ P )
+func NonContradictionTheorem(t Formula) *Rule {
+	return NewRule("Theorem: non-contradiction", Not(And(t, Not(t))))
+}
+
 // ( P   ->   Q ) -> ( ~ Q -> ~ P )
 // ( ~ P ->   Q ) -> ( ~ Q ->   P )
 // ( P   -> ~ Q ) -> (   Q -> ~ P )

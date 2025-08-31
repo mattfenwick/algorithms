@@ -44,7 +44,15 @@ var proofs = []*ProofsSection{
 				IOr(P, Not(P), false),
 			),
 		),
-
+		RootProof("( P ^ ~ P ) -> Q",
+			NonContradictionTheorem(P), // ~ ( P ^ ~ P )
+			ArrowProof(Not(Q),
+				&Reiterate{Formula: Not(And(P, Not(P)))},
+			), // ~ Q -> ~ ( P ^ ~ P )
+			ContrapositiveTheorem(Not(Q), Not(And(P, Not(P)))), // ( P ^ ~ P ) -> Q
+		),
+	),
+	NewProofsSection("some quantifiers",
 		RootProof("( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )",
 			ArrowProof(And(Exist("x", T), Arrow(P, Exist("x", Qx))),
 				EAnd(Exist("x", T), Arrow(P, Exist("x", Qx)), true),  // ∃x.( T )
