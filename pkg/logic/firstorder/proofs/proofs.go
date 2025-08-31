@@ -233,5 +233,42 @@ var proofs = []*ProofsSection{
 				And(Forall("x", Px), Forall("x", Qx)),
 			),
 		),
+		RootProof("∃x.( P(x) v Q(x) ) <-> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )",
+			ArrowProof(Exist("x", Or(Px, Qx)),
+				ExistElimProof("a",
+					Exist("x", Or(Px, Qx)), // P(a) v Q(a)
+					ArrowProof(Pa, // P(a)
+						IExist(Pa, "a", "x"),                      // ∃x.( P(x)
+						IOr(Exist("x", Px), Exist("x", Qx), true), // ∃x.( P(x) ) v ∃x.( Q(x) )
+					), // P(a) -> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )
+					ArrowProof(Qa, // Q(a)
+						IExist(Qa, "a", "x"),                       // ∃x.( Q(x)
+						IOr(Exist("x", Px), Exist("x", Qx), false), // ∃x.( P(x) ) v ∃x.( Q(x) )
+					), // Q(a) -> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )
+					EOr(Pa, Qa, Or(Exist("x", Px), Exist("x", Qx))), // ∃x.( P(x) ) v ∃x.( Q(x) )
+				), // ∃x.( P(x) ) v ∃x.( Q(x) )
+			),
+			ArrowProof(Or(Exist("x", Px), Exist("x", Qx)),
+				ArrowProof(Exist("x", Px),
+					ExistElimProof("a",
+						Exist("x", Px),               // P(a)
+						IOr(Pa, Qa, true),            // P(a) v Q(a)
+						IExist(Or(Pa, Qa), "a", "x"), // ∃x.( P(x) v Q(x) )
+					), // ∃x.( P(x) v Q(x) )
+				), // ∃x.( P(x) ) -> ∃x.( P(x) v Q(x) )
+				ArrowProof(Exist("x", Qx),
+					ExistElimProof("a",
+						Exist("x", Qx),               // Q(a)
+						IOr(Pa, Qa, false),           // P(a) v Q(a)
+						IExist(Or(Pa, Qa), "a", "x"), // ∃x.( P(x) v Q(x) )
+					), // ∃x.( P(x) v Q(x) )
+				), // ∃x.( Q(x) ) -> ∃x.( P(x) v Q(x) )
+				EOr(Exist("x", Px), Exist("x", Qx), Exist("x", Or(Px, Qx))), // ∃x.( P(x) v Q(x) )
+			),
+			IDArrow(
+				Exist("x", Or(Px, Qx)),
+				Or(Exist("x", Px), Exist("x", Qx)),
+			),
+		),
 	),
 }

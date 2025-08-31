@@ -14,6 +14,7 @@
     2. [~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) )](#proof-2-2)
 3. [distributive](#distributive)
     1. [∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) )](#proof-3-1)
+    2. [∃x.( P(x) v Q(x) ) <-> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )](#proof-3-2)
 
 # basics <a name="basics"></a>
 
@@ -233,4 +234,41 @@
 | 22 |  | <pre>.   ∀x.( P(x) ^ Q(x) )</pre> | subproof ∀ introduction | 15 - 21 |
 | 23 |  | <pre>( ∀x.( P(x) ) ^ ∀x.( Q(x) ) ) -> ∀x.( P(x) ^ Q(x) )</pre> | subproof implication | 14 - 22 |
 | 24 |  | <pre>∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) )</pre> | I <-> | 13, 23 |
+
+## ∃x.( P(x) v Q(x) ) <-> ( ∃x.( P(x) ) v ∃x.( Q(x) ) ) <a name="proof-3-2"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∃x.( P(x) v Q(x) )</pre> | Assume: implication |  |
+| 2 | a | <pre>.   .   </pre> | define term var |  |
+| 3 | a | <pre>.   .   P(a) v Q(a)</pre> | Assume: ∃ elimination | 1 |
+| 4 | a | <pre>.   .   .   P(a)</pre> | Assume: implication |  |
+| 5 | a | <pre>.   .   .   ∃x.( P(x) )</pre> | I ∃ | 4 |
+| 6 | a | <pre>.   .   .   ∃x.( P(x) ) v ∃x.( Q(x) )</pre> | I v (L) | 5 |
+| 7 | a | <pre>.   .   P(a) -> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )</pre> | subproof implication | 4 - 6 |
+| 8 | a | <pre>.   .   .   Q(a)</pre> | Assume: implication |  |
+| 9 | a | <pre>.   .   .   ∃x.( Q(x) )</pre> | I ∃ | 8 |
+| 10 | a | <pre>.   .   .   ∃x.( P(x) ) v ∃x.( Q(x) )</pre> | I v (R) | 9 |
+| 11 | a | <pre>.   .   Q(a) -> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )</pre> | subproof implication | 8 - 10 |
+| 12 | a | <pre>.   .   ∃x.( P(x) ) v ∃x.( Q(x) )</pre> | E v | 7, 11, 3 |
+| 13 |  | <pre>.   ∃x.( P(x) ) v ∃x.( Q(x) )</pre> | subproof ∃ elimination | 2 - 12 |
+| 14 |  | <pre>∃x.( P(x) v Q(x) ) -> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )</pre> | subproof implication | 1 - 13 |
+| 15 |  | <pre>.   ∃x.( P(x) ) v ∃x.( Q(x) )</pre> | Assume: implication |  |
+| 16 |  | <pre>.   .   ∃x.( P(x) )</pre> | Assume: implication |  |
+| 17 | a | <pre>.   .   .   </pre> | define term var |  |
+| 18 | a | <pre>.   .   .   P(a)</pre> | Assume: ∃ elimination | 16 |
+| 19 | a | <pre>.   .   .   P(a) v Q(a)</pre> | I v (L) | 18 |
+| 20 | a | <pre>.   .   .   ∃x.( P(x) v Q(x) )</pre> | I ∃ | 19 |
+| 21 |  | <pre>.   .   ∃x.( P(x) v Q(x) )</pre> | subproof ∃ elimination | 17 - 20 |
+| 22 |  | <pre>.   ∃x.( P(x) ) -> ∃x.( P(x) v Q(x) )</pre> | subproof implication | 16 - 21 |
+| 23 |  | <pre>.   .   ∃x.( Q(x) )</pre> | Assume: implication |  |
+| 24 | a | <pre>.   .   .   </pre> | define term var |  |
+| 25 | a | <pre>.   .   .   Q(a)</pre> | Assume: ∃ elimination | 23 |
+| 26 | a | <pre>.   .   .   P(a) v Q(a)</pre> | I v (R) | 25 |
+| 27 | a | <pre>.   .   .   ∃x.( P(x) v Q(x) )</pre> | I ∃ | 26 |
+| 28 |  | <pre>.   .   ∃x.( P(x) v Q(x) )</pre> | subproof ∃ elimination | 24 - 27 |
+| 29 |  | <pre>.   ∃x.( Q(x) ) -> ∃x.( P(x) v Q(x) )</pre> | subproof implication | 23 - 28 |
+| 30 |  | <pre>.   ∃x.( P(x) v Q(x) )</pre> | E v | 22, 29, 15 |
+| 31 |  | <pre>( ∃x.( P(x) ) v ∃x.( Q(x) ) ) -> ∃x.( P(x) v Q(x) )</pre> | subproof implication | 15 - 30 |
+| 32 |  | <pre>∃x.( P(x) v Q(x) ) <-> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )</pre> | I <-> | 14, 31 |
 
