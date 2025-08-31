@@ -154,7 +154,7 @@ func existProof(termVar string, existential *QuantifiedFormula, steps []Step, is
 		proofType = ProofTypeExistentialContradiction
 		// existential contra assumes the existential so DOESN'T require it as as preconditon
 		steps = append([]Step{
-			// TODO add step assuming existential
+			&Assumption{Formula: existential, ProofType: proofType},
 			&QuantifierAssumption{
 				Formula:       substituteVar(existential.Body, existential.Var, termVar),
 				ProofType:     proofType,

@@ -9,6 +9,7 @@
     5. [( ∀y.( Q(y) ) ^ ∃x.( Q(x) -> R ) ) -> R](#proof-1-5)
     6. [∀x.( P(x) ^ Q(x) ) -> ( ∀y.( P(y) ) ^ ∀z.( Q(z) ) )](#proof-1-6)
     7. [∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )](#proof-1-7)
+    8. [~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) )](#proof-1-8)
 
 # basics <a name="basics"></a>
 
@@ -133,18 +134,45 @@
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∀x.( ~ Q(x) )</pre> | Assume: implication |  |
 | 2 | a | <pre>.   .   </pre> | define term var |  |
-| 3 | a | <pre>.   .   Q(a)</pre> | Assume: ∃ contradiction |  |
-| 4 | a | <pre>.   .   ∀x.( ~ Q(x) )</pre> | Reiterate | 1 |
-| 5 | a | <pre>.   .   ~ Q(a)</pre> | E ∀ | 4, 2 |
-| 6 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | subproof ∃ elimination | 2 - 5 |
-| 7 |  | <pre>∀x.( ~ Q(x) ) -> ~ ∃x.( Q(x) )</pre> | subproof implication | 1 - 6 |
-| 8 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | Assume: implication |  |
-| 9 | a | <pre>.   .   </pre> | define term var |  |
-| 10 | a | <pre>.   .   .   Q(a)</pre> | Assume: contradiction |  |
-| 11 | a | <pre>.   .   .   ∃x.( Q(x) )</pre> | I ∃ | 10 |
-| 12 | a | <pre>.   .   .   ~ ∃x.( Q(x) )</pre> | Reiterate | 8 |
-| 13 | a | <pre>.   .   ~ Q(a)</pre> | subproof contradiction | 10 - 12 |
-| 14 |  | <pre>.   ∀x.( ~ Q(x) )</pre> | subproof ∀ introduction | 9 - 13 |
-| 15 |  | <pre>~ ∃x.( Q(x) ) -> ∀x.( ~ Q(x) )</pre> | subproof implication | 8 - 14 |
-| 16 |  | <pre>∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )</pre> | I <-> | 7, 15 |
+| 3 | a | <pre>.   .   ∃x.( Q(x) )</pre> | Assume: ∃ contradiction |  |
+| 4 | a | <pre>.   .   Q(a)</pre> | Assume: ∃ contradiction |  |
+| 5 | a | <pre>.   .   ∀x.( ~ Q(x) )</pre> | Reiterate | 1 |
+| 6 | a | <pre>.   .   ~ Q(a)</pre> | E ∀ | 5, 2 |
+| 7 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | subproof ∃ elimination | 2 - 6 |
+| 8 |  | <pre>∀x.( ~ Q(x) ) -> ~ ∃x.( Q(x) )</pre> | subproof implication | 1 - 7 |
+| 9 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | Assume: implication |  |
+| 10 | a | <pre>.   .   </pre> | define term var |  |
+| 11 | a | <pre>.   .   .   Q(a)</pre> | Assume: contradiction |  |
+| 12 | a | <pre>.   .   .   ∃x.( Q(x) )</pre> | I ∃ | 11 |
+| 13 | a | <pre>.   .   .   ~ ∃x.( Q(x) )</pre> | Reiterate | 9 |
+| 14 | a | <pre>.   .   ~ Q(a)</pre> | subproof contradiction | 11 - 13 |
+| 15 |  | <pre>.   ∀x.( ~ Q(x) )</pre> | subproof ∀ introduction | 10 - 14 |
+| 16 |  | <pre>~ ∃x.( Q(x) ) -> ∀x.( ~ Q(x) )</pre> | subproof implication | 9 - 15 |
+| 17 |  | <pre>∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )</pre> | I <-> | 8, 16 |
+
+## ~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) ) <a name="proof-1-8"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ~ ∀x.( Q(x) )</pre> | Assume: implication |  |
+| 2 |  | <pre>.   .   ~ ∃x.( ~ Q(x) )</pre> | Assume: contradiction |  |
+| 3 | a | <pre>.   .   .   </pre> | define term var |  |
+| 4 | a | <pre>.   .   .   .   ~ Q(x)</pre> | Assume: contradiction |  |
+| 5 | a | <pre>.   .   .   .   ∃x.( ~ Q(x) )</pre> | I ∃ | 4 |
+| 6 | a | <pre>.   .   .   .   ~ ∃x.( ~ Q(x) )</pre> | Reiterate | 2 |
+| 7 | a | <pre>.   .   .   Q(x)</pre> | subproof contradiction | 4 - 6 |
+| 8 |  | <pre>.   .   ∀x.( Q(x) )</pre> | subproof ∀ introduction | 3 - 7 |
+| 9 |  | <pre>.   .   ~ ∀x.( Q(x) )</pre> | Reiterate | 1 |
+| 10 |  | <pre>.   ∃x.( ~ Q(x) )</pre> | subproof contradiction | 2 - 9 |
+| 11 |  | <pre>~ ∀x.( Q(x) ) -> ∃x.( ~ Q(x) )</pre> | subproof implication | 1 - 10 |
+| 12 |  | <pre>.   ∃x.( ~ Q(x) )</pre> | Assume: implication |  |
+| 13 | a | <pre>.   .   </pre> | define term var |  |
+| 14 | a | <pre>.   .   ~ Q(a)</pre> | Assume: ∃ elimination | 12 |
+| 15 | a | <pre>.   .   .   ∀x.( Q(x) )</pre> | Assume: contradiction |  |
+| 16 | a | <pre>.   .   .   Q(a)</pre> | E ∀ | 15, 13 |
+| 17 | a | <pre>.   .   .   ~ Q(a)</pre> | Reiterate | 14 |
+| 18 | a | <pre>.   .   ~ ∀x.( Q(x) )</pre> | subproof contradiction | 15 - 17 |
+| 19 |  | <pre>.   ~ ∀x.( Q(x) )</pre> | subproof ∃ elimination | 13 - 18 |
+| 20 |  | <pre>∃x.( ~ Q(x) ) -> ~ ∀x.( Q(x) )</pre> | subproof implication | 12 - 19 |
+| 21 |  | <pre>~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) )</pre> | I <-> | 11, 20 |
 
