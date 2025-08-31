@@ -16,11 +16,12 @@ type Step interface {
 type ProofType string
 
 const (
-	ProofTypeRoot                   ProofType = "Root"
-	ProofTypeContradiction          ProofType = "Contradiction"
-	ProofTypeImplication            ProofType = "Implication"
-	ProofTypeForallIntroduction     ProofType = "Forall Introduction"
-	ProofTypeExistentialElimination ProofType = "Existential Elimination"
+	ProofTypeRoot                     ProofType = "Root"
+	ProofTypeContradiction            ProofType = "Contradiction"
+	ProofTypeImplication              ProofType = "Implication"
+	ProofTypeForallIntroduction       ProofType = "Forall Introduction"
+	ProofTypeExistentialElimination   ProofType = "Existential Elimination"
+	ProofTypeExistentialContradiction ProofType = "Existential Contradiction"
 )
 
 func (p ProofType) Name() string {
@@ -31,6 +32,8 @@ func (p ProofType) Name() string {
 		return "implication"
 	case ProofTypeExistentialElimination:
 		return "∃ elimination"
+	case ProofTypeExistentialContradiction:
+		return "∃ contradiction"
 	case ProofTypeForallIntroduction:
 		return "∀ introduction"
 	default:
@@ -85,14 +88,27 @@ func ContraProof(hypothesis Formula, steps ...Step) *Proof {
 		if err != nil {
 			fmt.Printf("unable to marshal json for results: %+v\n", err)
 		}
-		panic(errors.Errorf(
+		return errors.Errorf(
 			"subproof contradiction must end with negation of some previous formula -- '%s' not found in scope\n  previous formulas: %s",
 			last.FormulaPrint(true),
-			resultsJson))
+			resultsJson)
+	}
+	return nil
+}
+
+func ContraProof(hypothesis Formula, steps ...Step) *Proof {
+	if len(steps) == 0 {
+		panic(errors.Errorf("expected at least 1 step"))
+	}
+	steps = append([]Step{&Assumption{Formula: hypothesis, ProofType: ProofTypeContradiction}}, steps...)
+	err := findNegationInScope(hypothesis, steps)
+	if err != nil {
+		panic(err)
 	}
 	// avoid introducing double negative. if hypothesis is:
 	//    ~ Z, result is Z
 	//    Z, result is ~ Z
+	// result := removeDoubleNegative(Not(hypothesis)) // TODO wouldn't this be easier?
 	var result Formula
 	switch a := hypothesis.(type) {
 	case *NotFormula:
@@ -122,6 +138,14 @@ func ArrowProof(hypothesis Formula, steps ...Step) *Proof {
 }
 
 func ExistElimProof(termVar string, existential *QuantifiedFormula, steps ...Step) *Proof {
+	return existProof(termVar, existential, steps, false)
+}
+
+func ExistContraProof(termVar string, existential *QuantifiedFormula, steps ...Step) *Proof {
+	return existProof(termVar, existential, steps, true)
+}
+
+func existProof(termVar string, existential *QuantifiedFormula, steps []Step, isContra bool) *Proof {
 	if existential.Quantifier != ExistentialQuantifier {
 		panic(errors.Errorf("existential quantifier required, found '%s'", existential.Quantifier))
 	}
@@ -129,13 +153,28 @@ func ExistElimProof(termVar string, existential *QuantifiedFormula, steps ...Ste
 	//   subordinate proofs
 	//   existential and forall formulas
 	//   forall instantiation
-	steps = append([]Step{
-		&QuantifierAssumption{
-			Formula:       substituteVar(existential.Body, existential.Var, termVar),
-			ProofType:     ProofTypeExistentialElimination,
-			Preconditions: []Formula{existential},
-		},
-	}, steps...)
+	var proofType ProofType
+	if isContra {
+		proofType = ProofTypeExistentialContradiction
+		// existential contra assumes the existential so DOESN'T require it as as preconditon
+		steps = append([]Step{
+			&QuantifierAssumption{
+				Formula:       substituteVar(existential.Body, existential.Var, termVar),
+				ProofType:     proofType,
+				Preconditions: []Formula{},
+			},
+		}, steps...)
+	} else {
+		proofType = ProofTypeExistentialElimination
+		// exisential elim DOES require the existential as a precondition
+		steps = append([]Step{
+			&QuantifierAssumption{
+				Formula:       substituteVar(existential.Body, existential.Var, termVar),
+				ProofType:     proofType,
+				Preconditions: []Formula{existential},
+			},
+		}, steps...)
+	}
 	// verify reiterations don't mention hypothesis
 	for _, step := range steps {
 		switch t := step.(type) {
@@ -145,12 +184,23 @@ func ExistElimProof(termVar string, existential *QuantifiedFormula, steps ...Ste
 			}
 		}
 	}
-	// last step is the result and must not refer to the hypothesis
+	var result Formula
 	last := steps[len(steps)-1]
-	result := last.StepResult()
-	// verify hypothesis isn't used in result
-	if containsQuantifierHypothesis(result, termVar) {
-		panic(errors.Errorf("hypothesis '%s' used in result '%s'", termVar, result.FormulaPrint(true)))
+	if isContra {
+		// last step must contradict something else in scope
+		err := findNegationInScope(existential, steps)
+		if err != nil {
+			panic(err)
+		}
+		// result is negation of existential assumption
+		result = removeDoubleNegative(Not(existential))
+	} else {
+		// last step is the result and must not refer to the hypothesis
+		result = last.StepResult()
+		// verify hypothesis isn't used in result
+		if containsQuantifierHypothesis(result, termVar) {
+			panic(errors.Errorf("hypothesis '%s' used in result '%s'", termVar, result.FormulaPrint(true)))
+		}
 	}
 	return &Proof{
 		ExpectedResult: result.FormulaPrint(true),

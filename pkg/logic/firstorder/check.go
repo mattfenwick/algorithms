@@ -27,7 +27,7 @@ type Scope struct {
 }
 
 func NewScope(parent *Scope) *Scope {
-	depth := 0
+	depth := -1
 	if parent != nil {
 		depth = parent.Depth + 1
 	}

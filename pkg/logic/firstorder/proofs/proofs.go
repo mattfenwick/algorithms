@@ -121,13 +121,6 @@ var proofs = []*ProofsSection{
 		// 		),
 		// 	),
 		// ),
-		// example of using ∃ which isn't available
-		// NewRootProof("R",
-		// 	NewProofExistentialElim("a",
-		// 		Existential("x", And(R, Prop("Q", "x"))), // R ^ Q(a)
-		// 		EAnd(R, Prop("Q", "a"), true),            // R
-		// 	),
-		// ),
 		RootProof("∀x.( P(x) ^ Q(x) ) -> ( ∀y.( P(y) ) ^ ∀z.( Q(z) ) )",
 			ArrowProof(Forall("x", And(Pred("P", "x"), Pred("Q", "x"))),
 				ForallIntroProof("y", "a",
@@ -143,6 +136,33 @@ var proofs = []*ProofsSection{
 					EAnd(Pred("P", "a"), Pred("Q", "a"), false),            // Q(a)
 				), // ∀z.( Q(z)
 				IAnd(Forall("y", Pred("P", "y")), Forall("z", Pred("Q", "z"))),
+			),
+		),
+
+		// RootProof("∃x.( R ^ Q(x) ) -> R",
+		// 	ArrowProof(Exist("x", And(R, Qx)), // ∃x.( R ^ Q(x) )
+		// 		ExistElimProof("a",
+		// 			Exist("x", And(R, Pred("Q", "x"))), // R ^ Q(a)
+		// 			EAnd(R, Pred("Q", "a"), true),      // R
+		// 		),
+		// 	),
+		// ),
+
+		// RootProof("( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> Q(a)",
+		// 	ArrowProof(And(Forall("x", Qx), Exist("x", T)),
+		// 		ExistElimProof("a",
+		// 			Exist("x", T),
+		// 			EForall(Qx, "x", "a"),
+		// 		),
+		// 	),
+		// ),
+
+		RootProof("∀x.( ~ Q(x) ) -> ~ ∃x.( Q(x) )",
+			ArrowProof(Forall("x", Not(Qx)),
+				ExistContraProof("a", Exist("x", Qx),
+					&Reiterate{Formula: Forall("x", Not(Qx))}, // ∀x.( ~ Q(x) )
+					EForall(Not(Qx), "x", "a"),                // ~ Q(a)
+				),
 			),
 		),
 	),
