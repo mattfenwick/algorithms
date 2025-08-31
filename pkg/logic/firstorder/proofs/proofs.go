@@ -45,18 +45,6 @@ var proofs = []*ProofsSection{
 			),
 		),
 
-		// the following two are not allowed -- a is free and not in scope
-		// NewRootProof("∀x.( Q(x) ) -> Q(a)",
-		// 	NewProofImplication(Forall("x", Prop("Q", "x")),
-		// 		EForall(Prop("Q", "x"), "x", "a"),
-		// 	),
-		// ),
-		// RootProof("Q(a) -> ∃x.( Q(x) )",
-		// 	ArrowProof(Qa,
-		// 		IExist(Qa, "a", "x"),
-		// 	),
-		// ),
-
 		RootProof("( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )",
 			ArrowProof(And(Exist("x", T), Arrow(P, Exist("x", Qx))),
 				EAnd(Exist("x", T), Arrow(P, Exist("x", Qx)), true),  // ∃x.( T )
@@ -136,35 +124,42 @@ var proofs = []*ProofsSection{
 			ArrowProof(Forall("x", And(Px, Qx)),
 				ForallIntroProof("y", "a",
 					&Reiterate{Formula: Forall("x", And(Px, Qx))}, // ∀x.( P(x) ^ Q(x) )
-					EForall(And(Px, Qx), "x", "a"), // P(a) ^ Q(a)
-					EAnd(Pa, Qa, true),             // P(a)
+					EForall(And(Px, Qx), "x", "a"),                // P(a) ^ Q(a)
+					EAnd(Pa, Qa, true),                            // P(a)
 				), // ∀y.( P(y)
 				ForallIntroProof("z", "a",
 					&Reiterate{Formula: Forall("x", And(Px, Qx))}, // ∀x.( P(x) ^ Q(x) )
-					EForall(And(Px, Qx), "x", "a"), // P(a) ^ Q(a)
-					EAnd(Pa, Qa, false),            // Q(a)
+					EForall(And(Px, Qx), "x", "a"),                // P(a) ^ Q(a)
+					EAnd(Pa, Qa, false),                           // Q(a)
 				), // ∀z.( Q(z)
 				IAnd(Forall("y", Py), Forall("z", Qz)),
 			),
 		),
 
-		// RootProof("∃x.( R ^ Q(x) ) -> R",
-		// 	ArrowProof(Exist("x", And(R, Qx)), // ∃x.( R ^ Q(x) )
-		// 		ExistElimProof("a",
-		// 			Exist("x", And(R, Qx)), // R ^ Q(a)
-		// 			EAnd(R, Qa, true),      // R
-		// 		),
-		// 	),
-		// ),
+		RootProof("∃x.( R ) <-> R",
+			ArrowProof(Exist("x", R), // ∃x.( R )
+				ExistElimProof("a",
+					Exist("x", R), // R
+				),
+			),
+			ArrowProof(R, // R
+				IExist(R, "a", "x"), // ∃x.( R )
+			),
+			IDArrow(Exist("x", R), R),
+		),
 
-		// RootProof("( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> Q(a)",
-		// 	ArrowProof(And(Forall("x", Qx), Exist("x", T)),
-		// 		ExistElimProof("a",
-		// 			Exist("x", T),
-		// 			EForall(Qx, "x", "a"),
-		// 		),
-		// 	),
-		// ),
+		RootProof("( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )",
+			ArrowProof(And(Forall("x", Qx), Exist("x", T)),
+				EAnd(Forall("x", Qx), Exist("x", T), true),  // ∀x.( Q(x) )
+				EAnd(Forall("x", Qx), Exist("x", T), false), // ∃x.( T )
+				ExistElimProof("a",
+					Exist("x", T),                        // T
+					&Reiterate{Formula: Forall("x", Qx)}, // ∀x.( Q(x) )
+					EForall(Qx, "x", "a"),                // Q(a)
+					IExist(Qa, "a", "x"),                 // ∃x.( Q(x) )
+				), // ∃x.( Q(x) )
+			), // ( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )
+		),
 	),
 
 	NewProofsSection("DeMorgan's",

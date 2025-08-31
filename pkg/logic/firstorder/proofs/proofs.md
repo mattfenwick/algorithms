@@ -7,6 +7,8 @@
     3. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-1-3)
     4. [( ∀y.( Q(y) ) ^ ∃x.( Q(x) -> R ) ) -> R](#proof-1-4)
     5. [∀x.( P(x) ^ Q(x) ) -> ( ∀y.( P(y) ) ^ ∀z.( Q(z) ) )](#proof-1-5)
+    6. [∃x.( R ) <-> R](#proof-1-6)
+    7. [( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )](#proof-1-7)
 2. [DeMorgan's](#DeMorgan's)
     1. [∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )](#proof-2-1)
     2. [~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) )](#proof-2-2)
@@ -119,6 +121,35 @@
 | 11 |  | <pre>.   ∀z.( Q(z) )</pre> | subproof ∀ introduction | 7 - 10 |
 | 12 |  | <pre>.   ∀y.( P(y) ) ^ ∀z.( Q(z) )</pre> | I ^ | 6, 11 |
 | 13 |  | <pre>∀x.( P(x) ^ Q(x) ) -> ( ∀y.( P(y) ) ^ ∀z.( Q(z) ) )</pre> | subproof implication | 1 - 12 |
+
+## ∃x.( R ) <-> R <a name="proof-1-6"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∃x.( R )</pre> | Assume: implication |  |
+| 2 | a | <pre>.   .   </pre> | define term var |  |
+| 3 | a | <pre>.   .   R</pre> | Assume: ∃ elimination | 1 |
+| 4 |  | <pre>.   R</pre> | subproof ∃ elimination | 2 - 3 |
+| 5 |  | <pre>∃x.( R ) -> R</pre> | subproof implication | 1 - 4 |
+| 6 |  | <pre>.   R</pre> | Assume: implication |  |
+| 7 |  | <pre>.   ∃x.( R )</pre> | I ∃ | 6 |
+| 8 |  | <pre>R -> ∃x.( R )</pre> | subproof implication | 6 - 7 |
+| 9 |  | <pre>∃x.( R ) <-> R</pre> | I <-> | 5, 8 |
+
+## ( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) ) <a name="proof-1-7"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∀x.( Q(x) ) ^ ∃x.( T )</pre> | Assume: implication |  |
+| 2 |  | <pre>.   ∀x.( Q(x) )</pre> | E ^ (L) | 1 |
+| 3 |  | <pre>.   ∃x.( T )</pre> | E ^ (R) | 1 |
+| 4 | a | <pre>.   .   </pre> | define term var |  |
+| 5 | a | <pre>.   .   T</pre> | Assume: ∃ elimination | 3 |
+| 6 | a | <pre>.   .   ∀x.( Q(x) )</pre> | Reiterate | 2 |
+| 7 | a | <pre>.   .   Q(a)</pre> | E ∀ | 6, 4 |
+| 8 | a | <pre>.   .   ∃x.( Q(x) )</pre> | I ∃ | 7 |
+| 9 |  | <pre>.   ∃x.( Q(x) )</pre> | subproof ∃ elimination | 4 - 8 |
+| 10 |  | <pre>( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )</pre> | subproof implication | 1 - 9 |
 
 # DeMorgan's <a name="DeMorgan's"></a>
 
