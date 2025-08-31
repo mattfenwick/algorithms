@@ -67,11 +67,7 @@ func RootProof(expectedResult string, steps ...Step) *Proof {
 	}
 }
 
-func ContraProof(hypothesis Formula, steps ...Step) *Proof {
-	if len(steps) == 0 {
-		panic(errors.Errorf("expected at least 1 step"))
-	}
-	steps = append([]Step{&Assumption{Formula: hypothesis, ProofType: ProofTypeContradiction}}, steps...)
+func findNegationInScope(hypothesis Formula, steps []Step) error {
 	results := map[string]bool{hypothesis.FormulaPrint(true): true}
 	for _, step := range steps[:len(steps)-1] {
 		results[step.StepResult().FormulaPrint(true)] = true
@@ -158,6 +154,7 @@ func existProof(termVar string, existential *QuantifiedFormula, steps []Step, is
 		proofType = ProofTypeExistentialContradiction
 		// existential contra assumes the existential so DOESN'T require it as as preconditon
 		steps = append([]Step{
+			// TODO add step assuming existential
 			&QuantifierAssumption{
 				Formula:       substituteVar(existential.Body, existential.Var, termVar),
 				ProofType:     proofType,

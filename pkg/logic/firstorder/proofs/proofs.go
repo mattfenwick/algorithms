@@ -165,5 +165,16 @@ var proofs = []*ProofsSection{
 				),
 			),
 		),
+
+		RootProof("~ ∃x.( Q(x) ) -> ∀x.( ~ Q(x) )",
+			ArrowProof(Not(Exist("x", Qx)),
+				ForallIntroProof("x", "a",
+					ContraProof(Qa,
+						IExist(Qa, "a", "x"),                     // ∃x.( Q(x) )
+						&Reiterate{Formula: Not(Exist("x", Qx))}, // ~ ∃x.( Q(x) )
+					), // ~ Q(a)
+				), // ∀x.( ~ Q(x) )
+			),
+		),
 	),
 }
