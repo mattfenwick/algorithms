@@ -162,11 +162,20 @@ var proofs = []*ProofsSection{
 					Exist("x", R), // R
 				),
 			),
-			// ArrowProof(R, // R
-			// 	IExist(R, "a", "x"), // ∃x.( R ) // TODO this is illegal
-			// ),
-			// IDArrow(Exist("x", R), R),
 		),
+		RootProof("R -> ∀x.( R )",
+			ArrowProof(R,
+				ForallIntroProof("x", "a",
+					&Reiterate{Formula: R},
+				),
+			),
+		),
+
+		// ArrowProof(R, // R
+		// 	IExist(R, "a", "x"), // ∃x.( R ) // TODO this is illegal
+		// ),
+		// IDArrow(Exist("x", R), R),
+		// ),
 		// RootProof("∀x.( R ) -> R",
 		// 	ArrowProof(Forall("x", R),
 		// 		EForall(R, "x", "a"), // this is illegal

@@ -55,6 +55,19 @@ func (p *Proof) StepResult() Formula {
 }
 
 func (p *Proof) StepName() string {
+	if p.ProofType == ProofTypeForallIntroduction {
+		var boundVar string
+		switch t := p.Result.(type) {
+		case *QuantifiedFormula:
+			if t.Quantifier == ForallQuantifier {
+				boundVar = t.Var
+			}
+		}
+		if boundVar == "" {
+			panic(errors.Errorf("expected forall with bound var, found %T, %+v", p.Result, p.Result))
+		}
+		return fmt.Sprintf("subproof %s [%s -> %s]", p.ProofType.Name(), *p.TermVar, boundVar)
+	}
 	return fmt.Sprintf("subproof %s", p.ProofType.Name())
 }
 
