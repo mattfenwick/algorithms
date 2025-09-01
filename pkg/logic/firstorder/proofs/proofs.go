@@ -338,8 +338,12 @@ var proofs = []*ProofsSection{
 		),
 	),
 
-	// ( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) ) <-> ∃x.( T )
+	// https://en.wikipedia.org/wiki/First-order_logic#Provable_identities
+	// TODO ( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) ) <-> ∃x.( T )
 	// TODO ( ∀x.( Q(x) ) ^ ( ∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) <-> ~ ∃x.( T )
 	// TODO ( ∃x.( Q(x) ) ^ ( ∃x.( ~ Q(x) ) <-> ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) )
 	// TODO ~ ∃x.( T ) -> ~ ∃x.( P(x) )
+	// TODO P ^ ∃x.( Q(x) ) <-> ∃x.( P ^ Q(x) )
+	// TODO P v ∀x.( Q(x) ) <-> ∀x.( P v Q(x) )
+	// ∃x.( ∀y.( P(x,y) ) ) -> ∀x.( ∃y.( P(x,y) ) )
 }

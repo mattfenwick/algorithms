@@ -324,7 +324,7 @@ func intToString(i int) string {
 }
 
 type DefineTermVar struct {
-	Name string
+	Name      string
 	ProofType ProofType
 }
 
