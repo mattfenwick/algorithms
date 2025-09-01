@@ -27,15 +27,15 @@ const (
 func (p ProofType) Name() string {
 	switch p {
 	case ProofTypeContradiction:
-		return "contradiction"
+		return "~"
 	case ProofTypeImplication:
-		return "implication"
+		return "->"
 	case ProofTypeExistentialElimination:
-		return "∃ elimination"
+		return "E ∃"
 	case ProofTypeExistentialContradiction:
-		return "∃ contradiction"
+		return "~ ∃"
 	case ProofTypeForallIntroduction:
-		return "∀ introduction"
+		return "I ∀"
 	default:
 		panic(errors.Errorf("no Name defined for proof type '%s'", p))
 	}
