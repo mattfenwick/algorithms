@@ -92,8 +92,8 @@ func Run() {
 	}
 
 	proofDir := "pkg/logic/firstorder/proofs"
-	proofPath := path.Join(proofDir, "proofs.md")
-	for _, section := range proofs {
+	proofPath := path.Join(proofDir, "quantifier-proofs.md")
+	for _, section := range quantifierProofs {
 		fmt.Printf("working on section %s\n", section.Name)
 		for _, eg := range section.Proofs {
 			checked, err := CheckRootProof(eg)
@@ -114,7 +114,7 @@ func Run() {
 func GenerateProofsMarkdown() string {
 	toc := []string{}
 	sections := []string{}
-	for i, proofSection := range proofs {
+	for i, proofSection := range quantifierProofs {
 		sectionIndex := i + 1
 		toc = append(toc, fmt.Sprintf("%d. [%s](#%s)", sectionIndex, proofSection.Name, proofSection.Name))
 		sections = append(sections, fmt.Sprintf(`# %s <a name="%s"></a>`+"\n", proofSection.Name, proofSection.Name))

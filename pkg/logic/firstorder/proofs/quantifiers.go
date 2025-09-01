@@ -47,7 +47,7 @@ func NewProofsSection(name string, proofs ...*Proof) *ProofsSection {
 	return &ProofsSection{Name: name, Proofs: proofs}
 }
 
-var proofs = []*ProofsSection{
+var quantifierProofs = []*ProofsSection{
 	NewProofsSection("basics",
 		RootProof("∀x.( P(x) v ~ P(x) )",
 			ForallIntroProof("x", "a",
