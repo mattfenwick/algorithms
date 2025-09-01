@@ -369,67 +369,6 @@ var propositionalProofSections = []*ProofsSection{
 				),
 			),
 		),
-		RootProof("( ( P v Q ) -> R ) <-> ( ( P -> R ) ^ ( Q -> R ) )",
-			ArrowProof(Arrow(Or(P, Q), R),
-				ArrowProof(P,
-					IOr(P, Q, true),
-					&Reiterate{Formula: Arrow(Or(P, Q), R)},
-					EImply(Or(P, Q), R),
-				),
-				ArrowProof(Q,
-					IOr(P, Q, false),
-					&Reiterate{Formula: Arrow(Or(P, Q), R)},
-					EImply(Or(P, Q), R),
-				),
-				IAnd(Arrow(P, R), Arrow(Q, R)),
-			),
-			ArrowProof(And(Arrow(P, R), Arrow(Q, R)),
-				ArrowProof(Or(P, Q),
-					&Reiterate{Formula: And(Arrow(P, R), Arrow(Q, R))},
-					EAnd(Arrow(P, R), Arrow(Q, R), true),
-					EAnd(Arrow(P, R), Arrow(Q, R), false),
-					EOr(P, Q, R),
-				),
-			),
-			IDArrow(Arrow(Or(P, Q), R), And(Arrow(P, R), Arrow(Q, R))),
-		),
-		RootProof("( ( P -> R ) v ( Q -> R ) ) <-> ( ( P ^ Q ) -> R )",
-			ArrowProof(Or(Arrow(P, R), Arrow(Q, R)),
-				ArrowProof(Arrow(P, R),
-					ArrowProof(And(P, Q),
-						&Reiterate{Formula: Arrow(P, R)},
-						EAnd(P, Q, true),
-						EImply(P, R),
-					),
-				),
-				ArrowProof(Arrow(Q, R),
-					ArrowProof(And(P, Q),
-						&Reiterate{Formula: Arrow(Q, R)},
-						EAnd(P, Q, false),
-						EImply(Q, R),
-					),
-				),
-				EOr(Arrow(P, R), Arrow(Q, R), Arrow(And(P, Q), R)),
-			),
-			ArrowProof(Arrow(And(P, Q), R),
-				ContraProof(Not(Or(Arrow(P, R), Arrow(Q, R))),
-					DeMorgansOrToAndTheorem(
-						Arrow(P, R),
-						Arrow(Q, R), true), // ~ ( P -> R ) ^ ~ (Q -> R )
-					EAnd(Not(Arrow(P, R)), Not(Arrow(Q, R)), true),  // ~ ( P -> R )
-					EAnd(Not(Arrow(P, R)), Not(Arrow(Q, R)), false), // ~ ( Q -> R )
-					ArrowConjunctionTheorem(P, R, true),             // P ^ ~ R
-					EAnd(P, Not(R), true),                           // P
-					EAnd(P, Not(R), false),                          // ~ R
-					ArrowConjunctionTheorem(Q, R, true),             // Q ^ ~ R
-					EAnd(Q, Not(R), true),                           // Q
-					&Reiterate{Formula: Arrow(And(P, Q), R)},        // ( P ^ Q ) -> R
-					IAnd(P, Q),                                      // P ^ Q
-					EImply(And(P, Q), R),                            // R
-				), // ( P -> R ) v ( Q -> R )
-			),
-			IDArrow(Or(Arrow(P, R), Arrow(Q, R)), Arrow(And(P, Q), R)),
-		),
 	),
 	NewProofsSection("commutativity",
 		RootProof("( P ^ Q ) -> ( Q ^ P )",
@@ -835,6 +774,69 @@ var propositionalProofSections = []*ProofsSection{
 		// TODO ( ( P ^ Q ) v ( R ^ S ) ) <-> ( ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) ) )
 		// TODO ( ( P v Q ) ^ ( R v S ) ) <-> ( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) )
 	),
+	NewProofsSection("anti-distributivity",
+		RootProof("( ( P v Q ) -> R ) <-> ( ( P -> R ) ^ ( Q -> R ) )",
+			ArrowProof(Arrow(Or(P, Q), R),
+				ArrowProof(P,
+					IOr(P, Q, true),
+					&Reiterate{Formula: Arrow(Or(P, Q), R)},
+					EImply(Or(P, Q), R),
+				),
+				ArrowProof(Q,
+					IOr(P, Q, false),
+					&Reiterate{Formula: Arrow(Or(P, Q), R)},
+					EImply(Or(P, Q), R),
+				),
+				IAnd(Arrow(P, R), Arrow(Q, R)),
+			),
+			ArrowProof(And(Arrow(P, R), Arrow(Q, R)),
+				ArrowProof(Or(P, Q),
+					&Reiterate{Formula: And(Arrow(P, R), Arrow(Q, R))},
+					EAnd(Arrow(P, R), Arrow(Q, R), true),
+					EAnd(Arrow(P, R), Arrow(Q, R), false),
+					EOr(P, Q, R),
+				),
+			),
+			IDArrow(Arrow(Or(P, Q), R), And(Arrow(P, R), Arrow(Q, R))),
+		),
+		RootProof("( ( P -> R ) v ( Q -> R ) ) <-> ( ( P ^ Q ) -> R )",
+			ArrowProof(Or(Arrow(P, R), Arrow(Q, R)),
+				ArrowProof(Arrow(P, R),
+					ArrowProof(And(P, Q),
+						&Reiterate{Formula: Arrow(P, R)},
+						EAnd(P, Q, true),
+						EImply(P, R),
+					),
+				),
+				ArrowProof(Arrow(Q, R),
+					ArrowProof(And(P, Q),
+						&Reiterate{Formula: Arrow(Q, R)},
+						EAnd(P, Q, false),
+						EImply(Q, R),
+					),
+				),
+				EOr(Arrow(P, R), Arrow(Q, R), Arrow(And(P, Q), R)),
+			),
+			ArrowProof(Arrow(And(P, Q), R),
+				ContraProof(Not(Or(Arrow(P, R), Arrow(Q, R))),
+					DeMorgansOrToAndTheorem(
+						Arrow(P, R),
+						Arrow(Q, R), true), // ~ ( P -> R ) ^ ~ (Q -> R )
+					EAnd(Not(Arrow(P, R)), Not(Arrow(Q, R)), true),  // ~ ( P -> R )
+					EAnd(Not(Arrow(P, R)), Not(Arrow(Q, R)), false), // ~ ( Q -> R )
+					ArrowConjunctionTheorem(P, R, true),             // P ^ ~ R
+					EAnd(P, Not(R), true),                           // P
+					EAnd(P, Not(R), false),                          // ~ R
+					ArrowConjunctionTheorem(Q, R, true),             // Q ^ ~ R
+					EAnd(Q, Not(R), true),                           // Q
+					&Reiterate{Formula: Arrow(And(P, Q), R)},        // ( P ^ Q ) -> R
+					IAnd(P, Q),                                      // P ^ Q
+					EImply(And(P, Q), R),                            // R
+				), // ( P -> R ) v ( Q -> R )
+			),
+			IDArrow(Or(Arrow(P, R), Arrow(Q, R)), Arrow(And(P, Q), R)),
+		),
+	),
 	NewProofsSection("disjunction",
 		RootProof("( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S )",
 			ArrowProof(And(And(Arrow(P, R), Arrow(Q, S)), Or(P, Q)),
@@ -967,7 +969,7 @@ var propositionalProofSections = []*ProofsSection{
 				IDArrow(Not(P), Q),
 			),
 		),
-		RootProof("( P <-> Q ) -> ( ~ P <-> ~ Q )",
+		RootProof("( P <-> Q ) <-> ( ~ P <-> ~ Q )",
 			ArrowProof(DArrow(P, Q),
 				EDArrow(P, Q, true),
 				ContrapositiveTheorem(P, Q),
@@ -975,8 +977,6 @@ var propositionalProofSections = []*ProofsSection{
 				ContrapositiveTheorem(Q, P),
 				IDArrow(Not(P), Not(Q)),
 			),
-		),
-		RootProof("( ~ P <-> ~ Q ) -> ( P <-> Q )",
 			ArrowProof(DArrow(Not(P), Not(Q)),
 				EDArrow(Not(P), Not(Q), true),
 				ContrapositiveTheorem(Not(P), Not(Q)),
@@ -984,6 +984,7 @@ var propositionalProofSections = []*ProofsSection{
 				ContrapositiveTheorem(Not(Q), Not(P)),
 				IDArrow(P, Q),
 			),
+			IDArrow(DArrow(P, Q), DArrow(Not(P), Not(Q))),
 		),
 		RootProof("( P <-> Q ) v ~ ( P <-> Q )",
 			ContraProof(Not(Or(DArrow(P, Q), Not(DArrow(P, Q)))),
@@ -994,7 +995,7 @@ var propositionalProofSections = []*ProofsSection{
 				IOr(DArrow(P, Q), Not(DArrow(P, Q)), false),
 			),
 		),
-		RootProof("( P <-> ~ Q ) -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )",
+		RootProof("( P <-> ~ Q ) <-> ( ( P v Q ) ^ ( ~ P v ~ Q ) )",
 			ArrowProof(DArrow(P, Not(Q)),
 				EDArrow(P, Not(Q), true),         // P -> ~ Q
 				EDArrow(P, Not(Q), false),        // ~ Q -> P
@@ -1016,8 +1017,6 @@ var propositionalProofSections = []*ProofsSection{
 				ExcludedMiddleTheorem(P), // P v ~ P
 				EOr(P, Not(P), And(Or(P, Q), Or(Not(P), Not(Q)))),
 			),
-		),
-		RootProof("( ( P v Q ) ^ ( ~ P v ~ Q ) ) -> ( P <-> ~ Q )",
 			ArrowProof(And(Or(P, Q), Or(Not(P), Not(Q))),
 				EAnd(Or(P, Q), Or(Not(P), Not(Q)), true),  // P v Q
 				EAnd(Or(P, Q), Or(Not(P), Not(Q)), false), // ~ P v ~ Q
@@ -1062,6 +1061,10 @@ var propositionalProofSections = []*ProofsSection{
 					), // P
 				), // ~ Q -> P
 				IDArrow(P, Not(Q)),
+			),
+			IDArrow(
+				DArrow(P, Not(Q)),
+				And(Or(P, Q), Or(Not(P), Not(Q))),
 			),
 		),
 	// TODO no distributive
