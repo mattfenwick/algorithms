@@ -159,16 +159,20 @@ func existProof(termVar string, existential *QuantifiedFormula, steps []Step, is
 				Formula:       InstantiateFormula(existential.Body, existential.Var, termVar),
 				ProofType:     proofType,
 				Preconditions: []Formula{},
+				From:          existential.Var,
+				To:            termVar,
 			},
 		}, steps...)
 	} else {
 		proofType = ProofTypeExistentialElimination
-		// exisential elim DOES require the existential as a precondition
+		// existential elim DOES require the existential as a precondition
 		steps = append([]Step{
 			&QuantifierAssumption{
 				Formula:       InstantiateFormula(existential.Body, existential.Var, termVar),
 				ProofType:     proofType,
 				Preconditions: []Formula{existential},
+				From:          existential.Var,
+				To:            termVar,
 			},
 		}, steps...)
 	}
@@ -225,7 +229,15 @@ func containsQuantifierHypothesis(formula Formula, hypothesis string) bool {
 
 func ForallIntroProof(boundVar string, hypothesisTermVar string, steps ...Step) *Proof {
 	// TODO shadowing
-	// TODO verify reiterations don't mention hypothesisTermVar
+	// verify reiterations don't mention hypothesisTermVar
+	for _, step := range steps {
+		switch t := step.(type) {
+		case *Reiterate:
+			if containsQuantifierHypothesis(t.Formula, hypothesisTermVar) {
+				panic(errors.Errorf("hypothesis '%s' used in reiteration '%s'", hypothesisTermVar, t.Formula.FormulaPrint(true)))
+			}
+		}
+	}
 	// last step is the result
 	last := steps[len(steps)-1]
 	result := Forall(boundVar, GeneralizeFormula(last.StepResult(), hypothesisTermVar, boundVar))
@@ -268,6 +280,8 @@ type QuantifierAssumption struct {
 	Formula       Formula
 	ProofType     ProofType
 	Preconditions []Formula
+	From          string
+	To            string
 }
 
 func (a *QuantifierAssumption) StepResult() Formula {
@@ -275,5 +289,5 @@ func (a *QuantifierAssumption) StepResult() Formula {
 }
 
 func (a *QuantifierAssumption) StepName() string {
-	return fmt.Sprintf("Assume: %s", a.ProofType.Name())
+	return fmt.Sprintf("Assume: %s [%s -> %s]", a.ProofType.Name(), a.From, a.To)
 }

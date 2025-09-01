@@ -297,4 +297,6 @@ var proofs = []*ProofsSection{
 	// TODO ( ∀x.( Q(x) ) ^ ( ∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) <-> ~ ∃x.( T )
 	// TODO ( ∃x.( Q(x) ) ^ ( ∃x.( ~ Q(x) ) <-> ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) )
 	// TODO ~ ∃x.( T ) -> ~ ∃x.( P(x) )
+	// TODO ∃x.( ∃y. P(x, y) ) -> ∃y.( ∃x. P(x, y) )
+	// TODO ∀x.( ∀y. P(x, y) ) -> ∀y.( ∀x. P(x, y) )
 }

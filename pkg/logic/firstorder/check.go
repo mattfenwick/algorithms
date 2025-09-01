@@ -214,7 +214,7 @@ func CheckProofHelper(proof *Proof, parentScope *Scope, checked *CheckedProof) e
 		addedLine := checked.Add(&EvaluatedStep{
 			LineReferences: "",
 			Depth:          scope.Depth,
-			Step:           &DefineTermVar{Name: *proof.TermVar},
+			Step:           &DefineTermVar{Name: *proof.TermVar, ProofType: proof.ProofType},
 			ScopeFormulas:  scope.GetTrueFormulas(),
 		})
 		if err := scope.AddTermVar(*proof.TermVar, addedLine); err != nil {
@@ -325,8 +325,9 @@ func intToString(i int) string {
 
 type DefineTermVar struct {
 	Name string
+	ProofType ProofType
 }
 
 func (d *DefineTermVar) StepName() string {
-	return "define term var"
+	return fmt.Sprintf("term var: %s", d.ProofType.Name())
 }

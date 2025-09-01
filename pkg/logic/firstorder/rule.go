@@ -1,5 +1,7 @@
 package logic
 
+import "fmt"
+
 type Rule struct {
 	Preconditions []Formula
 	Result        Formula
@@ -111,7 +113,7 @@ func EDArrow(l Formula, r Formula, isLeft bool) *Rule {
 // preconditions: ∀x.( Q(x) )
 // result: Q(a) -- from substituting: ∀x.( Q(x) )[x -> a]
 func EForall(formula Formula, from string, to string) *Rule {
-	rule := NewRule("E ∀",
+	rule := NewRule(fmt.Sprintf("E ∀ [%s -> %s]", from, to),
 		InstantiateFormula(formula, from, to),
 		Forall(from, formula),
 	)
@@ -122,7 +124,7 @@ func EForall(formula Formula, from string, to string) *Rule {
 // preconditions: Q(a)
 // result: ∃x.( Q(x) ) -- from substituting: Q(a)[a -> x]
 func IExist(formula Formula, from string, to string) *Rule {
-	return NewRule("I ∃",
+	return NewRule(fmt.Sprintf("I ∃ [%s -> %s]", from, to),
 		Exist(to, GeneralizeFormula(formula, from, to)),
 		formula,
 	)
