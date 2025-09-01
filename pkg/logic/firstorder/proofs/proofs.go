@@ -162,30 +162,6 @@ var proofs = []*ProofsSection{
 				),
 			),
 		),
-		// example of using ∃ hypothesis in conclusion
-		// NewRootProof("∃x.( Q(x) ) -> Q(a)",
-		// 	NewProofImplication(Existential("x", Prop("Q", "x")),
-		// 		NewProofExistentialElim("a",
-		// 			Existential("x", Prop("Q", "x")), // Q(a)
-		// 		),
-		// 	),
-		// ),
-		RootProof("∀x.( P(x) ^ Q(x) ) -> ( ∀y.( P(y) ) ^ ∀z.( Q(z) ) )",
-			ArrowProof(Forall("x", And(Px, Qx)),
-				ForallIntroProof("y", "a",
-					&Reiterate{Formula: Forall("x", And(Px, Qx))}, // ∀x.( P(x) ^ Q(x) )
-					EForall(And(Px, Qx), "x", "a"),                // P(a) ^ Q(a)
-					EAnd(Pa, Qa, true),                            // P(a)
-				), // ∀y.( P(y)
-				ForallIntroProof("z", "a",
-					&Reiterate{Formula: Forall("x", And(Px, Qx))}, // ∀x.( P(x) ^ Q(x) )
-					EForall(And(Px, Qx), "x", "a"),                // P(a) ^ Q(a)
-					EAnd(Pa, Qa, false),                           // Q(a)
-				), // ∀z.( Q(z)
-				IAnd(Forall("y", Py), Forall("z", Qz)),
-			),
-		),
-
 		RootProof("∃x.( R ) -> R",
 			ArrowProof(Exist("x", R), // ∃x.( R )
 				ExistElimProof("a",
@@ -200,20 +176,6 @@ var proofs = []*ProofsSection{
 				),
 			),
 		),
-
-		// ArrowProof(R, // R
-		// 	IExist(R, "a", "x"), // ∃x.( R ) // TODO this is illegal
-		// ),
-		// IDArrow(Exist("x", R), R),
-		// ),
-		// RootProof("∀x.( R ) -> R",
-		// 	ArrowProof(Forall("x", R),
-		// 		EForall(R, "x", "a"), // this is illegal
-		// 	),
-		// ),
-		// TODO can this be written?  if so, it indicates a bug in the checker
-		// RootProof("∃x.( Q(x) ) -> ∀x.( Q(x) )",
-
 		RootProof("( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )",
 			ArrowProof(And(Forall("x", Qx), Exist("x", T)),
 				EAnd(Forall("x", Qx), Exist("x", T), true),  // ∀x.( Q(x) )
@@ -336,6 +298,19 @@ var proofs = []*ProofsSection{
 				Or(Exist("x", Px), Exist("x", Qx)),
 			),
 		),
+		RootProof("∀x.( P(x) -> Q(x) ) -> ( ∀x.( P(x) ) -> ∀x.( Q(x) ) )",
+			ArrowProof(Forall("x", Arrow(Px, Qx)),
+				ArrowProof(Forall("x", Px),
+					ForallIntroProof("x", "a",
+						&Reiterate{Formula: Forall("x", Arrow(Px, Qx))}, // ∀x.( Q(x) -> P(x) )
+						&Reiterate{Formula: Forall("x", Px)},            // ∀x.( P(x) )
+						EForall(Arrow(Px, Qx), "x", "a"),                // P(a) -> Q(a)
+						EForall(Px, "x", "a"),                           // P(a)
+						EImply(Pa, Qa),                                  // Q(a)
+					),
+				),
+			),
+		),
 	),
 	NewProofsSection("commutativity",
 		RootProof("∃x.( ∃y.( P(x,y) ) ) -> ∃y.( ∃x.( P(x,y) ) )",
@@ -363,11 +338,8 @@ var proofs = []*ProofsSection{
 		),
 	),
 
-	// TODO ∀x.( Q(x) v ~ Q(x) )
-	// TODO ~ ∃x.( Q(x) ^ ~ Q(x) )
+	// ( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) ) <-> ∃x.( T )
 	// TODO ( ∀x.( Q(x) ) ^ ( ∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) <-> ~ ∃x.( T )
 	// TODO ( ∃x.( Q(x) ) ^ ( ∃x.( ~ Q(x) ) <-> ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) )
 	// TODO ~ ∃x.( T ) -> ~ ∃x.( P(x) )
-	// TODO ∃x.( ∃y. P(x, y) ) -> ∃y.( ∃x. P(x, y) )
-	// TODO ∀x.( ∀y. P(x, y) ) -> ∀y.( ∀x. P(x, y) )
 }
