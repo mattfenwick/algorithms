@@ -16,6 +16,7 @@
     4. [( P v P ) <-> P](#proof-2-4)
     5. [( P ^ Q ) -> ( P v Q )](#proof-2-5)
     6. [( P -> ~ P ) -> ~ P](#proof-2-6)
+    7. [( ( P -> Q ) -> P ) -> P](#proof-2-7)
 3. [arrows](#arrows)
     1. [Q -> ( P -> Q )](#proof-3-1)
     2. [~ P -> ( P -> Q )](#proof-3-2)
@@ -353,6 +354,19 @@
 | 4 | <pre>.   .   ~ P</pre> | E -> | 3, 2 |
 | 5 | <pre>.   ~ P</pre> | subproof contradiction | 2 - 4 |
 | 6 | <pre>( P -> ~ P ) -> ~ P</pre> | subproof implication | 1 - 5 |
+
+## ( ( P -> Q ) -> P ) -> P <a name="proof-2-7"></a>
+
+| Line | Formula | Justification | Lines used |
+| - | - | - | - |
+| 1 | <pre>.   ( P -> Q ) -> P</pre> | Assume Implication |  |
+| 2 | <pre>.   .   ~ ( P -> Q )</pre> | Assume Implication |  |
+| 3 | <pre>.   .   P ^ ~ Q</pre> | Theorem: (~ ->) to ^ | 2 |
+| 4 | <pre>.   .   P</pre> | E ^ (L) | 3 |
+| 5 | <pre>.   ~ ( P -> Q ) -> P</pre> | subproof implication | 2 - 4 |
+| 6 | <pre>.   ( P -> Q ) v ~ ( P -> Q )</pre> | Theorem: excluded middle |  |
+| 7 | <pre>.   P</pre> | E v | 1, 5, 6 |
+| 8 | <pre>( ( P -> Q ) -> P ) -> P</pre> | subproof implication | 1 - 7 |
 
 # arrows <a name="arrows"></a>
 

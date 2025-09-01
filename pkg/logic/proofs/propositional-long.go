@@ -289,6 +289,16 @@ var propositionalLongProofSections = []*ProofsSection{
 				),
 			),
 		),
+		NewRootProof("( ( P -> Q ) -> P ) -> P",
+			NewProofImplication(Implication(Implication(P, Q), P),
+				NewProofImplication(Not(Implication(P, Q)),
+					ArrowConjunctionTheorem(P, Q, true), // P ^ ~ Q
+					EAnd(P, Not(Q), true),               // P
+				), // ( ~ ( P -> Q ) ) -> P
+				ExcludedMiddleTheorem(Implication(P, Q)),          // ( P -> Q ) v ~ ( P -> Q )
+				EOr(Implication(P, Q), Not(Implication(P, Q)), P), // p
+			),
+		),
 	),
 	NewProofsSection("arrows",
 		NewRootProof("Q -> ( P -> Q )",
