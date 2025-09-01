@@ -6,7 +6,6 @@
     2. [~ ∃x.( ~ ( P(x) v ~ P(x) ) )](#proof-1-2)
     3. [∀x.( ~ ( P(x) ^ ~ P(x) ) )](#proof-1-3)
     4. [~ ∃x.( P(x) ^ ~ P(x) )](#proof-1-4)
-    5. [( P ^ ~ P ) -> Q](#proof-1-5)
 2. [quantifiers](#quantifiers)
     1. [( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )](#proof-2-1)
     2. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-2-2)
@@ -76,16 +75,6 @@
 | 4 | a | <pre>.   P(a)</pre> | E ^ (L) | 3 |
 | 5 | a | <pre>.   ~ P(a)</pre> | E ^ (R) | 3 |
 | 6 |  | <pre>~ ∃x.( P(x) ^ ~ P(x) )</pre> | subproof ~ ∃ | 1 - 5 |
-
-## ( P ^ ~ P ) -> Q <a name="proof-1-5"></a>
-
-| Line | Term var | Formula | Justification | Lines used |
-| - | - | - | - | - |
-| 1 |  | <pre>~ ( P ^ ~ P )</pre> | Theorem: non-contradiction |  |
-| 2 |  | <pre>.   ~ Q</pre> | Assume: -> |  |
-| 3 |  | <pre>.   ~ ( P ^ ~ P )</pre> | Reiterate | 1 |
-| 4 |  | <pre>~ Q -> ~ ( P ^ ~ P )</pre> | subproof -> | 2 - 3 |
-| 5 |  | <pre>( P ^ ~ P ) -> Q</pre> | Theorem: contrapositive | 4 |
 
 # quantifiers <a name="quantifiers"></a>
 

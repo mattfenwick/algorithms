@@ -86,13 +86,6 @@ var quantifierProofs = []*ProofsSection{
 				EAnd(Pa, Not(Pa), false),     // ~ P(a)
 			),
 		),
-		RootProof("( P ^ ~ P ) -> Q",
-			NonContradictionTheorem(P), // ~ ( P ^ ~ P )
-			ArrowProof(Not(Q),
-				&Reiterate{Formula: Not(And(P, Not(P)))},
-			), // ~ Q -> ~ ( P ^ ~ P )
-			ContrapositiveTheorem(Not(Q), Not(And(P, Not(P)))), // ( P ^ ~ P ) -> Q
-		),
 	),
 	NewProofsSection("quantifiers",
 		RootProof("( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )",

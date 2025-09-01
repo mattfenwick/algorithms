@@ -283,6 +283,13 @@ var propositionalProofSections = []*ProofsSection{
 				EOr(Arrow(P, Q), Not(Arrow(P, Q)), P), // p
 			),
 		),
+		RootProof("( P ^ ~ P ) -> Q",
+			NonContradictionTheorem(P), // ~ ( P ^ ~ P )
+			ArrowProof(Not(Q),
+				&Reiterate{Formula: Not(And(P, Not(P)))},
+			), // ~ Q -> ~ ( P ^ ~ P )
+			ContrapositiveTheorem(Not(Q), Not(And(P, Not(P)))), // ( P ^ ~ P ) -> Q
+		),
 	),
 	NewProofsSection("arrows",
 		RootProof("Q -> ( P -> Q )",

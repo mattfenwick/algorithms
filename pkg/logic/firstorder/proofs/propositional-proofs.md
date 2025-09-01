@@ -17,6 +17,7 @@
     5. [( P ^ Q ) -> ( P v Q )](#proof-2-5)
     6. [( P -> ~ P ) -> ~ P](#proof-2-6)
     7. [( ( P -> Q ) -> P ) -> P](#proof-2-7)
+    8. [( P ^ ~ P ) -> Q](#proof-2-8)
 3. [arrows](#arrows)
     1. [Q -> ( P -> Q )](#proof-3-1)
     2. [~ P -> ( P -> Q )](#proof-3-2)
@@ -367,6 +368,16 @@
 | 6 |  | <pre>.   ( P -> Q ) v ~ ( P -> Q )</pre> | Theorem: excluded middle |  |
 | 7 |  | <pre>.   P</pre> | E v | 1, 5, 6 |
 | 8 |  | <pre>( ( P -> Q ) -> P ) -> P</pre> | subproof -> | 1 - 7 |
+
+## ( P ^ ~ P ) -> Q <a name="proof-2-8"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>~ ( P ^ ~ P )</pre> | Theorem: non-contradiction |  |
+| 2 |  | <pre>.   ~ Q</pre> | Assume: -> |  |
+| 3 |  | <pre>.   ~ ( P ^ ~ P )</pre> | Reiterate | 1 |
+| 4 |  | <pre>~ Q -> ~ ( P ^ ~ P )</pre> | subproof -> | 2 - 3 |
+| 5 |  | <pre>( P ^ ~ P ) -> Q</pre> | Theorem: contrapositive | 4 |
 
 # arrows <a name="arrows"></a>
 
