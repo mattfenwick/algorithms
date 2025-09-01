@@ -35,13 +35,25 @@ func NewProofsSection(name string, proofs ...*Proof) *ProofsSection {
 
 var proofs = []*ProofsSection{
 	NewProofsSection("basics",
-		RootProof("P v ~ P",
-			ContraProof(Not(Or(P, Not(P))),
-				ContraProof(P,
-					IOr(P, Not(P), true),
-					&Reiterate{Formula: Not(Or(P, Not(P)))},
+		RootProof("∀x.( P(x) v ~ P(x) )",
+			ForallIntroProof("x", "a",
+				ContraProof(Not(Or(Pa, Not(Pa))),
+					ContraProof(Pa,
+						IOr(Pa, Not(Pa), true),
+						&Reiterate{Formula: Not(Or(Pa, Not(Pa)))},
+					),
+					IOr(Pa, Not(Pa), false),
 				),
-				IOr(P, Not(P), false),
+			),
+		),
+		// RootProof("~ ∃x.( P(x) ^ ~ P(x) )",
+		RootProof("∀x.( ~ ( P(x) ^ ~ P(x) ) )",
+			ForallIntroProof("x", "a",
+				ContraProof(
+					And(Pa, Not(Pa)),
+					EAnd(Pa, Not(Pa), true),
+					EAnd(Pa, Not(Pa), false),
+				),
 			),
 		),
 		RootProof("( P ^ ~ P ) -> Q",
@@ -279,4 +291,10 @@ var proofs = []*ProofsSection{
 			),
 		),
 	),
+
+	// TODO ∀x.( Q(x) v ~ Q(x) )
+	// TODO ~ ∃x.( Q(x) ^ ~ Q(x) )
+	// TODO ( ∀x.( Q(x) ) ^ ( ∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) <-> ~ ∃x.( T )
+	// TODO ( ∃x.( Q(x) ) ^ ( ∃x.( ~ Q(x) ) <-> ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) )
+	// TODO ~ ∃x.( T ) -> ~ ∃x.( P(x) )
 }

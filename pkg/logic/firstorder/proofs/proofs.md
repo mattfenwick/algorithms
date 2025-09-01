@@ -2,8 +2,9 @@
 # Table of Contents
 
 1. [basics](#basics)
-    1. [P v ~ P](#proof-1-1)
-    2. [( P ^ ~ P ) -> Q](#proof-1-2)
+    1. [∀x.( P(x) v ~ P(x) )](#proof-1-1)
+    2. [∀x.( ~ ( P(x) ^ ~ P(x) ) )](#proof-1-2)
+    3. [( P ^ ~ P ) -> Q](#proof-1-3)
 2. [quantifiers](#quantifiers)
     1. [( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )](#proof-2-1)
     2. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-2-2)
@@ -20,19 +21,32 @@
 
 # basics <a name="basics"></a>
 
-## P v ~ P <a name="proof-1-1"></a>
+## ∀x.( P(x) v ~ P(x) ) <a name="proof-1-1"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
-| 1 |  | <pre>.   ~ ( P v ~ P )</pre> | Assume: contradiction |  |
-| 2 |  | <pre>.   .   P</pre> | Assume: contradiction |  |
-| 3 |  | <pre>.   .   P v ~ P</pre> | I v (L) | 2 |
-| 4 |  | <pre>.   .   ~ ( P v ~ P )</pre> | Reiterate | 1 |
-| 5 |  | <pre>.   ~ P</pre> | subproof contradiction | 2 - 4 |
-| 6 |  | <pre>.   P v ~ P</pre> | I v (R) | 5 |
-| 7 |  | <pre>P v ~ P</pre> | subproof contradiction | 1 - 6 |
+| 1 | a | <pre>.   </pre> | define term var |  |
+| 2 | a | <pre>.   .   ~ ( P(a) v ~ P(a) )</pre> | Assume: contradiction |  |
+| 3 | a | <pre>.   .   .   P(a)</pre> | Assume: contradiction |  |
+| 4 | a | <pre>.   .   .   P(a) v ~ P(a)</pre> | I v (L) | 3 |
+| 5 | a | <pre>.   .   .   ~ ( P(a) v ~ P(a) )</pre> | Reiterate | 2 |
+| 6 | a | <pre>.   .   ~ P(a)</pre> | subproof contradiction | 3 - 5 |
+| 7 | a | <pre>.   .   P(a) v ~ P(a)</pre> | I v (R) | 6 |
+| 8 | a | <pre>.   P(a) v ~ P(a)</pre> | subproof contradiction | 2 - 7 |
+| 9 |  | <pre>∀x.( P(x) v ~ P(x) )</pre> | subproof ∀ introduction | 1 - 8 |
 
-## ( P ^ ~ P ) -> Q <a name="proof-1-2"></a>
+## ∀x.( ~ ( P(x) ^ ~ P(x) ) ) <a name="proof-1-2"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 | a | <pre>.   </pre> | define term var |  |
+| 2 | a | <pre>.   .   P(a) ^ ~ P(a)</pre> | Assume: contradiction |  |
+| 3 | a | <pre>.   .   P(a)</pre> | E ^ (L) | 2 |
+| 4 | a | <pre>.   .   ~ P(a)</pre> | E ^ (R) | 2 |
+| 5 | a | <pre>.   ~ ( P(a) ^ ~ P(a) )</pre> | subproof contradiction | 2 - 4 |
+| 6 |  | <pre>∀x.( ~ ( P(x) ^ ~ P(x) ) )</pre> | subproof ∀ introduction | 1 - 5 |
+
+## ( P ^ ~ P ) -> Q <a name="proof-1-3"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
