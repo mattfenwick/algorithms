@@ -92,8 +92,12 @@ func Run() {
 	}
 
 	proofDir := "pkg/logic/firstorder/proofs"
-	proofPath := path.Join(proofDir, "quantifier-proofs.md")
-	for _, section := range quantifierProofs {
+	writeOutProofs(quantifierProofs, path.Join(proofDir, "quantifier-proofs.md"))
+	writeOutProofs(propositionalProofSections, path.Join(proofDir, "propositional-proofs.md"))
+}
+
+func writeOutProofs(proofSections []*ProofsSection, proofPath string) {
+	for _, section := range proofSections {
 		fmt.Printf("working on section %s\n", section.Name)
 		for _, eg := range section.Proofs {
 			checked, err := CheckRootProof(eg)
@@ -106,15 +110,15 @@ func Run() {
 		}
 	}
 
-	if err := file.WriteString(proofPath, GenerateProofsMarkdown(), 0644); err != nil {
+	if err := file.WriteString(proofPath, GenerateProofsMarkdown(proofSections), 0644); err != nil {
 		panic(err)
 	}
 }
 
-func GenerateProofsMarkdown() string {
+func GenerateProofsMarkdown(proofSections []*ProofsSection) string {
 	toc := []string{}
 	sections := []string{}
-	for i, proofSection := range quantifierProofs {
+	for i, proofSection := range proofSections {
 		sectionIndex := i + 1
 		toc = append(toc, fmt.Sprintf("%d. [%s](#%s)", sectionIndex, proofSection.Name, proofSection.Name))
 		sections = append(sections, fmt.Sprintf(`# %s <a name="%s"></a>`+"\n", proofSection.Name, proofSection.Name))
