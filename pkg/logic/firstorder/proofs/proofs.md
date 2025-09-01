@@ -3,8 +3,10 @@
 
 1. [basics](#basics)
     1. [∀x.( P(x) v ~ P(x) )](#proof-1-1)
-    2. [∀x.( ~ ( P(x) ^ ~ P(x) ) )](#proof-1-2)
-    3. [( P ^ ~ P ) -> Q](#proof-1-3)
+    2. [~ ∃x.( ~ ( P(x) v ~ P(x) ) )](#proof-1-2)
+    3. [∀x.( ~ ( P(x) ^ ~ P(x) ) )](#proof-1-3)
+    4. [~ ∃x.( P(x) ^ ~ P(x) )](#proof-1-4)
+    5. [( P ^ ~ P ) -> Q](#proof-1-5)
 2. [quantifiers](#quantifiers)
     1. [( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )](#proof-2-1)
     2. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-2-2)
@@ -36,7 +38,21 @@
 | 8 | a | <pre>.   P(a) v ~ P(a)</pre> | subproof ~ | 2 - 7 |
 | 9 |  | <pre>∀x.( P(x) v ~ P(x) )</pre> | subproof I ∀ [a -> x] | 1 - 8 |
 
-## ∀x.( ~ ( P(x) ^ ~ P(x) ) ) <a name="proof-1-2"></a>
+## ~ ∃x.( ~ ( P(x) v ~ P(x) ) ) <a name="proof-1-2"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 | a | <pre>.   </pre> | term var: E ∃ |  |
+| 2 | a | <pre>.   ∃x.( ~ ( P(x) v ~ P(x) ) )</pre> | Assume: ~ ∃ |  |
+| 3 | a | <pre>.   ~ ( P(a) v ~ P(a) )</pre> | Assume: ~ ∃ [x -> a] |  |
+| 4 | a | <pre>.   .   P(a)</pre> | Assume: ~ |  |
+| 5 | a | <pre>.   .   P(a) v ~ P(a)</pre> | I v (L) | 4 |
+| 6 | a | <pre>.   .   ~ ( P(a) v ~ P(a) )</pre> | Reiterate | 3 |
+| 7 | a | <pre>.   ~ P(a)</pre> | subproof ~ | 4 - 6 |
+| 8 | a | <pre>.   P(a) v ~ P(a)</pre> | I v (R) | 7 |
+| 9 |  | <pre>~ ∃x.( ~ ( P(x) v ~ P(x) ) )</pre> | subproof E ∃ | 1 - 8 |
+
+## ∀x.( ~ ( P(x) ^ ~ P(x) ) ) <a name="proof-1-3"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -47,7 +63,18 @@
 | 5 | a | <pre>.   ~ ( P(a) ^ ~ P(a) )</pre> | subproof ~ | 2 - 4 |
 | 6 |  | <pre>∀x.( ~ ( P(x) ^ ~ P(x) ) )</pre> | subproof I ∀ [a -> x] | 1 - 5 |
 
-## ( P ^ ~ P ) -> Q <a name="proof-1-3"></a>
+## ~ ∃x.( P(x) ^ ~ P(x) ) <a name="proof-1-4"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 | a | <pre>.   </pre> | term var: E ∃ |  |
+| 2 | a | <pre>.   ∃x.( P(x) ^ ~ P(x) )</pre> | Assume: ~ ∃ |  |
+| 3 | a | <pre>.   P(a) ^ ~ P(a)</pre> | Assume: ~ ∃ [x -> a] |  |
+| 4 | a | <pre>.   P(a)</pre> | E ^ (L) | 3 |
+| 5 | a | <pre>.   ~ P(a)</pre> | E ^ (R) | 3 |
+| 6 |  | <pre>~ ∃x.( P(x) ^ ~ P(x) )</pre> | subproof E ∃ | 1 - 5 |
+
+## ( P ^ ~ P ) -> Q <a name="proof-1-5"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |

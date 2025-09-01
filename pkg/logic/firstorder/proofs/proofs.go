@@ -46,7 +46,16 @@ var proofs = []*ProofsSection{
 				),
 			),
 		),
-		// RootProof("~ ∃x.( P(x) ^ ~ P(x) )",
+		RootProof("~ ∃x.( ~ ( P(x) v ~ P(x) ) )",
+			ExistContraProof("a",
+				Exist("x", Not(Or(Px, Not(Px)))), // ~ ( P(a) v ~ P(a) )
+				ContraProof(Pa, // P(a)
+					IOr(Pa, Not(Pa), true),                    // P(a) v ~ P(a)
+					&Reiterate{Formula: Not(Or(Pa, Not(Pa)))}, // ~ ( P(a) v ~ P(a) )
+				), // ~ P(a)
+				IOr(Pa, Not(Pa), false), // P(a) v ~ P(a)
+			),
+		),
 		RootProof("∀x.( ~ ( P(x) ^ ~ P(x) ) )",
 			ForallIntroProof("x", "a",
 				ContraProof(
@@ -54,6 +63,13 @@ var proofs = []*ProofsSection{
 					EAnd(Pa, Not(Pa), true),
 					EAnd(Pa, Not(Pa), false),
 				),
+			),
+		),
+		RootProof("~ ∃x.( P(x) ^ ~ P(x) )",
+			ExistContraProof("a",
+				Exist("x", And(Px, Not(Px))), // P(a) ^ ~ P(a)
+				EAnd(Pa, Not(Pa), true),      // P(a)
+				EAnd(Pa, Not(Pa), false),     // ~ P(a)
 			),
 		),
 		RootProof("( P ^ ~ P ) -> Q",
