@@ -21,6 +21,9 @@
 4. [distributive](#distributive)
     1. [∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) )](#proof-4-1)
     2. [∃x.( P(x) v Q(x) ) <-> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )](#proof-4-2)
+5. [commutativity](#commutativity)
+    1. [∃x.( ∃y.( P(x,y) ) ) -> ∃y.( ∃x.( P(x,y) ) )](#proof-5-1)
+    2. [∀x.( ∀y.( P(x,y) ) ) -> ∀y.( ∀x.( P(x,y) ) )](#proof-5-2)
 
 # basics <a name="basics"></a>
 
@@ -333,4 +336,35 @@
 | 30 |  | <pre>.   ∃x.( P(x) v Q(x) )</pre> | E v | 22, 29, 15 |
 | 31 |  | <pre>( ∃x.( P(x) ) v ∃x.( Q(x) ) ) -> ∃x.( P(x) v Q(x) )</pre> | subproof -> | 15 - 30 |
 | 32 |  | <pre>∃x.( P(x) v Q(x) ) <-> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )</pre> | I <-> | 14, 31 |
+
+# commutativity <a name="commutativity"></a>
+
+## ∃x.( ∃y.( P(x,y) ) ) -> ∃y.( ∃x.( P(x,y) ) ) <a name="proof-5-1"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∃x.( ∃y.( P(x,y) ) )</pre> | Assume: -> |  |
+| 2 | a | <pre>.   .   </pre> | term var: E ∃ |  |
+| 3 | a | <pre>.   .   ∃y.( P(a,y) )</pre> | Assume: E ∃ [x -> a] | 1 |
+| 4 | a, b | <pre>.   .   .   </pre> | term var: E ∃ |  |
+| 5 | a, b | <pre>.   .   .   P(a,b)</pre> | Assume: E ∃ [y -> b] | 3 |
+| 6 | a, b | <pre>.   .   .   ∃x.( P(x,b) )</pre> | I ∃ [a -> x] | 5, 2 |
+| 7 | a, b | <pre>.   .   .   ∃y.( ∃x.( P(x,y) ) )</pre> | I ∃ [b -> y] | 6, 4 |
+| 8 | a | <pre>.   .   ∃y.( ∃x.( P(x,y) ) )</pre> | subproof E ∃ | 4 - 7 |
+| 9 |  | <pre>.   ∃y.( ∃x.( P(x,y) ) )</pre> | subproof E ∃ | 2 - 8 |
+| 10 |  | <pre>∃x.( ∃y.( P(x,y) ) ) -> ∃y.( ∃x.( P(x,y) ) )</pre> | subproof -> | 1 - 9 |
+
+## ∀x.( ∀y.( P(x,y) ) ) -> ∀y.( ∀x.( P(x,y) ) ) <a name="proof-5-2"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∀x.( ∀y.( P(x,y) ) )</pre> | Assume: -> |  |
+| 2 | b | <pre>.   .   </pre> | term var: I ∀ |  |
+| 3 | b, a | <pre>.   .   .   </pre> | term var: I ∀ |  |
+| 4 | b, a | <pre>.   .   .   ∀x.( ∀y.( P(x,y) ) )</pre> | Reiterate | 1 |
+| 5 | b, a | <pre>.   .   .   ∀y.( P(a,y) )</pre> | E ∀ [x -> a] | 4, 3 |
+| 6 | b, a | <pre>.   .   .   P(a,b)</pre> | E ∀ [y -> b] | 5, 2 |
+| 7 | b | <pre>.   .   ∀x.( P(x,b) )</pre> | subproof I ∀ [a -> x] | 3 - 6 |
+| 8 |  | <pre>.   ∀y.( ∀x.( P(x,y) ) )</pre> | subproof I ∀ [b -> y] | 2 - 7 |
+| 9 |  | <pre>∀x.( ∀y.( P(x,y) ) ) -> ∀y.( ∀x.( P(x,y) ) )</pre> | subproof -> | 1 - 8 |
 

@@ -200,7 +200,7 @@ func CheckRootProof(proof *Proof) (*CheckedProof, error) {
 		result := t.StepResult()
 		resultString := result.FormulaPrint(true)
 		if resultString != proof.ExpectedResult {
-			return checked, errors.Errorf("proof expected result '%s' does not match actual result '%s'", proof.ExpectedResult, resultString)
+			return checked, errors.Errorf("proof expected result does not match actual result\n - %s\n - %s", proof.ExpectedResult, resultString)
 		}
 		return checked, nil
 	default:

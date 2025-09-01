@@ -11,17 +11,31 @@ var (
 	T = Pred("T") // True
 	F = Pred("F") // False
 
-	Qa = Pred("Q", &TermVar{Name: "a", IsBound: false})
-	Qb = Pred("Q", &TermVar{Name: "b", IsBound: false})
-	Qx = Pred("Q", &TermVar{Name: "x", IsBound: true})
-	Qy = Pred("Q", &TermVar{Name: "y", IsBound: true})
-	Qz = Pred("Q", &TermVar{Name: "z", IsBound: true})
+	a = FreeTermVar("a")
+	b = FreeTermVar("b")
+	c = FreeTermVar("c")
 
-	Pa = Pred("P", &TermVar{Name: "a", IsBound: false})
-	Pb = Pred("P", &TermVar{Name: "b", IsBound: false})
-	Px = Pred("P", &TermVar{Name: "x", IsBound: true})
-	Py = Pred("P", &TermVar{Name: "y", IsBound: true})
-	Pz = Pred("P", &TermVar{Name: "z", IsBound: true})
+	x = BoundTermVar("x")
+	y = BoundTermVar("y")
+	z = BoundTermVar("z")
+
+	Qa = Pred("Q", a)
+	Qb = Pred("Q", b)
+	Qx = Pred("Q", x)
+	Qy = Pred("Q", y)
+	Qz = Pred("Q", z)
+
+	Pa = Pred("P", a)
+	Pb = Pred("P", b)
+	Px = Pred("P", x)
+	Py = Pred("P", y)
+	Pz = Pred("P", z)
+
+	Pab = Pred("P", a, b)
+	Pax = Pred("P", a, x)
+	Pay = Pred("P", a, y)
+	Pxy = Pred("P", x, y)
+	Pxb = Pred("P", x, b)
 )
 
 type ProofsSection struct {
@@ -37,13 +51,13 @@ var proofs = []*ProofsSection{
 	NewProofsSection("basics",
 		RootProof("∀x.( P(x) v ~ P(x) )",
 			ForallIntroProof("x", "a",
-				ContraProof(Not(Or(Pa, Not(Pa))),
-					ContraProof(Pa,
-						IOr(Pa, Not(Pa), true),
-						&Reiterate{Formula: Not(Or(Pa, Not(Pa)))},
-					),
-					IOr(Pa, Not(Pa), false),
-				),
+				ContraProof(Not(Or(Pa, Not(Pa))), // ~ ( P(a) v ~ P(a) )
+					ContraProof(Pa, // P(a)
+						IOr(Pa, Not(Pa), true),                    // P(a) v ~ P(a)
+						&Reiterate{Formula: Not(Or(Pa, Not(Pa)))}, // ~ ( P(a) v ~ P(a) )
+					), // ~ P(a)
+					IOr(Pa, Not(Pa), false), // P(a) v ~ P(a)
+				), // P(a) v ~ P(a)
 			),
 		),
 		RootProof("~ ∃x.( ~ ( P(x) v ~ P(x) ) )",
@@ -320,6 +334,31 @@ var proofs = []*ProofsSection{
 			IDArrow(
 				Exist("x", Or(Px, Qx)),
 				Or(Exist("x", Px), Exist("x", Qx)),
+			),
+		),
+	),
+	NewProofsSection("commutativity",
+		RootProof("∃x.( ∃y.( P(x,y) ) ) -> ∃y.( ∃x.( P(x,y) ) )",
+			ArrowProof(Exist("x", Exist("y", Pxy)),
+				ExistElimProof("a",
+					Exist("x", Exist("y", Pxy)), // ∃y.( P(a,y) )
+					ExistElimProof("b",
+						Exist("y", Pay),                   // P(a,b)
+						IExist(Pab, "a", "x"),             // ∃x.( P(x,b) )
+						IExist(Exist("x", Pxb), "b", "y"), // ∃y.( ∃x.( P(x,y) ) )
+					), // ∃y.( ∃x.( P(x,y) ) )
+				), // ∃y.( ∃x.( P(x,y) ) )
+			),
+		),
+		RootProof("∀x.( ∀y.( P(x,y) ) ) -> ∀y.( ∀x.( P(x,y) ) )",
+			ArrowProof(Forall("x", Forall("y", Pxy)),
+				ForallIntroProof("y", "b",
+					ForallIntroProof("x", "a",
+						&Reiterate{Formula: Forall("x", Forall("y", Pxy))}, // ∀x.( ∀y.( P(x,y) ) )
+						EForall(Forall("y", Pxy), "x", "a"),                // ∀y.( P(a,y) )
+						EForall(Pay, "y", "b"),                             // P(a,b)
+					), // ∀x.( P(x,b) ) )
+				), // ∀y .( ∀x.( P(x,y) ) )
 			),
 		),
 	),
