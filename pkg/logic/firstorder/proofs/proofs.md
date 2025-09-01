@@ -42,7 +42,7 @@
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
-| 1 | a | <pre>.   </pre> | term var: E ∃ |  |
+| 1 | a | <pre>.   </pre> | term var: ~ ∃ |  |
 | 2 | a | <pre>.   ∃x.( ~ ( P(x) v ~ P(x) ) )</pre> | Assume: ~ ∃ |  |
 | 3 | a | <pre>.   ~ ( P(a) v ~ P(a) )</pre> | Assume: ~ ∃ [x -> a] |  |
 | 4 | a | <pre>.   .   P(a)</pre> | Assume: ~ |  |
@@ -50,7 +50,7 @@
 | 6 | a | <pre>.   .   ~ ( P(a) v ~ P(a) )</pre> | Reiterate | 3 |
 | 7 | a | <pre>.   ~ P(a)</pre> | subproof ~ | 4 - 6 |
 | 8 | a | <pre>.   P(a) v ~ P(a)</pre> | I v (R) | 7 |
-| 9 |  | <pre>~ ∃x.( ~ ( P(x) v ~ P(x) ) )</pre> | subproof E ∃ | 1 - 8 |
+| 9 |  | <pre>~ ∃x.( ~ ( P(x) v ~ P(x) ) )</pre> | subproof ~ ∃ | 1 - 8 |
 
 ## ∀x.( ~ ( P(x) ^ ~ P(x) ) ) <a name="proof-1-3"></a>
 
@@ -67,12 +67,12 @@
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
-| 1 | a | <pre>.   </pre> | term var: E ∃ |  |
+| 1 | a | <pre>.   </pre> | term var: ~ ∃ |  |
 | 2 | a | <pre>.   ∃x.( P(x) ^ ~ P(x) )</pre> | Assume: ~ ∃ |  |
 | 3 | a | <pre>.   P(a) ^ ~ P(a)</pre> | Assume: ~ ∃ [x -> a] |  |
 | 4 | a | <pre>.   P(a)</pre> | E ^ (L) | 3 |
 | 5 | a | <pre>.   ~ P(a)</pre> | E ^ (R) | 3 |
-| 6 |  | <pre>~ ∃x.( P(x) ^ ~ P(x) )</pre> | subproof E ∃ | 1 - 5 |
+| 6 |  | <pre>~ ∃x.( P(x) ^ ~ P(x) )</pre> | subproof ~ ∃ | 1 - 5 |
 
 ## ( P ^ ~ P ) -> Q <a name="proof-1-5"></a>
 
@@ -223,12 +223,12 @@
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∀x.( ~ Q(x) )</pre> | Assume: -> |  |
-| 2 | a | <pre>.   .   </pre> | term var: E ∃ |  |
+| 2 | a | <pre>.   .   </pre> | term var: ~ ∃ |  |
 | 3 | a | <pre>.   .   ∃x.( Q(x) )</pre> | Assume: ~ ∃ |  |
 | 4 | a | <pre>.   .   Q(a)</pre> | Assume: ~ ∃ [x -> a] |  |
 | 5 | a | <pre>.   .   ∀x.( ~ Q(x) )</pre> | Reiterate | 1 |
 | 6 | a | <pre>.   .   ~ Q(a)</pre> | E ∀ [x -> a] | 5, 2 |
-| 7 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | subproof E ∃ | 2 - 6 |
+| 7 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | subproof ~ ∃ | 2 - 6 |
 | 8 |  | <pre>∀x.( ~ Q(x) ) -> ~ ∃x.( Q(x) )</pre> | subproof -> | 1 - 7 |
 | 9 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | Assume: -> |  |
 | 10 | a | <pre>.   .   </pre> | term var: I ∀ |  |

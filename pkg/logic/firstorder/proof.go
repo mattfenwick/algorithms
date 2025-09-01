@@ -220,7 +220,7 @@ func existProof(termVar string, existential *QuantifiedFormula, steps []Step, is
 		ExpectedResult: result.FormulaPrint(true),
 		Steps:          steps,
 		Result:         result,
-		ProofType:      ProofTypeExistentialElimination,
+		ProofType:      proofType,
 		TermVar:        &termVar,
 	}
 }
