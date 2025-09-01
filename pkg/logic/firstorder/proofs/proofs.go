@@ -156,17 +156,24 @@ var proofs = []*ProofsSection{
 			),
 		),
 
-		RootProof("∃x.( R ) <-> R",
+		RootProof("∃x.( R ) -> R",
 			ArrowProof(Exist("x", R), // ∃x.( R )
 				ExistElimProof("a",
 					Exist("x", R), // R
 				),
 			),
-			ArrowProof(R, // R
-				IExist(R, "a", "x"), // ∃x.( R )
-			),
-			IDArrow(Exist("x", R), R),
+			// ArrowProof(R, // R
+			// 	IExist(R, "a", "x"), // ∃x.( R ) // TODO this is illegal
+			// ),
+			// IDArrow(Exist("x", R), R),
 		),
+		// RootProof("∀x.( R ) -> R",
+		// 	ArrowProof(Forall("x", R),
+		// 		EForall(R, "x", "a"), // this is illegal
+		// 	),
+		// ),
+		// TODO can this be written?  if so, it indicates a bug in the checker
+		// RootProof("∃x.( Q(x) ) -> ∀x.( Q(x) )",
 
 		RootProof("( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )",
 			ArrowProof(And(Forall("x", Qx), Exist("x", T)),

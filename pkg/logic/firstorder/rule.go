@@ -124,8 +124,10 @@ func EForall(formula Formula, from string, to string) *Rule {
 // preconditions: Q(a)
 // result: ∃x.( Q(x) ) -- from substituting: Q(a)[a -> x]
 func IExist(formula Formula, from string, to string) *Rule {
-	return NewRule(fmt.Sprintf("I ∃ [%s -> %s]", from, to),
+	rule := NewRule(fmt.Sprintf("I ∃ [%s -> %s]", from, to),
 		Exist(to, GeneralizeFormula(formula, from, to)),
 		formula,
 	)
+	rule.UseTermVar = &from
+	return rule
 }
