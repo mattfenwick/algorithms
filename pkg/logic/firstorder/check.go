@@ -73,6 +73,13 @@ func (e *Scope) FindFormula(key string) (int, bool) {
 	return line, ok
 }
 
+func (e *Scope) FindFormulaInImmediateParent(key string) (int, bool) {
+	if e.Parent == nil {
+		return 0, false
+	}
+	return e.Parent.FindFormula(key)
+}
+
 func (e *Scope) FindFormulaInParent(key string) (int, bool) {
 	if e.Parent == nil {
 		return 0, false
@@ -297,14 +304,14 @@ func CheckStep(step Step, scope *Scope, checked *CheckedProof) error {
 	return scope.AddFormula(result.FormulaPrint(true), addedLine)
 }
 
-func findLineRefs(scope *Scope, preconditions []Formula, findInParent bool) (string, error) {
+func findLineRefs(scope *Scope, preconditions []Formula, findInImmediateParent bool) (string, error) {
 	var linesUsed []int
 	for _, n := range preconditions {
 		key := n.FormulaPrint(true)
 		var lineRef int
 		var ok bool
-		if findInParent {
-			lineRef, ok = scope.FindFormulaInParent(key)
+		if findInImmediateParent {
+			lineRef, ok = scope.FindFormulaInImmediateParent(key)
 		} else {
 			lineRef, ok = scope.FindFormula(key)
 		}

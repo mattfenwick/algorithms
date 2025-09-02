@@ -254,13 +254,14 @@
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( ∀y.( P(x,y) ) )</pre> | Assume: -> |  |
 | 2 | a | <pre>.   .   </pre> | term var: I ∀ |  |
-| 3 | a, b | <pre>.   .   .   </pre> | term var: E ∃ |  |
-| 4 | a, b | <pre>.   .   .   ∀y.( P(b,y) )</pre> | Assume: E ∃ [x -> b] | 1 |
-| 5 | a, b | <pre>.   .   .   P(b,a)</pre> | E ∀ [y -> a] | 4, 2 |
-| 6 | a, b | <pre>.   .   .   ∃x.( P(x,a) )</pre> | I ∃ [b -> x] | 5, 3 |
-| 7 | a | <pre>.   .   ∃x.( P(x,a) )</pre> | subproof E ∃ | 3 - 6 |
-| 8 |  | <pre>.   ∀y.( ∃x.( P(x,y) ) )</pre> | subproof I ∀ [a -> y] | 2 - 7 |
-| 9 |  | <pre>∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) )</pre> | subproof -> | 1 - 8 |
+| 3 | a | <pre>.   .   ∃x.( ∀y.( P(x,y) ) )</pre> | Reiterate | 1 |
+| 4 | a, b | <pre>.   .   .   </pre> | term var: E ∃ |  |
+| 5 | a, b | <pre>.   .   .   ∀y.( P(b,y) )</pre> | Assume: E ∃ [x -> b] | 3 |
+| 6 | a, b | <pre>.   .   .   P(b,a)</pre> | E ∀ [y -> a] | 5, 2 |
+| 7 | a, b | <pre>.   .   .   ∃x.( P(x,a) )</pre> | I ∃ [b -> x] | 6, 4 |
+| 8 | a | <pre>.   .   ∃x.( P(x,a) )</pre> | subproof E ∃ | 4 - 7 |
+| 9 |  | <pre>.   ∀y.( ∃x.( P(x,y) ) )</pre> | subproof I ∀ [a -> y] | 2 - 8 |
+| 10 |  | <pre>∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) )</pre> | subproof -> | 1 - 9 |
 
 ## ∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) ) <a name="proof-4-4"></a>
 
@@ -385,13 +386,14 @@
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( T )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ∀x.( ~ P )</pre> | Assume: -> |  |
-| 3 | a | <pre>.   .   .   </pre> | term var: E ∃ |  |
-| 4 | a | <pre>.   .   .   T</pre> | Assume: E ∃ [x -> a] | 1 |
-| 5 | a | <pre>.   .   .   ∀x.( ~ P )</pre> | Reiterate | 2 |
-| 6 | a | <pre>.   .   .   ~ P</pre> | E ∀ [x -> a] | 5, 3 |
-| 7 |  | <pre>.   .   ~ P</pre> | subproof E ∃ | 3 - 6 |
-| 8 |  | <pre>.   ∀x.( ~ P ) -> ~ P</pre> | subproof -> | 2 - 7 |
-| 9 |  | <pre>∃x.( T ) -> ( ∀x.( ~ P ) -> ~ P )</pre> | subproof -> | 1 - 8 |
+| 3 |  | <pre>.   .   ∃x.( T )</pre> | Reiterate | 1 |
+| 4 | a | <pre>.   .   .   </pre> | term var: E ∃ |  |
+| 5 | a | <pre>.   .   .   T</pre> | Assume: E ∃ [x -> a] | 3 |
+| 6 | a | <pre>.   .   .   ∀x.( ~ P )</pre> | Reiterate | 2 |
+| 7 | a | <pre>.   .   .   ~ P</pre> | E ∀ [x -> a] | 6, 4 |
+| 8 |  | <pre>.   .   ~ P</pre> | subproof E ∃ | 4 - 7 |
+| 9 |  | <pre>.   ∀x.( ~ P ) -> ~ P</pre> | subproof -> | 2 - 8 |
+| 10 |  | <pre>∃x.( T ) -> ( ∀x.( ~ P ) -> ~ P )</pre> | subproof -> | 1 - 9 |
 
 ## ∃x.( R ) -> R <a name="proof-5-6"></a>
 

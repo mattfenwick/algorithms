@@ -239,6 +239,7 @@ var quantifierProofs = []*ProofsSection{
 		RootProof("∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) )",
 			ArrowProof(Exist("x", Forall("y", Pxy)),
 				ForallIntroProof("y", "a",
+					&Reiterate{Formula: Exist("x", Forall("y", Pxy))}, // ∃x.( ∀y.( P(x,y) ) )
 					ExistElimProof("b",
 						Exist("x", Forall("y", Pxy)), // ∀y.( P(b,y) )
 						EForall(Pby, "y", "a"),       // P(b,a)
@@ -361,6 +362,7 @@ var quantifierProofs = []*ProofsSection{
 		RootProof("∃x.( T ) -> ( ∀x.( ~ P ) -> ~ P )",
 			ArrowProof(Exist("x", T),
 				ArrowProof(Forall("x", Not(P)),
+					&Reiterate{Formula: Exist("x", T)}, // ∃x.( T )
 					ExistElimProof("a",
 						Exist("x", T),                            // T
 						&Reiterate{Formula: Forall("x", Not(P))}, // ∀x.( ~ P )
