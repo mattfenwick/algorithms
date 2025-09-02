@@ -1,5 +1,7 @@
 package logic
 
+import "github.com/pkg/errors"
+
 func removeDoubleNegative(t Formula) Formula {
 	switch a := t.(type) {
 	case *NotFormula:
@@ -40,7 +42,7 @@ func ArrowDisjunctionTheorem(p Formula, q Formula) *Rule {
 // (   P v Q ) -> ( ~ P -> Q )
 // ( ~ P v Q ) -> (   P -> Q )
 func DisjunctionArrowTheorem(p Formula, q Formula) *Rule {
-	return NewRule("Theorem: v to ->", Arrow(removeDoubleNegative(p), q), Or(p, q))
+	return NewRule("Theorem: v to ->", Arrow(removeDoubleNegative(Not(p)), q), Or(p, q))
 }
 
 // ArrowConjunctionTheorem handles these patterns:
@@ -131,6 +133,52 @@ func DeMorgansOrToAndTheorem(p Formula, q Formula, isAndNegated bool) *Rule {
 		return NewRule("DeMorgan's theorem: v to (~ ^)",
 			Not(And(removeDoubleNegative(Not(p)), removeDoubleNegative(Not(q)))),
 			Or(p, q),
+		)
+	}
+}
+
+// DeMorgansExistToForallTheorem handles:
+//
+//	  ∃x.(   P(x) ) -> ~ ∀x.( ~ P(x) )
+//	  ∃x.( ~ P(x) ) -> ~ ∀x.(   P(x) )
+//	~ ∃x.(   P(x) ) ->   ∀x.( ~ P(x) )
+//	~ ∃x.( ~ P(x) ) ->   ∀x.(   P(x) )
+func DeMorgansExistToForallTheorem(exist *QuantifiedFormula, isExistNegated bool) *Rule {
+	if exist.Quantifier != ExistentialQuantifier {
+		panic(errors.Errorf("expected existential quantifier, got %s", exist.Quantifier))
+	}
+	if isExistNegated {
+		return NewRule("DeMorgan's theorem: (~ ∃) to ∀",
+			Forall(exist.Var, removeDoubleNegative(Not(exist.Body))),
+			Not(exist),
+		)
+	} else {
+		return NewRule("DeMorgan's theorem: ∃ to (~ ∀)",
+			Not(Forall(exist.Var, removeDoubleNegative(Not(exist.Body)))),
+			exist,
+		)
+	}
+}
+
+// DeMorgansForallToExistTheorem handles:
+//
+//	  ∀x.(   P(x) ) -> ~ ∃x.( ~ P(x) )
+//	  ∀x.( ~ P(x) ) -> ~ ∃x.(   P(x) )
+//	~ ∀x.(   P(x) ) ->   ∃x.( ~ P(x) )
+//	~ ∀x.( ~ P(x) ) ->   ∃x.(   P(x) )
+func DeMorgansForallToExistTheorem(forall *QuantifiedFormula, isForallNegated bool) *Rule {
+	if forall.Quantifier != ForallQuantifier {
+		panic(errors.Errorf("expected forall quantifier, got %s", forall.Quantifier))
+	}
+	if isForallNegated {
+		return NewRule("DeMorgan's theorem: (~ ∀) to ∃",
+			Exist(forall.Var, removeDoubleNegative(Not(forall.Body))),
+			Not(forall),
+		)
+	} else {
+		return NewRule("DeMorgan's theorem: ∀ to (~ ∃)",
+			Not(Exist(forall.Var, removeDoubleNegative(Not(forall.Body)))),
+			forall,
 		)
 	}
 }
