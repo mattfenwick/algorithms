@@ -17,6 +17,7 @@
     1. [∃x.( ∃y.( P(x,y) ) ) -> ∃y.( ∃x.( P(x,y) ) )](#proof-4-1)
     2. [∀x.( ∀y.( P(x,y) ) ) -> ∀y.( ∀x.( P(x,y) ) )](#proof-4-2)
     3. [∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) )](#proof-4-3)
+    4. [∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) )](#proof-4-4)
 5. [random](#random)
     1. [( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )](#proof-5-1)
     2. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-5-2)
@@ -255,6 +256,21 @@
 | 7 | a | <pre>.   .   ∃x.( P(x,a) )</pre> | subproof E ∃ | 3 - 6 |
 | 8 |  | <pre>.   ∀y.( ∃x.( P(x,y) ) )</pre> | subproof I ∀ [a -> y] | 2 - 7 |
 | 9 |  | <pre>∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) )</pre> | subproof -> | 1 - 8 |
+
+## ∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) ) <a name="proof-4-4"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∃x.( ∀y.( P(x,y) ) )</pre> | Assume: -> |  |
+| 2 | b | <pre>.   .   </pre> | term var: E ∃ |  |
+| 3 | b | <pre>.   .   ∀y.( P(b,y) )</pre> | Assume: E ∃ [x -> b] | 1 |
+| 4 | b, a | <pre>.   .   .   </pre> | term var: I ∀ |  |
+| 5 | b, a | <pre>.   .   .   ∀y.( P(b,y) )</pre> | Reiterate | 3 |
+| 6 | b, a | <pre>.   .   .   P(b,a)</pre> | E ∀ [y -> a] | 5, 4 |
+| 7 | b, a | <pre>.   .   .   ∃x.( P(x,a) )</pre> | I ∃ [b -> x] | 6, 2 |
+| 8 | b | <pre>.   .   ∀y.( ∃x.( P(x,y) ) )</pre> | subproof I ∀ [a -> y] | 4 - 7 |
+| 9 |  | <pre>.   ∀y.( ∃x.( P(x,y) ) )</pre> | subproof E ∃ | 2 - 8 |
+| 10 |  | <pre>∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) )</pre> | subproof -> | 1 - 9 |
 
 # random <a name="random"></a>
 

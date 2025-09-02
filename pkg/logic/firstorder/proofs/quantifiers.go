@@ -241,8 +241,20 @@ var quantifierProofs = []*ProofsSection{
 					ExistElimProof("b",
 						Exist("x", Forall("y", Pxy)), // ∀y.( P(b,y) )
 						EForall(Pby, "y", "a"),       // P(b,a)
-						IExist(Pba, "b", "x"),        // P(x,a)
+						IExist(Pba, "b", "x"),        // ∃x.( P(x,a) )
 					), // ∃x.( P(x,a) )
+				), // ∀y.( ∃x.( P(x,y) ) )
+			),
+		),
+		RootProof("∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) )",
+			ArrowProof(Exist("x", Forall("y", Pxy)),
+				ExistElimProof("b",
+					Exist("x", Forall("y", Pxy)), // ∀y.( P(b,y) )
+					ForallIntroProof("y", "a",
+						&Reiterate{Formula: Forall("y", Pby)}, // ∀y.( P(b,y) )
+						EForall(Pby, "y", "a"),                // P(b,a)
+						IExist(Pba, "b", "x"),                 // ∃x.( P(x,a) )
+					), // ∀y.( ∃x.( P(x,a) ) )
 				), // ∀y.( ∃x.( P(x,y) ) )
 			),
 		),
