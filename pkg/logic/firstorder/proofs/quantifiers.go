@@ -333,7 +333,42 @@ var quantifierProofs = []*ProofsSection{
 		// TODO P v ∀x.( Q(x) ) <-> ∀x.( P v Q(x) )
 		// TODO P ^ ∀x.( Q(x) ) <-> ∀x.( P ^ Q(x) )
 
-		// TODO P ^ ∀x.( ~ P ) -> ~ ∃x.T
+		RootProof("P -> ( ∀x.( ~ P ) -> ~ ∃x.( T ) )",
+			ArrowProof(P,
+				ArrowProof(Forall("x", Not(P)),
+					ExistContraProof("a",
+						Exist("x", T),                            // T
+						&Reiterate{Formula: Forall("x", Not(P))}, // ∀x.( ~ P )
+						EForall(Not(P), "x", "a"),                // ~ P
+						&Reiterate{Formula: P},                   // P
+					), // ~ ∃x.( T )
+				),
+			),
+		),
+		RootProof("P -> ( ∃x.( T ) -> ~ ∀x.( ~ P ) )",
+			ArrowProof(P,
+				ArrowProof(Exist("x", T),
+					ExistElimProof("a",
+						Exist("x", T), // T
+						ContraProof(Forall("x", Not(P)),
+							EForall(Not(P), "x", "a"), // ~ P
+							&Reiterate{Formula: P},    // P
+						), // ~ ∀x.( ~ P )
+					), // ~ ∀x.( ~ P )
+				),
+			),
+		),
+		RootProof("∃x.( T ) -> ( ∀x.( ~ P ) -> ~ P )",
+			ArrowProof(Exist("x", T),
+				ArrowProof(Forall("x", Not(P)),
+					ExistElimProof("a",
+						Exist("x", T),                            // T
+						&Reiterate{Formula: Forall("x", Not(P))}, // ∀x.( ~ P )
+						EForall(Not(P), "x", "a"),                // ~ P
+					), // ~ P
+				),
+			),
+		),
 
 		RootProof("∃x.( R ) -> R",
 			ArrowProof(Exist("x", R), // ∃x.( R )

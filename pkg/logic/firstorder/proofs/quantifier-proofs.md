@@ -21,12 +21,15 @@
 5. [random](#random)
     1. [( P ^ ∃x.( Q(x) ) ) <-> ∃x.( P ^ Q(x) )](#proof-5-1)
     2. [( ( P v ∃x.( Q(x) ) ) ^ ∃x.( T ) ) <-> ∃x.( P v Q(x) )](#proof-5-2)
-    3. [∃x.( R ) -> R](#proof-5-3)
-    4. [R -> ∀x.( R )](#proof-5-4)
-    5. [( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )](#proof-5-5)
-    6. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-5-6)
-    7. [( ∀x.( Q(x) ) ^ ∃x.( Q(x) -> R ) ) -> R](#proof-5-7)
-    8. [( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )](#proof-5-8)
+    3. [P -> ( ∀x.( ~ P ) -> ~ ∃x.( T ) )](#proof-5-3)
+    4. [P -> ( ∃x.( T ) -> ~ ∀x.( ~ P ) )](#proof-5-4)
+    5. [∃x.( T ) -> ( ∀x.( ~ P ) -> ~ P )](#proof-5-5)
+    6. [∃x.( R ) -> R](#proof-5-6)
+    7. [R -> ∀x.( R )](#proof-5-7)
+    8. [( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )](#proof-5-8)
+    9. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-5-9)
+    10. [( ∀x.( Q(x) ) ^ ∃x.( Q(x) -> R ) ) -> R](#proof-5-10)
+    11. [( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )](#proof-5-11)
 
 # basics <a name="basics"></a>
 
@@ -344,7 +347,53 @@
 | 37 |  | <pre>∃x.( P v Q(x) ) -> ( ( P v ∃x.( Q(x) ) ) ^ ∃x.( T ) )</pre> | subproof -> | 22 - 36 |
 | 38 |  | <pre>( ( P v ∃x.( Q(x) ) ) ^ ∃x.( T ) ) <-> ∃x.( P v Q(x) )</pre> | I <-> | 21, 37 |
 
-## ∃x.( R ) -> R <a name="proof-5-3"></a>
+## P -> ( ∀x.( ~ P ) -> ~ ∃x.( T ) ) <a name="proof-5-3"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   P</pre> | Assume: -> |  |
+| 2 |  | <pre>.   .   ∀x.( ~ P )</pre> | Assume: -> |  |
+| 3 | a | <pre>.   .   .   </pre> | term var: ~ ∃ |  |
+| 4 | a | <pre>.   .   .   ∃x.( T )</pre> | Assume: ~ ∃ |  |
+| 5 | a | <pre>.   .   .   T</pre> | Assume: ~ ∃ [x -> a] |  |
+| 6 | a | <pre>.   .   .   ∀x.( ~ P )</pre> | Reiterate | 2 |
+| 7 | a | <pre>.   .   .   ~ P</pre> | E ∀ [x -> a] | 6, 3 |
+| 8 | a | <pre>.   .   .   P</pre> | Reiterate | 1 |
+| 9 |  | <pre>.   .   ~ ∃x.( T )</pre> | subproof ~ ∃ | 3 - 8 |
+| 10 |  | <pre>.   ∀x.( ~ P ) -> ~ ∃x.( T )</pre> | subproof -> | 2 - 9 |
+| 11 |  | <pre>P -> ( ∀x.( ~ P ) -> ~ ∃x.( T ) )</pre> | subproof -> | 1 - 10 |
+
+## P -> ( ∃x.( T ) -> ~ ∀x.( ~ P ) ) <a name="proof-5-4"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   P</pre> | Assume: -> |  |
+| 2 |  | <pre>.   .   ∃x.( T )</pre> | Assume: -> |  |
+| 3 | a | <pre>.   .   .   </pre> | term var: E ∃ |  |
+| 4 | a | <pre>.   .   .   T</pre> | Assume: E ∃ [x -> a] | 2 |
+| 5 | a | <pre>.   .   .   .   ∀x.( ~ P )</pre> | Assume: ~ |  |
+| 6 | a | <pre>.   .   .   .   ~ P</pre> | E ∀ [x -> a] | 5, 3 |
+| 7 | a | <pre>.   .   .   .   P</pre> | Reiterate | 1 |
+| 8 | a | <pre>.   .   .   ~ ∀x.( ~ P )</pre> | subproof ~ | 5 - 7 |
+| 9 |  | <pre>.   .   ~ ∀x.( ~ P )</pre> | subproof E ∃ | 3 - 8 |
+| 10 |  | <pre>.   ∃x.( T ) -> ~ ∀x.( ~ P )</pre> | subproof -> | 2 - 9 |
+| 11 |  | <pre>P -> ( ∃x.( T ) -> ~ ∀x.( ~ P ) )</pre> | subproof -> | 1 - 10 |
+
+## ∃x.( T ) -> ( ∀x.( ~ P ) -> ~ P ) <a name="proof-5-5"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∃x.( T )</pre> | Assume: -> |  |
+| 2 |  | <pre>.   .   ∀x.( ~ P )</pre> | Assume: -> |  |
+| 3 | a | <pre>.   .   .   </pre> | term var: E ∃ |  |
+| 4 | a | <pre>.   .   .   T</pre> | Assume: E ∃ [x -> a] | 1 |
+| 5 | a | <pre>.   .   .   ∀x.( ~ P )</pre> | Reiterate | 2 |
+| 6 | a | <pre>.   .   .   ~ P</pre> | E ∀ [x -> a] | 5, 3 |
+| 7 |  | <pre>.   .   ~ P</pre> | subproof E ∃ | 3 - 6 |
+| 8 |  | <pre>.   ∀x.( ~ P ) -> ~ P</pre> | subproof -> | 2 - 7 |
+| 9 |  | <pre>∃x.( T ) -> ( ∀x.( ~ P ) -> ~ P )</pre> | subproof -> | 1 - 8 |
+
+## ∃x.( R ) -> R <a name="proof-5-6"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -354,7 +403,7 @@
 | 4 |  | <pre>.   R</pre> | subproof E ∃ | 2 - 3 |
 | 5 |  | <pre>∃x.( R ) -> R</pre> | subproof -> | 1 - 4 |
 
-## R -> ∀x.( R ) <a name="proof-5-4"></a>
+## R -> ∀x.( R ) <a name="proof-5-7"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -364,7 +413,7 @@
 | 4 |  | <pre>.   ∀x.( R )</pre> | subproof I ∀ [a -> x] | 2 - 3 |
 | 5 |  | <pre>R -> ∀x.( R )</pre> | subproof -> | 1 - 4 |
 
-## ( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) ) <a name="proof-5-5"></a>
+## ( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) ) <a name="proof-5-8"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -413,7 +462,7 @@
 | 43 |  | <pre>∃x.( P -> Q(x) ) -> ( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) )</pre> | subproof -> | 27 - 42 |
 | 44 |  | <pre>( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )</pre> | I <-> | 26, 43 |
 
-## ∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R <a name="proof-5-6"></a>
+## ∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R <a name="proof-5-9"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -426,7 +475,7 @@
 | 7 |  | <pre>.   R</pre> | subproof E ∃ | 2 - 6 |
 | 8 |  | <pre>∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R</pre> | subproof -> | 1 - 7 |
 
-## ( ∀x.( Q(x) ) ^ ∃x.( Q(x) -> R ) ) -> R <a name="proof-5-7"></a>
+## ( ∀x.( Q(x) ) ^ ∃x.( Q(x) -> R ) ) -> R <a name="proof-5-10"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -441,7 +490,7 @@
 | 9 |  | <pre>.   R</pre> | subproof E ∃ | 4 - 8 |
 | 10 |  | <pre>( ∀x.( Q(x) ) ^ ∃x.( Q(x) -> R ) ) -> R</pre> | subproof -> | 1 - 9 |
 
-## ( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) ) <a name="proof-5-8"></a>
+## ( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) ) <a name="proof-5-11"></a>
 
 | Line | Term var | Formula | Justification | Lines used |
 | - | - | - | - | - |
