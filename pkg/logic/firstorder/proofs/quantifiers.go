@@ -129,6 +129,46 @@ var quantifierProofs = []*ProofsSection{
 			),
 			IDArrow(Not(Forall("x", Qx)), Exist("x", Not(Qx))),
 		),
+		RootProof("( ∀x.( Q(x) ) ^ ∀x.( ~ Q(x) ) ) <-> ( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) )",
+			ArrowProof(And(Forall("x", Qx), Forall("x", Not(Qx))),
+				EAnd(Forall("x", Qx), Forall("x", Not(Qx)), true),
+				EAnd(Forall("x", Qx), Forall("x", Not(Qx)), false),
+				DeMorgansForallToExistTheorem(Forall("x", Qx), false),
+				DeMorgansForallToExistTheorem(Forall("x", Not(Qx)), false),
+				IAnd(Not(Exist("x", Qx)), Not(Exist("x", Not(Qx)))),
+			),
+			ArrowProof(And(Not(Exist("x", Qx)), Not(Exist("x", Not(Qx)))),
+				EAnd(Not(Exist("x", Qx)), Not(Exist("x", Not(Qx))), true),
+				EAnd(Not(Exist("x", Qx)), Not(Exist("x", Not(Qx))), false),
+				DeMorgansExistToForallTheorem(Exist("x", Qx), true),
+				DeMorgansExistToForallTheorem(Exist("x", Not(Qx)), true),
+				IAnd(Forall("x", Qx), Forall("x", Not(Qx))),
+			),
+			IDArrow(
+				And(Forall("x", Qx), Forall("x", Not(Qx))),
+				And(Not(Exist("x", Qx)), Not(Exist("x", Not(Qx)))),
+			),
+		),
+		RootProof("( ∃x.( Q(x) ) ^ ∃x.( ~ Q(x) ) ) <-> ( ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) ) )",
+			ArrowProof(And(Not(Forall("x", Qx)), Not(Forall("x", Not(Qx)))),
+				EAnd(Not(Forall("x", Qx)), Not(Forall("x", Not(Qx))), true),
+				EAnd(Not(Forall("x", Qx)), Not(Forall("x", Not(Qx))), false),
+				DeMorgansForallToExistTheorem(Forall("x", Qx), true),
+				DeMorgansForallToExistTheorem(Forall("x", Not(Qx)), true),
+				IAnd(Exist("x", Qx), Exist("x", Not(Qx))),
+			),
+			ArrowProof(And(Exist("x", Qx), Exist("x", Not(Qx))),
+				EAnd(Exist("x", Qx), Exist("x", Not(Qx)), true),
+				EAnd(Exist("x", Qx), Exist("x", Not(Qx)), false),
+				DeMorgansExistToForallTheorem(Exist("x", Qx), false),
+				DeMorgansExistToForallTheorem(Exist("x", Not(Qx)), false),
+				IAnd(Not(Forall("x", Qx)), Not(Forall("x", Not(Qx)))),
+			),
+			IDArrow(
+				And(Exist("x", Qx), Exist("x", Not(Qx))),
+				And(Not(Forall("x", Qx)), Not(Forall("x", Not(Qx)))),
+			),
+		),
 	),
 	NewProofsSection("distributive",
 		RootProof("∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) )",
@@ -592,10 +632,41 @@ var quantifierProofs = []*ProofsSection{
 				Exist("x", T),
 			),
 		),
+		RootProof("( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) ) <-> ~ ∃x.( T )",
+			ArrowProof(And(Not(Exist("x", Qx)), Not(Exist("x", Not(Qx)))),
+				EAnd(Not(Exist("x", Qx)), Not(Exist("x", Not(Qx))), true),  // ~ ∃x.( Q(x) )
+				EAnd(Not(Exist("x", Qx)), Not(Exist("x", Not(Qx))), false), // ~ ∃x.( ~ Q(x) )
+				ExistContraProof("a",
+					Exist("x", T), // T
+					ContraProof(Qa,
+						&Reiterate{Formula: Not(Exist("x", Qx))}, // ~ ∃x.( Q(x) )
+						IExist(Qa, "a", "x"),                     // ∃x.( Q(x) )
+					), // ~ Q(a)
+					&Reiterate{Formula: Not(Exist("x", Not(Qx)))}, // ~ ∃x.( ~ Q(x) )
+					IExist(Not(Qa), "a", "x"),                     // ∃x.( ~ Q(x) )
+				), // ~ ∃x.( T )
+			),
+			ArrowProof(Not(Exist("x", T)),
+				ExistContraProof("a",
+					Exist("x", Qx),                          // Q(a)
+					&Reiterate{Formula: T},                  // T
+					IExist(T, "a", "x"),                     // ∃x.( T )
+					&Reiterate{Formula: Not(Exist("x", T))}, // ~ ∃x.( T )
+				), // ~ ∃x.( Q(x) )
+				ExistContraProof("a",
+					Exist("x", Not(Qx)),                     // ~ Q(a)
+					&Reiterate{Formula: T},                  // T
+					IExist(T, "a", "x"),                     // ∃x.( T )
+					&Reiterate{Formula: Not(Exist("x", T))}, // ~ ∃x.( T )
+				), // ~ ∃x.( ~ Q(x) )
+				IAnd(Not(Exist("x", Qx)), Not(Exist("x", Not(Qx)))), // ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) )
+			),
+			IDArrow(
+				And(Not(Exist("x", Qx)), Not(Exist("x", Not(Qx)))),
+				Not(Exist("x", T)),
+			),
+		),
 	),
 
 	// https://en.wikipedia.org/wiki/First-order_logic#Provable_identities
-	// TODO ( ∀x.( Q(x) ) ^ ( ∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) <-> ~ ∃x.( T )
-	// TODO ( ∃x.( Q(x) ) ^ ( ∃x.( ~ Q(x) ) <-> ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) )
-	// TODO ~ ∃x.( T ) -> ~ ∃x.( P(x) )
 }

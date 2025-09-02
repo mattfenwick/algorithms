@@ -9,6 +9,8 @@
 2. [DeMorgan's](#DeMorgan's)
     1. [∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )](#proof-2-1)
     2. [~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) )](#proof-2-2)
+    3. [( ∀x.( Q(x) ) ^ ∀x.( ~ Q(x) ) ) <-> ( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) )](#proof-2-3)
+    4. [( ∃x.( Q(x) ) ^ ∃x.( ~ Q(x) ) ) <-> ( ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) ) )](#proof-2-4)
 3. [distributive](#distributive)
     1. [∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) )](#proof-3-1)
     2. [∃x.( P(x) v Q(x) ) <-> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )](#proof-3-2)
@@ -33,6 +35,7 @@
     12. [( ∀x.( Q(x) ) ^ ∃x.( Q(x) -> R ) ) -> R](#proof-5-12)
     13. [( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )](#proof-5-13)
     14. [( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) ) <-> ∃x.( T )](#proof-5-14)
+    15. [( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) ) <-> ~ ∃x.( T )](#proof-5-15)
 
 # basics <a name="basics"></a>
 
@@ -135,6 +138,46 @@
 | 19 |  | <pre>.   ~ ∀x.( Q(x) )</pre> | subproof E ∃ | 13 - 18 |
 | 20 |  | <pre>∃x.( ~ Q(x) ) -> ~ ∀x.( Q(x) )</pre> | subproof -> | 12 - 19 |
 | 21 |  | <pre>~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) )</pre> | I <-> | 11, 20 |
+
+## ( ∀x.( Q(x) ) ^ ∀x.( ~ Q(x) ) ) <-> ( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) ) <a name="proof-2-3"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∀x.( Q(x) ) ^ ∀x.( ~ Q(x) )</pre> | Assume: -> |  |
+| 2 |  | <pre>.   ∀x.( Q(x) )</pre> | E ^ (L) | 1 |
+| 3 |  | <pre>.   ∀x.( ~ Q(x) )</pre> | E ^ (R) | 1 |
+| 4 |  | <pre>.   ~ ∃x.( ~ Q(x) )</pre> | DeMorgan's theorem: ∀ to (~ ∃) | 2 |
+| 5 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | DeMorgan's theorem: ∀ to (~ ∃) | 3 |
+| 6 |  | <pre>.   ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) )</pre> | I ^ | 5, 4 |
+| 7 |  | <pre>( ∀x.( Q(x) ) ^ ∀x.( ~ Q(x) ) ) -> ( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) )</pre> | subproof -> | 1 - 6 |
+| 8 |  | <pre>.   ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) )</pre> | Assume: -> |  |
+| 9 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | E ^ (L) | 8 |
+| 10 |  | <pre>.   ~ ∃x.( ~ Q(x) )</pre> | E ^ (R) | 8 |
+| 11 |  | <pre>.   ∀x.( ~ Q(x) )</pre> | DeMorgan's theorem: (~ ∃) to ∀ | 9 |
+| 12 |  | <pre>.   ∀x.( Q(x) )</pre> | DeMorgan's theorem: (~ ∃) to ∀ | 10 |
+| 13 |  | <pre>.   ∀x.( Q(x) ) ^ ∀x.( ~ Q(x) )</pre> | I ^ | 12, 11 |
+| 14 |  | <pre>( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) ) -> ( ∀x.( Q(x) ) ^ ∀x.( ~ Q(x) ) )</pre> | subproof -> | 8 - 13 |
+| 15 |  | <pre>( ∀x.( Q(x) ) ^ ∀x.( ~ Q(x) ) ) <-> ( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) )</pre> | I <-> | 7, 14 |
+
+## ( ∃x.( Q(x) ) ^ ∃x.( ~ Q(x) ) ) <-> ( ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) ) ) <a name="proof-2-4"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) )</pre> | Assume: -> |  |
+| 2 |  | <pre>.   ~ ∀x.( Q(x) )</pre> | E ^ (L) | 1 |
+| 3 |  | <pre>.   ~ ∀x.( ~ Q(x) )</pre> | E ^ (R) | 1 |
+| 4 |  | <pre>.   ∃x.( ~ Q(x) )</pre> | DeMorgan's theorem: (~ ∀) to ∃ | 2 |
+| 5 |  | <pre>.   ∃x.( Q(x) )</pre> | DeMorgan's theorem: (~ ∀) to ∃ | 3 |
+| 6 |  | <pre>.   ∃x.( Q(x) ) ^ ∃x.( ~ Q(x) )</pre> | I ^ | 5, 4 |
+| 7 |  | <pre>( ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) ) ) -> ( ∃x.( Q(x) ) ^ ∃x.( ~ Q(x) ) )</pre> | subproof -> | 1 - 6 |
+| 8 |  | <pre>.   ∃x.( Q(x) ) ^ ∃x.( ~ Q(x) )</pre> | Assume: -> |  |
+| 9 |  | <pre>.   ∃x.( Q(x) )</pre> | E ^ (L) | 8 |
+| 10 |  | <pre>.   ∃x.( ~ Q(x) )</pre> | E ^ (R) | 8 |
+| 11 |  | <pre>.   ~ ∀x.( ~ Q(x) )</pre> | DeMorgan's theorem: ∃ to (~ ∀) | 9 |
+| 12 |  | <pre>.   ~ ∀x.( Q(x) )</pre> | DeMorgan's theorem: ∃ to (~ ∀) | 10 |
+| 13 |  | <pre>.   ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) )</pre> | I ^ | 12, 11 |
+| 14 |  | <pre>( ∃x.( Q(x) ) ^ ∃x.( ~ Q(x) ) ) -> ( ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) ) )</pre> | subproof -> | 8 - 13 |
+| 15 |  | <pre>( ∃x.( Q(x) ) ^ ∃x.( ~ Q(x) ) ) <-> ( ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) ) )</pre> | I <-> | 14, 7 |
 
 # distributive <a name="distributive"></a>
 
@@ -622,4 +665,41 @@
 | 31 |  | <pre>.   ∃x.( Q(x) ) v ∃x.( ~ Q(x) )</pre> | subproof E ∃ | 19 - 30 |
 | 32 |  | <pre>∃x.( T ) -> ( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) )</pre> | subproof -> | 18 - 31 |
 | 33 |  | <pre>( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) ) <-> ∃x.( T )</pre> | I <-> | 17, 32 |
+
+## ( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) ) <-> ~ ∃x.( T ) <a name="proof-5-15"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) )</pre> | Assume: -> |  |
+| 2 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | E ^ (L) | 1 |
+| 3 |  | <pre>.   ~ ∃x.( ~ Q(x) )</pre> | E ^ (R) | 1 |
+| 4 | a | <pre>.   .   </pre> | term var: ~ ∃ |  |
+| 5 | a | <pre>.   .   ∃x.( T )</pre> | Assume: ~ ∃ |  |
+| 6 | a | <pre>.   .   T</pre> | Assume: ~ ∃ [x -> a] |  |
+| 7 | a | <pre>.   .   .   Q(a)</pre> | Assume: ~ |  |
+| 8 | a | <pre>.   .   .   ~ ∃x.( Q(x) )</pre> | Reiterate | 2 |
+| 9 | a | <pre>.   .   .   ∃x.( Q(x) )</pre> | I ∃ [a -> x] | 7, 4 |
+| 10 | a | <pre>.   .   ~ Q(a)</pre> | subproof ~ | 7 - 9 |
+| 11 | a | <pre>.   .   ~ ∃x.( ~ Q(x) )</pre> | Reiterate | 3 |
+| 12 | a | <pre>.   .   ∃x.( ~ Q(x) )</pre> | I ∃ [a -> x] | 10, 4 |
+| 13 |  | <pre>.   ~ ∃x.( T )</pre> | subproof ~ ∃ | 4 - 12 |
+| 14 |  | <pre>( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) ) -> ~ ∃x.( T )</pre> | subproof -> | 1 - 13 |
+| 15 |  | <pre>.   ~ ∃x.( T )</pre> | Assume: -> |  |
+| 16 | a | <pre>.   .   </pre> | term var: ~ ∃ |  |
+| 17 | a | <pre>.   .   ∃x.( Q(x) )</pre> | Assume: ~ ∃ |  |
+| 18 | a | <pre>.   .   Q(a)</pre> | Assume: ~ ∃ [x -> a] |  |
+| 19 | a | <pre>.   .   T</pre> | Reiterate | 0 |
+| 20 | a | <pre>.   .   ∃x.( T )</pre> | I ∃ [a -> x] | 19, 16 |
+| 21 | a | <pre>.   .   ~ ∃x.( T )</pre> | Reiterate | 15 |
+| 22 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | subproof ~ ∃ | 16 - 21 |
+| 23 | a | <pre>.   .   </pre> | term var: ~ ∃ |  |
+| 24 | a | <pre>.   .   ∃x.( ~ Q(x) )</pre> | Assume: ~ ∃ |  |
+| 25 | a | <pre>.   .   ~ Q(a)</pre> | Assume: ~ ∃ [x -> a] |  |
+| 26 | a | <pre>.   .   T</pre> | Reiterate | 0 |
+| 27 | a | <pre>.   .   ∃x.( T )</pre> | I ∃ [a -> x] | 26, 23 |
+| 28 | a | <pre>.   .   ~ ∃x.( T )</pre> | Reiterate | 15 |
+| 29 |  | <pre>.   ~ ∃x.( ~ Q(x) )</pre> | subproof ~ ∃ | 23 - 28 |
+| 30 |  | <pre>.   ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) )</pre> | I ^ | 22, 29 |
+| 31 |  | <pre>~ ∃x.( T ) -> ( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) )</pre> | subproof -> | 15 - 30 |
+| 32 |  | <pre>( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) ) <-> ~ ∃x.( T )</pre> | I <-> | 14, 31 |
 
