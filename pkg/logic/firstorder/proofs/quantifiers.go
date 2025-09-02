@@ -210,7 +210,22 @@ var quantifierProofs = []*ProofsSection{
 				),
 			),
 		),
-		// TODO ∃x.( P(x) -> Q(x) ) -> ( ∃x.( P(x) ) -> ∃x.( Q(x) ) )
+		// TODO this seems to require the addition of another premise: ∃x.( T )
+		// RootProof("( ∃x.( P(x) ) -> ∃x.( Q(x) ) ) -> ∃x.( P(x) -> Q(x) )",
+		// 	ArrowProof(Arrow(Exist("x", Px), Exist("x", Qx)),
+		// 		ArrowProof(Exist("x", Px),
+		// 			&Reiterate{Formula: Arrow(Exist("x", Px), Exist("x", Qx))},
+		// 			EImply(Exist("x", Px), Exist("x", Qx)), // ∃x.( Q(x) )
+		// 			ExistElimProof("a",
+		// 				Exist("x", Qx), // Q(a)
+		// 				ArrowProof(Pa,
+		// 					&Reiterate{Formula: Qa}, // Q(a)
+		// 				), // P(a) -> Q(a)
+		// 				IExist(Arrow(Pa, Qa), "a", "x"), // ∃x.( P(x) -> Q(x) )
+		// 			), // ∃x.( P(x) -> Q(x) )
+		// 		), // ∃x.( P(x) ) -> ∃x.( P(x) -> Q(x) )
+		// 	),
+		// ),
 	),
 	NewProofsSection("commutativity",
 		RootProof("∃x.( ∃y.( P(x,y) ) ) -> ∃y.( ∃x.( P(x,y) ) )",
@@ -539,10 +554,47 @@ var quantifierProofs = []*ProofsSection{
 				), // ∃x.( Q(x) )
 			), // ( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )
 		),
+		RootProof("( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) ) <-> ∃x.( T )",
+			ArrowProof(Or(Exist("x", Qx), Exist("x", Not(Qx))),
+				ArrowProof(Exist("x", Qx),
+					ExistElimProof("a",
+						Exist("x", Qx),
+						&Reiterate{Formula: T},
+						IExist(T, "a", "x"),
+					), // ∃x.( T )
+				), // ∃x.( Q(x) ) -> ∃x.( T )
+				ArrowProof(Exist("x", Not(Qx)),
+					ExistElimProof("a",
+						Exist("x", Not(Qx)),
+						&Reiterate{Formula: T},
+						IExist(T, "a", "x"),
+					), // ∃x.( T )
+				), // ∃x.( ~ Q(x) ) -> ∃x.( T )
+				EOr(Exist("x", Qx), Exist("x", Not(Qx)), Exist("x", T)),
+			),
+			ArrowProof(Exist("x", T),
+				ExistElimProof("a",
+					Exist("x", T),             // ∃x.( T )
+					ExcludedMiddleTheorem(Qa), // Q(a) v ~ Q(a)
+					ArrowProof(Qa,
+						IExist(Qa, "a", "x"),                           // ∃x.( Q(x) )
+						IOr(Exist("x", Qx), Exist("x", Not(Qx)), true), // ∃x.( Q(x) ) v ∃x.( ~ Q(x) )
+					), // Q(a) -> ∃x.( Q(x) ) v ∃x.( ~ Q(x) )
+					ArrowProof(Not(Qa),
+						IExist(Not(Qa), "a", "x"),                       // ∃x.( ~ Q(x) )
+						IOr(Exist("x", Qx), Exist("x", Not(Qx)), false), // ∃x.( Q(x) ) v ∃x.( ~ Q(x) )
+					), // ~ Q(a) -> ∃x.( Q(x) ) v ∃x.( ~ Q(x) )
+					EOr(Qa, Not(Qa), Or(Exist("x", Qx), Exist("x", Not(Qx)))), // ∃x.( Q(x) ) v ∃x.( ~ Q(x) )
+				), // ∃x.( Q(x) ) v ∃x.( ~ Q(x) )
+			),
+			IDArrow(
+				Or(Exist("x", Qx), Exist("x", Not(Qx))),
+				Exist("x", T),
+			),
+		),
 	),
 
 	// https://en.wikipedia.org/wiki/First-order_logic#Provable_identities
-	// TODO ( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) ) <-> ∃x.( T )
 	// TODO ( ∀x.( Q(x) ) ^ ( ∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) <-> ~ ∃x.( T )
 	// TODO ( ∃x.( Q(x) ) ^ ( ∃x.( ~ Q(x) ) <-> ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) )
 	// TODO ~ ∃x.( T ) -> ~ ∃x.( P(x) )

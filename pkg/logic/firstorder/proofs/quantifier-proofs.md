@@ -32,6 +32,7 @@
     11. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-5-11)
     12. [( ∀x.( Q(x) ) ^ ∃x.( Q(x) -> R ) ) -> R](#proof-5-12)
     13. [( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )](#proof-5-13)
+    14. [( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) ) <-> ∃x.( T )](#proof-5-14)
 
 # basics <a name="basics"></a>
 
@@ -583,4 +584,42 @@
 | 8 | a | <pre>.   .   ∃x.( Q(x) )</pre> | I ∃ [a -> x] | 7, 4 |
 | 9 |  | <pre>.   ∃x.( Q(x) )</pre> | subproof E ∃ | 4 - 8 |
 | 10 |  | <pre>( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )</pre> | subproof -> | 1 - 9 |
+
+## ( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) ) <-> ∃x.( T ) <a name="proof-5-14"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∃x.( Q(x) ) v ∃x.( ~ Q(x) )</pre> | Assume: -> |  |
+| 2 |  | <pre>.   .   ∃x.( Q(x) )</pre> | Assume: -> |  |
+| 3 | a | <pre>.   .   .   </pre> | term var: E ∃ |  |
+| 4 | a | <pre>.   .   .   Q(a)</pre> | Assume: E ∃ [x -> a] | 2 |
+| 5 | a | <pre>.   .   .   T</pre> | Reiterate | 0 |
+| 6 | a | <pre>.   .   .   ∃x.( T )</pre> | I ∃ [a -> x] | 5, 3 |
+| 7 |  | <pre>.   .   ∃x.( T )</pre> | subproof E ∃ | 3 - 6 |
+| 8 |  | <pre>.   ∃x.( Q(x) ) -> ∃x.( T )</pre> | subproof -> | 2 - 7 |
+| 9 |  | <pre>.   .   ∃x.( ~ Q(x) )</pre> | Assume: -> |  |
+| 10 | a | <pre>.   .   .   </pre> | term var: E ∃ |  |
+| 11 | a | <pre>.   .   .   ~ Q(a)</pre> | Assume: E ∃ [x -> a] | 9 |
+| 12 | a | <pre>.   .   .   T</pre> | Reiterate | 0 |
+| 13 | a | <pre>.   .   .   ∃x.( T )</pre> | I ∃ [a -> x] | 12, 10 |
+| 14 |  | <pre>.   .   ∃x.( T )</pre> | subproof E ∃ | 10 - 13 |
+| 15 |  | <pre>.   ∃x.( ~ Q(x) ) -> ∃x.( T )</pre> | subproof -> | 9 - 14 |
+| 16 |  | <pre>.   ∃x.( T )</pre> | E v | 8, 15, 1 |
+| 17 |  | <pre>( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) ) -> ∃x.( T )</pre> | subproof -> | 1 - 16 |
+| 18 |  | <pre>.   ∃x.( T )</pre> | Assume: -> |  |
+| 19 | a | <pre>.   .   </pre> | term var: E ∃ |  |
+| 20 | a | <pre>.   .   T</pre> | Assume: E ∃ [x -> a] | 18 |
+| 21 | a | <pre>.   .   Q(a) v ~ Q(a)</pre> | Theorem: excluded middle |  |
+| 22 | a | <pre>.   .   .   Q(a)</pre> | Assume: -> |  |
+| 23 | a | <pre>.   .   .   ∃x.( Q(x) )</pre> | I ∃ [a -> x] | 22, 19 |
+| 24 | a | <pre>.   .   .   ∃x.( Q(x) ) v ∃x.( ~ Q(x) )</pre> | I v (L) | 23 |
+| 25 | a | <pre>.   .   Q(a) -> ( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) )</pre> | subproof -> | 22 - 24 |
+| 26 | a | <pre>.   .   .   ~ Q(a)</pre> | Assume: -> |  |
+| 27 | a | <pre>.   .   .   ∃x.( ~ Q(x) )</pre> | I ∃ [a -> x] | 26, 19 |
+| 28 | a | <pre>.   .   .   ∃x.( Q(x) ) v ∃x.( ~ Q(x) )</pre> | I v (R) | 27 |
+| 29 | a | <pre>.   .   ~ Q(a) -> ( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) )</pre> | subproof -> | 26 - 28 |
+| 30 | a | <pre>.   .   ∃x.( Q(x) ) v ∃x.( ~ Q(x) )</pre> | E v | 25, 29, 21 |
+| 31 |  | <pre>.   ∃x.( Q(x) ) v ∃x.( ~ Q(x) )</pre> | subproof E ∃ | 19 - 30 |
+| 32 |  | <pre>∃x.( T ) -> ( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) )</pre> | subproof -> | 18 - 31 |
+| 33 |  | <pre>( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) ) <-> ∃x.( T )</pre> | I <-> | 17, 32 |
 
