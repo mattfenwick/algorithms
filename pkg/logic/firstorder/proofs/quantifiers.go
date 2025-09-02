@@ -210,6 +210,7 @@ var quantifierProofs = []*ProofsSection{
 				),
 			),
 		),
+		// TODO ∃x.( P(x) -> Q(x) ) -> ( ∃x.( P(x) ) -> ∃x.( Q(x) ) )
 	),
 	NewProofsSection("commutativity",
 		RootProof("∃x.( ∃y.( P(x,y) ) ) -> ∃y.( ∃x.( P(x,y) ) )",
@@ -260,6 +261,94 @@ var quantifierProofs = []*ProofsSection{
 		),
 	),
 	NewProofsSection("random",
+		RootProof("( P ^ ∃x.( Q(x) ) ) <-> ∃x.( P ^ Q(x) )",
+			ArrowProof(And(P, Exist("x", Qx)),
+				EAnd(P, Exist("x", Qx), true),
+				EAnd(P, Exist("x", Qx), false),
+				ExistElimProof("a",
+					Exist("x", Qx),               // Q(a)
+					&Reiterate{Formula: P},       // P
+					IAnd(P, Qa),                  // P ^ Q(a)
+					IExist(And(P, Qa), "a", "x"), // ∃x.( P ^ Q(x) )
+				), // ∃x.( P ^ Q(x) )
+			),
+			ArrowProof(Exist("x", And(P, Qx)),
+				ExistElimProof("a",
+					Exist("x", And(P, Qx)),  // P ^ Q(a)
+					EAnd(P, Qa, true),       // P
+					EAnd(P, Qa, false),      // Q(a)
+					IExist(Qa, "a", "x"),    // ∃x.( Q(x) )
+					IAnd(P, Exist("x", Qx)), // P ^ ∃x.( Q(x) )
+				), // P ^ ∃x.( Q(x) )
+			),
+			IDArrow(
+				And(P, Exist("x", Qx)),
+				Exist("x", And(P, Qx)),
+			),
+		),
+		RootProof("( ( P v ∃x.( Q(x) ) ) ^ ∃x.( T ) ) <-> ∃x.( P v Q(x) )",
+			ArrowProof(And(Or(P, Exist("x", Qx)), Exist("x", T)),
+				EAnd(Or(P, Exist("x", Qx)), Exist("x", T), true),  // ∃x.T
+				EAnd(Or(P, Exist("x", Qx)), Exist("x", T), false), // P v ∃x.( Q(x) )
+				ArrowProof(P,
+					&Reiterate{Formula: Exist("x", T)}, // ∃x.T
+					ExistElimProof("a",
+						Exist("x", T),               // T
+						&Reiterate{Formula: P},      // P
+						IOr(P, Qa, true),            // P v Q(a)
+						IExist(Or(P, Qa), "a", "x"), // ∃x.( P v Q(x) )
+					), // ∃x.( P v Q(x) )
+				), // P -> // ∃x.( P v Q(x) )
+				ArrowProof(Exist("x", Qx),
+					ExistElimProof("a",
+						Exist("x", Qx),              // Q(a)
+						IOr(P, Qa, false),           // P v Q(a)
+						IExist(Or(P, Qa), "a", "x"), // ∃x.( P v Q(x) )
+					), // ∃x.( P v Q(x) )
+				), // ∃x.( Q(x) ) -> ∃x.( P v Q(x) )
+				EOr(P, Exist("x", Qx), Exist("x", Or(P, Qx))),
+			),
+			ArrowProof(Exist("x", Or(P, Qx)),
+				ExistElimProof("a",
+					Exist("x", Or(P, Qx)), // P v Q(a)
+					ArrowProof(P,
+						IOr(P, Exist("x", Qx), true), // P v ∃x.( Q(x) )
+					), // P -> P v ∃x.( Q(x) )
+					ArrowProof(Qa,
+						IExist(Qa, "a", "x"),          // ∃x.( Q(x) )
+						IOr(P, Exist("x", Qx), false), // P v ∃x.( Q(x) )
+					), // Q(a) -> P v ∃x.( Q(x) )
+					EOr(P, Qa, Or(P, Exist("x", Qx))),          // P v ∃x.( Q(x) )
+					&Reiterate{Formula: T},                     // T
+					IExist(T, "a", "x"),                        // ∃x.( T )
+					IAnd(Or(P, Exist("x", Qx)), Exist("x", T)), // ( P v ∃x.( Q(x) ) ) ^ ∃x.( T )
+				), // ( P v ∃x.( Q(x) ) ) ^ ∃x.( T )
+			),
+			IDArrow(
+				And(Or(P, Exist("x", Qx)), Exist("x", T)),
+				Exist("x", Or(P, Qx)),
+			),
+		),
+
+		// TODO P v ∀x.( Q(x) ) <-> ∀x.( P v Q(x) )
+		// TODO P ^ ∀x.( Q(x) ) <-> ∀x.( P ^ Q(x) )
+
+		// TODO P ^ ∀x.( ~ P ) -> ~ ∃x.T
+
+		RootProof("∃x.( R ) -> R",
+			ArrowProof(Exist("x", R), // ∃x.( R )
+				ExistElimProof("a",
+					Exist("x", R), // R
+				),
+			),
+		),
+		RootProof("R -> ∀x.( R )",
+			ArrowProof(R,
+				ForallIntroProof("x", "a",
+					&Reiterate{Formula: R},
+				),
+			),
+		),
 		RootProof("( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )",
 			ArrowProof(And(Exist("x", T), Arrow(P, Exist("x", Qx))),
 				EAnd(Exist("x", T), Arrow(P, Exist("x", Qx)), true),  // ∃x.( T )
@@ -327,20 +416,6 @@ var quantifierProofs = []*ProofsSection{
 				),
 			),
 		),
-		RootProof("∃x.( R ) -> R",
-			ArrowProof(Exist("x", R), // ∃x.( R )
-				ExistElimProof("a",
-					Exist("x", R), // R
-				),
-			),
-		),
-		RootProof("R -> ∀x.( R )",
-			ArrowProof(R,
-				ForallIntroProof("x", "a",
-					&Reiterate{Formula: R},
-				),
-			),
-		),
 		RootProof("( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )",
 			ArrowProof(And(Forall("x", Qx), Exist("x", T)),
 				EAnd(Forall("x", Qx), Exist("x", T), true),  // ∀x.( Q(x) )
@@ -360,6 +435,4 @@ var quantifierProofs = []*ProofsSection{
 	// TODO ( ∀x.( Q(x) ) ^ ( ∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) <-> ~ ∃x.( T )
 	// TODO ( ∃x.( Q(x) ) ^ ( ∃x.( ~ Q(x) ) <-> ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) )
 	// TODO ~ ∃x.( T ) -> ~ ∃x.( P(x) )
-	// TODO P ^ ∃x.( Q(x) ) <-> ∃x.( P ^ Q(x) )
-	// TODO P v ∀x.( Q(x) ) <-> ∀x.( P v Q(x) )
 }
