@@ -34,6 +34,8 @@ var (
 	Pab = Pred("P", a, b)
 	Pax = Pred("P", a, x)
 	Pay = Pred("P", a, y)
+	Pba = Pred("P", b, a)
+	Pby = Pred("P", b, y)
 	Pxy = Pred("P", x, y)
 	Pxb = Pred("P", x, b)
 )
@@ -143,14 +145,14 @@ var quantifierProofs = []*ProofsSection{
 				),
 			),
 		),
-		RootProof("( ∀y.( Q(y) ) ^ ∃x.( Q(x) -> R ) ) -> R",
-			ArrowProof(And(Forall("y", Qy), Exist("x", Arrow(Qx, R))),
-				EAnd(Forall("y", Qy), Exist("x", Arrow(Qx, R)), true),  // ∀y.( Q(y) )
-				EAnd(Forall("y", Qy), Exist("x", Arrow(Qx, R)), false), // ∃x.( Q(x) -> R )
+		RootProof("( ∀x.( Q(x) ) ^ ∃x.( Q(x) -> R ) ) -> R",
+			ArrowProof(And(Forall("x", Qx), Exist("x", Arrow(Qx, R))),
+				EAnd(Forall("x", Qx), Exist("x", Arrow(Qx, R)), true),  // ∀x.( Q(x) )
+				EAnd(Forall("x", Qx), Exist("x", Arrow(Qx, R)), false), // ∃x.( Q(x) -> R )
 				ExistElimProof("a",
 					Exist("x", Arrow(Qx, R)),             // Q(a) -> R
-					&Reiterate{Formula: Forall("y", Qy)}, // ∀y.( Q(y) )
-					EForall(Qy, "y", "a"),                // Q(a)
+					&Reiterate{Formula: Forall("x", Qx)}, // ∀x.( Q(x) )
+					EForall(Qx, "x", "a"),                // Q(a)
 					EImply(Qa, R),                        // R
 				),
 			),
@@ -329,6 +331,17 @@ var quantifierProofs = []*ProofsSection{
 				), // ∀y .( ∀x.( P(x,y) ) )
 			),
 		),
+		RootProof("∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) )",
+			ArrowProof(Exist("x", Forall("y", Pxy)),
+				ForallIntroProof("y", "a",
+					ExistElimProof("b",
+						Exist("x", Forall("y", Pxy)), // ∀y.( P(b,y) )
+						EForall(Pby, "y", "a"),       // P(b,a)
+						IExist(Pba, "b", "x"),        // P(x,a)
+					), // ∃x.( P(x,a) )
+				), // ∀y.( ∃x.( P(x,y) ) )
+			),
+		),
 	),
 
 	// https://en.wikipedia.org/wiki/First-order_logic#Provable_identities
@@ -338,5 +351,4 @@ var quantifierProofs = []*ProofsSection{
 	// TODO ~ ∃x.( T ) -> ~ ∃x.( P(x) )
 	// TODO P ^ ∃x.( Q(x) ) <-> ∃x.( P ^ Q(x) )
 	// TODO P v ∀x.( Q(x) ) <-> ∀x.( P v Q(x) )
-	// ∃x.( ∀y.( P(x,y) ) ) -> ∀x.( ∃y.( P(x,y) ) )
 }
