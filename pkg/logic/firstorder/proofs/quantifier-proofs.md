@@ -19,6 +19,7 @@
     2. [∃x.( P(x) v Q(x) ) <-> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )](#proof-4-2)
     3. [( P ^ ∃x.( Q(x) ) ) <-> ∃x.( P ^ Q(x) )](#proof-4-3)
     4. [( P v ∀x.( Q(x) ) ) <-> ∀x.( P v Q(x) )](#proof-4-4)
+    5. [( P -> ∀x.( Q(x) ) ) <-> ∀x.( P -> Q(x) )](#proof-4-5)
 5. [almost-distributive](#almost-distributive)
     1. [∃x.( T ) -> ( ( P v ∃x.( Q(x) ) ) <-> ∃x.( P v Q(x) ) )](#proof-5-1)
     2. [∃x.( T ) -> ( ( P ^ ∀x.( Q(x) ) ) <-> ∀x.( P ^ Q(x) ) )](#proof-5-2)
@@ -391,6 +392,31 @@
 | 32 |  | <pre>.   P v ∀x.( Q(x) )</pre> | E v | 20, 30, 31 |
 | 33 |  | <pre>∀x.( P v Q(x) ) -> ( P v ∀x.( Q(x) ) )</pre> | subproof -> | 17 - 32 |
 | 34 |  | <pre>( P v ∀x.( Q(x) ) ) <-> ∀x.( P v Q(x) )</pre> | I <-> | 16, 33 |
+
+## ( P -> ∀x.( Q(x) ) ) <-> ∀x.( P -> Q(x) ) <a name="proof-4-5"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   P -> ∀x.( Q(x) )</pre> | Assume: -> |  |
+| 2 | a | <pre>.   .   </pre> | term var: I ∀ |  |
+| 3 | a | <pre>.   .   .   P</pre> | Assume: -> |  |
+| 4 | a | <pre>.   .   .   P -> ∀x.( Q(x) )</pre> | Reiterate | 1 |
+| 5 | a | <pre>.   .   .   ∀x.( Q(x) )</pre> | E -> | 4, 3 |
+| 6 | a | <pre>.   .   .   Q(a)</pre> | E ∀ [x -> a] | 5, 2 |
+| 7 | a | <pre>.   .   P -> Q(a)</pre> | subproof -> | 3 - 6 |
+| 8 |  | <pre>.   ∀x.( P -> Q(x) )</pre> | subproof I ∀ [a -> x] | 2 - 7 |
+| 9 |  | <pre>( P -> ∀x.( Q(x) ) ) -> ∀x.( P -> Q(x) )</pre> | subproof -> | 1 - 8 |
+| 10 |  | <pre>.   ∀x.( P -> Q(x) )</pre> | Assume: -> |  |
+| 11 |  | <pre>.   .   P</pre> | Assume: -> |  |
+| 12 | a | <pre>.   .   .   </pre> | term var: I ∀ |  |
+| 13 | a | <pre>.   .   .   ∀x.( P -> Q(x) )</pre> | Reiterate | 10 |
+| 14 | a | <pre>.   .   .   P -> Q(a)</pre> | E ∀ [x -> a] | 13, 12 |
+| 15 | a | <pre>.   .   .   P</pre> | Reiterate | 11 |
+| 16 | a | <pre>.   .   .   Q(a)</pre> | E -> | 14, 15 |
+| 17 |  | <pre>.   .   ∀x.( Q(x) )</pre> | subproof I ∀ [a -> x] | 12 - 16 |
+| 18 |  | <pre>.   P -> ∀x.( Q(x) )</pre> | subproof -> | 11 - 17 |
+| 19 |  | <pre>∀x.( P -> Q(x) ) -> ( P -> ∀x.( Q(x) ) )</pre> | subproof -> | 10 - 18 |
+| 20 |  | <pre>( P -> ∀x.( Q(x) ) ) <-> ∀x.( P -> Q(x) )</pre> | I <-> | 9, 19 |
 
 # almost-distributive <a name="almost-distributive"></a>
 

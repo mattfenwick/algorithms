@@ -375,6 +375,31 @@ var quantifierProofs = []*ProofsSection{
 				Forall("x", Or(P, Qx)),
 			),
 		),
+		RootProof("( P -> ∀x.( Q(x) ) ) <-> ∀x.( P -> Q(x) )",
+			ArrowProof(Arrow(P, Forall("x", Qx)),
+				ForallIntroProof("x", "a",
+					ArrowProof(P,
+						&Reiterate{Formula: Arrow(P, Forall("x", Qx))}, // P -> ∀x.( Q(x) )
+						EImply(P, Forall("x", Qx)),                     // ∀x.( Q(x) )
+						EForall(Qx, "x", "a"),                          // Q(a)
+					), // P -> Q(a)
+				), // ∀x.( P -> Q(x) )
+			),
+			ArrowProof(Forall("x", Arrow(P, Qx)),
+				ArrowProof(P,
+					ForallIntroProof("x", "a",
+						&Reiterate{Formula: Forall("x", Arrow(P, Qx))}, // ∀x.( P -> Q(x) )
+						EForall(Arrow(P, Qx), "x", "a"),                // P -> Q(a)
+						&Reiterate{Formula: P},                         // P
+						EImply(P, Qa),                                  // Q(a)
+					), // ∀x.( Q(x) )
+				), // P -> ∀x.( Q(x) )
+			),
+			IDArrow(
+				Arrow(P, Forall("x", Qx)),
+				Forall("x", Arrow(P, Qx)),
+			),
+		),
 	),
 	NewProofsSection("almost-distributive",
 		RootProof("∃x.( T ) -> ( ( P v ∃x.( Q(x) ) ) <-> ∃x.( P v Q(x) ) )",
