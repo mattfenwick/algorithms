@@ -324,24 +324,45 @@ var quantifierProofs = []*ProofsSection{
 				),
 			),
 		),
-		// TODO this seems to require the addition of another premise: ∃x.( T )
-		// RootProof("( ∃x.( P(x) ) -> ∃x.( Q(x) ) ) -> ( ∃x.( T ) -> ∃x.( P(x) -> Q(x) ) )",
-		// 	ArrowProof(Arrow(Exist("x", Px), Exist("x", Qx)),
-		// 		ArrowProof(Exist("x", T),
-		// 			ArrowProof(Exist("x", Px),
-		// 				&Reiterate{Formula: Arrow(Exist("x", Px), Exist("x", Qx))},
-		// 				EImply(Exist("x", Px), Exist("x", Qx)), // ∃x.( Q(x) )
-		// 				ExistElimProof("a",
-		// 					Exist("x", Qx), // Q(a)
-		// 					ArrowProof(Pa,
-		// 						&Reiterate{Formula: Qa}, // Q(a)
-		// 					), // P(a) -> Q(a)
-		// 					IExist(Arrow(Pa, Qa), "a", "x"), // ∃x.( P(x) -> Q(x) )
-		// 				), // ∃x.( P(x) -> Q(x) )
-		// 			), // ∃x.( P(x) ) -> ∃x.( P(x) -> Q(x) )
-		// 		),
-		// 	),
-		// ),
+		RootProof("( ∃x.( P(x) ) -> ∃x.( Q(x) ) ) -> ( ∃x.( T ) -> ∃x.( P(x) -> Q(x) ) )",
+			ArrowProof(Arrow(Exist("x", Px), Exist("x", Qx)),
+				ArrowProof(Exist("x", T),
+					ArrowProof(Exist("x", Px),
+						&Reiterate{Formula: Arrow(Exist("x", Px), Exist("x", Qx))},
+						EImply(Exist("x", Px), Exist("x", Qx)), // ∃x.( Q(x) )
+						ExistElimProof("a",
+							Exist("x", Qx), // Q(a)
+							ArrowProof(Pa, // P(a)
+								&Reiterate{Formula: Qa}, // Q(a)
+							), // P(a) -> Q(a)
+							IExist(Arrow(Pa, Qa), "a", "x"), // ∃x.( P(x) -> Q(x) )
+						), // ∃x.( P(x) -> Q(x) )
+					), // ∃x.( P(x) ) -> ∃x.( P(x) -> Q(x) )
+					ArrowProof(Not(Exist("x", Px)),
+						ContraProof(Not(Exist("x", Not(Px))),
+							ExistContraProof("a",
+								Exist("x", T), // T
+								ContraProof(Pa,
+									IExist(Pa, "a", "x"),                     // ∃x.( P(x) )
+									&Reiterate{Formula: Not(Exist("x", Px))}, // ~ ∃x.( P(x) )
+								), // ~ P(a)
+								&Reiterate{Formula: Not(Exist("x", Not(Px)))}, // ~ ∃x.( ~ P(x) )
+								IExist(Not(Pa), "a", "x"),                     // ∃x.( ~ P(x) )
+							), // ~ ∃x.( T )
+							&Reiterate{Formula: Exist("x", T)}, // ∃x.( T )
+						), // ∃x.( ~ P(x) )
+						ExistElimProof("a",
+							Exist("x", Not(Px)),                  // ~ P(a)
+							IOr(Not(Pa), Qa, true),               // ~ P(a) v Q(a)
+							DisjunctionArrowTheorem(Not(Pa), Qa), // P(a) -> Q(a)
+							IExist(Arrow(Pa, Qa), "a", "x"),      // ∃x.( P(x) -> Q(x) )
+						), // ∃x.( P(x) -> Q(x) )
+					), // ~ ∃x.( P(x) ) -> ∃x.( P(x) -> Q(x) )
+					ExcludedMiddleTheorem(Exist("x", Px)), // ∃x.( P(x) ) v ~ ∃x.( P(x) )
+					EOr(Exist("x", Px), Not(Exist("x", Px)), Exist("x", Arrow(Px, Qx))),
+				),
+			),
+		),
 	),
 	NewProofsSection("commutativity",
 		RootProof("∃x.( ∃y.( P(x,y) ) ) -> ∃y.( ∃x.( P(x,y) ) )",

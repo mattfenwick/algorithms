@@ -18,6 +18,7 @@
     1. [∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) )](#proof-4-1)
     2. [∃x.( P(x) v Q(x) ) <-> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )](#proof-4-2)
     3. [∀x.( P(x) -> Q(x) ) -> ( ∀x.( P(x) ) -> ∀x.( Q(x) ) )](#proof-4-3)
+    4. [( ∃x.( P(x) ) -> ∃x.( Q(x) ) ) -> ( ∃x.( T ) -> ∃x.( P(x) -> Q(x) ) )](#proof-4-4)
 5. [commutativity](#commutativity)
     1. [∃x.( ∃y.( P(x,y) ) ) -> ∃y.( ∃x.( P(x,y) ) )](#proof-5-1)
     2. [∀x.( ∀y.( P(x,y) ) ) -> ∀y.( ∀x.( P(x,y) ) )](#proof-5-2)
@@ -340,6 +341,49 @@
 | 9 |  | <pre>.   .   ∀x.( Q(x) )</pre> | subproof I ∀ [a -> x] | 3 - 8 |
 | 10 |  | <pre>.   ∀x.( P(x) ) -> ∀x.( Q(x) )</pre> | subproof -> | 2 - 9 |
 | 11 |  | <pre>∀x.( P(x) -> Q(x) ) -> ( ∀x.( P(x) ) -> ∀x.( Q(x) ) )</pre> | subproof -> | 1 - 10 |
+
+## ( ∃x.( P(x) ) -> ∃x.( Q(x) ) ) -> ( ∃x.( T ) -> ∃x.( P(x) -> Q(x) ) ) <a name="proof-4-4"></a>
+
+| Line | Term var | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∃x.( P(x) ) -> ∃x.( Q(x) )</pre> | Assume: -> |  |
+| 2 |  | <pre>.   .   ∃x.( T )</pre> | Assume: -> |  |
+| 3 |  | <pre>.   .   .   ∃x.( P(x) )</pre> | Assume: -> |  |
+| 4 |  | <pre>.   .   .   ∃x.( P(x) ) -> ∃x.( Q(x) )</pre> | Reiterate | 1 |
+| 5 |  | <pre>.   .   .   ∃x.( Q(x) )</pre> | E -> | 4, 3 |
+| 6 | a | <pre>.   .   .   .   </pre> | term var: E ∃ |  |
+| 7 | a | <pre>.   .   .   .   Q(a)</pre> | Assume: E ∃ [x -> a] | 5 |
+| 8 | a | <pre>.   .   .   .   .   P(a)</pre> | Assume: -> |  |
+| 9 | a | <pre>.   .   .   .   .   Q(a)</pre> | Reiterate | 7 |
+| 10 | a | <pre>.   .   .   .   P(a) -> Q(a)</pre> | subproof -> | 8 - 9 |
+| 11 | a | <pre>.   .   .   .   ∃x.( P(x) -> Q(x) )</pre> | I ∃ [a -> x] | 10, 6 |
+| 12 |  | <pre>.   .   .   ∃x.( P(x) -> Q(x) )</pre> | subproof E ∃ | 6 - 11 |
+| 13 |  | <pre>.   .   ∃x.( P(x) ) -> ∃x.( P(x) -> Q(x) )</pre> | subproof -> | 3 - 12 |
+| 14 |  | <pre>.   .   .   ~ ∃x.( P(x) )</pre> | Assume: -> |  |
+| 15 |  | <pre>.   .   .   .   ~ ∃x.( ~ P(x) )</pre> | Assume: ~ |  |
+| 16 | a | <pre>.   .   .   .   .   </pre> | term var: ~ ∃ |  |
+| 17 | a | <pre>.   .   .   .   .   ∃x.( T )</pre> | Assume: ~ ∃ |  |
+| 18 | a | <pre>.   .   .   .   .   T</pre> | Assume: ~ ∃ [x -> a] |  |
+| 19 | a | <pre>.   .   .   .   .   .   P(a)</pre> | Assume: ~ |  |
+| 20 | a | <pre>.   .   .   .   .   .   ∃x.( P(x) )</pre> | I ∃ [a -> x] | 19, 16 |
+| 21 | a | <pre>.   .   .   .   .   .   ~ ∃x.( P(x) )</pre> | Reiterate | 14 |
+| 22 | a | <pre>.   .   .   .   .   ~ P(a)</pre> | subproof ~ | 19 - 21 |
+| 23 | a | <pre>.   .   .   .   .   ~ ∃x.( ~ P(x) )</pre> | Reiterate | 15 |
+| 24 | a | <pre>.   .   .   .   .   ∃x.( ~ P(x) )</pre> | I ∃ [a -> x] | 22, 16 |
+| 25 |  | <pre>.   .   .   .   ~ ∃x.( T )</pre> | subproof ~ ∃ | 16 - 24 |
+| 26 |  | <pre>.   .   .   .   ∃x.( T )</pre> | Reiterate | 2 |
+| 27 |  | <pre>.   .   .   ∃x.( ~ P(x) )</pre> | subproof ~ | 15 - 26 |
+| 28 | a | <pre>.   .   .   .   </pre> | term var: E ∃ |  |
+| 29 | a | <pre>.   .   .   .   ~ P(a)</pre> | Assume: E ∃ [x -> a] | 27 |
+| 30 | a | <pre>.   .   .   .   ~ P(a) v Q(a)</pre> | I v (L) | 29 |
+| 31 | a | <pre>.   .   .   .   P(a) -> Q(a)</pre> | Theorem: v to -> | 30 |
+| 32 | a | <pre>.   .   .   .   ∃x.( P(x) -> Q(x) )</pre> | I ∃ [a -> x] | 31, 28 |
+| 33 |  | <pre>.   .   .   ∃x.( P(x) -> Q(x) )</pre> | subproof E ∃ | 28 - 32 |
+| 34 |  | <pre>.   .   ~ ∃x.( P(x) ) -> ∃x.( P(x) -> Q(x) )</pre> | subproof -> | 14 - 33 |
+| 35 |  | <pre>.   .   ∃x.( P(x) ) v ~ ∃x.( P(x) )</pre> | Theorem: excluded middle |  |
+| 36 |  | <pre>.   .   ∃x.( P(x) -> Q(x) )</pre> | E v | 13, 34, 35 |
+| 37 |  | <pre>.   ∃x.( T ) -> ∃x.( P(x) -> Q(x) )</pre> | subproof -> | 2 - 36 |
+| 38 |  | <pre>( ∃x.( P(x) ) -> ∃x.( Q(x) ) ) -> ( ∃x.( T ) -> ∃x.( P(x) -> Q(x) ) )</pre> | subproof -> | 1 - 37 |
 
 # commutativity <a name="commutativity"></a>
 
