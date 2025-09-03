@@ -688,19 +688,40 @@ var quantifierProofs = []*ProofsSection{
 				),
 			),
 		),
-
-		RootProof("∃x.( R ) -> R",
-			ArrowProof(Exist("x", R), // ∃x.( R )
-				ExistElimProof("a",
-					Exist("x", R), // R
-				),
+		RootProof("∃x.( T ) -> ( R <-> ∃x.( R ) )",
+			ArrowProof(Exist("x", T),
+				ArrowProof(Exist("x", R), // ∃x.( R )
+					ExistElimProof("a",
+						Exist("x", R), // R
+					), // R
+				), // ∃x.( R ) -> R
+				ArrowProof(R,
+					&Reiterate{Formula: Exist("x", T)}, //  ∃x.( T )
+					ExistElimProof("a",
+						Exist("x", T),          // T
+						&Reiterate{Formula: R}, // R
+						IExist(R, "a", "x"),    // ∃x.( R )
+					),
+				), // R -> ∃x.( R )
+				IDArrow(R, Exist("x", R)),
 			),
 		),
-		RootProof("R -> ∀x.( R )",
-			ArrowProof(R,
-				ForallIntroProof("x", "a",
-					&Reiterate{Formula: R},
-				),
+		RootProof("∃x.( T ) -> ( R <-> ∀x.( R ) )",
+			ArrowProof(Exist("x", T),
+				ArrowProof(R,
+					ForallIntroProof("x", "a",
+						&Reiterate{Formula: R},
+					),
+				), // R -> ∀x.( R )
+				ArrowProof(Forall("x", R),
+					&Reiterate{Formula: Exist("x", T)}, // ∃x.( T )
+					ExistElimProof("a",
+						Exist("x", T),                       // T
+						&Reiterate{Formula: Forall("x", R)}, // ∀x.( R )
+						EForall(R, "x", "a"),                // R
+					), // R
+				), // ∀x.( R ) -> R
+				IDArrow(R, Forall("x", R)),
 			),
 		),
 		RootProof("∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R",
