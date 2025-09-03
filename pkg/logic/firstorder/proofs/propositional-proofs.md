@@ -65,7 +65,7 @@
 
 ## P v ~ P <a name="proof-1-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ~ ( P v ~ P )</pre> | Assume: ~ |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: ~ |  |
@@ -77,7 +77,7 @@
 
 ## ( P -> Q ) <-> ( ~ Q -> ~ P ) <a name="proof-1-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P -> Q</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ~ Q</pre> | Assume: -> |  |
@@ -101,7 +101,7 @@
 
 ## ~ ( P -> Q ) <-> ( P ^ ~ Q ) <a name="proof-1-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ~ ( P -> Q )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ~ P</pre> | Assume: ~ |  |
@@ -130,7 +130,7 @@
 
 ## ( P v Q ) <-> ( ~ P -> Q ) <a name="proof-1-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P v Q</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   Q</pre> | Assume: -> |  |
@@ -162,7 +162,7 @@
 
 ## ~ ( P v Q ) <-> ( ~ P ^ ~ Q ) <a name="proof-1-5"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ~ ( P v Q )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: ~ |  |
@@ -199,7 +199,7 @@
 
 ## ~ ( P ^ Q ) <-> ( ~ P v ~ Q ) <a name="proof-1-6"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ~ ( P ^ Q )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ~ ( ~ P v ~ Q )</pre> | Assume: ~ |  |
@@ -234,7 +234,7 @@
 
 ## ( P <-> ~ Q ) <-> ~ ( P <-> Q ) <a name="proof-1-7"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P <-> ~ Q</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P -> ~ Q</pre> | E <-> (L) | 1 |
@@ -290,14 +290,14 @@
 
 ## P -> P <a name="proof-2-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P</pre> | Assume: -> |  |
 | 2 |  | <pre>P -> P</pre> | subproof -> | 1 - 1 |
 
 ## ~ ( P ^ ~ P ) <a name="proof-2-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P ^ ~ P</pre> | Assume: ~ |  |
 | 2 |  | <pre>.   P</pre> | E ^ (L) | 1 |
@@ -306,7 +306,7 @@
 
 ## ( P ^ P ) <-> P <a name="proof-2-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P ^ P</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P</pre> | E ^ (L) | 1 |
@@ -318,7 +318,7 @@
 
 ## ( P v P ) <-> P <a name="proof-2-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P v P</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: -> |  |
@@ -332,7 +332,7 @@
 
 ## ( P ^ Q ) -> ( P v Q ) <a name="proof-2-5"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P ^ Q</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P</pre> | E ^ (L) | 1 |
@@ -341,7 +341,7 @@
 
 ## ( P -> ~ P ) -> ~ P <a name="proof-2-6"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P -> ~ P</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: ~ |  |
@@ -352,7 +352,7 @@
 
 ## ( ( P -> Q ) -> P ) -> P <a name="proof-2-7"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P -> Q ) -> P</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ~ ( P -> Q )</pre> | Assume: -> |  |
@@ -365,7 +365,7 @@
 
 ## ( P ^ ~ P ) -> Q <a name="proof-2-8"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>~ ( P ^ ~ P )</pre> | Theorem: non-contradiction |  |
 | 2 |  | <pre>.   ~ Q</pre> | Assume: -> |  |
@@ -377,7 +377,7 @@
 
 ## Q -> ( P -> Q ) <a name="proof-3-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   Q</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: -> |  |
@@ -387,7 +387,7 @@
 
 ## ~ P -> ( P -> Q ) <a name="proof-3-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ~ P</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ~ Q</pre> | Assume: -> |  |
@@ -398,7 +398,7 @@
 
 ## ( ( P -> Q ) ^ ( Q -> R ) ) -> ( P -> R ) <a name="proof-3-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P -> Q ) ^ ( Q -> R )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: -> |  |
@@ -412,7 +412,7 @@
 
 ## ( ( P ^ Q ) -> R ) <-> ( P -> ( Q -> R ) ) <a name="proof-3-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P ^ Q ) -> R</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: -> |  |
@@ -437,7 +437,7 @@
 
 ## ( ( P -> Q ) ^ ( P -> ~ Q ) ) -> ~ P <a name="proof-3-5"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P -> Q ) ^ ( P -> ~ Q )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: ~ |  |
@@ -451,7 +451,7 @@
 
 ## ( ( P -> Q ) ^ ( ~ P -> Q ) ) -> Q <a name="proof-3-6"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P -> Q ) ^ ( ~ P -> Q )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P -> Q</pre> | E ^ (L) | 1 |
@@ -462,7 +462,7 @@
 
 ## ( P -> ( Q -> R ) ) -> ( Q -> ( P -> R ) ) <a name="proof-3-7"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P -> ( Q -> R )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   Q</pre> | Assume: -> |  |
@@ -479,7 +479,7 @@
 
 ## ( P ^ Q ) -> ( Q ^ P ) <a name="proof-4-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P ^ Q</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P</pre> | E ^ (L) | 1 |
@@ -489,7 +489,7 @@
 
 ## ( P v Q ) -> ( Q v P ) <a name="proof-4-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P v Q</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: -> |  |
@@ -503,7 +503,7 @@
 
 ## ( P <-> Q ) -> ( Q <-> P ) <a name="proof-4-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P <-> Q</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P -> Q</pre> | E <-> (L) | 1 |
@@ -515,7 +515,7 @@
 
 ## ( ( P ^ Q ) ^ R ) <-> ( P ^ ( Q ^ R ) ) <a name="proof-5-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P ^ Q ) ^ R</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P ^ Q</pre> | E ^ (L) | 1 |
@@ -537,7 +537,7 @@
 
 ## ( ( P v Q ) v R ) <-> ( P v ( Q v R ) ) <a name="proof-5-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P v Q ) v R</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P v Q</pre> | Assume: -> |  |
@@ -577,7 +577,7 @@
 
 ## ( ( P <-> Q ) <-> R ) <-> ( P <-> ( Q <-> R ) ) <a name="proof-5-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P <-> Q ) <-> R</pre> | Assume: -> |  |
 | 2 |  | <pre>.   ( P <-> Q ) -> R</pre> | E <-> (L) | 1 |
@@ -691,7 +691,7 @@
 
 ## ( P -> ( Q -> R ) ) <-> ( ( P -> Q ) -> ( P -> R ) ) <a name="proof-6-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P -> ( Q -> R )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P -> Q</pre> | Assume: -> |  |
@@ -719,7 +719,7 @@
 
 ## ( P -> ( Q v R ) ) <-> ( ( P -> Q ) v ( P -> R ) ) <a name="proof-6-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P -> ( Q v R )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: -> |  |
@@ -767,7 +767,7 @@
 
 ## ( P -> ( Q ^ R ) ) <-> ( ( P -> Q ) ^ ( P -> R ) ) <a name="proof-6-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P -> ( Q ^ R )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: -> |  |
@@ -796,7 +796,7 @@
 
 ## ( P ^ ( Q v R ) ) <-> ( ( P ^ Q ) v ( P ^ R ) ) <a name="proof-6-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P ^ ( Q v R )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P</pre> | E ^ (L) | 1 |
@@ -832,7 +832,7 @@
 
 ## ( P v ( Q ^ R ) ) <-> ( ( P v Q ) ^ ( P v R ) ) <a name="proof-6-5"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P v ( Q ^ R )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: -> |  |
@@ -896,7 +896,7 @@
 
 ## ( ( P v Q ) -> R ) <-> ( ( P -> R ) ^ ( Q -> R ) ) <a name="proof-7-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P v Q ) -> R</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: -> |  |
@@ -923,7 +923,7 @@
 
 ## ( ( P -> R ) v ( Q -> R ) ) <-> ( ( P ^ Q ) -> R ) <a name="proof-7-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P -> R ) v ( Q -> R )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P -> R</pre> | Assume: -> |  |
@@ -963,7 +963,7 @@
 
 ## ( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S ) <a name="proof-8-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   ( P -> R ) ^ ( Q -> S )</pre> | E ^ (L) | 1 |
@@ -985,7 +985,7 @@
 
 ## ( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v Q ) ) -> ( ~ P v S ) <a name="proof-8-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v Q )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   ( P -> R ) ^ ( Q -> S )</pre> | E ^ (L) | 1 |
@@ -1008,7 +1008,7 @@
 
 ## ( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v ~ S ) ) -> ( ~ P v ~ Q ) <a name="proof-8-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v ~ S )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   ( P -> R ) ^ ( Q -> S )</pre> | E ^ (L) | 1 |
@@ -1032,7 +1032,7 @@
 
 ## ( ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q ) ) -> R <a name="proof-8-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   ( P -> R ) v ( Q -> R )</pre> | E ^ (L) | 1 |
@@ -1052,7 +1052,7 @@
 
 ## ( ( ( P -> R ) v ( Q -> R ) ) ^ ~ R ) -> ( ~ P v ~ Q ) <a name="proof-8-5"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( ( P -> R ) v ( Q -> R ) ) ^ ~ R</pre> | Assume: -> |  |
 | 2 |  | <pre>.   ( P -> R ) v ( Q -> R )</pre> | E ^ (L) | 1 |
@@ -1076,7 +1076,7 @@
 
 ## ( ( P <-> Q ) ^ P ) -> Q <a name="proof-9-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P <-> Q ) ^ P</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P <-> Q</pre> | E ^ (L) | 1 |
@@ -1087,7 +1087,7 @@
 
 ## ( ( P <-> Q ) ^ ~ P ) -> ~ Q <a name="proof-9-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P <-> Q ) ^ ~ P</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P <-> Q</pre> | E ^ (L) | 1 |
@@ -1102,7 +1102,7 @@
 
 ## ( P <-> ~ Q ) -> ( ~ P <-> Q ) <a name="proof-9-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P <-> ~ Q</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P -> ~ Q</pre> | E <-> (L) | 1 |
@@ -1114,7 +1114,7 @@
 
 ## ( P <-> Q ) <-> ( ~ P <-> ~ Q ) <a name="proof-9-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P <-> Q</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P -> Q</pre> | E <-> (L) | 1 |
@@ -1134,7 +1134,7 @@
 
 ## ( P <-> Q ) v ~ ( P <-> Q ) <a name="proof-9-5"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ~ ( ( P <-> Q ) v ~ ( P <-> Q ) )</pre> | Assume: ~ |  |
 | 2 |  | <pre>.   .   P <-> Q</pre> | Assume: ~ |  |
@@ -1146,7 +1146,7 @@
 
 ## ( P <-> ~ Q ) <-> ( ( P v Q ) ^ ( ~ P v ~ Q ) ) <a name="proof-9-6"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P <-> ~ Q</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P -> ~ Q</pre> | E <-> (L) | 1 |
@@ -1220,7 +1220,7 @@
 
 ## ( ( P -> Q ) -> R ) -> ( ( P -> Q ) -> ( P -> R ) ) <a name="proof-10-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ( P -> Q ) -> R</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P -> Q</pre> | Assume: -> |  |
@@ -1234,7 +1234,7 @@
 
 ## ( P -> Q ) v ( Q -> R ) <a name="proof-10-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ~ ( ( P -> Q ) v ( Q -> R ) )</pre> | Assume: ~ |  |
 | 2 |  | <pre>.   ~ ( P -> Q ) ^ ~ ( Q -> R )</pre> | DeMorgan's theorem: (~ v) to ^ | 1 |
@@ -1248,7 +1248,7 @@
 
 ## ( P -> Q ) v ( Q -> P ) <a name="proof-10-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ~ ( ( P -> Q ) v ( Q -> P ) )</pre> | Assume: ~ |  |
 | 2 |  | <pre>.   ~ ( P -> Q ) ^ ~ ( Q -> P )</pre> | DeMorgan's theorem: (~ v) to ^ | 1 |

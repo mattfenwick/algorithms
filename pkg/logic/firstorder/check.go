@@ -145,7 +145,7 @@ func (c *CheckedProof) PrintSteps() {
 }
 
 func (c *CheckedProof) BuildStepTable() string {
-	table := utils.NewTable([]string{"Line", "Term var", "Formula", "Justification", "Lines used"})
+	table := utils.NewTable([]string{"Line", "Term vars", "Formula", "Justification", "Lines used"})
 	for i, step := range c.Steps {
 		indent := strings.Repeat("  | ", step.Depth)
 		var result, stepName string
@@ -170,7 +170,7 @@ func (c *CheckedProof) BuildStepTable() string {
 }
 
 func (c *CheckedProof) BuildStepMarkdownTable() string {
-	table := utils.NewTable([]string{"Line", "Term var", "Formula", "Justification", "Lines used"})
+	table := utils.NewTable([]string{"Line", "Term vars", "Formula", "Justification", "Lines used"})
 	for i, step := range c.Steps {
 		indent := strings.Repeat(".   ", step.Depth)
 		var result, stepName string

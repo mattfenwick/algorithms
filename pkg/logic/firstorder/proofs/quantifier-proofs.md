@@ -48,7 +48,7 @@
 
 ## ∀x.( P(x) v ~ P(x) ) <a name="proof-1-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 | a | <pre>.   </pre> | term var: I ∀ |  |
 | 2 | a | <pre>.   .   ~ ( P(a) v ~ P(a) )</pre> | Assume: ~ |  |
@@ -62,7 +62,7 @@
 
 ## ~ ∃x.( ~ ( P(x) v ~ P(x) ) ) <a name="proof-1-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 | a | <pre>.   </pre> | term var: ~ ∃ |  |
 | 2 | a | <pre>.   ∃x.( ~ ( P(x) v ~ P(x) ) )</pre> | Assume: ~ ∃ |  |
@@ -76,7 +76,7 @@
 
 ## ∀x.( ~ ( P(x) ^ ~ P(x) ) ) <a name="proof-1-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 | a | <pre>.   </pre> | term var: I ∀ |  |
 | 2 | a | <pre>.   .   P(a) ^ ~ P(a)</pre> | Assume: ~ |  |
@@ -87,7 +87,7 @@
 
 ## ~ ∃x.( P(x) ^ ~ P(x) ) <a name="proof-1-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 | a | <pre>.   </pre> | term var: ~ ∃ |  |
 | 2 | a | <pre>.   ∃x.( P(x) ^ ~ P(x) )</pre> | Assume: ~ ∃ |  |
@@ -100,7 +100,7 @@
 
 ## ∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) ) <a name="proof-2-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∀x.( ~ Q(x) )</pre> | Assume: -> |  |
 | 2 | a | <pre>.   .   </pre> | term var: ~ ∃ |  |
@@ -122,7 +122,7 @@
 
 ## ~ ∀x.( Q(x) ) <-> ∃x.( ~ Q(x) ) <a name="proof-2-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ~ ∀x.( Q(x) )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ~ ∃x.( ~ Q(x) )</pre> | Assume: ~ |  |
@@ -150,7 +150,7 @@
 
 ## ( ∀x.( Q(x) ) ^ ∀x.( ~ Q(x) ) ) <-> ( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) ) <a name="proof-3-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∀x.( Q(x) ) ^ ∀x.( ~ Q(x) )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   ∀x.( Q(x) )</pre> | E ^ (L) | 1 |
@@ -170,7 +170,7 @@
 
 ## ( ∃x.( Q(x) ) ^ ∃x.( ~ Q(x) ) ) <-> ( ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) ) ) <a name="proof-3-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ~ ∀x.( Q(x) ) ^ ~ ∀x.( ~ Q(x) )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   ~ ∀x.( Q(x) )</pre> | E ^ (L) | 1 |
@@ -190,7 +190,7 @@
 
 ## ( ∃x.( Q(x) ) v ∃x.( ~ Q(x) ) ) <-> ∃x.( T ) <a name="proof-3-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( Q(x) ) v ∃x.( ~ Q(x) )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ∃x.( Q(x) )</pre> | Assume: -> |  |
@@ -228,7 +228,7 @@
 
 ## ( ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) ) ) <-> ~ ∃x.( T ) <a name="proof-3-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   ~ ∃x.( Q(x) )</pre> | E ^ (L) | 1 |
@@ -267,7 +267,7 @@
 
 ## ( P ^ ∃x.( Q(x) ) ) <-> ∃x.( P ^ Q(x) ) <a name="proof-4-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P ^ ∃x.( Q(x) )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   P</pre> | E ^ (L) | 1 |
@@ -292,7 +292,7 @@
 
 ## ∃x.( T ) -> ( ( P ^ ∀x.( Q(x) ) ) <-> ∀x.( P ^ Q(x) ) ) <a name="proof-4-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( T )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P ^ ∀x.( Q(x) )</pre> | Assume: -> |  |
@@ -325,7 +325,7 @@
 
 ## ∃x.( P(x) ^ Q(x) ) -> ( ∃x.( P(x) ) ^ ∃x.( Q(x) ) ) <a name="proof-4-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( P(x) ^ Q(x) )</pre> | Assume: -> |  |
 | 2 | a | <pre>.   .   </pre> | term var: E ∃ |  |
@@ -340,7 +340,7 @@
 
 ## ∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) ) <a name="proof-4-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∀x.( P(x) ^ Q(x) )</pre> | Assume: -> |  |
 | 2 | a | <pre>.   .   </pre> | term var: I ∀ |  |
@@ -371,7 +371,7 @@
 
 ## ∃x.( T ) -> ( ( P v ∃x.( Q(x) ) ) <-> ∃x.( P v Q(x) ) ) <a name="proof-5-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( T )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P v ∃x.( Q(x) )</pre> | Assume: -> |  |
@@ -411,7 +411,7 @@
 
 ## ( P v ∀x.( Q(x) ) ) <-> ∀x.( P v Q(x) ) <a name="proof-5-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P v ∀x.( Q(x) )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P</pre> | Assume: -> |  |
@@ -450,7 +450,7 @@
 
 ## ∃x.( P(x) v Q(x) ) <-> ( ∃x.( P(x) ) v ∃x.( Q(x) ) ) <a name="proof-5-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( P(x) v Q(x) )</pre> | Assume: -> |  |
 | 2 | a | <pre>.   .   </pre> | term var: E ∃ |  |
@@ -487,7 +487,7 @@
 
 ## ( ∀x.( P(x) ) v ∀x.( Q(x) ) ) -> ∀x.( P(x) v Q(x) ) <a name="proof-5-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∀x.( P(x) ) v ∀x.( Q(x) )</pre> | Assume: -> |  |
 | 2 | a | <pre>.   .   </pre> | term var: I ∀ |  |
@@ -508,7 +508,7 @@
 
 ## ∃x.( T ) -> ( ( P -> ∃x.( Q(x) ) ) <-> ∃x.( P -> Q(x) ) ) <a name="proof-6-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( T )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   P -> ∃x.( Q(x) )</pre> | Assume: -> |  |
@@ -552,7 +552,7 @@
 
 ## ( P -> ∀x.( Q(x) ) ) <-> ∀x.( P -> Q(x) ) <a name="proof-6-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P -> ∀x.( Q(x) )</pre> | Assume: -> |  |
 | 2 | a | <pre>.   .   </pre> | term var: I ∀ |  |
@@ -577,7 +577,7 @@
 
 ## ( ∃x.( P(x) ) -> ∃x.( Q(x) ) ) -> ( ∃x.( T ) -> ∃x.( P(x) -> Q(x) ) ) <a name="proof-6-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( P(x) ) -> ∃x.( Q(x) )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ∃x.( T )</pre> | Assume: -> |  |
@@ -620,7 +620,7 @@
 
 ## ∀x.( P(x) -> Q(x) ) -> ( ∀x.( P(x) ) -> ∀x.( Q(x) ) ) <a name="proof-6-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∀x.( P(x) -> Q(x) )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ∀x.( P(x) )</pre> | Assume: -> |  |
@@ -638,7 +638,7 @@
 
 ## ∃x.( ∃y.( P(x,y) ) ) -> ∃y.( ∃x.( P(x,y) ) ) <a name="proof-7-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( ∃y.( P(x,y) ) )</pre> | Assume: -> |  |
 | 2 | a | <pre>.   .   </pre> | term var: E ∃ |  |
@@ -653,7 +653,7 @@
 
 ## ∀x.( ∀y.( P(x,y) ) ) -> ∀y.( ∀x.( P(x,y) ) ) <a name="proof-7-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∀x.( ∀y.( P(x,y) ) )</pre> | Assume: -> |  |
 | 2 | b | <pre>.   .   </pre> | term var: I ∀ |  |
@@ -667,7 +667,7 @@
 
 ## ∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) ) <a name="proof-7-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( ∀y.( P(x,y) ) )</pre> | Assume: -> |  |
 | 2 | a | <pre>.   .   </pre> | term var: I ∀ |  |
@@ -682,7 +682,7 @@
 
 ## ∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) ) <a name="proof-7-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( ∀y.( P(x,y) ) )</pre> | Assume: -> |  |
 | 2 | b | <pre>.   .   </pre> | term var: E ∃ |  |
@@ -699,7 +699,7 @@
 
 ## P -> ( ∀x.( ~ P ) -> ~ ∃x.( T ) ) <a name="proof-8-1"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ∀x.( ~ P )</pre> | Assume: -> |  |
@@ -715,7 +715,7 @@
 
 ## P -> ( ∃x.( T ) -> ~ ∀x.( ~ P ) ) <a name="proof-8-2"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ∃x.( T )</pre> | Assume: -> |  |
@@ -731,7 +731,7 @@
 
 ## ∃x.( T ) -> ( ∀x.( ~ P ) -> ~ P ) <a name="proof-8-3"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( T )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   .   ∀x.( ~ P )</pre> | Assume: -> |  |
@@ -746,7 +746,7 @@
 
 ## ∃x.( R ) -> R <a name="proof-8-4"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( R )</pre> | Assume: -> |  |
 | 2 | a | <pre>.   .   </pre> | term var: E ∃ |  |
@@ -756,7 +756,7 @@
 
 ## R -> ∀x.( R ) <a name="proof-8-5"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   R</pre> | Assume: -> |  |
 | 2 | a | <pre>.   .   </pre> | term var: I ∀ |  |
@@ -766,7 +766,7 @@
 
 ## ∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R <a name="proof-8-6"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∃x.( Q(x) ^ ( Q(x) -> R ) )</pre> | Assume: -> |  |
 | 2 | a | <pre>.   .   </pre> | term var: E ∃ |  |
@@ -779,7 +779,7 @@
 
 ## ( ∀x.( Q(x) ) ^ ∃x.( Q(x) -> R ) ) -> R <a name="proof-8-7"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∀x.( Q(x) ) ^ ∃x.( Q(x) -> R )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   ∀x.( Q(x) )</pre> | E ^ (L) | 1 |
@@ -794,7 +794,7 @@
 
 ## ( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) ) <a name="proof-8-8"></a>
 
-| Line | Term var | Formula | Justification | Lines used |
+| Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   ∀x.( Q(x) ) ^ ∃x.( T )</pre> | Assume: -> |  |
 | 2 |  | <pre>.   ∀x.( Q(x) )</pre> | E ^ (L) | 1 |
