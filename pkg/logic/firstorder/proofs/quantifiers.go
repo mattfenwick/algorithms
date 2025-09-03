@@ -311,6 +311,200 @@ var quantifierProofs = []*ProofsSection{
 				Or(Exist("x", Px), Exist("x", Qx)),
 			),
 		),
+		RootProof("( P ^ ∃x.( Q(x) ) ) <-> ∃x.( P ^ Q(x) )",
+			ArrowProof(And(P, Exist("x", Qx)),
+				EAnd(P, Exist("x", Qx), true),
+				EAnd(P, Exist("x", Qx), false),
+				ExistElimProof("a",
+					Exist("x", Qx),               // Q(a)
+					&Reiterate{Formula: P},       // P
+					IAnd(P, Qa),                  // P ^ Q(a)
+					IExist(And(P, Qa), "a", "x"), // ∃x.( P ^ Q(x) )
+				), // ∃x.( P ^ Q(x) )
+			),
+			ArrowProof(Exist("x", And(P, Qx)),
+				ExistElimProof("a",
+					Exist("x", And(P, Qx)),  // P ^ Q(a)
+					EAnd(P, Qa, true),       // P
+					EAnd(P, Qa, false),      // Q(a)
+					IExist(Qa, "a", "x"),    // ∃x.( Q(x) )
+					IAnd(P, Exist("x", Qx)), // P ^ ∃x.( Q(x) )
+				), // P ^ ∃x.( Q(x) )
+			),
+			IDArrow(
+				And(P, Exist("x", Qx)),
+				Exist("x", And(P, Qx)),
+			),
+		),
+		RootProof("( P v ∀x.( Q(x) ) ) <-> ∀x.( P v Q(x) )",
+			ArrowProof(Or(P, Forall("x", Qx)),
+				ArrowProof(P,
+					ForallIntroProof("x", "a",
+						&Reiterate{Formula: P}, // P
+						IOr(P, Qa, true),       // P v Q(a)
+					), // ∀x.( P v Q(x) )
+				), // P -> ∀x.( P v Q(x) )
+				ArrowProof(Forall("x", Qx),
+					ForallIntroProof("x", "a",
+						&Reiterate{Formula: Forall("x", Qx)}, // ∀x.( Q(x) )
+						EForall(Qx, "x", "a"),                // Q(a)
+						IOr(P, Qa, false),                    // P v Q(a)
+					), // ∀x.( P v Q(x) )
+				), // ∀x.( Q(x) ) -> ∀x.( P v Q(x) )
+				EOr(P, Forall("x", Qx), Forall("x", Or(P, Qx))), // ∀x.( P v Q(x) )
+			),
+			ArrowProof(Forall("x", Or(P, Qx)),
+				ArrowProof(P,
+					IOr(P, Forall("x", Qx), true), // P v ∀x.( Q(x) )
+				), // P -> ( P v ∀x.( Q(x) ) )
+				ArrowProof(Not(P),
+					ForallIntroProof("x", "a",
+						&Reiterate{Formula: Forall("x", Or(P, Qx))}, // ∀x.( P v Q(x) )
+						EForall(Or(P, Qx), "x", "a"),                // P v Q(a)
+						DisjunctionArrowTheorem(P, Qa),              // ~ P -> Q(a)
+						&Reiterate{Formula: Not(P)},                 // ~ P
+						EImply(Not(P), Qa),                          // Q(a)
+					), // ∀x.( Q(x) )
+					IOr(P, Forall("x", Qx), false), // P v ∀x.( Q(x) )
+				), // ~ P -> ( P v ∀x.( Q(x) ) )
+				ExcludedMiddleTheorem(P),               // P v ~ P
+				EOr(P, Not(P), Or(P, Forall("x", Qx))), // P v ∀x.( Q(x) )
+			),
+			IDArrow(
+				Or(P, Forall("x", Qx)),
+				Forall("x", Or(P, Qx)),
+			),
+		),
+	),
+	NewProofsSection("almost-distributive",
+		RootProof("( ( P v ∃x.( Q(x) ) ) ^ ∃x.( T ) ) <-> ∃x.( P v Q(x) )",
+			ArrowProof(And(Or(P, Exist("x", Qx)), Exist("x", T)),
+				EAnd(Or(P, Exist("x", Qx)), Exist("x", T), true),  // ∃x.T
+				EAnd(Or(P, Exist("x", Qx)), Exist("x", T), false), // P v ∃x.( Q(x) )
+				ArrowProof(P,
+					&Reiterate{Formula: Exist("x", T)}, // ∃x.T
+					ExistElimProof("a",
+						Exist("x", T),               // T
+						&Reiterate{Formula: P},      // P
+						IOr(P, Qa, true),            // P v Q(a)
+						IExist(Or(P, Qa), "a", "x"), // ∃x.( P v Q(x) )
+					), // ∃x.( P v Q(x) )
+				), // P -> // ∃x.( P v Q(x) )
+				ArrowProof(Exist("x", Qx),
+					ExistElimProof("a",
+						Exist("x", Qx),              // Q(a)
+						IOr(P, Qa, false),           // P v Q(a)
+						IExist(Or(P, Qa), "a", "x"), // ∃x.( P v Q(x) )
+					), // ∃x.( P v Q(x) )
+				), // ∃x.( Q(x) ) -> ∃x.( P v Q(x) )
+				EOr(P, Exist("x", Qx), Exist("x", Or(P, Qx))),
+			),
+			ArrowProof(Exist("x", Or(P, Qx)),
+				ExistElimProof("a",
+					Exist("x", Or(P, Qx)), // P v Q(a)
+					ArrowProof(P,
+						IOr(P, Exist("x", Qx), true), // P v ∃x.( Q(x) )
+					), // P -> P v ∃x.( Q(x) )
+					ArrowProof(Qa,
+						IExist(Qa, "a", "x"),          // ∃x.( Q(x) )
+						IOr(P, Exist("x", Qx), false), // P v ∃x.( Q(x) )
+					), // Q(a) -> P v ∃x.( Q(x) )
+					EOr(P, Qa, Or(P, Exist("x", Qx))),          // P v ∃x.( Q(x) )
+					&Reiterate{Formula: T},                     // T
+					IExist(T, "a", "x"),                        // ∃x.( T )
+					IAnd(Or(P, Exist("x", Qx)), Exist("x", T)), // ( P v ∃x.( Q(x) ) ) ^ ∃x.( T )
+				), // ( P v ∃x.( Q(x) ) ) ^ ∃x.( T )
+			),
+			IDArrow(
+				And(Or(P, Exist("x", Qx)), Exist("x", T)),
+				Exist("x", Or(P, Qx)),
+			),
+		),
+		RootProof("( ( P ^ ∀x.( Q(x) ) ) ^ ∃x.( T ) ) <-> ( ∀x.( P ^ Q(x) ) ^ ∃x.( T ) )",
+			ArrowProof(
+				And(And(P, Forall("x", Qx)), Exist("x", T)),
+				EAnd(And(P, Forall("x", Qx)), Exist("x", T), true),  // P ^ ∀x.( Q(x) )
+				EAnd(P, Forall("x", Qx), true),                      // P
+				EAnd(P, Forall("x", Qx), false),                     // ∀x.( Q(x) )
+				EAnd(And(P, Forall("x", Qx)), Exist("x", T), false), // ∃x.( T )
+				ForallIntroProof("x", "a",
+					&Reiterate{Formula: Forall("x", Qx)}, // ∀x.( Q(x) )
+					EForall(Qx, "x", "a"),                // Q(a)
+					&Reiterate{Formula: P},               // P
+					IAnd(P, Qa),                          // P ^ Q(a)
+				), // ∀x.( P ^ Q(x) )
+				IAnd(Forall("x", And(P, Qx)), Exist("x", T)), // ∀x.( P ^ Q(x) ) ^ ∃x.( T )
+			),
+			ArrowProof(And(Forall("x", And(P, Qx)), Exist("x", T)),
+				EAnd(Forall("x", And(P, Qx)), Exist("x", T), true),  // ∀x.( P ^ Q(x) )
+				EAnd(Forall("x", And(P, Qx)), Exist("x", T), false), // ∃x.( T )
+				ExistElimProof("a",
+					Exist("x", T), // T
+					&Reiterate{Formula: Forall("x", And(P, Qx))}, // ∀x.( P ^ Q(x) )
+					EForall(And(P, Qx), "x", "a"),                // P ^ Q(a)
+					EAnd(P, Qa, true),                            // P
+				), // P
+				ForallIntroProof("x", "a",
+					&Reiterate{Formula: Forall("x", And(P, Qx))}, // ∀x.( P ^ Q(x) )
+					EForall(And(P, Qx), "x", "a"),                // P ^ Q(a)
+					EAnd(P, Qa, false),                           // Q(a)
+				), // ∀x.( Q(x) )
+				IAnd(P, Forall("x", Qx)),                     // P ^ ∀x.( Q(x) )
+				IAnd(And(P, Forall("x", Qx)), Exist("x", T)), // ( P ^ ∀x.( Q(x) ) ) ^ ∃x.( T )
+			),
+			IDArrow(
+				And(And(P, Forall("x", Qx)), Exist("x", T)),
+				And(Forall("x", And(P, Qx)), Exist("x", T)),
+			),
+		),
+
+		RootProof("( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )",
+			ArrowProof(And(Exist("x", T), Arrow(P, Exist("x", Qx))),
+				EAnd(Exist("x", T), Arrow(P, Exist("x", Qx)), true),  // ∃x.( T )
+				EAnd(Exist("x", T), Arrow(P, Exist("x", Qx)), false), // P -> ∃x.( Q(x) )
+				ExistElimProof("a", Exist("x", T),
+					ArrowProof(P,
+						&Reiterate{Formula: Arrow(P, Exist("x", Qx))}, // P -> ∃x.( Q(x) )
+						EImply(P, Exist("x", Qx)),                     // ∃x.( Q(x)
+						ExistElimProof("b", Exist("x", Qx),
+							&Reiterate{Formula: P},         // P
+							IImply(P, Qb),                  // P -> Q(b)
+							IExist(Arrow(P, Qb), "b", "x"), // ∃x.( P -> Q(x) )
+						), // ∃x.( P -> Q(x) )
+					), // P -> ∃x.( P -> Q(x) )
+					ArrowProof(Not(P),
+						ArrowProof(Not(Qa),
+							&Reiterate{Formula: Not(P)},
+						), // ~ Q(a) -> ~ P
+						ContrapositiveTheorem(Not(Qa), Not(P)), // P -> Q(a)
+						IExist(Arrow(P, Qa), "a", "x"),         // ∃x.( P -> Q(x) )
+					), // ~ P -> ∃x.( P -> Q(x) )
+					ExcludedMiddleTheorem(P), // P v ~ P
+					EOr(P, Not(P), Exist("x", Arrow(P, Qx))),
+				),
+			),
+			ArrowProof(Exist("x", Arrow(P, Qx)),
+				ArrowProof(P,
+					&Reiterate{Formula: Exist("x", Arrow(P, Qx))},
+					ExistElimProof("a", Exist("x", Arrow(P, Qx)),
+						&Reiterate{Formula: P}, // P
+						EImply(P, Qa),          // Q(a)
+						IExist(Qa, "a", "x"),   // ∃x.( Q(x) )
+					), // ∃x.( Q(x) )
+				), // P -> ∃x.( Q(x) )
+				ExistElimProof("a", Exist("x", Arrow(P, Qx)),
+					&Reiterate{Formula: T}, // T
+					IExist(T, "a", "x"),    // ∃x.( T )
+				), // ∃x.( T )
+				IAnd(Exist("x", T), Arrow(P, Exist("x", Qx))),
+			),
+			IDArrow(
+				And(Exist("x", T), Arrow(P, Exist("x", Qx))),
+				Exist("x", Arrow(P, Qx)),
+			),
+		),
+	),
+	NewProofsSection("half-distributive",
 		RootProof("∀x.( P(x) -> Q(x) ) -> ( ∀x.( P(x) ) -> ∀x.( Q(x) ) )",
 			ArrowProof(Forall("x", Arrow(Px, Qx)),
 				ArrowProof(Forall("x", Px),
@@ -414,152 +608,6 @@ var quantifierProofs = []*ProofsSection{
 		),
 	),
 	NewProofsSection("random",
-		RootProof("( P ^ ∃x.( Q(x) ) ) <-> ∃x.( P ^ Q(x) )",
-			ArrowProof(And(P, Exist("x", Qx)),
-				EAnd(P, Exist("x", Qx), true),
-				EAnd(P, Exist("x", Qx), false),
-				ExistElimProof("a",
-					Exist("x", Qx),               // Q(a)
-					&Reiterate{Formula: P},       // P
-					IAnd(P, Qa),                  // P ^ Q(a)
-					IExist(And(P, Qa), "a", "x"), // ∃x.( P ^ Q(x) )
-				), // ∃x.( P ^ Q(x) )
-			),
-			ArrowProof(Exist("x", And(P, Qx)),
-				ExistElimProof("a",
-					Exist("x", And(P, Qx)),  // P ^ Q(a)
-					EAnd(P, Qa, true),       // P
-					EAnd(P, Qa, false),      // Q(a)
-					IExist(Qa, "a", "x"),    // ∃x.( Q(x) )
-					IAnd(P, Exist("x", Qx)), // P ^ ∃x.( Q(x) )
-				), // P ^ ∃x.( Q(x) )
-			),
-			IDArrow(
-				And(P, Exist("x", Qx)),
-				Exist("x", And(P, Qx)),
-			),
-		),
-		RootProof("( ( P v ∃x.( Q(x) ) ) ^ ∃x.( T ) ) <-> ∃x.( P v Q(x) )",
-			ArrowProof(And(Or(P, Exist("x", Qx)), Exist("x", T)),
-				EAnd(Or(P, Exist("x", Qx)), Exist("x", T), true),  // ∃x.T
-				EAnd(Or(P, Exist("x", Qx)), Exist("x", T), false), // P v ∃x.( Q(x) )
-				ArrowProof(P,
-					&Reiterate{Formula: Exist("x", T)}, // ∃x.T
-					ExistElimProof("a",
-						Exist("x", T),               // T
-						&Reiterate{Formula: P},      // P
-						IOr(P, Qa, true),            // P v Q(a)
-						IExist(Or(P, Qa), "a", "x"), // ∃x.( P v Q(x) )
-					), // ∃x.( P v Q(x) )
-				), // P -> // ∃x.( P v Q(x) )
-				ArrowProof(Exist("x", Qx),
-					ExistElimProof("a",
-						Exist("x", Qx),              // Q(a)
-						IOr(P, Qa, false),           // P v Q(a)
-						IExist(Or(P, Qa), "a", "x"), // ∃x.( P v Q(x) )
-					), // ∃x.( P v Q(x) )
-				), // ∃x.( Q(x) ) -> ∃x.( P v Q(x) )
-				EOr(P, Exist("x", Qx), Exist("x", Or(P, Qx))),
-			),
-			ArrowProof(Exist("x", Or(P, Qx)),
-				ExistElimProof("a",
-					Exist("x", Or(P, Qx)), // P v Q(a)
-					ArrowProof(P,
-						IOr(P, Exist("x", Qx), true), // P v ∃x.( Q(x) )
-					), // P -> P v ∃x.( Q(x) )
-					ArrowProof(Qa,
-						IExist(Qa, "a", "x"),          // ∃x.( Q(x) )
-						IOr(P, Exist("x", Qx), false), // P v ∃x.( Q(x) )
-					), // Q(a) -> P v ∃x.( Q(x) )
-					EOr(P, Qa, Or(P, Exist("x", Qx))),          // P v ∃x.( Q(x) )
-					&Reiterate{Formula: T},                     // T
-					IExist(T, "a", "x"),                        // ∃x.( T )
-					IAnd(Or(P, Exist("x", Qx)), Exist("x", T)), // ( P v ∃x.( Q(x) ) ) ^ ∃x.( T )
-				), // ( P v ∃x.( Q(x) ) ) ^ ∃x.( T )
-			),
-			IDArrow(
-				And(Or(P, Exist("x", Qx)), Exist("x", T)),
-				Exist("x", Or(P, Qx)),
-			),
-		),
-
-		RootProof("( P v ∀x.( Q(x) ) ) <-> ∀x.( P v Q(x) )",
-			ArrowProof(Or(P, Forall("x", Qx)),
-				ArrowProof(P,
-					ForallIntroProof("x", "a",
-						&Reiterate{Formula: P}, // P
-						IOr(P, Qa, true),       // P v Q(a)
-					), // ∀x.( P v Q(x) )
-				), // P -> ∀x.( P v Q(x) )
-				ArrowProof(Forall("x", Qx),
-					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", Qx)}, // ∀x.( Q(x) )
-						EForall(Qx, "x", "a"),                // Q(a)
-						IOr(P, Qa, false),                    // P v Q(a)
-					), // ∀x.( P v Q(x) )
-				), // ∀x.( Q(x) ) -> ∀x.( P v Q(x) )
-				EOr(P, Forall("x", Qx), Forall("x", Or(P, Qx))), // ∀x.( P v Q(x) )
-			),
-			ArrowProof(Forall("x", Or(P, Qx)),
-				ArrowProof(P,
-					IOr(P, Forall("x", Qx), true), // P v ∀x.( Q(x) )
-				), // P -> ( P v ∀x.( Q(x) ) )
-				ArrowProof(Not(P),
-					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", Or(P, Qx))}, // ∀x.( P v Q(x) )
-						EForall(Or(P, Qx), "x", "a"),                // P v Q(a)
-						DisjunctionArrowTheorem(P, Qa),              // ~ P -> Q(a)
-						&Reiterate{Formula: Not(P)},                 // ~ P
-						EImply(Not(P), Qa),                          // Q(a)
-					), // ∀x.( Q(x) )
-					IOr(P, Forall("x", Qx), false), // P v ∀x.( Q(x) )
-				), // ~ P -> ( P v ∀x.( Q(x) ) )
-				ExcludedMiddleTheorem(P),               // P v ~ P
-				EOr(P, Not(P), Or(P, Forall("x", Qx))), // P v ∀x.( Q(x) )
-			),
-			IDArrow(
-				Or(P, Forall("x", Qx)),
-				Forall("x", Or(P, Qx)),
-			),
-		),
-		RootProof("( ( P ^ ∀x.( Q(x) ) ) ^ ∃x.( T ) ) <-> ( ∀x.( P ^ Q(x) ) ^ ∃x.( T ) )",
-			ArrowProof(
-				And(And(P, Forall("x", Qx)), Exist("x", T)),
-				EAnd(And(P, Forall("x", Qx)), Exist("x", T), true),  // P ^ ∀x.( Q(x) )
-				EAnd(P, Forall("x", Qx), true),                      // P
-				EAnd(P, Forall("x", Qx), false),                     // ∀x.( Q(x) )
-				EAnd(And(P, Forall("x", Qx)), Exist("x", T), false), // ∃x.( T )
-				ForallIntroProof("x", "a",
-					&Reiterate{Formula: Forall("x", Qx)}, // ∀x.( Q(x) )
-					EForall(Qx, "x", "a"),                // Q(a)
-					&Reiterate{Formula: P},               // P
-					IAnd(P, Qa),                          // P ^ Q(a)
-				), // ∀x.( P ^ Q(x) )
-				IAnd(Forall("x", And(P, Qx)), Exist("x", T)), // ∀x.( P ^ Q(x) ) ^ ∃x.( T )
-			),
-			ArrowProof(And(Forall("x", And(P, Qx)), Exist("x", T)),
-				EAnd(Forall("x", And(P, Qx)), Exist("x", T), true),  // ∀x.( P ^ Q(x) )
-				EAnd(Forall("x", And(P, Qx)), Exist("x", T), false), // ∃x.( T )
-				ExistElimProof("a",
-					Exist("x", T), // T
-					&Reiterate{Formula: Forall("x", And(P, Qx))}, // ∀x.( P ^ Q(x) )
-					EForall(And(P, Qx), "x", "a"),                // P ^ Q(a)
-					EAnd(P, Qa, true),                            // P
-				), // P
-				ForallIntroProof("x", "a",
-					&Reiterate{Formula: Forall("x", And(P, Qx))}, // ∀x.( P ^ Q(x) )
-					EForall(And(P, Qx), "x", "a"),                // P ^ Q(a)
-					EAnd(P, Qa, false),                           // Q(a)
-				), // ∀x.( Q(x) )
-				IAnd(P, Forall("x", Qx)),                     // P ^ ∀x.( Q(x) )
-				IAnd(And(P, Forall("x", Qx)), Exist("x", T)), // ( P ^ ∀x.( Q(x) ) ) ^ ∃x.( T )
-			),
-			IDArrow(
-				And(And(P, Forall("x", Qx)), Exist("x", T)),
-				And(Forall("x", And(P, Qx)), Exist("x", T)),
-			),
-		),
-
 		RootProof("P -> ( ∀x.( ~ P ) -> ~ ∃x.( T ) )",
 			ArrowProof(P,
 				ArrowProof(Forall("x", Not(P)),
@@ -610,51 +658,6 @@ var quantifierProofs = []*ProofsSection{
 				ForallIntroProof("x", "a",
 					&Reiterate{Formula: R},
 				),
-			),
-		),
-		RootProof("( ∃x.( T ) ^ ( P -> ∃x.( Q(x) ) ) ) <-> ∃x.( P -> Q(x) )",
-			ArrowProof(And(Exist("x", T), Arrow(P, Exist("x", Qx))),
-				EAnd(Exist("x", T), Arrow(P, Exist("x", Qx)), true),  // ∃x.( T )
-				EAnd(Exist("x", T), Arrow(P, Exist("x", Qx)), false), // P -> ∃x.( Q(x) )
-				ExistElimProof("a", Exist("x", T),
-					ArrowProof(P,
-						&Reiterate{Formula: Arrow(P, Exist("x", Qx))}, // P -> ∃x.( Q(x) )
-						EImply(P, Exist("x", Qx)),                     // ∃x.( Q(x)
-						ExistElimProof("b", Exist("x", Qx),
-							&Reiterate{Formula: P},         // P
-							IImply(P, Qb),                  // P -> Q(b)
-							IExist(Arrow(P, Qb), "b", "x"), // ∃x.( P -> Q(x) )
-						), // ∃x.( P -> Q(x) )
-					), // P -> ∃x.( P -> Q(x) )
-					ArrowProof(Not(P),
-						ArrowProof(Not(Qa),
-							&Reiterate{Formula: Not(P)},
-						), // ~ Q(a) -> ~ P
-						ContrapositiveTheorem(Not(Qa), Not(P)), // P -> Q(a)
-						IExist(Arrow(P, Qa), "a", "x"),         // ∃x.( P -> Q(x) )
-					), // ~ P -> ∃x.( P -> Q(x) )
-					ExcludedMiddleTheorem(P), // P v ~ P
-					EOr(P, Not(P), Exist("x", Arrow(P, Qx))),
-				),
-			),
-			ArrowProof(Exist("x", Arrow(P, Qx)),
-				ArrowProof(P,
-					&Reiterate{Formula: Exist("x", Arrow(P, Qx))},
-					ExistElimProof("a", Exist("x", Arrow(P, Qx)),
-						&Reiterate{Formula: P}, // P
-						EImply(P, Qa),          // Q(a)
-						IExist(Qa, "a", "x"),   // ∃x.( Q(x) )
-					), // ∃x.( Q(x) )
-				), // P -> ∃x.( Q(x) )
-				ExistElimProof("a", Exist("x", Arrow(P, Qx)),
-					&Reiterate{Formula: T}, // T
-					IExist(T, "a", "x"),    // ∃x.( T )
-				), // ∃x.( T )
-				IAnd(Exist("x", T), Arrow(P, Exist("x", Qx))),
-			),
-			IDArrow(
-				And(Exist("x", T), Arrow(P, Exist("x", Qx))),
-				Exist("x", Arrow(P, Qx)),
 			),
 		),
 		RootProof("∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R",
