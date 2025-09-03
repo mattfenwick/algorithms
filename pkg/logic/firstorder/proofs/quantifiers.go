@@ -244,7 +244,7 @@ var quantifierProofs = []*ProofsSection{
 			),
 		),
 	),
-	NewProofsSection("distributive",
+	NewProofsSection("distributive-and",
 		RootProof("∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) )",
 			ArrowProof(Forall("x", And(Px, Qx)),
 				ForallIntroProof("x", "a",
@@ -274,6 +274,67 @@ var quantifierProofs = []*ProofsSection{
 				And(Forall("x", Px), Forall("x", Qx)),
 			),
 		),
+		RootProof("( P ^ ∃x.( Q(x) ) ) <-> ∃x.( P ^ Q(x) )",
+			ArrowProof(And(P, Exist("x", Qx)),
+				EAnd(P, Exist("x", Qx), true),
+				EAnd(P, Exist("x", Qx), false),
+				ExistElimProof("a",
+					Exist("x", Qx),               // Q(a)
+					&Reiterate{Formula: P},       // P
+					IAnd(P, Qa),                  // P ^ Q(a)
+					IExist(And(P, Qa), "a", "x"), // ∃x.( P ^ Q(x) )
+				), // ∃x.( P ^ Q(x) )
+			),
+			ArrowProof(Exist("x", And(P, Qx)),
+				ExistElimProof("a",
+					Exist("x", And(P, Qx)),  // P ^ Q(a)
+					EAnd(P, Qa, true),       // P
+					EAnd(P, Qa, false),      // Q(a)
+					IExist(Qa, "a", "x"),    // ∃x.( Q(x) )
+					IAnd(P, Exist("x", Qx)), // P ^ ∃x.( Q(x) )
+				), // P ^ ∃x.( Q(x) )
+			),
+			IDArrow(
+				And(P, Exist("x", Qx)),
+				Exist("x", And(P, Qx)),
+			),
+		),
+
+		RootProof("∃x.( T ) -> ( ( P ^ ∀x.( Q(x) ) ) <-> ∀x.( P ^ Q(x) ) )",
+			ArrowProof(Exist("x", T),
+				ArrowProof(And(P, Forall("x", Qx)),
+					EAnd(P, Forall("x", Qx), true),  // P
+					EAnd(P, Forall("x", Qx), false), // ∀x.( Q(x) )
+					ForallIntroProof("x", "a",
+						&Reiterate{Formula: Forall("x", Qx)}, // ∀x.( Q(x) )
+						EForall(Qx, "x", "a"),                // Q(a)
+						&Reiterate{Formula: P},               // P
+						IAnd(P, Qa),                          // P ^ Q(a)
+					), // ∀x.( P ^ Q(x) )
+				),
+				ArrowProof(Forall("x", And(P, Qx)),
+					&Reiterate{Formula: Exist("x", T)},
+					ExistElimProof("a",
+						Exist("x", T), // T
+						&Reiterate{Formula: Forall("x", And(P, Qx))}, // ∀x.( P ^ Q(x) )
+						EForall(And(P, Qx), "x", "a"),                // P ^ Q(a)
+						EAnd(P, Qa, true),                            // P
+					), // P
+					ForallIntroProof("x", "a",
+						&Reiterate{Formula: Forall("x", And(P, Qx))}, // ∀x.( P ^ Q(x) )
+						EForall(And(P, Qx), "x", "a"),                // P ^ Q(a)
+						EAnd(P, Qa, false),                           // Q(a)
+					), // ∀x.( Q(x) )
+					IAnd(P, Forall("x", Qx)), // P ^ ∀x.( Q(x) )
+				),
+				IDArrow(
+					And(P, Forall("x", Qx)),
+					Forall("x", And(P, Qx)),
+				),
+			),
+		),
+	),
+	NewProofsSection("distributive-or",
 		RootProof("∃x.( P(x) v Q(x) ) <-> ( ∃x.( P(x) ) v ∃x.( Q(x) ) )",
 			ArrowProof(Exist("x", Or(Px, Qx)),
 				ExistElimProof("a",
@@ -309,31 +370,6 @@ var quantifierProofs = []*ProofsSection{
 			IDArrow(
 				Exist("x", Or(Px, Qx)),
 				Or(Exist("x", Px), Exist("x", Qx)),
-			),
-		),
-		RootProof("( P ^ ∃x.( Q(x) ) ) <-> ∃x.( P ^ Q(x) )",
-			ArrowProof(And(P, Exist("x", Qx)),
-				EAnd(P, Exist("x", Qx), true),
-				EAnd(P, Exist("x", Qx), false),
-				ExistElimProof("a",
-					Exist("x", Qx),               // Q(a)
-					&Reiterate{Formula: P},       // P
-					IAnd(P, Qa),                  // P ^ Q(a)
-					IExist(And(P, Qa), "a", "x"), // ∃x.( P ^ Q(x) )
-				), // ∃x.( P ^ Q(x) )
-			),
-			ArrowProof(Exist("x", And(P, Qx)),
-				ExistElimProof("a",
-					Exist("x", And(P, Qx)),  // P ^ Q(a)
-					EAnd(P, Qa, true),       // P
-					EAnd(P, Qa, false),      // Q(a)
-					IExist(Qa, "a", "x"),    // ∃x.( Q(x) )
-					IAnd(P, Exist("x", Qx)), // P ^ ∃x.( Q(x) )
-				), // P ^ ∃x.( Q(x) )
-			),
-			IDArrow(
-				And(P, Exist("x", Qx)),
-				Exist("x", And(P, Qx)),
 			),
 		),
 		RootProof("( P v ∀x.( Q(x) ) ) <-> ∀x.( P v Q(x) )",
@@ -375,33 +411,6 @@ var quantifierProofs = []*ProofsSection{
 				Forall("x", Or(P, Qx)),
 			),
 		),
-		RootProof("( P -> ∀x.( Q(x) ) ) <-> ∀x.( P -> Q(x) )",
-			ArrowProof(Arrow(P, Forall("x", Qx)),
-				ForallIntroProof("x", "a",
-					ArrowProof(P,
-						&Reiterate{Formula: Arrow(P, Forall("x", Qx))}, // P -> ∀x.( Q(x) )
-						EImply(P, Forall("x", Qx)),                     // ∀x.( Q(x) )
-						EForall(Qx, "x", "a"),                          // Q(a)
-					), // P -> Q(a)
-				), // ∀x.( P -> Q(x) )
-			),
-			ArrowProof(Forall("x", Arrow(P, Qx)),
-				ArrowProof(P,
-					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", Arrow(P, Qx))}, // ∀x.( P -> Q(x) )
-						EForall(Arrow(P, Qx), "x", "a"),                // P -> Q(a)
-						&Reiterate{Formula: P},                         // P
-						EImply(P, Qa),                                  // Q(a)
-					), // ∀x.( Q(x) )
-				), // P -> ∀x.( Q(x) )
-			),
-			IDArrow(
-				Arrow(P, Forall("x", Qx)),
-				Forall("x", Arrow(P, Qx)),
-			),
-		),
-	),
-	NewProofsSection("almost-distributive",
 		RootProof("∃x.( T ) -> ( ( P v ∃x.( Q(x) ) ) <-> ∃x.( P v Q(x) ) )",
 			ArrowProof(Exist("x", T),
 				ArrowProof(Or(P, Exist("x", Qx)),
@@ -442,37 +451,31 @@ var quantifierProofs = []*ProofsSection{
 				),
 			),
 		),
-		RootProof("∃x.( T ) -> ( ( P ^ ∀x.( Q(x) ) ) <-> ∀x.( P ^ Q(x) ) )",
-			ArrowProof(Exist("x", T),
-				ArrowProof(And(P, Forall("x", Qx)),
-					EAnd(P, Forall("x", Qx), true),  // P
-					EAnd(P, Forall("x", Qx), false), // ∀x.( Q(x) )
+	),
+	NewProofsSection("distributive-arrow",
+		RootProof("( P -> ∀x.( Q(x) ) ) <-> ∀x.( P -> Q(x) )",
+			ArrowProof(Arrow(P, Forall("x", Qx)),
+				ForallIntroProof("x", "a",
+					ArrowProof(P,
+						&Reiterate{Formula: Arrow(P, Forall("x", Qx))}, // P -> ∀x.( Q(x) )
+						EImply(P, Forall("x", Qx)),                     // ∀x.( Q(x) )
+						EForall(Qx, "x", "a"),                          // Q(a)
+					), // P -> Q(a)
+				), // ∀x.( P -> Q(x) )
+			),
+			ArrowProof(Forall("x", Arrow(P, Qx)),
+				ArrowProof(P,
 					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", Qx)}, // ∀x.( Q(x) )
-						EForall(Qx, "x", "a"),                // Q(a)
-						&Reiterate{Formula: P},               // P
-						IAnd(P, Qa),                          // P ^ Q(a)
-					), // ∀x.( P ^ Q(x) )
-				),
-				ArrowProof(Forall("x", And(P, Qx)),
-					&Reiterate{Formula: Exist("x", T)},
-					ExistElimProof("a",
-						Exist("x", T), // T
-						&Reiterate{Formula: Forall("x", And(P, Qx))}, // ∀x.( P ^ Q(x) )
-						EForall(And(P, Qx), "x", "a"),                // P ^ Q(a)
-						EAnd(P, Qa, true),                            // P
-					), // P
-					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", And(P, Qx))}, // ∀x.( P ^ Q(x) )
-						EForall(And(P, Qx), "x", "a"),                // P ^ Q(a)
-						EAnd(P, Qa, false),                           // Q(a)
+						&Reiterate{Formula: Forall("x", Arrow(P, Qx))}, // ∀x.( P -> Q(x) )
+						EForall(Arrow(P, Qx), "x", "a"),                // P -> Q(a)
+						&Reiterate{Formula: P},                         // P
+						EImply(P, Qa),                                  // Q(a)
 					), // ∀x.( Q(x) )
-					IAnd(P, Forall("x", Qx)), // P ^ ∀x.( Q(x) )
-				),
-				IDArrow(
-					And(P, Forall("x", Qx)),
-					Forall("x", And(P, Qx)),
-				),
+				), // P -> ∀x.( Q(x) )
+			),
+			IDArrow(
+				Arrow(P, Forall("x", Qx)),
+				Forall("x", Arrow(P, Qx)),
 			),
 		),
 		RootProof("∃x.( T ) -> ( ( P -> ∃x.( Q(x) ) ) <-> ∃x.( P -> Q(x) ) )",
@@ -518,8 +521,6 @@ var quantifierProofs = []*ProofsSection{
 				),
 			),
 		),
-	),
-	NewProofsSection("half-distributive",
 		RootProof("∀x.( P(x) -> Q(x) ) -> ( ∀x.( P(x) ) -> ∀x.( Q(x) ) )",
 			ArrowProof(Forall("x", Arrow(Px, Qx)),
 				ArrowProof(Forall("x", Px),
