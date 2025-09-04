@@ -591,13 +591,33 @@ var quantifierProofs = []*ProofsSection{
 			ArrowProof(Forall("x", Arrow(Px, Qx)),
 				ArrowProof(Forall("x", Px),
 					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", Arrow(Px, Qx))}, // ∀x.( Q(x) -> P(x) )
+						&Reiterate{Formula: Forall("x", Arrow(Px, Qx))}, // ∀x.( P(x) -> Q(x) )
 						&Reiterate{Formula: Forall("x", Px)},            // ∀x.( P(x) )
 						EForall(Arrow(Px, Qx), "x", "a"),                // P(a) -> Q(a)
 						EForall(Px, "x", "a"),                           // P(a)
 						EImply(Pa, Qa),                                  // Q(a)
 					),
 				),
+			),
+		),
+		RootProof("∃x.( T ) -> ( ∀x.( P(x) -> Q ) -> ( ∀x.( P(x) ) -> Q ) )",
+			ArrowProof(Exist("x", T),
+				ArrowProof(Forall("x", Arrow(Px, Q)),
+					ArrowProof(Forall("x", Px),
+						&Reiterate{Formula: Exist("x", T)},
+						ExistElimProof("a",
+							Exist("x", T),
+							&Reiterate{Formula: Forall("x", Arrow(Px, Q))}, // ∀x.( P(x) -> Q )
+							&Reiterate{Formula: Forall("x", Px)},           // ∀x.( P(x) )
+							EForall(Arrow(Px, Q), "x", "a"),                // P(a) -> Q
+							EForall(Px, "x", "a"),                          // P(a)
+							EImply(Pa, Q),                                  // Q
+						), // Q
+					), // ∀x.( P(x) ) -> Q
+				), // ∀x.( P(x) -> Q ) -> ( ∀x.( P(x) ) -> Q )
+			// IDArrow(
+
+			// ),
 			),
 		),
 	),
