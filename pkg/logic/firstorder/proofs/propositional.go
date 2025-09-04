@@ -804,6 +804,69 @@ var propositionalProofSections = []*ProofsSection{
 				And(Or(P, Q), Or(P, R)),
 			),
 		),
+		RootProof("( P ^ ( Q -> R ) ) -> ( ( P ^ Q ) -> ( P ^ R ) )",
+			ArrowProof(And(P, Arrow(Q, R)),
+				ArrowProof(And(P, Q),
+					Reit(And(P, Arrow(Q, R))),
+					EAnd(P, Q, true),
+					EAnd(P, Q, false),
+					EAnd(P, Arrow(Q, R), false),
+					EImply(Q, R),
+					IAnd(P, R),
+				),
+			),
+		),
+		RootProof("( P v ( Q -> R ) ) <-> ( ( P v Q ) -> ( P v R ) )",
+			ArrowProof(Or(P, Arrow(Q, R)),
+				ArrowProof(Or(P, Q),
+					ArrowProof(P,
+						IOr(P, R, true),
+					), // P -> ( P v R )
+					ArrowProof(Not(P),
+						Reit(Or(P, Arrow(Q, R))),                // P v ( Q -> R )
+						DisjunctionArrowTheorem(P, Arrow(Q, R)), // ~ P -> ( Q -> R )
+						EImply(Not(P), Arrow(Q, R)),             // Q -> R
+						Reit(Or(P, Q)),                          // P v Q
+						DisjunctionArrowTheorem(P, Q),           // ~ P -> Q
+						EImply(Not(P), Q),                       // Q
+						EImply(Q, R),                            // R
+						IOr(P, R, false),                        // P v R
+					), // ~ P -> ( P v R )
+					ExcludedMiddleTheorem(P),
+					EOr(P, Not(P), Or(P, R)),
+				),
+			),
+			ArrowProof(Arrow(Or(P, Q), Or(P, R)),
+				ArrowProof(P,
+					IOr(P, Arrow(Q, R), true),
+				), // P -> ( P v ( Q -> R ) )
+				ArrowProof(Not(P),
+					ArrowProof(Q,
+						Reit(Arrow(Or(P, Q), Or(P, R))), // ( P v Q ) -> ( P v R )
+						IOr(P, Q, false),                // P v Q
+						EImply(Or(P, Q), Or(P, R)),      // P v R
+						DisjunctionArrowTheorem(P, R),   // ~ P -> R
+						Reit(Not(P)),                    // ~ P
+						EImply(Not(P), R),               // R
+						IImply(Q, R),                    // Q -> R
+						IOr(P, Arrow(Q, R), false),      // P v ( Q -> R )
+					),
+					ArrowProof(Not(Q),
+						IOr(Not(Q), R, true),               // ~ Q v R
+						DisjunctionArrowTheorem(Not(Q), R), // Q -> R
+						IOr(P, Arrow(Q, R), false),         // P v ( Q -> R )
+					),
+					ExcludedMiddleTheorem(Q),
+					EOr(Q, Not(Q), Or(P, Arrow(Q, R))),
+				), // ~ P -> ( P v ( Q -> R ) )
+				ExcludedMiddleTheorem(P),
+				EOr(P, Not(P), Or(P, Arrow(Q, R))),
+			),
+			IDArrow(
+				Or(P, Arrow(Q, R)),
+				Arrow(Or(P, Q), Or(P, R)),
+			),
+		),
 	),
 	NewProofsSection("anti-distributivity",
 		RootProof("( ( P v Q ) -> R ) <-> ( ( P -> R ) ^ ( Q -> R ) )",
