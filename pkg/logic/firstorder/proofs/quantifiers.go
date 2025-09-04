@@ -813,6 +813,14 @@ var quantifierProofs = []*ProofsSection{
 				), // ∃x.( Q(x) )
 			), // ( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )
 		),
+		RootProof("∀x.( P(x) ) -> ∀y.( P(y) )",
+			ArrowProof(Forall("x", Px),
+				ForallIntroProof("y", "a",
+					Reit(Forall("x", Px)),
+					EForall(Px, "x", "a"),
+				),
+			),
+		),
 	),
 
 	// https://en.wikipedia.org/wiki/First-order_logic#Provable_identities

@@ -45,6 +45,7 @@
     6. [∃x.( Q(x) ^ ( Q(x) -> R ) ) -> R](#proof-8-6)
     7. [( ∀x.( Q(x) ) ^ ∃x.( Q(x) -> R ) ) -> R](#proof-8-7)
     8. [( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )](#proof-8-8)
+    9. [∀x.( P(x) ) -> ∀y.( P(y) )](#proof-8-9)
 
 # basics <a name="basics"></a>
 
@@ -891,4 +892,15 @@
 | 8 | a | <pre>.   .   ∃x.( Q(x) )</pre> | I ∃ [a -> x] | 7, 4 |
 | 9 |  | <pre>.   ∃x.( Q(x) )</pre> | subproof E ∃ | 4 - 8 |
 | 10 |  | <pre>( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )</pre> | subproof -> | 1 - 9 |
+
+## ∀x.( P(x) ) -> ∀y.( P(y) ) <a name="proof-8-9"></a>
+
+| Line | Term vars | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∀x.( P(x) )</pre> | Assume: -> |  |
+| 2 | a | <pre>.   .   </pre> | term var: I ∀ |  |
+| 3 | a | <pre>.   .   ∀x.( P(x) )</pre> | Reiterate | 1 |
+| 4 | a | <pre>.   .   P(a)</pre> | E ∀ [x -> a] | 3, 2 |
+| 5 |  | <pre>.   ∀y.( P(y) )</pre> | subproof I ∀ [a -> y] | 2 - 4 |
+| 6 |  | <pre>∀x.( P(x) ) -> ∀y.( P(y) )</pre> | subproof -> | 1 - 5 |
 
