@@ -600,6 +600,44 @@ var quantifierProofs = []*ProofsSection{
 				),
 			),
 		),
+		RootProof("∃x.( T ) -> ( ( ∃x.( P(x) ) -> Q ) -> ∃x.( P(x) -> Q ) )",
+			ArrowProof(Exist("x", T),
+				ArrowProof(Arrow(Exist("x", Px), Q),
+					ArrowProof(Exist("x", Px),
+						&Reiterate{Formula: Arrow(Exist("x", Px), Q)}, // ∃x.( P(x) ) -> Q
+						EImply(Exist("x", Px), Q),                     // Q
+						ExistElimProof("a",
+							Exist("x", Px),                 // P(a)
+							&Reiterate{Formula: Q},         // Q
+							IImply(Pa, Q),                  // P(a) -> Q
+							IExist(Arrow(Pa, Q), "a", "x"), // ∃x.( P(x) -> Q )
+						), // ∃x.( P(x) -> Q )
+					), // ∃x.( P(x) ) -> ∃x.( P(x) -> Q )
+					ArrowProof(Not(Exist("x", Px)),
+						ContraProof(Not(Exist("x", Not(Px))),
+							&Reiterate{Formula: Exist("x", T)}, // ∃x.( T )
+							ExistElimProof("a",
+								Exist("x", T),             // T
+								ExcludedMiddleTheorem(Pa), // P(a) v ~ P(a)
+								ContraProof(Pa, // P(a)
+									IExist(Pa, "a", "x"),                     // ∃x.( P(x) )
+									&Reiterate{Formula: Not(Exist("x", Px))}, // ~ ∃x.( P(x) )
+								), // ~ P(a)
+								IExist(Not(Pa), "a", "x"), // ∃x.( ~ P(x) )
+							), // ∃x.( ~ P(x) )
+						), // ∃x.( ~ P(x) )
+						ExistElimProof("a",
+							Exist("x", Not(Px)),                 // ~ P(a)
+							IOr(Not(Pa), Q, true),               // ~ P(a) v Q
+							DisjunctionArrowTheorem(Not(Pa), Q), // P(a) -> Q
+							IExist(Arrow(Pa, Q), "a", "x"),      // ∃x.( P(x) -> Q )
+						),
+					), // ~ ∃x.( P(x) ) -> ∃x.( P(x) -> Q )
+					ExcludedMiddleTheorem(Exist("x", Px)), // ∃x.( P(x) ) v ~ ∃x.( P(x) )
+					EOr(Exist("x", Px), Not(Exist("x", Px)), Exist("x", Arrow(Px, Q))),
+				),
+			),
+		),
 		RootProof("∃x.( T ) -> ( ∀x.( P(x) -> Q ) -> ( ∀x.( P(x) ) -> Q ) )",
 			ArrowProof(Exist("x", T),
 				ArrowProof(Forall("x", Arrow(Px, Q)),
@@ -615,9 +653,6 @@ var quantifierProofs = []*ProofsSection{
 						), // Q
 					), // ∀x.( P(x) ) -> Q
 				), // ∀x.( P(x) -> Q ) -> ( ∀x.( P(x) ) -> Q )
-			// IDArrow(
-
-			// ),
 			),
 		),
 	),
