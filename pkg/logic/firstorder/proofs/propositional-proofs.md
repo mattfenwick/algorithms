@@ -43,23 +43,26 @@
 7. [anti-distributivity](#anti-distributivity)
     1. [( ( P v Q ) -> R ) <-> ( ( P -> R ) ^ ( Q -> R ) )](#proof-7-1)
     2. [( ( P ^ Q ) -> R ) <-> ( ( P -> R ) v ( Q -> R ) )](#proof-7-2)
-8. [disjunction](#disjunction)
-    1. [( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S )](#proof-8-1)
-    2. [( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v Q ) ) -> ( ~ P v S )](#proof-8-2)
-    3. [( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v ~ S ) ) -> ( ~ P v ~ Q )](#proof-8-3)
-    4. [( ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q ) ) -> R](#proof-8-4)
-    5. [( ( ( P -> R ) v ( Q -> R ) ) ^ ~ R ) -> ( ~ P v ~ Q )](#proof-8-5)
-9. [biconditional](#biconditional)
-    1. [( ( P <-> Q ) ^ P ) -> Q](#proof-9-1)
-    2. [( ( P <-> Q ) ^ ~ P ) -> ~ Q](#proof-9-2)
-    3. [( P <-> ~ Q ) -> ( ~ P <-> Q )](#proof-9-3)
-    4. [( P <-> Q ) <-> ( ~ P <-> ~ Q )](#proof-9-4)
-    5. [( P <-> Q ) v ~ ( P <-> Q )](#proof-9-5)
-    6. [( P <-> ~ Q ) <-> ( ( P v Q ) ^ ( ~ P v ~ Q ) )](#proof-9-6)
-10. [miscellaneous](#miscellaneous)
-    1. [( ( P -> Q ) -> R ) -> ( ( P -> Q ) -> ( P -> R ) )](#proof-10-1)
-    2. [( P -> Q ) v ( Q -> R )](#proof-10-2)
-    3. [( P -> Q ) v ( Q -> P )](#proof-10-3)
+8. [double-distribution](#double-distribution)
+    1. [( ( P v Q ) ^ ( R v S ) ) <-> ( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) )](#proof-8-1)
+    2. [( ( P ^ Q ) v ( R ^ S ) ) <-> ( ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) ) )](#proof-8-2)
+9. [disjunction](#disjunction)
+    1. [( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S )](#proof-9-1)
+    2. [( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v Q ) ) -> ( ~ P v S )](#proof-9-2)
+    3. [( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v ~ S ) ) -> ( ~ P v ~ Q )](#proof-9-3)
+    4. [( ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q ) ) -> R](#proof-9-4)
+    5. [( ( ( P -> R ) v ( Q -> R ) ) ^ ~ R ) -> ( ~ P v ~ Q )](#proof-9-5)
+10. [biconditional](#biconditional)
+    1. [( ( P <-> Q ) ^ P ) -> Q](#proof-10-1)
+    2. [( ( P <-> Q ) ^ ~ P ) -> ~ Q](#proof-10-2)
+    3. [( P <-> ~ Q ) -> ( ~ P <-> Q )](#proof-10-3)
+    4. [( P <-> Q ) <-> ( ~ P <-> ~ Q )](#proof-10-4)
+    5. [( P <-> Q ) v ~ ( P <-> Q )](#proof-10-5)
+    6. [( P <-> ~ Q ) <-> ( ( P v Q ) ^ ( ~ P v ~ Q ) )](#proof-10-6)
+11. [miscellaneous](#miscellaneous)
+    1. [( ( P -> Q ) -> R ) -> ( ( P -> Q ) -> ( P -> R ) )](#proof-11-1)
+    2. [( P -> Q ) v ( Q -> R )](#proof-11-2)
+    3. [( P -> Q ) v ( Q -> P )](#proof-11-3)
 
 # theorems <a name="theorems"></a>
 
@@ -959,9 +962,159 @@
 | 32 |  | <pre>( ( P ^ Q ) -> R ) -> ( ( P -> R ) v ( Q -> R ) )</pre> | subproof -> | 18 - 31 |
 | 33 |  | <pre>( ( P ^ Q ) -> R ) <-> ( ( P -> R ) v ( Q -> R ) )</pre> | I <-> | 32, 17 |
 
+# double-distribution <a name="double-distribution"></a>
+
+## ( ( P v Q ) ^ ( R v S ) ) <-> ( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) ) <a name="proof-8-1"></a>
+
+| Line | Term vars | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ( P v Q ) ^ ( R v S )</pre> | Assume: -> |  |
+| 2 |  | <pre>.   P v Q</pre> | E ^ (L) | 1 |
+| 3 |  | <pre>.   R v S</pre> | E ^ (R) | 1 |
+| 4 |  | <pre>.   .   P</pre> | Assume: -> |  |
+| 5 |  | <pre>.   .   .   R</pre> | Assume: -> |  |
+| 6 |  | <pre>.   .   .   P</pre> | Reiterate | 4 |
+| 7 |  | <pre>.   .   .   P ^ R</pre> | I ^ | 6, 5 |
+| 8 |  | <pre>.   .   .   ( P ^ R ) v ( P ^ S )</pre> | I v (L) | 7 |
+| 9 |  | <pre>.   .   .   ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) )</pre> | I v (L) | 8 |
+| 10 |  | <pre>.   .   R -> ( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) )</pre> | subproof -> | 5 - 9 |
+| 11 |  | <pre>.   .   .   S</pre> | Assume: -> |  |
+| 12 |  | <pre>.   .   .   P</pre> | Reiterate | 4 |
+| 13 |  | <pre>.   .   .   P ^ S</pre> | I ^ | 12, 11 |
+| 14 |  | <pre>.   .   .   ( P ^ R ) v ( P ^ S )</pre> | I v (R) | 13 |
+| 15 |  | <pre>.   .   .   ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) )</pre> | I v (L) | 14 |
+| 16 |  | <pre>.   .   S -> ( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) )</pre> | subproof -> | 11 - 15 |
+| 17 |  | <pre>.   .   R v S</pre> | Reiterate | 3 |
+| 18 |  | <pre>.   .   ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) )</pre> | E v | 10, 16, 17 |
+| 19 |  | <pre>.   P -> ( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) )</pre> | subproof -> | 4 - 18 |
+| 20 |  | <pre>.   .   Q</pre> | Assume: -> |  |
+| 21 |  | <pre>.   .   .   R</pre> | Assume: -> |  |
+| 22 |  | <pre>.   .   .   Q</pre> | Reiterate | 20 |
+| 23 |  | <pre>.   .   .   Q ^ R</pre> | I ^ | 22, 21 |
+| 24 |  | <pre>.   .   .   ( Q ^ R ) v ( Q ^ S )</pre> | I v (L) | 23 |
+| 25 |  | <pre>.   .   .   ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) )</pre> | I v (R) | 24 |
+| 26 |  | <pre>.   .   R -> ( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) )</pre> | subproof -> | 21 - 25 |
+| 27 |  | <pre>.   .   .   S</pre> | Assume: -> |  |
+| 28 |  | <pre>.   .   .   Q</pre> | Reiterate | 20 |
+| 29 |  | <pre>.   .   .   Q ^ S</pre> | I ^ | 28, 27 |
+| 30 |  | <pre>.   .   .   ( Q ^ R ) v ( Q ^ S )</pre> | I v (R) | 29 |
+| 31 |  | <pre>.   .   .   ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) )</pre> | I v (R) | 30 |
+| 32 |  | <pre>.   .   S -> ( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) )</pre> | subproof -> | 27 - 31 |
+| 33 |  | <pre>.   .   R v S</pre> | Reiterate | 3 |
+| 34 |  | <pre>.   .   ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) )</pre> | E v | 26, 32, 33 |
+| 35 |  | <pre>.   Q -> ( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) )</pre> | subproof -> | 20 - 34 |
+| 36 |  | <pre>.   ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) )</pre> | E v | 19, 35, 2 |
+| 37 |  | <pre>( ( P v Q ) ^ ( R v S ) ) -> ( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) )</pre> | subproof -> | 1 - 36 |
+| 38 |  | <pre>.   ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) )</pre> | Assume: -> |  |
+| 39 |  | <pre>.   .   ( P ^ R ) v ( P ^ S )</pre> | Assume: -> |  |
+| 40 |  | <pre>.   .   .   P ^ R</pre> | Assume: -> |  |
+| 41 |  | <pre>.   .   .   P</pre> | E ^ (L) | 40 |
+| 42 |  | <pre>.   .   .   R</pre> | E ^ (R) | 40 |
+| 43 |  | <pre>.   .   .   P v Q</pre> | I v (L) | 41 |
+| 44 |  | <pre>.   .   .   R v S</pre> | I v (L) | 42 |
+| 45 |  | <pre>.   .   .   ( P v Q ) ^ ( R v S )</pre> | I ^ | 43, 44 |
+| 46 |  | <pre>.   .   ( P ^ R ) -> ( ( P v Q ) ^ ( R v S ) )</pre> | subproof -> | 40 - 45 |
+| 47 |  | <pre>.   .   .   P ^ S</pre> | Assume: -> |  |
+| 48 |  | <pre>.   .   .   P</pre> | E ^ (L) | 47 |
+| 49 |  | <pre>.   .   .   S</pre> | E ^ (R) | 47 |
+| 50 |  | <pre>.   .   .   P v Q</pre> | I v (L) | 48 |
+| 51 |  | <pre>.   .   .   R v S</pre> | I v (R) | 49 |
+| 52 |  | <pre>.   .   .   ( P v Q ) ^ ( R v S )</pre> | I ^ | 50, 51 |
+| 53 |  | <pre>.   .   ( P ^ S ) -> ( ( P v Q ) ^ ( R v S ) )</pre> | subproof -> | 47 - 52 |
+| 54 |  | <pre>.   .   ( P v Q ) ^ ( R v S )</pre> | E v | 46, 53, 39 |
+| 55 |  | <pre>.   ( ( P ^ R ) v ( P ^ S ) ) -> ( ( P v Q ) ^ ( R v S ) )</pre> | subproof -> | 39 - 54 |
+| 56 |  | <pre>.   .   ( Q ^ R ) v ( Q ^ S )</pre> | Assume: -> |  |
+| 57 |  | <pre>.   .   .   Q ^ R</pre> | Assume: -> |  |
+| 58 |  | <pre>.   .   .   Q</pre> | E ^ (L) | 57 |
+| 59 |  | <pre>.   .   .   R</pre> | E ^ (R) | 57 |
+| 60 |  | <pre>.   .   .   P v Q</pre> | I v (R) | 58 |
+| 61 |  | <pre>.   .   .   R v S</pre> | I v (L) | 59 |
+| 62 |  | <pre>.   .   .   ( P v Q ) ^ ( R v S )</pre> | I ^ | 60, 61 |
+| 63 |  | <pre>.   .   ( Q ^ R ) -> ( ( P v Q ) ^ ( R v S ) )</pre> | subproof -> | 57 - 62 |
+| 64 |  | <pre>.   .   .   Q ^ S</pre> | Assume: -> |  |
+| 65 |  | <pre>.   .   .   Q</pre> | E ^ (L) | 64 |
+| 66 |  | <pre>.   .   .   S</pre> | E ^ (R) | 64 |
+| 67 |  | <pre>.   .   .   P v Q</pre> | I v (R) | 65 |
+| 68 |  | <pre>.   .   .   R v S</pre> | I v (R) | 66 |
+| 69 |  | <pre>.   .   .   ( P v Q ) ^ ( R v S )</pre> | I ^ | 67, 68 |
+| 70 |  | <pre>.   .   ( Q ^ S ) -> ( ( P v Q ) ^ ( R v S ) )</pre> | subproof -> | 64 - 69 |
+| 71 |  | <pre>.   .   ( P v Q ) ^ ( R v S )</pre> | E v | 63, 70, 56 |
+| 72 |  | <pre>.   ( ( Q ^ R ) v ( Q ^ S ) ) -> ( ( P v Q ) ^ ( R v S ) )</pre> | subproof -> | 56 - 71 |
+| 73 |  | <pre>.   ( P v Q ) ^ ( R v S )</pre> | E v | 55, 72, 38 |
+| 74 |  | <pre>( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) ) -> ( ( P v Q ) ^ ( R v S ) )</pre> | subproof -> | 38 - 73 |
+| 75 |  | <pre>( ( P v Q ) ^ ( R v S ) ) <-> ( ( ( P ^ R ) v ( P ^ S ) ) v ( ( Q ^ R ) v ( Q ^ S ) ) )</pre> | I <-> | 37, 74 |
+
+## ( ( P ^ Q ) v ( R ^ S ) ) <-> ( ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) ) ) <a name="proof-8-2"></a>
+
+| Line | Term vars | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ( P ^ Q ) v ( R ^ S )</pre> | Assume: -> |  |
+| 2 |  | <pre>.   .   P ^ Q</pre> | Assume: -> |  |
+| 3 |  | <pre>.   .   P</pre> | E ^ (L) | 2 |
+| 4 |  | <pre>.   .   Q</pre> | E ^ (R) | 2 |
+| 5 |  | <pre>.   .   P v R</pre> | I v (L) | 3 |
+| 6 |  | <pre>.   .   P v S</pre> | I v (L) | 3 |
+| 7 |  | <pre>.   .   Q v R</pre> | I v (L) | 4 |
+| 8 |  | <pre>.   .   Q v S</pre> | I v (L) | 4 |
+| 9 |  | <pre>.   .   ( P v R ) ^ ( P v S )</pre> | I ^ | 5, 6 |
+| 10 |  | <pre>.   .   ( Q v R ) ^ ( Q v S )</pre> | I ^ | 7, 8 |
+| 11 |  | <pre>.   .   ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) )</pre> | I ^ | 9, 10 |
+| 12 |  | <pre>.   ( P ^ Q ) -> ( ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) ) )</pre> | subproof -> | 2 - 11 |
+| 13 |  | <pre>.   .   R ^ S</pre> | Assume: -> |  |
+| 14 |  | <pre>.   .   R</pre> | E ^ (L) | 13 |
+| 15 |  | <pre>.   .   S</pre> | E ^ (R) | 13 |
+| 16 |  | <pre>.   .   P v R</pre> | I v (R) | 14 |
+| 17 |  | <pre>.   .   P v S</pre> | I v (R) | 15 |
+| 18 |  | <pre>.   .   Q v R</pre> | I v (R) | 14 |
+| 19 |  | <pre>.   .   Q v S</pre> | I v (R) | 15 |
+| 20 |  | <pre>.   .   ( P v R ) ^ ( P v S )</pre> | I ^ | 16, 17 |
+| 21 |  | <pre>.   .   ( Q v R ) ^ ( Q v S )</pre> | I ^ | 18, 19 |
+| 22 |  | <pre>.   .   ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) )</pre> | I ^ | 20, 21 |
+| 23 |  | <pre>.   ( R ^ S ) -> ( ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) ) )</pre> | subproof -> | 13 - 22 |
+| 24 |  | <pre>.   ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) )</pre> | E v | 12, 23, 1 |
+| 25 |  | <pre>( ( P ^ Q ) v ( R ^ S ) ) -> ( ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) ) )</pre> | subproof -> | 1 - 24 |
+| 26 |  | <pre>.   ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) )</pre> | Assume: -> |  |
+| 27 |  | <pre>.   ( P v R ) ^ ( P v S )</pre> | E ^ (L) | 26 |
+| 28 |  | <pre>.   P v R</pre> | E ^ (L) | 27 |
+| 29 |  | <pre>.   P v S</pre> | E ^ (R) | 27 |
+| 30 |  | <pre>.   ( Q v R ) ^ ( Q v S )</pre> | E ^ (R) | 26 |
+| 31 |  | <pre>.   Q v R</pre> | E ^ (L) | 30 |
+| 32 |  | <pre>.   Q v S</pre> | E ^ (R) | 30 |
+| 33 |  | <pre>.   .   P ^ Q</pre> | Assume: -> |  |
+| 34 |  | <pre>.   .   ( P ^ Q ) v ( R ^ S )</pre> | I v (L) | 33 |
+| 35 |  | <pre>.   ( P ^ Q ) -> ( ( P ^ Q ) v ( R ^ S ) )</pre> | subproof -> | 33 - 34 |
+| 36 |  | <pre>.   .   ~ ( P ^ Q )</pre> | Assume: -> |  |
+| 37 |  | <pre>.   .   ~ P v ~ Q</pre> | DeMorgan's theorem: (~ ^) to v | 36 |
+| 38 |  | <pre>.   .   .   ~ P</pre> | Assume: -> |  |
+| 39 |  | <pre>.   .   .   P v R</pre> | Reiterate | 28 |
+| 40 |  | <pre>.   .   .   ~ P -> R</pre> | Theorem: v to -> | 39 |
+| 41 |  | <pre>.   .   .   P v S</pre> | Reiterate | 29 |
+| 42 |  | <pre>.   .   .   ~ P -> S</pre> | Theorem: v to -> | 41 |
+| 43 |  | <pre>.   .   .   R</pre> | E -> | 40, 38 |
+| 44 |  | <pre>.   .   .   S</pre> | E -> | 42, 38 |
+| 45 |  | <pre>.   .   .   R ^ S</pre> | I ^ | 43, 44 |
+| 46 |  | <pre>.   .   .   ( P ^ Q ) v ( R ^ S )</pre> | I v (R) | 45 |
+| 47 |  | <pre>.   .   ~ P -> ( ( P ^ Q ) v ( R ^ S ) )</pre> | subproof -> | 38 - 46 |
+| 48 |  | <pre>.   .   .   ~ Q</pre> | Assume: -> |  |
+| 49 |  | <pre>.   .   .   Q v R</pre> | Reiterate | 31 |
+| 50 |  | <pre>.   .   .   ~ Q -> R</pre> | Theorem: v to -> | 49 |
+| 51 |  | <pre>.   .   .   Q v S</pre> | Reiterate | 32 |
+| 52 |  | <pre>.   .   .   ~ Q -> S</pre> | Theorem: v to -> | 51 |
+| 53 |  | <pre>.   .   .   R</pre> | E -> | 50, 48 |
+| 54 |  | <pre>.   .   .   S</pre> | E -> | 52, 48 |
+| 55 |  | <pre>.   .   .   R ^ S</pre> | I ^ | 53, 54 |
+| 56 |  | <pre>.   .   .   ( P ^ Q ) v ( R ^ S )</pre> | I v (R) | 55 |
+| 57 |  | <pre>.   .   ~ Q -> ( ( P ^ Q ) v ( R ^ S ) )</pre> | subproof -> | 48 - 56 |
+| 58 |  | <pre>.   .   ( P ^ Q ) v ( R ^ S )</pre> | E v | 47, 57, 37 |
+| 59 |  | <pre>.   ~ ( P ^ Q ) -> ( ( P ^ Q ) v ( R ^ S ) )</pre> | subproof -> | 36 - 58 |
+| 60 |  | <pre>.   ( P ^ Q ) v ~ ( P ^ Q )</pre> | Theorem: excluded middle |  |
+| 61 |  | <pre>.   ( P ^ Q ) v ( R ^ S )</pre> | E v | 35, 59, 60 |
+| 62 |  | <pre>( ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) ) ) -> ( ( P ^ Q ) v ( R ^ S ) )</pre> | subproof -> | 26 - 61 |
+| 63 |  | <pre>( ( P ^ Q ) v ( R ^ S ) ) <-> ( ( ( P v R ) ^ ( P v S ) ) ^ ( ( Q v R ) ^ ( Q v S ) ) )</pre> | I <-> | 25, 62 |
+
 # disjunction <a name="disjunction"></a>
 
-## ( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S ) <a name="proof-8-1"></a>
+## ( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S ) <a name="proof-9-1"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -983,7 +1136,7 @@
 | 16 |  | <pre>.   R v S</pre> | E v | 10, 15, 3 |
 | 17 |  | <pre>( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S )</pre> | subproof -> | 1 - 16 |
 
-## ( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v Q ) ) -> ( ~ P v S ) <a name="proof-8-2"></a>
+## ( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v Q ) ) -> ( ~ P v S ) <a name="proof-9-2"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -1006,7 +1159,7 @@
 | 17 |  | <pre>.   ~ P v S</pre> | E v | 11, 16, 3 |
 | 18 |  | <pre>( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v Q ) ) -> ( ~ P v S )</pre> | subproof -> | 1 - 17 |
 
-## ( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v ~ S ) ) -> ( ~ P v ~ Q ) <a name="proof-8-3"></a>
+## ( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v ~ S ) ) -> ( ~ P v ~ Q ) <a name="proof-9-3"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -1030,7 +1183,7 @@
 | 18 |  | <pre>.   ~ P v ~ Q</pre> | E v | 11, 17, 3 |
 | 19 |  | <pre>( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v ~ S ) ) -> ( ~ P v ~ Q )</pre> | subproof -> | 1 - 18 |
 
-## ( ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q ) ) -> R <a name="proof-8-4"></a>
+## ( ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q ) ) -> R <a name="proof-9-4"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -1050,7 +1203,7 @@
 | 14 |  | <pre>.   R</pre> | E v | 9, 13, 2 |
 | 15 |  | <pre>( ( ( P -> R ) v ( Q -> R ) ) ^ ( P ^ Q ) ) -> R</pre> | subproof -> | 1 - 14 |
 
-## ( ( ( P -> R ) v ( Q -> R ) ) ^ ~ R ) -> ( ~ P v ~ Q ) <a name="proof-8-5"></a>
+## ( ( ( P -> R ) v ( Q -> R ) ) ^ ~ R ) -> ( ~ P v ~ Q ) <a name="proof-9-5"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -1074,7 +1227,7 @@
 
 # biconditional <a name="biconditional"></a>
 
-## ( ( P <-> Q ) ^ P ) -> Q <a name="proof-9-1"></a>
+## ( ( P <-> Q ) ^ P ) -> Q <a name="proof-10-1"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -1085,7 +1238,7 @@
 | 5 |  | <pre>.   Q</pre> | E -> | 4, 3 |
 | 6 |  | <pre>( ( P <-> Q ) ^ P ) -> Q</pre> | subproof -> | 1 - 5 |
 
-## ( ( P <-> Q ) ^ ~ P ) -> ~ Q <a name="proof-9-2"></a>
+## ( ( P <-> Q ) ^ ~ P ) -> ~ Q <a name="proof-10-2"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -1100,7 +1253,7 @@
 | 9 |  | <pre>.   ~ Q</pre> | subproof ~ | 5 - 8 |
 | 10 |  | <pre>( ( P <-> Q ) ^ ~ P ) -> ~ Q</pre> | subproof -> | 1 - 9 |
 
-## ( P <-> ~ Q ) -> ( ~ P <-> Q ) <a name="proof-9-3"></a>
+## ( P <-> ~ Q ) -> ( ~ P <-> Q ) <a name="proof-10-3"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -1112,7 +1265,7 @@
 | 6 |  | <pre>.   ~ P <-> Q</pre> | I <-> | 5, 3 |
 | 7 |  | <pre>( P <-> ~ Q ) -> ( ~ P <-> Q )</pre> | subproof -> | 1 - 6 |
 
-## ( P <-> Q ) <-> ( ~ P <-> ~ Q ) <a name="proof-9-4"></a>
+## ( P <-> Q ) <-> ( ~ P <-> ~ Q ) <a name="proof-10-4"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -1132,7 +1285,7 @@
 | 14 |  | <pre>( ~ P <-> ~ Q ) -> ( P <-> Q )</pre> | subproof -> | 8 - 13 |
 | 15 |  | <pre>( P <-> Q ) <-> ( ~ P <-> ~ Q )</pre> | I <-> | 7, 14 |
 
-## ( P <-> Q ) v ~ ( P <-> Q ) <a name="proof-9-5"></a>
+## ( P <-> Q ) v ~ ( P <-> Q ) <a name="proof-10-5"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -1144,7 +1297,7 @@
 | 6 |  | <pre>.   ( P <-> Q ) v ~ ( P <-> Q )</pre> | I v (R) | 5 |
 | 7 |  | <pre>( P <-> Q ) v ~ ( P <-> Q )</pre> | subproof ~ | 1 - 6 |
 
-## ( P <-> ~ Q ) <-> ( ( P v Q ) ^ ( ~ P v ~ Q ) ) <a name="proof-9-6"></a>
+## ( P <-> ~ Q ) <-> ( ( P v Q ) ^ ( ~ P v ~ Q ) ) <a name="proof-10-6"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -1218,7 +1371,7 @@
 
 # miscellaneous <a name="miscellaneous"></a>
 
-## ( ( P -> Q ) -> R ) -> ( ( P -> Q ) -> ( P -> R ) ) <a name="proof-10-1"></a>
+## ( ( P -> Q ) -> R ) -> ( ( P -> Q ) -> ( P -> R ) ) <a name="proof-11-1"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -1232,7 +1385,7 @@
 | 8 |  | <pre>.   ( P -> Q ) -> ( P -> R )</pre> | subproof -> | 2 - 7 |
 | 9 |  | <pre>( ( P -> Q ) -> R ) -> ( ( P -> Q ) -> ( P -> R ) )</pre> | subproof -> | 1 - 8 |
 
-## ( P -> Q ) v ( Q -> R ) <a name="proof-10-2"></a>
+## ( P -> Q ) v ( Q -> R ) <a name="proof-11-2"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -1246,7 +1399,7 @@
 | 8 |  | <pre>.   Q</pre> | E ^ (L) | 7 |
 | 9 |  | <pre>( P -> Q ) v ( Q -> R )</pre> | subproof ~ | 1 - 8 |
 
-## ( P -> Q ) v ( Q -> P ) <a name="proof-10-3"></a>
+## ( P -> Q ) v ( Q -> P ) <a name="proof-11-3"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
