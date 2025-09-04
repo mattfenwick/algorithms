@@ -263,6 +263,10 @@ func ForallIntroProof(boundVar string, hypothesisTermVar string, steps ...Step) 
 	}
 }
 
+func Reit(formula Formula) *Reiterate {
+	return &Reiterate{Formula: formula}
+}
+
 // Reiterate pulls in a formula from an enclosing scope
 type Reiterate struct {
 	Formula Formula

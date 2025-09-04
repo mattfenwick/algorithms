@@ -55,8 +55,8 @@ var quantifierProofs = []*ProofsSection{
 			ForallIntroProof("x", "a",
 				ContraProof(Not(Or(Pa, Not(Pa))), // ~ ( P(a) v ~ P(a) )
 					ContraProof(Pa, // P(a)
-						IOr(Pa, Not(Pa), true),                    // P(a) v ~ P(a)
-						&Reiterate{Formula: Not(Or(Pa, Not(Pa)))}, // ~ ( P(a) v ~ P(a) )
+						IOr(Pa, Not(Pa), true),     // P(a) v ~ P(a)
+						Reit(Not(Or(Pa, Not(Pa)))), // ~ ( P(a) v ~ P(a) )
 					), // ~ P(a)
 					IOr(Pa, Not(Pa), false), // P(a) v ~ P(a)
 				), // P(a) v ~ P(a)
@@ -66,8 +66,8 @@ var quantifierProofs = []*ProofsSection{
 			ExistContraProof("a",
 				Exist("x", Not(Or(Px, Not(Px)))), // ~ ( P(a) v ~ P(a) )
 				ContraProof(Pa, // P(a)
-					IOr(Pa, Not(Pa), true),                    // P(a) v ~ P(a)
-					&Reiterate{Formula: Not(Or(Pa, Not(Pa)))}, // ~ ( P(a) v ~ P(a) )
+					IOr(Pa, Not(Pa), true),     // P(a) v ~ P(a)
+					Reit(Not(Or(Pa, Not(Pa)))), // ~ ( P(a) v ~ P(a) )
 				), // ~ P(a)
 				IOr(Pa, Not(Pa), false), // P(a) v ~ P(a)
 			),
@@ -93,15 +93,15 @@ var quantifierProofs = []*ProofsSection{
 		RootProof("∀x.( ~ Q(x) ) <-> ~ ∃x.( Q(x) )",
 			ArrowProof(Forall("x", Not(Qx)),
 				ExistContraProof("a", Exist("x", Qx),
-					&Reiterate{Formula: Forall("x", Not(Qx))}, // ∀x.( ~ Q(x) )
-					EForall(Not(Qx), "x", "a"),                // ~ Q(a)
+					Reit(Forall("x", Not(Qx))), // ∀x.( ~ Q(x) )
+					EForall(Not(Qx), "x", "a"), // ~ Q(a)
 				),
 			),
 			ArrowProof(Not(Exist("x", Qx)),
 				ForallIntroProof("x", "a",
 					ContraProof(Qa,
-						IExist(Qa, "a", "x"),                     // ∃x.( Q(x) )
-						&Reiterate{Formula: Not(Exist("x", Qx))}, // ~ ∃x.( Q(x) )
+						IExist(Qa, "a", "x"),      // ∃x.( Q(x) )
+						Reit(Not(Exist("x", Qx))), // ~ ∃x.( Q(x) )
 					), // ~ Q(a)
 				), // ∀x.( ~ Q(x) )
 			),
@@ -112,18 +112,18 @@ var quantifierProofs = []*ProofsSection{
 				ContraProof(Not(Exist("x", Not(Qx))), // ~ ∃x.( ~ Q(x) )
 					ForallIntroProof("x", "a",
 						ContraProof(Not(Qa), // ~ Q(a)
-							IExist(Not(Qa), "a", "x"),                     // ∃x.( ~ Q(x) )
-							&Reiterate{Formula: Not(Exist("x", Not(Qx)))}, // ~ ∃x.( ~ Q(x) )
+							IExist(Not(Qa), "a", "x"),      // ∃x.( ~ Q(x) )
+							Reit(Not(Exist("x", Not(Qx)))), // ~ ∃x.( ~ Q(x) )
 						), // Q(a)
 					), // ∀x.( Q(x) )
-					&Reiterate{Formula: Not(Forall("x", Qx))}, // ~ ∀x.( Q(x) )
+					Reit(Not(Forall("x", Qx))), // ~ ∀x.( Q(x) )
 				), // ∃x.( ~ Q(x) )
 			),
 			ArrowProof(Exist("x", Not(Qx)), // ∃x.( ~ Q(x) )
 				ExistElimProof("a", Exist("x", Not(Qx)), // ~ Q(a)
 					ContraProof(Forall("x", Qx), // ∀x.( Q(x) )
-						EForall(Qx, "x", "a"),        // Q(a)
-						&Reiterate{Formula: Not(Qa)}, // ~ Q(a)
+						EForall(Qx, "x", "a"), // Q(a)
+						Reit(Not(Qa)),         // ~ Q(a)
 					), // ~ ∀x.( Q(x) )
 				), // ~ // ∀x.( Q(x) )
 			),
@@ -176,14 +176,14 @@ var quantifierProofs = []*ProofsSection{
 				ArrowProof(Exist("x", Qx),
 					ExistElimProof("a",
 						Exist("x", Qx),
-						&Reiterate{Formula: T},
+						Reit(T),
 						IExist(T, "a", "x"),
 					), // ∃x.( T )
 				), // ∃x.( Q(x) ) -> ∃x.( T )
 				ArrowProof(Exist("x", Not(Qx)),
 					ExistElimProof("a",
 						Exist("x", Not(Qx)),
-						&Reiterate{Formula: T},
+						Reit(T),
 						IExist(T, "a", "x"),
 					), // ∃x.( T )
 				), // ∃x.( ~ Q(x) ) -> ∃x.( T )
@@ -216,25 +216,25 @@ var quantifierProofs = []*ProofsSection{
 				ExistContraProof("a",
 					Exist("x", T), // T
 					ContraProof(Qa,
-						&Reiterate{Formula: Not(Exist("x", Qx))}, // ~ ∃x.( Q(x) )
-						IExist(Qa, "a", "x"),                     // ∃x.( Q(x) )
+						Reit(Not(Exist("x", Qx))), // ~ ∃x.( Q(x) )
+						IExist(Qa, "a", "x"),      // ∃x.( Q(x) )
 					), // ~ Q(a)
-					&Reiterate{Formula: Not(Exist("x", Not(Qx)))}, // ~ ∃x.( ~ Q(x) )
-					IExist(Not(Qa), "a", "x"),                     // ∃x.( ~ Q(x) )
+					Reit(Not(Exist("x", Not(Qx)))), // ~ ∃x.( ~ Q(x) )
+					IExist(Not(Qa), "a", "x"),      // ∃x.( ~ Q(x) )
 				), // ~ ∃x.( T )
 			),
 			ArrowProof(Not(Exist("x", T)),
 				ExistContraProof("a",
-					Exist("x", Qx),                          // Q(a)
-					&Reiterate{Formula: T},                  // T
-					IExist(T, "a", "x"),                     // ∃x.( T )
-					&Reiterate{Formula: Not(Exist("x", T))}, // ~ ∃x.( T )
+					Exist("x", Qx),           // Q(a)
+					Reit(T),                  // T
+					IExist(T, "a", "x"),      // ∃x.( T )
+					Reit(Not(Exist("x", T))), // ~ ∃x.( T )
 				), // ~ ∃x.( Q(x) )
 				ExistContraProof("a",
-					Exist("x", Not(Qx)),                     // ~ Q(a)
-					&Reiterate{Formula: T},                  // T
-					IExist(T, "a", "x"),                     // ∃x.( T )
-					&Reiterate{Formula: Not(Exist("x", T))}, // ~ ∃x.( T )
+					Exist("x", Not(Qx)),      // ~ Q(a)
+					Reit(T),                  // T
+					IExist(T, "a", "x"),      // ∃x.( T )
+					Reit(Not(Exist("x", T))), // ~ ∃x.( T )
 				), // ~ ∃x.( ~ Q(x) )
 				IAnd(Not(Exist("x", Qx)), Not(Exist("x", Not(Qx)))), // ~ ∃x.( Q(x) ) ^ ~ ∃x.( ~ Q(x) )
 			),
@@ -251,7 +251,7 @@ var quantifierProofs = []*ProofsSection{
 				EAnd(P, Exist("x", Qx), false),
 				ExistElimProof("a",
 					Exist("x", Qx),               // Q(a)
-					&Reiterate{Formula: P},       // P
+					Reit(P),                      // P
 					IAnd(P, Qa),                  // P ^ Q(a)
 					IExist(And(P, Qa), "a", "x"), // ∃x.( P ^ Q(x) )
 				), // ∃x.( P ^ Q(x) )
@@ -276,24 +276,24 @@ var quantifierProofs = []*ProofsSection{
 					EAnd(P, Forall("x", Qx), true),  // P
 					EAnd(P, Forall("x", Qx), false), // ∀x.( Q(x) )
 					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", Qx)}, // ∀x.( Q(x) )
-						EForall(Qx, "x", "a"),                // Q(a)
-						&Reiterate{Formula: P},               // P
-						IAnd(P, Qa),                          // P ^ Q(a)
+						Reit(Forall("x", Qx)), // ∀x.( Q(x) )
+						EForall(Qx, "x", "a"), // Q(a)
+						Reit(P),               // P
+						IAnd(P, Qa),           // P ^ Q(a)
 					), // ∀x.( P ^ Q(x) )
 				),
 				ArrowProof(Forall("x", And(P, Qx)),
-					&Reiterate{Formula: Exist("x", T)},
+					Reit(Exist("x", T)),
 					ExistElimProof("a",
-						Exist("x", T), // T
-						&Reiterate{Formula: Forall("x", And(P, Qx))}, // ∀x.( P ^ Q(x) )
-						EForall(And(P, Qx), "x", "a"),                // P ^ Q(a)
-						EAnd(P, Qa, true),                            // P
+						Exist("x", T),                 // T
+						Reit(Forall("x", And(P, Qx))), // ∀x.( P ^ Q(x) )
+						EForall(And(P, Qx), "x", "a"), // P ^ Q(a)
+						EAnd(P, Qa, true),             // P
 					), // P
 					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", And(P, Qx))}, // ∀x.( P ^ Q(x) )
-						EForall(And(P, Qx), "x", "a"),                // P ^ Q(a)
-						EAnd(P, Qa, false),                           // Q(a)
+						Reit(Forall("x", And(P, Qx))), // ∀x.( P ^ Q(x) )
+						EForall(And(P, Qx), "x", "a"), // P ^ Q(a)
+						EAnd(P, Qa, false),            // Q(a)
 					), // ∀x.( Q(x) )
 					IAnd(P, Forall("x", Qx)), // P ^ ∀x.( Q(x) )
 				),
@@ -318,12 +318,12 @@ var quantifierProofs = []*ProofsSection{
 		RootProof("∀x.( P(x) ^ Q(x) ) <-> ( ∀x.( P(x) ) ^ ∀x.( Q(x) ) )",
 			ArrowProof(Forall("x", And(Px, Qx)),
 				ForallIntroProof("x", "a",
-					&Reiterate{Formula: Forall("x", And(Px, Qx))},
+					Reit(Forall("x", And(Px, Qx))),
 					EForall(And(Px, Qx), "x", "a"),
 					EAnd(Pa, Qa, true), // P(a)
 				), // ∀x.( P(x) )
 				ForallIntroProof("x", "a",
-					&Reiterate{Formula: Forall("x", And(Px, Qx))},
+					Reit(Forall("x", And(Px, Qx))),
 					EForall(And(Px, Qx), "x", "a"),
 					EAnd(Pa, Qa, false), // Q(a)
 				), // ∀x.( Q(x) )
@@ -331,7 +331,7 @@ var quantifierProofs = []*ProofsSection{
 			),
 			ArrowProof(And(Forall("x", Px), Forall("x", Qx)),
 				ForallIntroProof("x", "a",
-					&Reiterate{Formula: And(Forall("x", Px), Forall("x", Qx))},
+					Reit(And(Forall("x", Px), Forall("x", Qx))),
 					EAnd(Forall("x", Px), Forall("x", Qx), true),  // ∀x.( P(x) )
 					EAnd(Forall("x", Px), Forall("x", Qx), false), // ∀x.( Q(x) )
 					EForall(Px, "x", "a"),                         // P(a)
@@ -350,10 +350,10 @@ var quantifierProofs = []*ProofsSection{
 			ArrowProof(Exist("x", T),
 				ArrowProof(Or(P, Exist("x", Qx)),
 					ArrowProof(P,
-						&Reiterate{Formula: Exist("x", T)}, // ∃x.T
+						Reit(Exist("x", T)), // ∃x.T
 						ExistElimProof("a",
 							Exist("x", T),               // T
-							&Reiterate{Formula: P},      // P
+							Reit(P),                     // P
 							IOr(P, Qa, true),            // P v Q(a)
 							IExist(Or(P, Qa), "a", "x"), // ∃x.( P v Q(x) )
 						), // ∃x.( P v Q(x) )
@@ -390,15 +390,15 @@ var quantifierProofs = []*ProofsSection{
 			ArrowProof(Or(P, Forall("x", Qx)),
 				ArrowProof(P,
 					ForallIntroProof("x", "a",
-						&Reiterate{Formula: P}, // P
-						IOr(P, Qa, true),       // P v Q(a)
+						Reit(P),          // P
+						IOr(P, Qa, true), // P v Q(a)
 					), // ∀x.( P v Q(x) )
 				), // P -> ∀x.( P v Q(x) )
 				ArrowProof(Forall("x", Qx),
 					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", Qx)}, // ∀x.( Q(x) )
-						EForall(Qx, "x", "a"),                // Q(a)
-						IOr(P, Qa, false),                    // P v Q(a)
+						Reit(Forall("x", Qx)), // ∀x.( Q(x) )
+						EForall(Qx, "x", "a"), // Q(a)
+						IOr(P, Qa, false),     // P v Q(a)
 					), // ∀x.( P v Q(x) )
 				), // ∀x.( Q(x) ) -> ∀x.( P v Q(x) )
 				EOr(P, Forall("x", Qx), Forall("x", Or(P, Qx))), // ∀x.( P v Q(x) )
@@ -409,11 +409,11 @@ var quantifierProofs = []*ProofsSection{
 				), // P -> ( P v ∀x.( Q(x) ) )
 				ArrowProof(Not(P),
 					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", Or(P, Qx))}, // ∀x.( P v Q(x) )
-						EForall(Or(P, Qx), "x", "a"),                // P v Q(a)
-						DisjunctionArrowTheorem(P, Qa),              // ~ P -> Q(a)
-						&Reiterate{Formula: Not(P)},                 // ~ P
-						EImply(Not(P), Qa),                          // Q(a)
+						Reit(Forall("x", Or(P, Qx))),   // ∀x.( P v Q(x) )
+						EForall(Or(P, Qx), "x", "a"),   // P v Q(a)
+						DisjunctionArrowTheorem(P, Qa), // ~ P -> Q(a)
+						Reit(Not(P)),                   // ~ P
+						EImply(Not(P), Qa),             // Q(a)
 					), // ∀x.( Q(x) )
 					IOr(P, Forall("x", Qx), false), // P v ∀x.( Q(x) )
 				), // ~ P -> ( P v ∀x.( Q(x) ) )
@@ -465,7 +465,7 @@ var quantifierProofs = []*ProofsSection{
 		RootProof("( ∀x.( P(x) ) v ∀x.( Q(x) ) ) -> ∀x.( P(x) v Q(x) )",
 			ArrowProof(Or(Forall("x", Px), Forall("x", Qx)),
 				ForallIntroProof("x", "a",
-					&Reiterate{Formula: Or(Forall("x", Px), Forall("x", Qx))},
+					Reit(Or(Forall("x", Px), Forall("x", Qx))),
 					ArrowProof(Forall("x", Px),
 						EForall(Px, "x", "a"),
 						IOr(Pa, Qa, true),
@@ -483,21 +483,21 @@ var quantifierProofs = []*ProofsSection{
 		RootProof("∃x.( T ) -> ( ( P -> ∃x.( Q(x) ) ) <-> ∃x.( P -> Q(x) ) )",
 			ArrowProof(Exist("x", T),
 				ArrowProof(Arrow(P, Exist("x", Qx)),
-					&Reiterate{Formula: Exist("x", T)},
+					Reit(Exist("x", T)),
 					ExistElimProof("a",
 						Exist("x", T),
 						ArrowProof(P,
-							&Reiterate{Formula: Arrow(P, Exist("x", Qx))}, // P -> ∃x.( Q(x) )
-							EImply(P, Exist("x", Qx)),                     // ∃x.( Q(x)
+							Reit(Arrow(P, Exist("x", Qx))), // P -> ∃x.( Q(x) )
+							EImply(P, Exist("x", Qx)),      // ∃x.( Q(x)
 							ExistElimProof("b", Exist("x", Qx),
-								&Reiterate{Formula: P},         // P
+								Reit(P),                        // P
 								IImply(P, Qb),                  // P -> Q(b)
 								IExist(Arrow(P, Qb), "b", "x"), // ∃x.( P -> Q(x) )
 							), // ∃x.( P -> Q(x) )
 						), // P -> ∃x.( P -> Q(x) )
 						ArrowProof(Not(P),
 							ArrowProof(Not(Qa),
-								&Reiterate{Formula: Not(P)},
+								Reit(Not(P)),
 							), // ~ Q(a) -> ~ P
 							ContrapositiveTheorem(Not(Qa), Not(P)), // P -> Q(a)
 							IExist(Arrow(P, Qa), "a", "x"),         // ∃x.( P -> Q(x) )
@@ -508,10 +508,10 @@ var quantifierProofs = []*ProofsSection{
 				),
 				ArrowProof(Exist("x", Arrow(P, Qx)),
 					ArrowProof(P,
-						&Reiterate{Formula: Exist("x", Arrow(P, Qx))},
+						Reit(Exist("x", Arrow(P, Qx))),
 						ExistElimProof("a",
 							Exist("x", Arrow(P, Qx)), // P -> Q(a)
-							&Reiterate{Formula: P},   // P
+							Reit(P),                  // P
 							EImply(P, Qa),            // Q(a)
 							IExist(Qa, "a", "x"),     // ∃x.( Q(x) )
 						), // ∃x.( Q(x) )
@@ -527,19 +527,19 @@ var quantifierProofs = []*ProofsSection{
 			ArrowProof(Arrow(P, Forall("x", Qx)),
 				ForallIntroProof("x", "a",
 					ArrowProof(P,
-						&Reiterate{Formula: Arrow(P, Forall("x", Qx))}, // P -> ∀x.( Q(x) )
-						EImply(P, Forall("x", Qx)),                     // ∀x.( Q(x) )
-						EForall(Qx, "x", "a"),                          // Q(a)
+						Reit(Arrow(P, Forall("x", Qx))), // P -> ∀x.( Q(x) )
+						EImply(P, Forall("x", Qx)),      // ∀x.( Q(x) )
+						EForall(Qx, "x", "a"),           // Q(a)
 					), // P -> Q(a)
 				), // ∀x.( P -> Q(x) )
 			),
 			ArrowProof(Forall("x", Arrow(P, Qx)),
 				ArrowProof(P,
 					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", Arrow(P, Qx))}, // ∀x.( P -> Q(x) )
-						EForall(Arrow(P, Qx), "x", "a"),                // P -> Q(a)
-						&Reiterate{Formula: P},                         // P
-						EImply(P, Qa),                                  // Q(a)
+						Reit(Forall("x", Arrow(P, Qx))), // ∀x.( P -> Q(x) )
+						EForall(Arrow(P, Qx), "x", "a"), // P -> Q(a)
+						Reit(P),                         // P
+						EImply(P, Qa),                   // Q(a)
 					), // ∀x.( Q(x) )
 				), // P -> ∀x.( Q(x) )
 			),
@@ -552,12 +552,12 @@ var quantifierProofs = []*ProofsSection{
 			ArrowProof(Exist("x", T),
 				ArrowProof(Arrow(Exist("x", Px), Exist("x", Qx)),
 					ArrowProof(Exist("x", Px),
-						&Reiterate{Formula: Arrow(Exist("x", Px), Exist("x", Qx))},
+						Reit(Arrow(Exist("x", Px), Exist("x", Qx))),
 						EImply(Exist("x", Px), Exist("x", Qx)), // ∃x.( Q(x) )
 						ExistElimProof("a",
 							Exist("x", Qx), // Q(a)
 							ArrowProof(Pa, // P(a)
-								&Reiterate{Formula: Qa}, // Q(a)
+								Reit(Qa), // Q(a)
 							), // P(a) -> Q(a)
 							IExist(Arrow(Pa, Qa), "a", "x"), // ∃x.( P(x) -> Q(x) )
 						), // ∃x.( P(x) -> Q(x) )
@@ -567,13 +567,13 @@ var quantifierProofs = []*ProofsSection{
 							ExistContraProof("a",
 								Exist("x", T), // T
 								ContraProof(Pa,
-									IExist(Pa, "a", "x"),                     // ∃x.( P(x) )
-									&Reiterate{Formula: Not(Exist("x", Px))}, // ~ ∃x.( P(x) )
+									IExist(Pa, "a", "x"),      // ∃x.( P(x) )
+									Reit(Not(Exist("x", Px))), // ~ ∃x.( P(x) )
 								), // ~ P(a)
-								&Reiterate{Formula: Not(Exist("x", Not(Px)))}, // ~ ∃x.( ~ P(x) )
-								IExist(Not(Pa), "a", "x"),                     // ∃x.( ~ P(x) )
+								Reit(Not(Exist("x", Not(Px)))), // ~ ∃x.( ~ P(x) )
+								IExist(Not(Pa), "a", "x"),      // ∃x.( ~ P(x) )
 							), // ~ ∃x.( T )
-							&Reiterate{Formula: Exist("x", T)}, // ∃x.( T )
+							Reit(Exist("x", T)), // ∃x.( T )
 						), // ∃x.( ~ P(x) )
 						ExistElimProof("a",
 							Exist("x", Not(Px)),                  // ~ P(a)
@@ -591,11 +591,11 @@ var quantifierProofs = []*ProofsSection{
 			ArrowProof(Forall("x", Arrow(Px, Qx)),
 				ArrowProof(Forall("x", Px),
 					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", Arrow(Px, Qx))}, // ∀x.( P(x) -> Q(x) )
-						&Reiterate{Formula: Forall("x", Px)},            // ∀x.( P(x) )
-						EForall(Arrow(Px, Qx), "x", "a"),                // P(a) -> Q(a)
-						EForall(Px, "x", "a"),                           // P(a)
-						EImply(Pa, Qa),                                  // Q(a)
+						Reit(Forall("x", Arrow(Px, Qx))), // ∀x.( P(x) -> Q(x) )
+						Reit(Forall("x", Px)),            // ∀x.( P(x) )
+						EForall(Arrow(Px, Qx), "x", "a"), // P(a) -> Q(a)
+						EForall(Px, "x", "a"),            // P(a)
+						EImply(Pa, Qa),                   // Q(a)
 					),
 				),
 			),
@@ -604,24 +604,24 @@ var quantifierProofs = []*ProofsSection{
 			ArrowProof(Exist("x", T),
 				ArrowProof(Arrow(Exist("x", Px), Q),
 					ArrowProof(Exist("x", Px),
-						&Reiterate{Formula: Arrow(Exist("x", Px), Q)}, // ∃x.( P(x) ) -> Q
-						EImply(Exist("x", Px), Q),                     // Q
+						Reit(Arrow(Exist("x", Px), Q)), // ∃x.( P(x) ) -> Q
+						EImply(Exist("x", Px), Q),      // Q
 						ExistElimProof("a",
 							Exist("x", Px),                 // P(a)
-							&Reiterate{Formula: Q},         // Q
+							Reit(Q),                        // Q
 							IImply(Pa, Q),                  // P(a) -> Q
 							IExist(Arrow(Pa, Q), "a", "x"), // ∃x.( P(x) -> Q )
 						), // ∃x.( P(x) -> Q )
 					), // ∃x.( P(x) ) -> ∃x.( P(x) -> Q )
 					ArrowProof(Not(Exist("x", Px)),
 						ContraProof(Not(Exist("x", Not(Px))),
-							&Reiterate{Formula: Exist("x", T)}, // ∃x.( T )
+							Reit(Exist("x", T)), // ∃x.( T )
 							ExistElimProof("a",
 								Exist("x", T),             // T
 								ExcludedMiddleTheorem(Pa), // P(a) v ~ P(a)
 								ContraProof(Pa, // P(a)
-									IExist(Pa, "a", "x"),                     // ∃x.( P(x) )
-									&Reiterate{Formula: Not(Exist("x", Px))}, // ~ ∃x.( P(x) )
+									IExist(Pa, "a", "x"),      // ∃x.( P(x) )
+									Reit(Not(Exist("x", Px))), // ~ ∃x.( P(x) )
 								), // ~ P(a)
 								IExist(Not(Pa), "a", "x"), // ∃x.( ~ P(x) )
 							), // ∃x.( ~ P(x) )
@@ -642,14 +642,14 @@ var quantifierProofs = []*ProofsSection{
 			ArrowProof(Exist("x", T),
 				ArrowProof(Forall("x", Arrow(Px, Q)),
 					ArrowProof(Forall("x", Px),
-						&Reiterate{Formula: Exist("x", T)},
+						Reit(Exist("x", T)),
 						ExistElimProof("a",
 							Exist("x", T),
-							&Reiterate{Formula: Forall("x", Arrow(Px, Q))}, // ∀x.( P(x) -> Q )
-							&Reiterate{Formula: Forall("x", Px)},           // ∀x.( P(x) )
-							EForall(Arrow(Px, Q), "x", "a"),                // P(a) -> Q
-							EForall(Px, "x", "a"),                          // P(a)
-							EImply(Pa, Q),                                  // Q
+							Reit(Forall("x", Arrow(Px, Q))), // ∀x.( P(x) -> Q )
+							Reit(Forall("x", Px)),           // ∀x.( P(x) )
+							EForall(Arrow(Px, Q), "x", "a"), // P(a) -> Q
+							EForall(Px, "x", "a"),           // P(a)
+							EImply(Pa, Q),                   // Q
 						), // Q
 					), // ∀x.( P(x) ) -> Q
 				), // ∀x.( P(x) -> Q ) -> ( ∀x.( P(x) ) -> Q )
@@ -673,9 +673,9 @@ var quantifierProofs = []*ProofsSection{
 			ArrowProof(Forall("x", Forall("y", Pxy)),
 				ForallIntroProof("y", "b",
 					ForallIntroProof("x", "a",
-						&Reiterate{Formula: Forall("x", Forall("y", Pxy))}, // ∀x.( ∀y.( P(x,y) ) )
-						EForall(Forall("y", Pxy), "x", "a"),                // ∀y.( P(a,y) )
-						EForall(Pay, "y", "b"),                             // P(a,b)
+						Reit(Forall("x", Forall("y", Pxy))), // ∀x.( ∀y.( P(x,y) ) )
+						EForall(Forall("y", Pxy), "x", "a"), // ∀y.( P(a,y) )
+						EForall(Pay, "y", "b"),              // P(a,b)
 					), // ∀x.( P(x,b) ) )
 				), // ∀y .( ∀x.( P(x,y) ) )
 			),
@@ -683,7 +683,7 @@ var quantifierProofs = []*ProofsSection{
 		RootProof("∃x.( ∀y.( P(x,y) ) ) -> ∀y.( ∃x.( P(x,y) ) )",
 			ArrowProof(Exist("x", Forall("y", Pxy)),
 				ForallIntroProof("y", "a",
-					&Reiterate{Formula: Exist("x", Forall("y", Pxy))}, // ∃x.( ∀y.( P(x,y) ) )
+					Reit(Exist("x", Forall("y", Pxy))), // ∃x.( ∀y.( P(x,y) ) )
 					ExistElimProof("b",
 						Exist("x", Forall("y", Pxy)), // ∀y.( P(b,y) )
 						EForall(Pby, "y", "a"),       // P(b,a)
@@ -697,9 +697,9 @@ var quantifierProofs = []*ProofsSection{
 				ExistElimProof("b",
 					Exist("x", Forall("y", Pxy)), // ∀y.( P(b,y) )
 					ForallIntroProof("y", "a",
-						&Reiterate{Formula: Forall("y", Pby)}, // ∀y.( P(b,y) )
-						EForall(Pby, "y", "a"),                // P(b,a)
-						IExist(Pba, "b", "x"),                 // ∃x.( P(x,a) )
+						Reit(Forall("y", Pby)), // ∀y.( P(b,y) )
+						EForall(Pby, "y", "a"), // P(b,a)
+						IExist(Pba, "b", "x"),  // ∃x.( P(x,a) )
 					), // ∀y.( ∃x.( P(x,a) ) )
 				), // ∀y.( ∃x.( P(x,y) ) )
 			),
@@ -710,10 +710,10 @@ var quantifierProofs = []*ProofsSection{
 			ArrowProof(P,
 				ArrowProof(Forall("x", Not(P)),
 					ExistContraProof("a",
-						Exist("x", T),                            // T
-						&Reiterate{Formula: Forall("x", Not(P))}, // ∀x.( ~ P )
-						EForall(Not(P), "x", "a"),                // ~ P
-						&Reiterate{Formula: P},                   // P
+						Exist("x", T),             // T
+						Reit(Forall("x", Not(P))), // ∀x.( ~ P )
+						EForall(Not(P), "x", "a"), // ~ P
+						Reit(P),                   // P
 					), // ~ ∃x.( T )
 				),
 			),
@@ -725,7 +725,7 @@ var quantifierProofs = []*ProofsSection{
 						Exist("x", T), // T
 						ContraProof(Forall("x", Not(P)),
 							EForall(Not(P), "x", "a"), // ~ P
-							&Reiterate{Formula: P},    // P
+							Reit(P),                   // P
 						), // ~ ∀x.( ~ P )
 					), // ~ ∀x.( ~ P )
 				),
@@ -734,11 +734,11 @@ var quantifierProofs = []*ProofsSection{
 		RootProof("∃x.( T ) -> ( ∀x.( ~ P ) -> ~ P )",
 			ArrowProof(Exist("x", T),
 				ArrowProof(Forall("x", Not(P)),
-					&Reiterate{Formula: Exist("x", T)}, // ∃x.( T )
+					Reit(Exist("x", T)), // ∃x.( T )
 					ExistElimProof("a",
-						Exist("x", T),                            // T
-						&Reiterate{Formula: Forall("x", Not(P))}, // ∀x.( ~ P )
-						EForall(Not(P), "x", "a"),                // ~ P
+						Exist("x", T),             // T
+						Reit(Forall("x", Not(P))), // ∀x.( ~ P )
+						EForall(Not(P), "x", "a"), // ~ P
 					), // ~ P
 				),
 			),
@@ -751,11 +751,11 @@ var quantifierProofs = []*ProofsSection{
 					), // R
 				), // ∃x.( R ) -> R
 				ArrowProof(R,
-					&Reiterate{Formula: Exist("x", T)}, //  ∃x.( T )
+					Reit(Exist("x", T)), //  ∃x.( T )
 					ExistElimProof("a",
-						Exist("x", T),          // T
-						&Reiterate{Formula: R}, // R
-						IExist(R, "a", "x"),    // ∃x.( R )
+						Exist("x", T),       // T
+						Reit(R),             // R
+						IExist(R, "a", "x"), // ∃x.( R )
 					),
 				), // R -> ∃x.( R )
 				IDArrow(R, Exist("x", R)),
@@ -765,15 +765,15 @@ var quantifierProofs = []*ProofsSection{
 			ArrowProof(Exist("x", T),
 				ArrowProof(R,
 					ForallIntroProof("x", "a",
-						&Reiterate{Formula: R},
+						Reit(R),
 					),
 				), // R -> ∀x.( R )
 				ArrowProof(Forall("x", R),
-					&Reiterate{Formula: Exist("x", T)}, // ∃x.( T )
+					Reit(Exist("x", T)), // ∃x.( T )
 					ExistElimProof("a",
-						Exist("x", T),                       // T
-						&Reiterate{Formula: Forall("x", R)}, // ∀x.( R )
-						EForall(R, "x", "a"),                // R
+						Exist("x", T),        // T
+						Reit(Forall("x", R)), // ∀x.( R )
+						EForall(R, "x", "a"), // R
 					), // R
 				), // ∀x.( R ) -> R
 				IDArrow(R, Forall("x", R)),
@@ -794,10 +794,10 @@ var quantifierProofs = []*ProofsSection{
 				EAnd(Forall("x", Qx), Exist("x", Arrow(Qx, R)), true),  // ∀x.( Q(x) )
 				EAnd(Forall("x", Qx), Exist("x", Arrow(Qx, R)), false), // ∃x.( Q(x) -> R )
 				ExistElimProof("a",
-					Exist("x", Arrow(Qx, R)),             // Q(a) -> R
-					&Reiterate{Formula: Forall("x", Qx)}, // ∀x.( Q(x) )
-					EForall(Qx, "x", "a"),                // Q(a)
-					EImply(Qa, R),                        // R
+					Exist("x", Arrow(Qx, R)), // Q(a) -> R
+					Reit(Forall("x", Qx)),    // ∀x.( Q(x) )
+					EForall(Qx, "x", "a"),    // Q(a)
+					EImply(Qa, R),            // R
 				),
 			),
 		),
@@ -806,10 +806,10 @@ var quantifierProofs = []*ProofsSection{
 				EAnd(Forall("x", Qx), Exist("x", T), true),  // ∀x.( Q(x) )
 				EAnd(Forall("x", Qx), Exist("x", T), false), // ∃x.( T )
 				ExistElimProof("a",
-					Exist("x", T),                        // T
-					&Reiterate{Formula: Forall("x", Qx)}, // ∀x.( Q(x) )
-					EForall(Qx, "x", "a"),                // Q(a)
-					IExist(Qa, "a", "x"),                 // ∃x.( Q(x) )
+					Exist("x", T),         // T
+					Reit(Forall("x", Qx)), // ∀x.( Q(x) )
+					EForall(Qx, "x", "a"), // Q(a)
+					IExist(Qa, "a", "x"),  // ∃x.( Q(x) )
 				), // ∃x.( Q(x) )
 			), // ( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )
 		),
