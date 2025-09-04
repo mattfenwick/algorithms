@@ -42,7 +42,7 @@
     5. [( P v ( Q ^ R ) ) <-> ( ( P v Q ) ^ ( P v R ) )](#proof-6-5)
 7. [anti-distributivity](#anti-distributivity)
     1. [( ( P v Q ) -> R ) <-> ( ( P -> R ) ^ ( Q -> R ) )](#proof-7-1)
-    2. [( ( P -> R ) v ( Q -> R ) ) <-> ( ( P ^ Q ) -> R )](#proof-7-2)
+    2. [( ( P ^ Q ) -> R ) <-> ( ( P -> R ) v ( Q -> R ) )](#proof-7-2)
 8. [disjunction](#disjunction)
     1. [( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( P v Q ) ) -> ( R v S )](#proof-8-1)
     2. [( ( ( P -> R ) ^ ( Q -> S ) ) ^ ( ~ R v Q ) ) -> ( ~ P v S )](#proof-8-2)
@@ -921,7 +921,7 @@
 | 21 |  | <pre>( ( P -> R ) ^ ( Q -> R ) ) -> ( ( P v Q ) -> R )</pre> | subproof -> | 14 - 20 |
 | 22 |  | <pre>( ( P v Q ) -> R ) <-> ( ( P -> R ) ^ ( Q -> R ) )</pre> | I <-> | 13, 21 |
 
-## ( ( P -> R ) v ( Q -> R ) ) <-> ( ( P ^ Q ) -> R ) <a name="proof-7-2"></a>
+## ( ( P ^ Q ) -> R ) <-> ( ( P -> R ) v ( Q -> R ) ) <a name="proof-7-2"></a>
 
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
@@ -957,7 +957,7 @@
 | 30 |  | <pre>.   .   R</pre> | E -> | 28, 29 |
 | 31 |  | <pre>.   ( P -> R ) v ( Q -> R )</pre> | subproof ~ | 19 - 30 |
 | 32 |  | <pre>( ( P ^ Q ) -> R ) -> ( ( P -> R ) v ( Q -> R ) )</pre> | subproof -> | 18 - 31 |
-| 33 |  | <pre>( ( P -> R ) v ( Q -> R ) ) <-> ( ( P ^ Q ) -> R )</pre> | I <-> | 17, 32 |
+| 33 |  | <pre>( ( P ^ Q ) -> R ) <-> ( ( P -> R ) v ( Q -> R ) )</pre> | I <-> | 32, 17 |
 
 # disjunction <a name="disjunction"></a>
 

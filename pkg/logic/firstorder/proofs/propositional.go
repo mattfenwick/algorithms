@@ -799,7 +799,7 @@ var propositionalProofSections = []*ProofsSection{
 			),
 			IDArrow(Arrow(Or(P, Q), R), And(Arrow(P, R), Arrow(Q, R))),
 		),
-		RootProof("( ( P -> R ) v ( Q -> R ) ) <-> ( ( P ^ Q ) -> R )",
+		RootProof("( ( P ^ Q ) -> R ) <-> ( ( P -> R ) v ( Q -> R ) )",
 			ArrowProof(Or(Arrow(P, R), Arrow(Q, R)),
 				ArrowProof(Arrow(P, R),
 					ArrowProof(And(P, Q),
@@ -834,7 +834,7 @@ var propositionalProofSections = []*ProofsSection{
 					EImply(And(P, Q), R),                            // R
 				), // ( P -> R ) v ( Q -> R )
 			),
-			IDArrow(Or(Arrow(P, R), Arrow(Q, R)), Arrow(And(P, Q), R)),
+			IDArrow(Arrow(And(P, Q), R), Or(Arrow(P, R), Arrow(Q, R))),
 		),
 	),
 	NewProofsSection("disjunction",
