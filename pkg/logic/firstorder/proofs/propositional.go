@@ -706,6 +706,18 @@ var propositionalProofSections = []*ProofsSection{
 				And(Arrow(P, Q), Arrow(P, R)),
 			),
 		),
+		RootProof("( P ^ ( Q -> R ) ) -> ( ( P ^ Q ) -> ( P ^ R ) )",
+			ArrowProof(And(P, Arrow(Q, R)),
+				ArrowProof(And(P, Q),
+					Reit(And(P, Arrow(Q, R))),
+					EAnd(P, Q, true),
+					EAnd(P, Q, false),
+					EAnd(P, Arrow(Q, R), false),
+					EImply(Q, R),
+					IAnd(P, R),
+				),
+			),
+		),
 		RootProof("( P ^ ( Q v R ) ) <-> ( ( P ^ Q ) v ( P ^ R ) )",
 			ArrowProof(And(P, Or(Q, R)),
 				EAnd(P, Or(Q, R), true),
@@ -740,6 +752,104 @@ var propositionalProofSections = []*ProofsSection{
 			IDArrow(
 				And(P, Or(Q, R)),
 				Or(And(P, Q), And(P, R)),
+			),
+		),
+		RootProof("( P v ( Q -> R ) ) <-> ( ( P v Q ) -> ( P v R ) )",
+			ArrowProof(Or(P, Arrow(Q, R)),
+				ArrowProof(Or(P, Q),
+					ArrowProof(P,
+						IOr(P, R, true),
+					), // P -> ( P v R )
+					ArrowProof(Not(P),
+						Reit(Or(P, Arrow(Q, R))),                // P v ( Q -> R )
+						DisjunctionArrowTheorem(P, Arrow(Q, R)), // ~ P -> ( Q -> R )
+						EImply(Not(P), Arrow(Q, R)),             // Q -> R
+						Reit(Or(P, Q)),                          // P v Q
+						DisjunctionArrowTheorem(P, Q),           // ~ P -> Q
+						EImply(Not(P), Q),                       // Q
+						EImply(Q, R),                            // R
+						IOr(P, R, false),                        // P v R
+					), // ~ P -> ( P v R )
+					ExcludedMiddleTheorem(P),
+					EOr(P, Not(P), Or(P, R)),
+				),
+			),
+			ArrowProof(Arrow(Or(P, Q), Or(P, R)),
+				ArrowProof(P,
+					IOr(P, Arrow(Q, R), true),
+				), // P -> ( P v ( Q -> R ) )
+				ArrowProof(Not(P),
+					ArrowProof(Q,
+						Reit(Arrow(Or(P, Q), Or(P, R))), // ( P v Q ) -> ( P v R )
+						IOr(P, Q, false),                // P v Q
+						EImply(Or(P, Q), Or(P, R)),      // P v R
+						DisjunctionArrowTheorem(P, R),   // ~ P -> R
+						Reit(Not(P)),                    // ~ P
+						EImply(Not(P), R),               // R
+						IImply(Q, R),                    // Q -> R
+						IOr(P, Arrow(Q, R), false),      // P v ( Q -> R )
+					),
+					ArrowProof(Not(Q),
+						IOr(Not(Q), R, true),               // ~ Q v R
+						DisjunctionArrowTheorem(Not(Q), R), // Q -> R
+						IOr(P, Arrow(Q, R), false),         // P v ( Q -> R )
+					),
+					ExcludedMiddleTheorem(Q),
+					EOr(Q, Not(Q), Or(P, Arrow(Q, R))),
+				), // ~ P -> ( P v ( Q -> R ) )
+				ExcludedMiddleTheorem(P),
+				EOr(P, Not(P), Or(P, Arrow(Q, R))),
+			),
+			IDArrow(
+				Or(P, Arrow(Q, R)),
+				Arrow(Or(P, Q), Or(P, R)),
+			),
+		),
+		RootProof("( P v ( Q v R ) ) <-> ( ( P v Q ) v ( P v R ) )",
+			ArrowProof(Or(P, Or(Q, R)),
+				ArrowProof(P,
+					IOr(P, Q, true),
+					IOr(Or(P, Q), Or(P, R), true),
+				),
+				ArrowProof(Or(Q, R),
+					ArrowProof(Q,
+						IOr(P, Q, false),
+						IOr(Or(P, Q), Or(P, R), true),
+					),
+					ArrowProof(R,
+						IOr(P, R, false),
+						IOr(Or(P, Q), Or(P, R), false),
+					),
+					EOr(Q, R, Or(Or(P, Q), Or(P, R))),
+				),
+				EOr(P, Or(Q, R), Or(Or(P, Q), Or(P, R))),
+			),
+			ArrowProof(Or(Or(P, Q), Or(P, R)),
+				ArrowProof(Or(P, Q),
+					ArrowProof(P,
+						IOr(P, Or(Q, R), true),
+					),
+					ArrowProof(Q,
+						IOr(Q, R, true),
+						IOr(P, Or(Q, R), false),
+					),
+					EOr(P, Q, Or(P, Or(Q, R))),
+				),
+				ArrowProof(Or(P, R),
+					ArrowProof(P,
+						IOr(P, Or(Q, R), true),
+					),
+					ArrowProof(R,
+						IOr(Q, R, false),
+						IOr(P, Or(Q, R), false),
+					),
+					EOr(P, R, Or(P, Or(Q, R))),
+				),
+				EOr(Or(P, Q), Or(P, R), Or(P, Or(Q, R))),
+			),
+			IDArrow(
+				Or(P, Or(Q, R)),
+				Or(Or(P, Q), Or(P, R)),
 			),
 		),
 		RootProof("( P v ( Q ^ R ) ) <-> ( ( P v Q ) ^ ( P v R ) )",
@@ -802,69 +912,6 @@ var propositionalProofSections = []*ProofsSection{
 			IDArrow(
 				Or(P, And(Q, R)),
 				And(Or(P, Q), Or(P, R)),
-			),
-		),
-		RootProof("( P ^ ( Q -> R ) ) -> ( ( P ^ Q ) -> ( P ^ R ) )",
-			ArrowProof(And(P, Arrow(Q, R)),
-				ArrowProof(And(P, Q),
-					Reit(And(P, Arrow(Q, R))),
-					EAnd(P, Q, true),
-					EAnd(P, Q, false),
-					EAnd(P, Arrow(Q, R), false),
-					EImply(Q, R),
-					IAnd(P, R),
-				),
-			),
-		),
-		RootProof("( P v ( Q -> R ) ) <-> ( ( P v Q ) -> ( P v R ) )",
-			ArrowProof(Or(P, Arrow(Q, R)),
-				ArrowProof(Or(P, Q),
-					ArrowProof(P,
-						IOr(P, R, true),
-					), // P -> ( P v R )
-					ArrowProof(Not(P),
-						Reit(Or(P, Arrow(Q, R))),                // P v ( Q -> R )
-						DisjunctionArrowTheorem(P, Arrow(Q, R)), // ~ P -> ( Q -> R )
-						EImply(Not(P), Arrow(Q, R)),             // Q -> R
-						Reit(Or(P, Q)),                          // P v Q
-						DisjunctionArrowTheorem(P, Q),           // ~ P -> Q
-						EImply(Not(P), Q),                       // Q
-						EImply(Q, R),                            // R
-						IOr(P, R, false),                        // P v R
-					), // ~ P -> ( P v R )
-					ExcludedMiddleTheorem(P),
-					EOr(P, Not(P), Or(P, R)),
-				),
-			),
-			ArrowProof(Arrow(Or(P, Q), Or(P, R)),
-				ArrowProof(P,
-					IOr(P, Arrow(Q, R), true),
-				), // P -> ( P v ( Q -> R ) )
-				ArrowProof(Not(P),
-					ArrowProof(Q,
-						Reit(Arrow(Or(P, Q), Or(P, R))), // ( P v Q ) -> ( P v R )
-						IOr(P, Q, false),                // P v Q
-						EImply(Or(P, Q), Or(P, R)),      // P v R
-						DisjunctionArrowTheorem(P, R),   // ~ P -> R
-						Reit(Not(P)),                    // ~ P
-						EImply(Not(P), R),               // R
-						IImply(Q, R),                    // Q -> R
-						IOr(P, Arrow(Q, R), false),      // P v ( Q -> R )
-					),
-					ArrowProof(Not(Q),
-						IOr(Not(Q), R, true),               // ~ Q v R
-						DisjunctionArrowTheorem(Not(Q), R), // Q -> R
-						IOr(P, Arrow(Q, R), false),         // P v ( Q -> R )
-					),
-					ExcludedMiddleTheorem(Q),
-					EOr(Q, Not(Q), Or(P, Arrow(Q, R))),
-				), // ~ P -> ( P v ( Q -> R ) )
-				ExcludedMiddleTheorem(P),
-				EOr(P, Not(P), Or(P, Arrow(Q, R))),
-			),
-			IDArrow(
-				Or(P, Arrow(Q, R)),
-				Arrow(Or(P, Q), Or(P, R)),
 			),
 		),
 	),
