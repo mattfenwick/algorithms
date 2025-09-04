@@ -548,9 +548,9 @@ var quantifierProofs = []*ProofsSection{
 				Forall("x", Arrow(P, Qx)),
 			),
 		),
-		RootProof("( ∃x.( P(x) ) -> ∃x.( Q(x) ) ) -> ( ∃x.( T ) -> ∃x.( P(x) -> Q(x) ) )",
-			ArrowProof(Arrow(Exist("x", Px), Exist("x", Qx)),
-				ArrowProof(Exist("x", T),
+		RootProof("∃x.( T ) -> ( ( ∃x.( P(x) ) -> ∃x.( Q(x) ) ) -> ∃x.( P(x) -> Q(x) ) )",
+			ArrowProof(Exist("x", T),
+				ArrowProof(Arrow(Exist("x", Px), Exist("x", Qx)),
 					ArrowProof(Exist("x", Px),
 						&Reiterate{Formula: Arrow(Exist("x", Px), Exist("x", Qx))},
 						EImply(Exist("x", Px), Exist("x", Qx)), // ∃x.( Q(x) )
