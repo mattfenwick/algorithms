@@ -21,6 +21,7 @@ var (
 
 	Qa = Pred("Q", a)
 	Qb = Pred("Q", b)
+	Qc = Pred("Q", c)
 	Qx = Pred("Q", x)
 	Qy = Pred("Q", y)
 	Qz = Pred("Q", z)
@@ -704,6 +705,61 @@ var quantifierProofs = []*ProofsSection{
 				), // ∀y.( ∃x.( P(x,y) ) )
 			),
 		),
+		RootProof("∃x.( T ) -> ( ∀x.( ∃y.( P(x) ^ Q(y) ) ) <-> ∃y.( ∀x.( P(x) ^ Q(y) ) ) )",
+			ArrowProof(Exist("x", T),
+				ArrowProof(Forall("x", Exist("y", And(Px, Qy))),
+					Reit(Exist("x", T)),
+					ExistElimProof("a",
+						Exist("x", T), // T
+						Reit(Forall("x", Exist("y", And(Px, Qy)))), // ∀x.( ∃y.( P(x) ^ Q(y) ) )
+						EForall(Exist("y", And(Px, Qy)), "x", "a"), // ∃y.( P(a) ^ Q(y) )
+						ExistElimProof("b",
+							Exist("y", And(Pa, Qy)), // P(a) ^ Q(b)
+							EAnd(Pa, Qb, false),     // Q(b)
+							IExist(Qb, "b", "y"),    // ∃y.( Q(y) )
+						), // ∃y.( Q(y) )
+					), // ∃y.( Q(y) )
+					ExistElimProof("b",
+						Exist("y", Qy), // Q(b)
+						ForallIntroProof("x", "a",
+							Reit(Forall("x", Exist("y", And(Px, Qy)))), // ∀x.( ∃y.( P(x) ^ Q(y) ) )
+							EForall(Exist("y", And(Px, Qy)), "x", "a"), // ∃y.( P(a) ^ Q(y) )
+							ExistElimProof("c",
+								Exist("y", And(Pa, Qy)), // P(a) ^ Q(c)
+								EAnd(Pa, Qc, true),      // P(a)
+							), // P(a)
+							Reit(Qb),     // Q(b)
+							IAnd(Pa, Qb), // P(a) ^ Q(b)
+						), // ∀x.( P(x) ^ Q(b) )
+						IExist(Forall("x", And(Px, Qb)), "b", "y"), // ∃y.( ∀x.( P(x) ^ Q(y) ) )
+					), // ∃y.( ∀x.( P(x) ^ Q(y) ) )
+				),
+				ArrowProof(Exist("y", Forall("x", And(Px, Qy))),
+					ExistElimProof("b",
+						Exist("y", Forall("x", And(Px, Qy))), // ∀x.( P(x) ^ Q(b) )
+						ForallIntroProof("x", "a",
+							Reit(Forall("x", And(Px, Qb))), // ∀x.( P(x) ^ Q(b) )
+							EForall(And(Px, Qb), "x", "a"), // P(a) ^ Q(b)
+							IExist(And(Pa, Qb), "b", "y"),  // ∃y.( P(a) ^ Q(y) )
+						), // ∀x.( ∃y.( P(x) ^ Q(y) ) )
+					), // ∀x.( ∃y.( P(x) ^ Q(y) ) )
+				),
+				IDArrow(
+					Forall("x", Exist("y", And(Px, Qy))),
+					Exist("y", Forall("x", And(Px, Qy))),
+				),
+			),
+		),
+		// RootProof("∃x.( T ) -> ( ∀x.( ∃y.( P(x) v Q(y) ) ) <-> ∃y.( ∀x.( P(x) v Q(y) ) ) )",
+		// 	ArrowProof(Exist("x", T),
+		// 		ArrowProof(),
+		// 		ArrowProof(),
+		// 		IDArrow(
+		// 			Forall("x", Exist("y", Or(Px, Qy))),
+		// 			Exist("y", Forall("x", Or(Px, Qy))),
+		// 		),
+		// 	),
+		// ),
 	),
 	NewProofsSection("random",
 		RootProof("P -> ( ∀x.( ~ P ) -> ~ ∃x.( T ) )",
@@ -812,6 +868,14 @@ var quantifierProofs = []*ProofsSection{
 					IExist(Qa, "a", "x"),  // ∃x.( Q(x) )
 				), // ∃x.( Q(x) )
 			), // ( ∀x.( Q(x) ) ^ ∃x.( T ) ) -> ∃x.( Q(x) )
+		),
+		RootProof("∃x.( P(x) ) -> ∃y.( P(y) )",
+			ArrowProof(Exist("x", Px),
+				ExistElimProof("a",
+					Exist("x", Px),
+					IExist(Pa, "a", "y"),
+				),
+			),
 		),
 		RootProof("∀x.( P(x) ) -> ∀y.( P(y) )",
 			ArrowProof(Forall("x", Px),
