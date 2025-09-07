@@ -1032,6 +1032,84 @@ var quantifierProofs = []*ProofsSection{
 			),
 		),
 	),
+	NewProofsSection("and-or-quantifier-commutativity",
+		RootProof("∃x.( T ) -> ( ∀x.( ∃y.( P(x) ^ Q(y) ) ) <-> ( ∀x.( P(x) ) ^ ∃y.( Q(y) ) ) )",
+			ArrowProof(Exist("x", T),
+				ArrowProof(Forall("x", Exist("y", And(Px, Qy))),
+					ForallIntroProof("x", "a",
+						Reit(Forall("x", Exist("y", And(Px, Qy)))),   // ∀x.( ∃y.( P(x) ^ Q(y) ) )
+						EForall(Exist("y", And(Px, Qy)), "x", "a"),   // ∃y.( P(a) ^ Q(y) )
+						Reit(Exist("x", T)),                          // ∃x.T
+						ExistAndOrTheorem("y", AndOp, Pa, Qy, false), // P(a) ^ ∃y.( Q(y) )
+					), // ∀x.( P(x) ^ ∃y.( Q(y) ) )
+					Reit(Exist("x", T)), // ∃x.T
+					ForallAndOrTheorem("x", AndOp, Px, Exist("y", Qy), true), // ∀x.( P(x) ) ^ ∃y.( Q(y) )
+				),
+				ArrowProof(And(Forall("x", Px), Exist("y", Qy)),
+					Reit(Exist("x", T)), // ∃x.T
+					AndOrForallTheorem("x", AndOp, Px, Exist("y", Qy), true), // ∀x.( P(x) ^ ∃y.( Q(y) ) ) )
+					ForallIntroProof("x", "a",
+						Reit(Exist("x", T)),                          // ∃x.T
+						Reit(Forall("x", And(Px, Exist("y", Qy)))),   // ∀x.( P(x) ^ ∃y.( Q(y) ) ) )
+						EForall(And(Px, Exist("y", Qy)), "x", "a"),   // P(a) ^ ∃y.( Q(y) )
+						AndOrExistTheorem("y", AndOp, Pa, Qy, false), // ∃y.( P(a) ^ Q(y) )
+					), // ∀x.∃y.( P(x) ^ Q(y) )
+				),
+				IDArrow(
+					Forall("x", Exist("y", And(Px, Qy))),
+					And(Forall("x", Px), Exist("y", Qy)),
+				),
+			),
+		),
+		RootProof("∃x.( T ) -> ( ∃y.( ∀x.( P(x) ^ Q(y) ) ) <-> ( ∀x.( P(x) ) ^ ∃y.( Q(y) ) ) )",
+			ArrowProof(Exist("x", T),
+				ArrowProof(Exist("y", Forall("x", And(Px, Qy))),
+					ExistElimProof("b",
+						Exist("y", Forall("x", And(Px, Qy))),         // ∀x.( P(x) ^ Q(b) )
+						Reit(Exist("x", T)),                          // ∃x.T
+						ForallAndOrTheorem("x", AndOp, Px, Qb, true), // ∀x.( P(x) ) ^ Q(b)
+						IExist(And(Forall("x", Px), Qb), "b", "y"),   // ∃y.( ∀x.( P(x) ) ^ Q(b) )
+					), // ∃y.( ∀x.( P(x) ) ^ Q(b) )
+					Reit(Exist("x", T)), // ∃x.T
+					ExistAndOrTheorem("y", AndOp, Forall("x", Px), Qy, false), // ∀x.P(x) ^ ∃y.Q(b)
+				),
+				ArrowProof(And(Forall("x", Px), Exist("y", Qy)),
+					Reit(Exist("x", T)), // ∃x.T
+					AndOrExistTheorem("y", AndOp, Forall("x", Px), Qy, false), // ∃y.( ∀x.( P(x) ) ^ Q(y) )
+					ExistElimProof("b",
+						Exist("y", And(Forall("x", Px), Qy)),         // ∀x.( P(x) ) ^ Q(b)
+						Reit(Exist("x", T)),                          // ∃x.T
+						AndOrForallTheorem("x", AndOp, Px, Qb, true), // ∀x.( P(x) ^ Q(b) )
+						IExist(Forall("x", And(Px, Qb)), "b", "y"),   // ∃y.( ∀x.( P(x) ^ Q(y) ) )
+					), // ∃y.( ∀x.( P(x) ^ Q(y) ) )
+				),
+				IDArrow(
+					Exist("y", Forall("x", And(Px, Qy))),
+					And(Forall("x", Px), Exist("y", Qy)),
+				),
+			),
+		),
+		// RootProof("∃x.( T ) -> ( ∀x.( ∃y.( P(x) v Q(y) ) ) <-> ( ∀x.( P(x) ) v ∃y.( Q(y) ) ) )",
+		// 	ArrowProof(Exist("x", T),
+		// 		ArrowProof(Forall("x", Exist("y", Or(Px, Qy)))),
+		// 		ArrowProof(Or(Forall("x", Px), Exist("y", Qy))),
+		// 		IDArrow(
+		// 			Forall("x", Exist("y", Or(Px, Qy))),
+		// 			Or(Forall("x", Px), Exist("y", Qy)),
+		// 		),
+		// 	),
+		// ),
+		// RootProof("∃x.( T ) -> ( ∃y.( ∀x.( P(x) v Q(y) ) ) <-> ( ∀x.( P(x) ) v ∃y.( Q(y) ) ) )",
+		// 	ArrowProof(Exist("x", T),
+		// 		ArrowProof(Forall("x", Exist("y", Or(Px, Qy)))),
+		// 		ArrowProof(Or(Forall("x", Px), Exist("y", Qy))),
+		// 		IDArrow(
+		// 			Forall("x", Exist("y", Or(Px, Qy))),
+		// 			Or(Forall("x", Px), Exist("y", Qy)),
+		// 		),
+		// 	),
+		// ),
+	),
 
 	// https://en.wikipedia.org/wiki/First-order_logic#Provable_identities
 }

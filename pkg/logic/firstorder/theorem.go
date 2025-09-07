@@ -1,6 +1,10 @@
 package logic
 
-import "github.com/pkg/errors"
+import (
+	"fmt"
+
+	"github.com/pkg/errors"
+)
 
 func removeDoubleNegative(t Formula) Formula {
 	switch a := t.(type) {
@@ -181,6 +185,125 @@ func DeMorgansForallToExistTheorem(forall *QuantifiedFormula, isForallNegated bo
 			forall,
 		)
 	}
+}
+
+// ∀x.( P(x) ^ Q ) -> ( ∀x.P(x) ^ Q )
+// ∀x.( P(x) v Q ) -> ( ∀x.P(x) v Q )
+// ∀x.( Q ^ P(x) ) -> ( Q ^ ∀x.P(x) )
+// ∀x.( Q v P(x) ) -> ( Q v ∀x.P(x) )
+func ForallAndOrTheorem(boundVar string, connective BinOp, left Formula, right Formula, isQuantifierLeft bool) *Rule {
+	return quantifierAndOrTheorem(boundVar, left, right, &quantifierAndOrOptions{
+		quantifier:       ForallQuantifier,
+		connective:       connective,
+		isQuantifierLeft: isQuantifierLeft,
+		isIntoQuantifier: false,
+	})
+}
+
+// ( ∀x.P(x) ^ Q ) -> ∀x.( P(x) ^ Q )
+// ( ∀x.P(x) v Q ) -> ∀x.( P(x) v Q )
+// ( Q ^ ∀x.P(x) ) -> ∀x.( Q ^ P(x) )
+// ( Q v ∀x.P(x) ) -> ∀x.( Q v P(x) )
+func AndOrForallTheorem(boundVar string, connective BinOp, left Formula, right Formula, isQuantifierLeft bool) *Rule {
+	return quantifierAndOrTheorem(boundVar, left, right, &quantifierAndOrOptions{
+		quantifier:       ForallQuantifier,
+		connective:       connective,
+		isQuantifierLeft: isQuantifierLeft,
+		isIntoQuantifier: true,
+	})
+}
+
+// ∃x.( P(x) ^ Q ) -> ( ∃x.P(x) ^ Q )
+// ∃x.( P(x) v Q ) -> ( ∃x.P(x) v Q )
+// ∃x.( Q ^ P(x) ) -> ( Q ^ ∃x.P(x) )
+// ∃x.( Q v P(x) ) -> ( Q v ∃x.P(x) )
+func ExistAndOrTheorem(boundVar string, connective BinOp, left Formula, right Formula, isQuantifierLeft bool) *Rule {
+	return quantifierAndOrTheorem(boundVar, left, right, &quantifierAndOrOptions{
+		quantifier:       ExistentialQuantifier,
+		connective:       connective,
+		isQuantifierLeft: isQuantifierLeft,
+		isIntoQuantifier: false,
+	})
+}
+
+// ( ∃x.P(x) ^ Q ) -> ∃x.( P(x) ^ Q )
+// ( ∃x.P(x) v Q ) -> ∃x.( P(x) v Q )
+// ( Q ^ ∃x.P(x) ) -> ∃x.( Q ^ P(x) )
+// ( Q v ∃x.P(x) ) -> ∃x.( Q v P(x) )
+func AndOrExistTheorem(boundVar string, connective BinOp, left Formula, right Formula, isQuantifierLeft bool) *Rule {
+	return quantifierAndOrTheorem(boundVar, left, right, &quantifierAndOrOptions{
+		quantifier:       ExistentialQuantifier,
+		connective:       connective,
+		isQuantifierLeft: isQuantifierLeft,
+		isIntoQuantifier: true,
+	})
+}
+
+type quantifierAndOrOptions struct {
+	quantifier       Quantifier
+	connective       BinOp
+	isQuantifierLeft bool
+	isIntoQuantifier bool
+}
+
+// example
+// ( Q ^ ∀x.P(x) ) -> ∀x.( Q ^ P(x) )
+// - quantifier: ∀
+// - connective: ^
+// - isQuantifierLeft: false
+// - isIntoQuantifier: true
+//
+// ∀x.( P(x) ^ Q ) -> ( ∀x.P(x) ^ Q )
+// ∀x.( P(x) v Q ) -> ( ∀x.P(x) v Q )
+// ∃x.( P(x) ^ Q ) -> ( ∃x.P(x) ^ Q )
+// ∃x.( P(x) v Q ) -> ( ∃x.P(x) v Q )
+// ( Q ^ ∀x.P(x) ) -> ∀x.( Q ^ P(x) )
+// ( Q v ∀x.P(x) ) -> ∀x.( Q v P(x) )
+// ( Q ^ ∃x.P(x) ) -> ∃x.( Q ^ P(x) )
+// ( Q v ∃x.P(x) ) -> ∃x.( Q v P(x) )
+// ∀x.( Q ^ P(x) ) -> ( Q ^ ∀x.P(x) )
+// ∀x.( Q v P(x) ) -> ( Q v ∀x.P(x) )
+// ∃x.( Q ^ P(x) ) -> ( Q ^ ∃x.P(x) )
+// ∃x.( Q v P(x) ) -> ( Q v ∃x.P(x) )
+// ( ∀x.P(x) ^ Q ) -> ∀x.( P(x) ^ Q )
+// ( ∀x.P(x) v Q ) -> ∀x.( P(x) v Q )
+// ( ∃x.P(x) ^ Q ) -> ∃x.( P(x) ^ Q )
+// ( ∃x.P(x) v Q ) -> ∃x.( P(x) v Q )
+func quantifierAndOrTheorem(boundVar string, left Formula, right Formula, options *quantifierAndOrOptions) *Rule {
+	symbol := options.quantifier.Symbol()
+	var connectiveF func(Formula, Formula) *BinOpFormula
+	connective := options.connective
+	switch connective {
+	case AndOp:
+		connectiveF = And
+	case OrOp:
+		connectiveF = Or
+	default:
+		panic(errors.Errorf("invalid binop '%s' for quantifier ^/v theorem", connective))
+	}
+	var l, r Formula
+	if options.isQuantifierLeft {
+		l = NewQuantifiedFormula(boundVar, left, options.quantifier)
+		r = right
+	} else {
+		l = left
+		r = NewQuantifiedFormula(boundVar, right, options.quantifier)
+	}
+	quantifierFormula := NewQuantifiedFormula(boundVar, connectiveF(left, right), options.quantifier)
+	connectiveFormula := connectiveF(l, r)
+
+	var result, precondition Formula
+	if options.isIntoQuantifier {
+		result = quantifierFormula
+		precondition = connectiveFormula
+	} else {
+		result = connectiveFormula
+		precondition = quantifierFormula
+	}
+	return NewRule(fmt.Sprintf("%s(%sQ) to (%s)%sQ", symbol, connective, symbol, connective),
+		result,
+		precondition,
+		Exist("x", Pred("T")))
 }
 
 // skip -- can be handled instead by 2 step: arrow, eimply

@@ -30,6 +30,17 @@ const (
 	ExistentialQuantifier Quantifier = "ExistentialQuantifier"
 )
 
+func (q Quantifier) Symbol() string {
+	switch q {
+	case ForallQuantifier:
+		return ForallSymbol
+	case ExistentialQuantifier:
+		return ExistentialSymbol
+	default:
+		panic(errors.Errorf("invalid quantifier '%s'", q))
+	}
+}
+
 type Formula interface {
 	FormulaPrint(isRoot bool) string
 }
