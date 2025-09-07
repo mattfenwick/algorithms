@@ -299,9 +299,19 @@ var propositionalProofSections = []*ProofsSection{
 		),
 		RootProof("P <-> ~ ~ P",
 			ArrowProof(P,
-				ContraProofAllowDoubleNegative(Not(P), // TODO this is hacky.  is there a better way?  a better proof?
-					Reit(P),
-				),
+				ExcludedMiddleTheorem(Not(P)), // ~ P v ~ ~ P
+				ArrowProof(Not(P),
+					ArrowProof(Not(Not(Not(P))),
+						Reit(Not(P)), // ~ P
+					), // ~ ~ ~ P -> ~ P
+					ContrapositiveTheorem(Not(Not(Not(P))), Not(P)), // P -> ~ ~ P
+				), // ~ P -> ( P -> ~ ~ P )
+				ArrowProof(Not(Not(P)),
+					Reit(P),                // P
+					IImply(P, Not(Not(P))), // P -> ~ ~ P
+				), // ~ ~ P -> ( P -> ~ ~ P )
+				EOr(Not(P), Not(Not(P)), Arrow(P, Not(Not(P)))), // P -> ~ ~ P
+				EImply(P, Not(Not(P))),                          // P
 			),
 			ArrowProof(Not(Not(P)),
 				ContraProof(Not(P),

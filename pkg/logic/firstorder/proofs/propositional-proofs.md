@@ -400,16 +400,26 @@
 | Line | Term vars | Formula | Justification | Lines used |
 | - | - | - | - | - |
 | 1 |  | <pre>.   P</pre> | Assume: I -> |  |
-| 2 |  | <pre>.   .   ~ P</pre> | Assume: I/E ~ |  |
-| 3 |  | <pre>.   .   P</pre> | Reiterate | 1 |
-| 4 |  | <pre>.   ~ ~ P</pre> | subproof I/E ~ | 2 - 3 |
-| 5 |  | <pre>P -> ~ ~ P</pre> | subproof I -> | 1 - 4 |
-| 6 |  | <pre>.   ~ ~ P</pre> | Assume: I -> |  |
-| 7 |  | <pre>.   .   ~ P</pre> | Assume: I/E ~ |  |
-| 8 |  | <pre>.   .   ~ ~ P</pre> | Reiterate | 6 |
-| 9 |  | <pre>.   P</pre> | subproof I/E ~ | 7 - 8 |
-| 10 |  | <pre>~ ~ P -> P</pre> | subproof I -> | 6 - 9 |
-| 11 |  | <pre>P <-> ~ ~ P</pre> | I <-> | 5, 10 |
+| 2 |  | <pre>.   ~ P v ~ ~ P</pre> | Theorem: excluded middle |  |
+| 3 |  | <pre>.   .   ~ P</pre> | Assume: I -> |  |
+| 4 |  | <pre>.   .   .   ~ ~ ~ P</pre> | Assume: I -> |  |
+| 5 |  | <pre>.   .   .   ~ P</pre> | Reiterate | 3 |
+| 6 |  | <pre>.   .   ~ ~ ~ P -> ~ P</pre> | subproof I -> | 4 - 5 |
+| 7 |  | <pre>.   .   P -> ~ ~ P</pre> | Theorem: contrapositive | 6 |
+| 8 |  | <pre>.   ~ P -> ( P -> ~ ~ P )</pre> | subproof I -> | 3 - 7 |
+| 9 |  | <pre>.   .   ~ ~ P</pre> | Assume: I -> |  |
+| 10 |  | <pre>.   .   P</pre> | Reiterate | 1 |
+| 11 |  | <pre>.   .   P -> ~ ~ P</pre> | I -> | 10, 9 |
+| 12 |  | <pre>.   ~ ~ P -> ( P -> ~ ~ P )</pre> | subproof I -> | 9 - 11 |
+| 13 |  | <pre>.   P -> ~ ~ P</pre> | E v | 8, 12, 2 |
+| 14 |  | <pre>.   ~ ~ P</pre> | E -> | 13, 1 |
+| 15 |  | <pre>P -> ~ ~ P</pre> | subproof I -> | 1 - 14 |
+| 16 |  | <pre>.   ~ ~ P</pre> | Assume: I -> |  |
+| 17 |  | <pre>.   .   ~ P</pre> | Assume: I/E ~ |  |
+| 18 |  | <pre>.   .   ~ ~ P</pre> | Reiterate | 16 |
+| 19 |  | <pre>.   P</pre> | subproof I/E ~ | 17 - 18 |
+| 20 |  | <pre>~ ~ P -> P</pre> | subproof I -> | 16 - 19 |
+| 21 |  | <pre>P <-> ~ ~ P</pre> | I <-> | 15, 20 |
 
 # arrows <a name="arrows"></a>
 

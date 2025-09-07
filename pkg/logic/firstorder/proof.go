@@ -106,14 +106,6 @@ func findNegationInScope(hypothesis Formula, steps []Step) error {
 }
 
 func ContraProof(hypothesis Formula, steps ...Step) *Proof {
-	return contraProof(false, hypothesis, steps...)
-}
-
-func ContraProofAllowDoubleNegative(hypothesis Formula, steps ...Step) *Proof {
-	return contraProof(true, hypothesis, steps...)
-}
-
-func contraProof(allowDoubleNegative bool, hypothesis Formula, steps ...Step) *Proof {
 	if len(steps) == 0 {
 		panic(errors.Errorf("expected at least 1 step"))
 	}
@@ -127,15 +119,11 @@ func contraProof(allowDoubleNegative bool, hypothesis Formula, steps ...Step) *P
 	//    Z, result is ~ Z
 	// result := removeDoubleNegative(Not(hypothesis)) // TODO wouldn't this be easier?
 	var result Formula
-	if allowDoubleNegative {
+	switch a := hypothesis.(type) {
+	case *NotFormula:
+		result = a.Formula
+	default:
 		result = Not(hypothesis)
-	} else {
-		switch a := hypothesis.(type) {
-		case *NotFormula:
-			result = a.Formula
-		default:
-			result = Not(hypothesis)
-		}
 	}
 	return &Proof{
 		ExpectedResult: result.FormulaPrint(true),
