@@ -54,6 +54,8 @@
 9. [and-or-quantifier-commutativity](#and-or-quantifier-commutativity)
     1. [∃x.( T ) -> ( ∀x.( ∃y.( P(x) ^ Q(y) ) ) <-> ( ∀x.( P(x) ) ^ ∃y.( Q(y) ) ) )](#proof-9-1)
     2. [∃x.( T ) -> ( ∃y.( ∀x.( P(x) ^ Q(y) ) ) <-> ( ∀x.( P(x) ) ^ ∃y.( Q(y) ) ) )](#proof-9-2)
+    3. [∃x.( T ) -> ( ∀x.( ∃y.( P(x) v Q(y) ) ) <-> ( ∀x.( P(x) ) v ∃y.( Q(y) ) ) )](#proof-9-3)
+    4. [∃x.( T ) -> ( ∃y.( ∀x.( P(x) v Q(y) ) ) <-> ( ∀x.( P(x) ) v ∃y.( Q(y) ) ) )](#proof-9-4)
 
 # basics <a name="basics"></a>
 
@@ -1181,4 +1183,60 @@
 | 21 |  | <pre>.   ( ∀x.( P(x) ) ^ ∃y.( Q(y) ) ) -> ∃y.( ∀x.( P(x) ^ Q(y) ) )</pre> | subproof -> | 12 - 20 |
 | 22 |  | <pre>.   ∃y.( ∀x.( P(x) ^ Q(y) ) ) <-> ( ∀x.( P(x) ) ^ ∃y.( Q(y) ) )</pre> | I <-> | 11, 21 |
 | 23 |  | <pre>∃x.( T ) -> ( ∃y.( ∀x.( P(x) ^ Q(y) ) ) <-> ( ∀x.( P(x) ) ^ ∃y.( Q(y) ) ) )</pre> | subproof -> | 1 - 22 |
+
+## ∃x.( T ) -> ( ∀x.( ∃y.( P(x) v Q(y) ) ) <-> ( ∀x.( P(x) ) v ∃y.( Q(y) ) ) ) <a name="proof-9-3"></a>
+
+| Line | Term vars | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∃x.( T )</pre> | Assume: -> |  |
+| 2 |  | <pre>.   .   ∀x.( ∃y.( P(x) v Q(y) ) )</pre> | Assume: -> |  |
+| 3 | a | <pre>.   .   .   </pre> | term var: I ∀ |  |
+| 4 | a | <pre>.   .   .   ∀x.( ∃y.( P(x) v Q(y) ) )</pre> | Reiterate | 2 |
+| 5 | a | <pre>.   .   .   ∃y.( P(a) v Q(y) )</pre> | E ∀ [x -> a] | 4, 3 |
+| 6 | a | <pre>.   .   .   ∃x.( T )</pre> | Reiterate | 1 |
+| 7 | a | <pre>.   .   .   P(a) v ∃y.( Q(y) )</pre> | ∃(vQ) to (∃)vQ | 5, 6 |
+| 8 |  | <pre>.   .   ∀x.( P(x) v ∃y.( Q(y) ) )</pre> | subproof I ∀ [a -> x] | 3 - 7 |
+| 9 |  | <pre>.   .   ∃x.( T )</pre> | Reiterate | 1 |
+| 10 |  | <pre>.   .   ∀x.( P(x) ) v ∃y.( Q(y) )</pre> | ∀(vQ) to (∀)vQ | 8, 9 |
+| 11 |  | <pre>.   ∀x.( ∃y.( P(x) v Q(y) ) ) -> ( ∀x.( P(x) ) v ∃y.( Q(y) ) )</pre> | subproof -> | 2 - 10 |
+| 12 |  | <pre>.   .   ∀x.( P(x) ) v ∃y.( Q(y) )</pre> | Assume: -> |  |
+| 13 |  | <pre>.   .   ∃x.( T )</pre> | Reiterate | 1 |
+| 14 |  | <pre>.   .   ∀x.( P(x) v ∃y.( Q(y) ) )</pre> | ∀(vQ) to (∀)vQ | 12, 13 |
+| 15 | a | <pre>.   .   .   </pre> | term var: I ∀ |  |
+| 16 | a | <pre>.   .   .   ∃x.( T )</pre> | Reiterate | 13 |
+| 17 | a | <pre>.   .   .   ∀x.( P(x) v ∃y.( Q(y) ) )</pre> | Reiterate | 14 |
+| 18 | a | <pre>.   .   .   P(a) v ∃y.( Q(y) )</pre> | E ∀ [x -> a] | 17, 15 |
+| 19 | a | <pre>.   .   .   ∃y.( P(a) v Q(y) )</pre> | ∃(vQ) to (∃)vQ | 18, 16 |
+| 20 |  | <pre>.   .   ∀x.( ∃y.( P(x) v Q(y) ) )</pre> | subproof I ∀ [a -> x] | 15 - 19 |
+| 21 |  | <pre>.   ( ∀x.( P(x) ) v ∃y.( Q(y) ) ) -> ∀x.( ∃y.( P(x) v Q(y) ) )</pre> | subproof -> | 12 - 20 |
+| 22 |  | <pre>.   ∀x.( ∃y.( P(x) v Q(y) ) ) <-> ( ∀x.( P(x) ) v ∃y.( Q(y) ) )</pre> | I <-> | 11, 21 |
+| 23 |  | <pre>∃x.( T ) -> ( ∀x.( ∃y.( P(x) v Q(y) ) ) <-> ( ∀x.( P(x) ) v ∃y.( Q(y) ) ) )</pre> | subproof -> | 1 - 22 |
+
+## ∃x.( T ) -> ( ∃y.( ∀x.( P(x) v Q(y) ) ) <-> ( ∀x.( P(x) ) v ∃y.( Q(y) ) ) ) <a name="proof-9-4"></a>
+
+| Line | Term vars | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ∃x.( T )</pre> | Assume: -> |  |
+| 2 |  | <pre>.   .   ∃y.( ∀x.( P(x) v Q(y) ) )</pre> | Assume: -> |  |
+| 3 | b | <pre>.   .   .   </pre> | term var: E ∃ |  |
+| 4 | b | <pre>.   .   .   ∀x.( P(x) v Q(b) )</pre> | Assume: E ∃ [y -> b] | 2 |
+| 5 | b | <pre>.   .   .   ∃x.( T )</pre> | Reiterate | 1 |
+| 6 | b | <pre>.   .   .   ∀x.( P(x) ) v Q(b)</pre> | ∀(vQ) to (∀)vQ | 4, 5 |
+| 7 | b | <pre>.   .   .   ∃y.( ∀x.( P(x) ) v Q(y) )</pre> | I ∃ [b -> y] | 6, 3 |
+| 8 |  | <pre>.   .   ∃y.( ∀x.( P(x) ) v Q(y) )</pre> | subproof E ∃ | 3 - 7 |
+| 9 |  | <pre>.   .   ∃x.( T )</pre> | Reiterate | 1 |
+| 10 |  | <pre>.   .   ∀x.( P(x) ) v ∃y.( Q(y) )</pre> | ∃(vQ) to (∃)vQ | 8, 9 |
+| 11 |  | <pre>.   ∃y.( ∀x.( P(x) v Q(y) ) ) -> ( ∀x.( P(x) ) v ∃y.( Q(y) ) )</pre> | subproof -> | 2 - 10 |
+| 12 |  | <pre>.   .   ∀x.( P(x) ) v ∃y.( Q(y) )</pre> | Assume: -> |  |
+| 13 |  | <pre>.   .   ∃x.( T )</pre> | Reiterate | 1 |
+| 14 |  | <pre>.   .   ∃y.( ∀x.( P(x) ) v Q(y) )</pre> | ∃(vQ) to (∃)vQ | 12, 13 |
+| 15 | b | <pre>.   .   .   </pre> | term var: E ∃ |  |
+| 16 | b | <pre>.   .   .   ∀x.( P(x) ) v Q(b)</pre> | Assume: E ∃ [y -> b] | 14 |
+| 17 | b | <pre>.   .   .   ∃x.( T )</pre> | Reiterate | 13 |
+| 18 | b | <pre>.   .   .   ∀x.( P(x) v Q(b) )</pre> | ∀(vQ) to (∀)vQ | 16, 17 |
+| 19 | b | <pre>.   .   .   ∃y.( ∀x.( P(x) v Q(y) ) )</pre> | I ∃ [b -> y] | 18, 15 |
+| 20 |  | <pre>.   .   ∃y.( ∀x.( P(x) v Q(y) ) )</pre> | subproof E ∃ | 15 - 19 |
+| 21 |  | <pre>.   ( ∀x.( P(x) ) v ∃y.( Q(y) ) ) -> ∃y.( ∀x.( P(x) v Q(y) ) )</pre> | subproof -> | 12 - 20 |
+| 22 |  | <pre>.   ∃y.( ∀x.( P(x) v Q(y) ) ) <-> ( ∀x.( P(x) ) v ∃y.( Q(y) ) )</pre> | I <-> | 11, 21 |
+| 23 |  | <pre>∃x.( T ) -> ( ∃y.( ∀x.( P(x) v Q(y) ) ) <-> ( ∀x.( P(x) ) v ∃y.( Q(y) ) ) )</pre> | subproof -> | 1 - 22 |
 
