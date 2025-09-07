@@ -27,9 +27,9 @@ const (
 func (p ProofType) Name() string {
 	switch p {
 	case ProofTypeContradiction:
-		return "~"
+		return "I/E ~"
 	case ProofTypeImplication:
-		return "->"
+		return "I ->"
 	case ProofTypeExistentialElimination:
 		return "E ∃"
 	case ProofTypeExistentialContradiction:

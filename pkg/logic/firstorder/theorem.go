@@ -1,8 +1,6 @@
 package logic
 
 import (
-	"fmt"
-
 	"github.com/pkg/errors"
 )
 
@@ -270,16 +268,14 @@ type quantifierAndOrOptions struct {
 // ( ∃x.P(x) ^ Q ) -> ∃x.( P(x) ^ Q )
 // ( ∃x.P(x) v Q ) -> ∃x.( P(x) v Q )
 func quantifierAndOrTheorem(boundVar string, left Formula, right Formula, options *quantifierAndOrOptions) *Rule {
-	symbol := options.quantifier.Symbol()
 	var connectiveF func(Formula, Formula) *BinOpFormula
-	connective := options.connective
-	switch connective {
+	switch options.connective {
 	case AndOp:
 		connectiveF = And
 	case OrOp:
 		connectiveF = Or
 	default:
-		panic(errors.Errorf("invalid binop '%s' for quantifier ^/v theorem", connective))
+		panic(errors.Errorf("invalid binop '%s' for quantifier ^/v theorem", options.connective))
 	}
 	var l, r Formula
 	if options.isQuantifierLeft {
@@ -294,13 +290,13 @@ func quantifierAndOrTheorem(boundVar string, left Formula, right Formula, option
 
 	var result, precondition Formula
 	if options.isIntoQuantifier {
-		result = quantifierFormula
 		precondition = connectiveFormula
+		result = quantifierFormula
 	} else {
-		result = connectiveFormula
 		precondition = quantifierFormula
+		result = connectiveFormula
 	}
-	return NewRule(fmt.Sprintf("%s(%sQ) to (%s)%sQ", symbol, connective, symbol, connective),
+	return NewRule("quantifier ^/v theorem",
 		result,
 		precondition,
 		Exist("x", Pred("T")))

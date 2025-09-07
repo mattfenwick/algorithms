@@ -1095,7 +1095,7 @@ var quantifierProofs = []*ProofsSection{
 					ForallIntroProof("x", "a",
 						Reit(Forall("x", Exist("y", Or(Px, Qy)))),   // ∀x.( ∃y.( P(x) v Q(y) ) )
 						EForall(Exist("y", Or(Px, Qy)), "x", "a"),   // ∃y.( P(a) v Q(y) )
-						Reit(Exist("x", T)),                          // ∃x.T
+						Reit(Exist("x", T)),                         // ∃x.T
 						ExistAndOrTheorem("y", OrOp, Pa, Qy, false), // P(a) v ∃y.( Q(y) )
 					), // ∀x.( P(x) v ∃y.( Q(y) ) )
 					Reit(Exist("x", T)), // ∃x.T
@@ -1105,7 +1105,7 @@ var quantifierProofs = []*ProofsSection{
 					Reit(Exist("x", T)), // ∃x.T
 					AndOrForallTheorem("x", OrOp, Px, Exist("y", Qy), true), // ∀x.( P(x) v ∃y.( Q(y) ) ) )
 					ForallIntroProof("x", "a",
-						Reit(Exist("x", T)),                          // ∃x.T
+						Reit(Exist("x", T)),                         // ∃x.T
 						Reit(Forall("x", Or(Px, Exist("y", Qy)))),   // ∀x.( P(x) v ∃y.( Q(y) ) ) )
 						EForall(Or(Px, Exist("y", Qy)), "x", "a"),   // P(a) v ∃y.( Q(y) )
 						AndOrExistTheorem("y", OrOp, Pa, Qy, false), // ∃y.( P(a) v Q(y) )
@@ -1122,7 +1122,7 @@ var quantifierProofs = []*ProofsSection{
 				ArrowProof(Exist("y", Forall("x", Or(Px, Qy))),
 					ExistElimProof("b",
 						Exist("y", Forall("x", Or(Px, Qy))),         // ∀x.( P(x) v Q(b) )
-						Reit(Exist("x", T)),                          // ∃x.T
+						Reit(Exist("x", T)),                         // ∃x.T
 						ForallAndOrTheorem("x", OrOp, Px, Qb, true), // ∀x.( P(x) ) v Q(b)
 						IExist(Or(Forall("x", Px), Qb), "b", "y"),   // ∃y.( ∀x.( P(x) ) v Q(b) )
 					), // ∃y.( ∀x.( P(x) ) v Q(b) )
@@ -1134,7 +1134,7 @@ var quantifierProofs = []*ProofsSection{
 					AndOrExistTheorem("y", OrOp, Forall("x", Px), Qy, false), // ∃y.( ∀x.( P(x) ) v Q(y) )
 					ExistElimProof("b",
 						Exist("y", Or(Forall("x", Px), Qy)),         // ∀x.( P(x) ) v Q(b)
-						Reit(Exist("x", T)),                          // ∃x.T
+						Reit(Exist("x", T)),                         // ∃x.T
 						AndOrForallTheorem("x", OrOp, Px, Qb, true), // ∀x.( P(x) v Q(b) )
 						IExist(Forall("x", Or(Px, Qb)), "b", "y"),   // ∃y.( ∀x.( P(x) v Q(y) ) )
 					), // ∃y.( ∀x.( P(x) v Q(y) ) )
