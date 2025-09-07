@@ -297,6 +297,19 @@ var propositionalProofSections = []*ProofsSection{
 			), // ~ Q -> ~ ( P ^ ~ P )
 			ContrapositiveTheorem(Not(Q), Not(And(P, Not(P)))), // ( P ^ ~ P ) -> Q
 		),
+		RootProof("P <-> ~ ~ P",
+			ArrowProof(P,
+				ContraProofAllowDoubleNegative(Not(P), // TODO this is hacky.  is there a better way?  a better proof?
+					Reit(P),
+				),
+			),
+			ArrowProof(Not(Not(P)),
+				ContraProof(Not(P),
+					Reit(Not(Not(P))),
+				),
+			),
+			IDArrow(P, Not(Not(P))),
+		),
 	),
 	NewProofsSection("arrows",
 		RootProof("Q -> ( P -> Q )",

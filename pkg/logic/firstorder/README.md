@@ -23,7 +23,7 @@ Proofs which require a non-empty domain must explicitly state that hypothesis.
 | ^ | P, Q => P ^ Q | P ^ Q => P; P ^ Q => Q |
 | v | P => P v Q; Q => P v Q | P -> R, Q -> R, P v Q => R |
 | -> | P, Q => P -> Q | P -> Q, P => Q |
-| ~ | P => ~~P | ~~P => P |
+| ~ | subproof: P => ~P | subproof: ~P => P |
 | <-> | P <-> Q => P -> Q; P <-> Q => Q -> P | P -> Q, Q -> P => P <-> Q |
 | ∃ | `P(a)` => `∃x.P(x)` | [E-∃ subproof](#existential-elimination) |
 | ∀ | [I-∀ subproof](#forall-introduction) | `∀x.P(x)` => `P(a)` |

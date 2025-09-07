@@ -20,6 +20,7 @@
     3. [( P -> ~ P ) -> ~ P](#proof-3-3)
     4. [( ( P -> Q ) -> P ) -> P](#proof-3-4)
     5. [( P ^ ~ P ) -> Q](#proof-3-5)
+    6. [P <-> ~ ~ P](#proof-3-6)
 4. [arrows](#arrows)
     1. [Q -> ( P -> Q )](#proof-4-1)
     2. [~ P -> ( P -> Q )](#proof-4-2)
@@ -393,6 +394,22 @@
 | 3 |  | <pre>.   ~ ( P ^ ~ P )</pre> | Reiterate | 1 |
 | 4 |  | <pre>~ Q -> ~ ( P ^ ~ P )</pre> | subproof -> | 2 - 3 |
 | 5 |  | <pre>( P ^ ~ P ) -> Q</pre> | Theorem: contrapositive | 4 |
+
+## P <-> ~ ~ P <a name="proof-3-6"></a>
+
+| Line | Term vars | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   P</pre> | Assume: -> |  |
+| 2 |  | <pre>.   .   ~ P</pre> | Assume: ~ |  |
+| 3 |  | <pre>.   .   P</pre> | Reiterate | 1 |
+| 4 |  | <pre>.   ~ ~ P</pre> | subproof ~ | 2 - 3 |
+| 5 |  | <pre>P -> ~ ~ P</pre> | subproof -> | 1 - 4 |
+| 6 |  | <pre>.   ~ ~ P</pre> | Assume: -> |  |
+| 7 |  | <pre>.   .   ~ P</pre> | Assume: ~ |  |
+| 8 |  | <pre>.   .   ~ ~ P</pre> | Reiterate | 6 |
+| 9 |  | <pre>.   P</pre> | subproof ~ | 7 - 8 |
+| 10 |  | <pre>~ ~ P -> P</pre> | subproof -> | 6 - 9 |
+| 11 |  | <pre>P <-> ~ ~ P</pre> | I <-> | 5, 10 |
 
 # arrows <a name="arrows"></a>
 

@@ -81,16 +81,6 @@ func EOr(if1 Formula, if2 Formula, then Formula) *Rule {
 		Or(if1, if2))
 }
 
-// I ~ -- P -> ~~P
-func INot(formula Formula) *Rule {
-	return NewRule("I ~", Not(Not(formula)), formula)
-}
-
-// E ~ -- ~~P -> P
-func ENot(formula Formula) *Rule {
-	return NewRule("E ~", formula, Not(Not(formula)))
-}
-
 // I <-> -- (P -> Q), (Q -> P) => P <-> Q
 func IDArrow(l Formula, r Formula) *Rule {
 	return NewRule("I <->", DArrow(l, r), Arrow(l, r), Arrow(r, l))
