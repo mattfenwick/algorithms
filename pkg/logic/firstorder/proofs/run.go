@@ -12,6 +12,25 @@ import (
 )
 
 func printSomeTruthTables() {
+	formulas := []Formula{
+		Arrow(P, Or(Q, R)),
+		Or(Arrow(P, Q), Arrow(P, R)),
+		Arrow(And(P, Q), R),
+		Or(Arrow(P, R), Arrow(Q, R)),
+		DArrow(And(P, Arrow(Q, R)), Arrow(And(P, Q), And(P, R))),
+		DArrow(Or(P, Arrow(Q, R)), Arrow(Or(P, Q), Or(P, R))),
+		Arrow(P, Arrow(Q, R)),
+		DArrow(Arrow(Arrow(P, Q), R), Arrow(Arrow(P, Q), Arrow(P, R))),
+	}
+	for _, t := range formulas {
+		fmt.Println(TruthTable(t, NewEnv(map[string]bool{})).ToFormattedTable(func(t *tablewriter.Table) {
+			t.SetAlignment(tablewriter.ALIGN_CENTER)
+		}))
+	}
+}
+
+// deprecated because quantifiers and truth tables don't mix well
+func printSomeTruthTablesDeprecated() {
 	Rx := Pred("R", &TermVar{Name: "x", IsBound: true})
 	formulas := [][]Formula{
 		{
