@@ -100,3 +100,33 @@ Reiterations *may not* mention the term var.
 For the last line formula `P(a)` and bound var `x`, `∀x.P(x)` will be added to the subproof's scope.
 
 Note that `∀x.P(x)` is the result of substituting `x` for every instance of `a` in the last line's formula.
+
+## Results
+
+### Distributive property
+
+Explanation: 
+
+ - left distribution: `P -> ( Q ^ R ) <-> ( ( P -> Q ) ^ ( P -> R ) )`
+   - `->` is the outer operator
+   - `^` is the inner operator
+   - forwards: from left side of `<->` to right side
+   - backwards: from right side of `<->` to left side
+ - right distribution: `( P ^ Q ) v R <-> ( ( P v R ) ^ ( Q v R ) )`
+ - anti distribution: `( P v Q ) -> R <-> ( ( P -> R) ^ ( Q -> R ) )`
+
+| Inner | Outer | Left | Right |
+| - | - | - | - |
+| ^ | ^ | Both | Both |
+| ^ | v | Both | Both |
+| ^ | -> | Both | Anti |
+| v | ^ | Both | Both |
+| v | v | Both | Both |
+| v | -> | Both | Anti |
+| -> | ^ | Forwards | ? |
+| -> | v | Both | ? |
+| -> | -> | Both | Forwards |
+
+Quantifiers:
+
+TODO
