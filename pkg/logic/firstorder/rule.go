@@ -31,12 +31,12 @@ func NewRule(name string, result Formula, preconditions ...Formula) *Rule {
 }
 
 // I -> -- P, Q => P -> Q
-func IImply(iff Formula, then Formula) *Rule {
+func IArrow(iff Formula, then Formula) *Rule {
 	return NewRule("I ->", Arrow(iff, then), iff, then)
 }
 
 // E -> -- (P -> Q), P => Q
-func EImply(iff Formula, then Formula) *Rule {
+func EArrow(iff Formula, then Formula) *Rule {
 	return NewRule("E ->", then, Arrow(iff, then), iff)
 }
 

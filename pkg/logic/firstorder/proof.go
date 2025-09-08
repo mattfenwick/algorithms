@@ -18,7 +18,7 @@ type ProofType string
 const (
 	ProofTypeRoot                     ProofType = "Root"
 	ProofTypeContradiction            ProofType = "Contradiction"
-	ProofTypeImplication              ProofType = "Implication"
+	ProofTypeArrow                    ProofType = "Arrow"
 	ProofTypeForallIntroduction       ProofType = "Forall Introduction"
 	ProofTypeExistentialElimination   ProofType = "Existential Elimination"
 	ProofTypeExistentialContradiction ProofType = "Existential Contradiction"
@@ -28,7 +28,7 @@ func (p ProofType) Name() string {
 	switch p {
 	case ProofTypeContradiction:
 		return "I/E ~"
-	case ProofTypeImplication:
+	case ProofTypeArrow:
 		return "I ->"
 	case ProofTypeExistentialElimination:
 		return "E ∃"
@@ -134,7 +134,7 @@ func ContraProof(hypothesis Formula, steps ...Step) *Proof {
 }
 
 func ArrowProof(hypothesis Formula, steps ...Step) *Proof {
-	steps = append([]Step{&Assumption{Formula: hypothesis, ProofType: ProofTypeImplication}}, steps...)
+	steps = append([]Step{&Assumption{Formula: hypothesis, ProofType: ProofTypeArrow}}, steps...)
 	// last step is the result
 	last := steps[len(steps)-1]
 	result := Arrow(hypothesis, last.StepResult())
@@ -142,7 +142,7 @@ func ArrowProof(hypothesis Formula, steps ...Step) *Proof {
 		ExpectedResult: result.FormulaPrint(true),
 		Steps:          steps,
 		Result:         result,
-		ProofType:      ProofTypeImplication,
+		ProofType:      ProofTypeArrow,
 	}
 }
 

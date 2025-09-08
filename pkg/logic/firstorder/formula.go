@@ -17,10 +17,10 @@ const (
 type BinOp string
 
 const (
-	AndOp           BinOp = "^"
-	OrOp            BinOp = "v"
-	ImplicationOp   BinOp = "->"
-	BiconditionalOp BinOp = "<->"
+	AndOp    BinOp = "^"
+	OrOp     BinOp = "v"
+	ArrowOp  BinOp = "->"
+	DArrowOp BinOp = "<->"
 )
 
 type Quantifier string
@@ -294,9 +294,9 @@ func Or(l, r Formula) *BinOpFormula {
 }
 
 func Arrow(l, r Formula) *BinOpFormula {
-	return &BinOpFormula{Op: ImplicationOp, Left: l, Right: r}
+	return &BinOpFormula{Op: ArrowOp, Left: l, Right: r}
 }
 
 func DArrow(l, r Formula) *BinOpFormula {
-	return &BinOpFormula{Op: BiconditionalOp, Left: l, Right: r}
+	return &BinOpFormula{Op: DArrowOp, Left: l, Right: r}
 }

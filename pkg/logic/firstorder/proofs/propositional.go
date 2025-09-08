@@ -23,7 +23,7 @@ var propositionalProofSections = []*ProofsSection{
 					ContraProof(
 						P,
 						Reit(Arrow(P, Q)),
-						EImply(P, Q),
+						EArrow(P, Q),
 						Reit(Not(Q)),
 					),
 				),
@@ -35,7 +35,7 @@ var propositionalProofSections = []*ProofsSection{
 					ContraProof(
 						Not(Q),
 						Reit(Arrow(Not(Q), Not(P))),
-						EImply(Not(Q), Not(P)),
+						EArrow(Not(Q), Not(P)),
 						Reit(P),
 					),
 				),
@@ -53,7 +53,7 @@ var propositionalProofSections = []*ProofsSection{
 				), // P
 				ContraProof(Q,
 					Reit(P),
-					IImply(P, Q),
+					IArrow(P, Q),
 					Reit(Not(Arrow(P, Q))),
 				),
 				IAnd(P, Not(Q)),
@@ -63,7 +63,7 @@ var propositionalProofSections = []*ProofsSection{
 					Reit(And(P, Not(Q))),
 					EAnd(P, Not(Q), true),
 					EAnd(P, Not(Q), false),
-					EImply(P, Q),
+					EArrow(P, Q),
 				),
 			),
 			IDArrow(Not(Arrow(P, Q)), And(P, Not(Q))),
@@ -104,7 +104,7 @@ var propositionalProofSections = []*ProofsSection{
 				),
 				ArrowProof(Not(P),
 					Reit(Arrow(Not(P), Q)),
-					EImply(Not(P), Q),
+					EArrow(Not(P), Q),
 					IOr(P, Q, false),
 				),
 				ExcludedMiddleTheorem(P),
@@ -187,8 +187,8 @@ var propositionalProofSections = []*ProofsSection{
 						Reit(Arrow(P, Not(Q))), // P -> ~ Q
 						EDArrow(P, Q, true),    // P -> Q
 						Reit(P),                // P
-						EImply(P, Q),           // Q
-						EImply(P, Not(Q)),      // ~ Q
+						EArrow(P, Q),           // Q
+						EArrow(P, Not(Q)),      // ~ Q
 					), // ~ ( P <-> Q )
 				), // P -> ~ ( P <-> Q )
 				ArrowProof(Not(P),
@@ -196,9 +196,9 @@ var propositionalProofSections = []*ProofsSection{
 						EDArrow(P, Q, false),        // Q -> P
 						ContrapositiveTheorem(Q, P), // ~ P -> ~ Q
 						Reit(Not(P)),                // ~ P
-						EImply(Not(P), Not(Q)),      // ~ Q
+						EArrow(Not(P), Not(Q)),      // ~ Q
 						Reit(Arrow(Not(Q), P)),      // ~ Q -> P
-						EImply(Not(Q), P),           // P
+						EArrow(Not(Q), P),           // P
 					), // ~ ( P <-> Q )
 				), // ~ P -> ~ ( P <-> Q )
 				ExcludedMiddleTheorem(P), // P v ~ P
@@ -209,8 +209,8 @@ var propositionalProofSections = []*ProofsSection{
 					ArrowConjunctionTheorem(P, Not(Q), true),
 					EAnd(P, Q, true),
 					EAnd(P, Q, false),
-					IImply(P, Q),
-					IImply(Q, P),
+					IArrow(P, Q),
+					IArrow(Q, P),
 					IDArrow(P, Q),
 					Reit(Not(DArrow(P, Q))),
 				),
@@ -218,9 +218,9 @@ var propositionalProofSections = []*ProofsSection{
 					ArrowConjunctionTheorem(Not(Q), P, true),
 					EAnd(Not(Q), Not(P), true),
 					EAnd(Not(Q), Not(P), false),
-					IImply(Not(P), Not(Q)),
+					IArrow(Not(P), Not(Q)),
 					ContrapositiveTheorem(Not(P), Not(Q)),
-					IImply(Not(Q), Not(P)),
+					IArrow(Not(Q), Not(P)),
 					ContrapositiveTheorem(Not(Q), Not(P)),
 					IDArrow(P, Q),
 					Reit(Not(DArrow(P, Q))),
@@ -276,7 +276,7 @@ var propositionalProofSections = []*ProofsSection{
 			ArrowProof(Arrow(P, Not(P)),
 				ContraProof(P,
 					Reit(Arrow(P, Not(P))),
-					EImply(P, Not(P)),
+					EArrow(P, Not(P)),
 				),
 			),
 		),
@@ -308,10 +308,10 @@ var propositionalProofSections = []*ProofsSection{
 				), // ~ P -> ( P -> ~ ~ P )
 				ArrowProof(Not(Not(P)),
 					Reit(P),                // P
-					IImply(P, Not(Not(P))), // P -> ~ ~ P
+					IArrow(P, Not(Not(P))), // P -> ~ ~ P
 				), // ~ ~ P -> ( P -> ~ ~ P )
 				EOr(Not(P), Not(Not(P)), Arrow(P, Not(Not(P)))), // P -> ~ ~ P
-				EImply(P, Not(Not(P))),                          // P
+				EArrow(P, Not(Not(P))),                          // P
 			),
 			ArrowProof(Not(Not(P)),
 				ContraProof(Not(P),
@@ -343,7 +343,7 @@ var propositionalProofSections = []*ProofsSection{
 						Reit(P),
 						IAnd(P, Q),
 						Reit(Arrow(And(P, Q), R)),
-						EImply(And(P, Q), R),
+						EArrow(And(P, Q), R),
 					),
 				),
 			),
@@ -352,8 +352,8 @@ var propositionalProofSections = []*ProofsSection{
 					EAnd(P, Q, true),
 					EAnd(P, Q, false),
 					Reit(Arrow(P, Arrow(Q, R))),
-					EImply(P, Arrow(Q, R)),
-					EImply(Q, R),
+					EArrow(P, Arrow(Q, R)),
+					EArrow(Q, R),
 				),
 			),
 			IDArrow(Arrow(And(P, Q), R), Arrow(P, Arrow(Q, R))),
@@ -364,8 +364,8 @@ var propositionalProofSections = []*ProofsSection{
 					Reit(And(Arrow(P, Q), Arrow(P, Not(Q)))),
 					EAnd(Arrow(P, Q), Arrow(P, Not(Q)), true),
 					EAnd(Arrow(P, Q), Arrow(P, Not(Q)), false),
-					EImply(P, Q),
-					EImply(P, Not(Q)),
+					EArrow(P, Q),
+					EArrow(P, Not(Q)),
 				),
 			),
 		),
@@ -382,9 +382,9 @@ var propositionalProofSections = []*ProofsSection{
 				ArrowProof(Q,
 					ArrowProof(P,
 						Reit(Arrow(P, Arrow(Q, R))),
-						EImply(P, Arrow(Q, R)),
+						EArrow(P, Arrow(Q, R)),
 						Reit(Q),
-						EImply(Q, R),
+						EArrow(Q, R),
 					),
 				),
 			),
@@ -397,8 +397,8 @@ var propositionalProofSections = []*ProofsSection{
 					ArrowProof(P,
 						Reit(Arrow(P, Q)),
 						Reit(Arrow(Q, R)),
-						EImply(P, Q),
-						EImply(Q, R),
+						EArrow(P, Q),
+						EArrow(Q, R),
 					),
 				),
 			),
@@ -414,14 +414,14 @@ var propositionalProofSections = []*ProofsSection{
 					ArrowProof(P,
 						Reit(Arrow(P, Q)),
 						Reit(Arrow(Q, R)),
-						EImply(P, Q),
-						EImply(Q, R),
+						EArrow(P, Q),
+						EArrow(Q, R),
 					),
 					ArrowProof(R,
 						Reit(Arrow(R, Q)),
 						Reit(Arrow(Q, P)),
-						EImply(R, Q),
-						EImply(Q, P),
+						EArrow(R, Q),
+						EArrow(Q, P),
 					),
 					IDArrow(P, R),
 				),
@@ -523,22 +523,22 @@ var propositionalProofSections = []*ProofsSection{
 					BiconditionalNegationTheorem(Q, R),             // Q <-> ~ R
 					ContraProof(R,
 						Reit(Arrow(R, DArrow(P, Q))), // R -> ( P <-> Q )
-						EImply(R, DArrow(P, Q)),      // P <-> Q
+						EArrow(R, DArrow(P, Q)),      // P <-> Q
 						EDArrow(P, Q, true),          // P -> Q
 						Reit(P),                      // P
-						EImply(P, Q),                 // Q
+						EArrow(P, Q),                 // Q
 						Reit(DArrow(Q, Not(R))),      // Q <-> ~ R
 						EDArrow(Q, Not(R), true),     // Q -> ~ R
-						EImply(Q, Not(R)),            // ~ R
+						EArrow(Q, Not(R)),            // ~ R
 					), // ~ R
 					EDArrow(Q, Not(R), false),              // ~ R -> Q
-					EImply(Not(R), Q),                      // Q
+					EArrow(Not(R), Q),                      // Q
 					Reit(Arrow(DArrow(P, Q), R)),           // ( P <-> Q ) -> R
 					ContrapositiveTheorem(DArrow(P, Q), R), // ~ R -> ~ ( P <-> Q )
-					EImply(Not(R), Not(DArrow(P, Q))),      // ~ ( P <-> Q )
+					EArrow(Not(R), Not(DArrow(P, Q))),      // ~ ( P <-> Q )
 					BiconditionalNegationTheorem(P, Q),     // P <-> ~ Q
 					EDArrow(P, Not(Q), true),               // P -> ~ Q
-					EImply(P, Not(Q)),                      // ~ Q
+					EArrow(P, Not(Q)),                      // ~ Q
 				), // ( P -> ( Q <-> R ) )
 				ContraProof(Not(Arrow(DArrow(Q, R), P)),
 					ArrowConjunctionTheorem(DArrow(Q, R), P, true), // ( Q <-> R ) ^ ~ P
@@ -548,21 +548,21 @@ var propositionalProofSections = []*ProofsSection{
 						Reit(Arrow(R, DArrow(P, Q))), // R -> ( P <-> Q )
 						Reit(DArrow(Q, R)),           // Q <-> R
 						EDArrow(Q, R, false),         // R -> Q
-						EImply(R, Q),                 // Q
-						EImply(R, DArrow(P, Q)),      // P <-> Q
+						EArrow(R, Q),                 // Q
+						EArrow(R, DArrow(P, Q)),      // P <-> Q
 						EDArrow(P, Q, false),         // Q -> P
-						EImply(Q, P),                 // P
+						EArrow(Q, P),                 // P
 						Reit(Not(P)),                 // ~ P
 					), // ~ R
 					EDArrow(Q, R, true),                    // Q -> R
 					ContrapositiveTheorem(Q, R),            // ~ R -> ~ Q
-					EImply(Not(R), Not(Q)),                 // ~ Q
+					EArrow(Not(R), Not(Q)),                 // ~ Q
 					Reit(Arrow(DArrow(P, Q), R)),           // ( P <-> Q ) -> R
 					ContrapositiveTheorem(DArrow(P, Q), R), // ~ R -> ~ ( P <-> Q)
-					EImply(Not(R), Not(DArrow(P, Q))),      // ~ ( P <-> Q )
+					EArrow(Not(R), Not(DArrow(P, Q))),      // ~ ( P <-> Q )
 					BiconditionalNegationTheorem(P, Q),     // P <-> ~ Q
 					EDArrow(P, Not(Q), false),              // ~ Q -> P
-					EImply(Not(Q), P),                      // P
+					EArrow(Not(Q), P),                      // P
 				), // ( ( Q <-> R ) -> P )
 				IDArrow(P, DArrow(Q, R)), // P <-> ( Q <-> R )
 			),
@@ -577,21 +577,21 @@ var propositionalProofSections = []*ProofsSection{
 					EDArrow(P, Q, true),                            // P -> Q
 					ContraProof(P,
 						Reit(Arrow(P, Q)),            // P -> Q
-						EImply(P, Q),                 // Q
+						EArrow(P, Q),                 // Q
 						Reit(Arrow(P, DArrow(Q, R))), // P -> ( Q <-> R )
-						EImply(P, DArrow(Q, R)),      // Q <-> R
+						EArrow(P, DArrow(Q, R)),      // Q <-> R
 						EDArrow(Q, R, true),          // Q -> R
-						EImply(Q, R),                 // R
+						EArrow(Q, R),                 // R
 						Reit(Not(R)),                 // ~ R
 					), // ~ P
 					Reit(Arrow(DArrow(Q, R), P)),           // ( Q <-> R ) -> P
 					ContrapositiveTheorem(DArrow(Q, R), P), // ~ P -> ~ ( Q <-> R )
-					EImply(Not(P), Not(DArrow(Q, R))),      // ~ ( Q <-> R )
+					EArrow(Not(P), Not(DArrow(Q, R))),      // ~ ( Q <-> R )
 					BiconditionalNegationTheorem(Q, R),     // Q <-> ~ R
 					EDArrow(Q, Not(R), false),              // ~ R -> Q
-					EImply(Not(R), Q),                      // Q
+					EArrow(Not(R), Q),                      // Q
 					EDArrow(P, Q, false),                   // Q -> P
-					EImply(Q, P),                           // P
+					EArrow(Q, P),                           // P
 				), // ( ( P <-> Q ) -> R )
 				ContraProof(Not(Arrow(R, DArrow(P, Q))),
 					ArrowConjunctionTheorem(R, DArrow(P, Q), true), // R ^ ~ ( P <-> Q )
@@ -601,22 +601,22 @@ var propositionalProofSections = []*ProofsSection{
 					EDArrow(P, Not(Q), true),                       // P -> ~ Q
 					ContraProof(P,
 						Reit(Arrow(P, Not(Q))),       // P -> ~ Q
-						EImply(P, Not(Q)),            // ~ Q
+						EArrow(P, Not(Q)),            // ~ Q
 						Reit(Arrow(P, DArrow(Q, R))), // P -> ( Q <-> R )
-						EImply(P, DArrow(Q, R)),      // Q <-> R
+						EArrow(P, DArrow(Q, R)),      // Q <-> R
 						EDArrow(Q, R, false),         // R -> Q
 						Reit(R),                      // R
-						EImply(R, Q),                 // Q
+						EArrow(R, Q),                 // Q
 					), // ~ P
 					EDArrow(P, Not(Q), false),              // ~ Q -> P
 					ContrapositiveTheorem(Not(Q), P),       // ~ P -> Q
-					EImply(Not(P), Q),                      // Q
+					EArrow(Not(P), Q),                      // Q
 					Reit(Arrow(DArrow(Q, R), P)),           // ( Q <-> R ) -> P
 					ContrapositiveTheorem(DArrow(Q, R), P), // ~ P -> ~ ( Q <-> R )
-					EImply(Not(P), Not(DArrow(Q, R))),      // ~ ( Q <-> R )
+					EArrow(Not(P), Not(DArrow(Q, R))),      // ~ ( Q <-> R )
 					BiconditionalNegationTheorem(Q, R),     // Q <-> ~ R
 					EDArrow(Q, Not(R), true),               // Q -> ~ R
-					EImply(Q, Not(R)),                      // ~ R
+					EArrow(Q, Not(R)),                      // ~ R
 				), // ( R -> ( P <-> Q ) )
 				IDArrow(DArrow(P, Q), R),
 			),
@@ -629,10 +629,10 @@ var propositionalProofSections = []*ProofsSection{
 				ArrowProof(Arrow(P, Q),
 					ArrowProof(P,
 						Reit(Arrow(P, Arrow(Q, R))),
-						EImply(P, Arrow(Q, R)),
+						EArrow(P, Arrow(Q, R)),
 						Reit(Arrow(P, Q)),
-						EImply(P, Q),
-						EImply(Q, R),
+						EArrow(P, Q),
+						EArrow(Q, R),
 					),
 				),
 			),
@@ -641,9 +641,9 @@ var propositionalProofSections = []*ProofsSection{
 					ArrowProof(Q,
 						Reit(Arrow(Arrow(P, Q), Arrow(P, R))),
 						Reit(P),
-						IImply(P, Q),
-						EImply(Arrow(P, Q), Arrow(P, R)),
-						EImply(P, R),
+						IArrow(P, Q),
+						EArrow(Arrow(P, Q), Arrow(P, R)),
+						EArrow(P, R),
 					),
 				),
 			),
@@ -656,15 +656,15 @@ var propositionalProofSections = []*ProofsSection{
 			ArrowProof(Arrow(P, Or(Q, R)),
 				ArrowProof(P,
 					Reit(Arrow(P, Or(Q, R))),
-					EImply(P, Or(Q, R)),
+					EArrow(P, Or(Q, R)),
 					ArrowProof(Q,
 						Reit(P),
-						IImply(P, Q),
+						IArrow(P, Q),
 						IOr(Arrow(P, Q), Arrow(P, R), true),
 					),
 					ArrowProof(R,
 						Reit(P),
-						IImply(P, R),
+						IArrow(P, R),
 						IOr(Arrow(P, Q), Arrow(P, R), false),
 					),
 					EOr(Q, R, Or(Arrow(P, Q), Arrow(P, R))),
@@ -683,12 +683,12 @@ var propositionalProofSections = []*ProofsSection{
 				ArrowProof(P,
 					ArrowProof(Arrow(P, Q),
 						Reit(P),
-						EImply(P, Q),
+						EArrow(P, Q),
 						IOr(Q, R, true),
 					),
 					ArrowProof(Arrow(P, R),
 						Reit(P),
-						EImply(P, R),
+						EArrow(P, R),
 						IOr(Q, R, false),
 					),
 					Reit(Or(Arrow(P, Q), Arrow(P, R))),
@@ -704,12 +704,12 @@ var propositionalProofSections = []*ProofsSection{
 			ArrowProof(Arrow(P, And(Q, R)),
 				ArrowProof(P,
 					Reit(Arrow(P, And(Q, R))),
-					EImply(P, And(Q, R)),
+					EArrow(P, And(Q, R)),
 					EAnd(Q, R, true),
 				),
 				ArrowProof(P,
 					Reit(Arrow(P, And(Q, R))),
-					EImply(P, And(Q, R)),
+					EArrow(P, And(Q, R)),
 					EAnd(Q, R, false),
 				),
 				IAnd(Arrow(P, Q), Arrow(P, R)),
@@ -719,8 +719,8 @@ var propositionalProofSections = []*ProofsSection{
 					Reit(And(Arrow(P, Q), Arrow(P, R))),
 					EAnd(Arrow(P, Q), Arrow(P, R), true),
 					EAnd(Arrow(P, Q), Arrow(P, R), false),
-					EImply(P, Q),
-					EImply(P, R),
+					EArrow(P, Q),
+					EArrow(P, R),
 					IAnd(Q, R),
 				),
 			),
@@ -736,7 +736,7 @@ var propositionalProofSections = []*ProofsSection{
 					EAnd(P, Q, true),
 					EAnd(P, Q, false),
 					EAnd(P, Arrow(Q, R), false),
-					EImply(Q, R),
+					EArrow(Q, R),
 					IAnd(P, R),
 				),
 			),
@@ -810,11 +810,11 @@ var propositionalProofSections = []*ProofsSection{
 					ArrowProof(Not(P),
 						Reit(Or(P, Arrow(Q, R))),                // P v ( Q -> R )
 						DisjunctionArrowTheorem(P, Arrow(Q, R)), // ~ P -> ( Q -> R )
-						EImply(Not(P), Arrow(Q, R)),             // Q -> R
+						EArrow(Not(P), Arrow(Q, R)),             // Q -> R
 						Reit(Or(P, Q)),                          // P v Q
 						DisjunctionArrowTheorem(P, Q),           // ~ P -> Q
-						EImply(Not(P), Q),                       // Q
-						EImply(Q, R),                            // R
+						EArrow(Not(P), Q),                       // Q
+						EArrow(Q, R),                            // R
 						IOr(P, R, false),                        // P v R
 					), // ~ P -> ( P v R )
 					ExcludedMiddleTheorem(P),
@@ -829,11 +829,11 @@ var propositionalProofSections = []*ProofsSection{
 					ArrowProof(Q,
 						Reit(Arrow(Or(P, Q), Or(P, R))), // ( P v Q ) -> ( P v R )
 						IOr(P, Q, false),                // P v Q
-						EImply(Or(P, Q), Or(P, R)),      // P v R
+						EArrow(Or(P, Q), Or(P, R)),      // P v R
 						DisjunctionArrowTheorem(P, R),   // ~ P -> R
 						Reit(Not(P)),                    // ~ P
-						EImply(Not(P), R),               // R
-						IImply(Q, R),                    // Q -> R
+						EArrow(Not(P), R),               // R
+						IArrow(Q, R),                    // Q -> R
 						IOr(P, Arrow(Q, R), false),      // P v ( Q -> R )
 					),
 					ArrowProof(Not(Q),
@@ -938,18 +938,18 @@ var propositionalProofSections = []*ProofsSection{
 					Reit(Or(P, R)),
 					ArrowProof(Q,
 						Reit(Not(P)),
-						IImply(Not(P), Q),
+						IArrow(Not(P), Q),
 					), // Q -> ( ~ P -> Q )
 					Reit(Arrow(P, Arrow(Not(P), Q))),
 					EOr(P, Q, Arrow(Not(P), Q)),
-					EImply(Not(P), Q),
+					EArrow(Not(P), Q),
 					ArrowProof(R,
 						Reit(Not(P)),
-						IImply(Not(P), R),
+						IArrow(Not(P), R),
 					), // R -> ( ~ P -> R )
 					Reit(Arrow(P, Arrow(Not(P), R))),
 					EOr(P, R, Arrow(Not(P), R)),
-					EImply(Not(P), R),
+					EArrow(Not(P), R),
 					IAnd(Q, R),
 					IOr(P, And(Q, R), false),
 				),
@@ -968,12 +968,12 @@ var propositionalProofSections = []*ProofsSection{
 				ArrowProof(P,
 					IOr(P, Q, true),
 					Reit(Arrow(Or(P, Q), R)),
-					EImply(Or(P, Q), R),
+					EArrow(Or(P, Q), R),
 				),
 				ArrowProof(Q,
 					IOr(P, Q, false),
 					Reit(Arrow(Or(P, Q), R)),
-					EImply(Or(P, Q), R),
+					EArrow(Or(P, Q), R),
 				),
 				IAnd(Arrow(P, R), Arrow(Q, R)),
 			),
@@ -993,14 +993,14 @@ var propositionalProofSections = []*ProofsSection{
 					ArrowProof(And(P, Q),
 						Reit(Arrow(P, R)),
 						EAnd(P, Q, true),
-						EImply(P, R),
+						EArrow(P, R),
 					),
 				),
 				ArrowProof(Arrow(Q, R),
 					ArrowProof(And(P, Q),
 						Reit(Arrow(Q, R)),
 						EAnd(P, Q, false),
-						EImply(Q, R),
+						EArrow(Q, R),
 					),
 				),
 				EOr(Arrow(P, R), Arrow(Q, R), Arrow(And(P, Q), R)),
@@ -1019,7 +1019,7 @@ var propositionalProofSections = []*ProofsSection{
 					EAnd(Q, Not(R), true),                           // Q
 					Reit(Arrow(And(P, Q), R)),                       // ( P ^ Q ) -> R
 					IAnd(P, Q),                                      // P ^ Q
-					EImply(And(P, Q), R),                            // R
+					EArrow(And(P, Q), R),                            // R
 				), // ( P -> R ) v ( Q -> R )
 			),
 			IDArrow(Arrow(And(P, Q), R), Or(Arrow(P, R), Arrow(Q, R))),
@@ -1154,8 +1154,8 @@ var propositionalProofSections = []*ProofsSection{
 						DisjunctionArrowTheorem(P, R),
 						Reit(Or(P, S)),
 						DisjunctionArrowTheorem(P, S),
-						EImply(Not(P), R),
-						EImply(Not(P), S),
+						EArrow(Not(P), R),
+						EArrow(Not(P), S),
 						IAnd(R, S),
 						IOr(And(P, Q), And(R, S), false),
 					),
@@ -1164,8 +1164,8 @@ var propositionalProofSections = []*ProofsSection{
 						DisjunctionArrowTheorem(Q, R),
 						Reit(Or(Q, S)),
 						DisjunctionArrowTheorem(Q, S),
-						EImply(Not(Q), R),
-						EImply(Not(Q), S),
+						EArrow(Not(Q), R),
+						EArrow(Not(Q), S),
 						IAnd(R, S),
 						IOr(And(P, Q), And(R, S), false),
 					),
@@ -1189,12 +1189,12 @@ var propositionalProofSections = []*ProofsSection{
 				EAnd(Arrow(P, R), Arrow(Q, S), false),
 				ArrowProof(P,
 					Reit(Arrow(P, R)),
-					EImply(P, R),
+					EArrow(P, R),
 					IOr(R, S, true),
 				),
 				ArrowProof(Q,
 					Reit(Arrow(Q, S)),
-					EImply(Q, S),
+					EArrow(Q, S),
 					IOr(R, S, false),
 				),
 				EOr(P, Q, Or(R, S)),
@@ -1209,12 +1209,12 @@ var propositionalProofSections = []*ProofsSection{
 				ArrowProof(Not(R),
 					Reit(Arrow(P, R)),
 					ContrapositiveTheorem(P, R), // ~ R -> ~ P
-					EImply(Not(R), Not(P)),      // ~ P
+					EArrow(Not(R), Not(P)),      // ~ P
 					IOr(Not(P), S, true),
 				), // ~ R -> ( ~ P v S )
 				ArrowProof(Q,
 					Reit(Arrow(Q, S)),
-					EImply(Q, S),
+					EArrow(Q, S),
 					IOr(Not(P), S, false),
 				), // Q -> ( ~ P v S )
 				EOr(Not(R), Q, Or(Not(P), S)),
@@ -1229,13 +1229,13 @@ var propositionalProofSections = []*ProofsSection{
 				ArrowProof(Not(R),
 					Reit(Arrow(P, R)),
 					ContrapositiveTheorem(P, R), // ~ R -> ~ P
-					EImply(Not(R), Not(P)),      // ~ P
+					EArrow(Not(R), Not(P)),      // ~ P
 					IOr(Not(P), Not(Q), true),
 				), // ~ R -> ( ~ P v ~ Q )
 				ArrowProof(Not(S),
 					Reit(Arrow(Q, S)),
 					ContrapositiveTheorem(Q, S), // ~ S -> ~ Q
-					EImply(Not(S), Not(Q)),      // ~ Q
+					EArrow(Not(S), Not(Q)),      // ~ Q
 					IOr(Not(P), Not(Q), false),
 				), // ~ S -> ( ~ P v ~ Q )
 				EOr(Not(R), Not(S), Or(Not(P), Not(Q))),
@@ -1249,11 +1249,11 @@ var propositionalProofSections = []*ProofsSection{
 				EAnd(P, Q, false), // Q
 				ArrowProof(Arrow(P, R),
 					Reit(P),
-					EImply(P, R),
+					EArrow(P, R),
 				), // ( P -> R ) -> R
 				ArrowProof(Arrow(Q, R),
 					Reit(Q),
-					EImply(Q, R),
+					EArrow(Q, R),
 				), // ( Q -> R ) -> R
 				EOr(Arrow(P, R), Arrow(Q, R), R),
 			),
@@ -1266,13 +1266,13 @@ var propositionalProofSections = []*ProofsSection{
 				ArrowProof(Arrow(P, R),
 					Reit(Not(R)),
 					ContrapositiveTheorem(P, R),
-					EImply(Not(R), Not(P)),
+					EArrow(Not(R), Not(P)),
 					IOr(Not(P), Not(Q), true),
 				), // ( P -> R ) -> ( ~ P v ~ Q )
 				ArrowProof(Arrow(Q, R),
 					Reit(Not(R)),
 					ContrapositiveTheorem(Q, R),
-					EImply(Not(R), Not(Q)),
+					EArrow(Not(R), Not(Q)),
 					IOr(Not(P), Not(Q), false),
 				), // ( Q -> R ) -> ( ~ P v ~ Q )
 				EOr(Arrow(P, R), Arrow(Q, R), Or(Not(P), Not(Q))),
@@ -1288,7 +1288,7 @@ var propositionalProofSections = []*ProofsSection{
 				EAnd(DArrow(P, Q), P, true),
 				EAnd(DArrow(P, Q), P, false),
 				EDArrow(P, Q, true),
-				EImply(P, Q),
+				EArrow(P, Q),
 			),
 		),
 		RootProof("( ( P <-> Q ) ^ ~ P ) -> ~ Q",
@@ -1299,7 +1299,7 @@ var propositionalProofSections = []*ProofsSection{
 				ContraProof(Q,
 					Reit(Not(P)),
 					Reit(Arrow(Q, P)),
-					EImply(Q, P),
+					EArrow(Q, P),
 				),
 			),
 		),
@@ -1346,14 +1346,14 @@ var propositionalProofSections = []*ProofsSection{
 				ArrowProof(P,
 					IOr(P, Q, true),                    // P v Q
 					Reit(Arrow(P, Not(Q))),             // P -> ~ Q
-					EImply(P, Not(Q)),                  // ~ Q
+					EArrow(P, Not(Q)),                  // ~ Q
 					IOr(Not(P), Not(Q), false),         // ~ P v ~ Q
 					IAnd(Or(P, Q), Or(Not(P), Not(Q))), // ( P v Q ) ^ ( ~ P v ~ Q )
 				), // P -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )
 				ArrowProof(Not(P),
 					IOr(Not(P), Not(Q), true),          // ~ P v ~ Q
 					Reit(Arrow(Not(P), Q)),             // ~ P -> Q
-					EImply(Not(P), Q),                  // Q
+					EArrow(Not(P), Q),                  // Q
 					IOr(P, Q, false),                   // P v Q
 					IAnd(Or(P, Q), Or(Not(P), Not(Q))), // ( P v Q ) ^ ( ~ P v ~ Q )
 				), // ~ P -> ( ( P v Q ) ^ ( ~ P v ~ Q ) )
@@ -1418,7 +1418,7 @@ var propositionalProofSections = []*ProofsSection{
 			ArrowProof(Arrow(Arrow(P, Q), R),
 				ArrowProof(Arrow(P, Q),
 					Reit(Arrow(Arrow(P, Q), R)),
-					EImply(Arrow(P, Q), R),
+					EArrow(Arrow(P, Q), R),
 					ArrowProof(P,
 						Reit(R),
 					),

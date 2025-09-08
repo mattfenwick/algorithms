@@ -87,7 +87,7 @@ func RunSchema(path string, readAll bool) {
 }
 
 type LogicArgs struct {
-	ProofPath  string
+	ProofPath string
 }
 
 func SetupLogicCommand() *cobra.Command {

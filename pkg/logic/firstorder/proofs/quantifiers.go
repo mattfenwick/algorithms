@@ -414,7 +414,7 @@ var quantifierProofs = []*ProofsSection{
 						EForall(Or(P, Qx), "x", "a"),   // P v Q(a)
 						DisjunctionArrowTheorem(P, Qa), // ~ P -> Q(a)
 						Reit(Not(P)),                   // ~ P
-						EImply(Not(P), Qa),             // Q(a)
+						EArrow(Not(P), Qa),             // Q(a)
 					), // ∀x.( Q(x) )
 					IOr(P, Forall("x", Qx), false), // P v ∀x.( Q(x) )
 				), // ~ P -> ( P v ∀x.( Q(x) ) )
@@ -489,10 +489,10 @@ var quantifierProofs = []*ProofsSection{
 						Exist("x", T),
 						ArrowProof(P,
 							Reit(Arrow(P, Exist("x", Qx))), // P -> ∃x.( Q(x) )
-							EImply(P, Exist("x", Qx)),      // ∃x.( Q(x)
+							EArrow(P, Exist("x", Qx)),      // ∃x.( Q(x)
 							ExistElimProof("b", Exist("x", Qx),
 								Reit(P),                        // P
-								IImply(P, Qb),                  // P -> Q(b)
+								IArrow(P, Qb),                  // P -> Q(b)
 								IExist(Arrow(P, Qb), "b", "x"), // ∃x.( P -> Q(x) )
 							), // ∃x.( P -> Q(x) )
 						), // P -> ∃x.( P -> Q(x) )
@@ -513,7 +513,7 @@ var quantifierProofs = []*ProofsSection{
 						ExistElimProof("a",
 							Exist("x", Arrow(P, Qx)), // P -> Q(a)
 							Reit(P),                  // P
-							EImply(P, Qa),            // Q(a)
+							EArrow(P, Qa),            // Q(a)
 							IExist(Qa, "a", "x"),     // ∃x.( Q(x) )
 						), // ∃x.( Q(x) )
 					), // P -> ∃x.( Q(x) )
@@ -529,7 +529,7 @@ var quantifierProofs = []*ProofsSection{
 				ForallIntroProof("x", "a",
 					ArrowProof(P,
 						Reit(Arrow(P, Forall("x", Qx))), // P -> ∀x.( Q(x) )
-						EImply(P, Forall("x", Qx)),      // ∀x.( Q(x) )
+						EArrow(P, Forall("x", Qx)),      // ∀x.( Q(x) )
 						EForall(Qx, "x", "a"),           // Q(a)
 					), // P -> Q(a)
 				), // ∀x.( P -> Q(x) )
@@ -540,7 +540,7 @@ var quantifierProofs = []*ProofsSection{
 						Reit(Forall("x", Arrow(P, Qx))), // ∀x.( P -> Q(x) )
 						EForall(Arrow(P, Qx), "x", "a"), // P -> Q(a)
 						Reit(P),                         // P
-						EImply(P, Qa),                   // Q(a)
+						EArrow(P, Qa),                   // Q(a)
 					), // ∀x.( Q(x) )
 				), // P -> ∀x.( Q(x) )
 			),
@@ -554,7 +554,7 @@ var quantifierProofs = []*ProofsSection{
 				ArrowProof(Arrow(Exist("x", Px), Exist("x", Qx)),
 					ArrowProof(Exist("x", Px),
 						Reit(Arrow(Exist("x", Px), Exist("x", Qx))),
-						EImply(Exist("x", Px), Exist("x", Qx)), // ∃x.( Q(x) )
+						EArrow(Exist("x", Px), Exist("x", Qx)), // ∃x.( Q(x) )
 						ExistElimProof("a",
 							Exist("x", Qx), // Q(a)
 							ArrowProof(Pa, // P(a)
@@ -596,7 +596,7 @@ var quantifierProofs = []*ProofsSection{
 						Reit(Forall("x", Px)),            // ∀x.( P(x) )
 						EForall(Arrow(Px, Qx), "x", "a"), // P(a) -> Q(a)
 						EForall(Px, "x", "a"),            // P(a)
-						EImply(Pa, Qa),                   // Q(a)
+						EArrow(Pa, Qa),                   // Q(a)
 					),
 				),
 			),
@@ -606,11 +606,11 @@ var quantifierProofs = []*ProofsSection{
 				ArrowProof(Arrow(Exist("x", Px), Q),
 					ArrowProof(Exist("x", Px),
 						Reit(Arrow(Exist("x", Px), Q)), // ∃x.( P(x) ) -> Q
-						EImply(Exist("x", Px), Q),      // Q
+						EArrow(Exist("x", Px), Q),      // Q
 						ExistElimProof("a",
 							Exist("x", Px),                 // P(a)
 							Reit(Q),                        // Q
-							IImply(Pa, Q),                  // P(a) -> Q
+							IArrow(Pa, Q),                  // P(a) -> Q
 							IExist(Arrow(Pa, Q), "a", "x"), // ∃x.( P(x) -> Q )
 						), // ∃x.( P(x) -> Q )
 					), // ∃x.( P(x) ) -> ∃x.( P(x) -> Q )
@@ -650,7 +650,7 @@ var quantifierProofs = []*ProofsSection{
 							Reit(Forall("x", Px)),           // ∀x.( P(x) )
 							EForall(Arrow(Px, Q), "x", "a"), // P(a) -> Q
 							EForall(Px, "x", "a"),           // P(a)
-							EImply(Pa, Q),                   // Q
+							EArrow(Pa, Q),                   // Q
 						), // Q
 					), // ∀x.( P(x) ) -> Q
 				), // ∀x.( P(x) -> Q ) -> ( ∀x.( P(x) ) -> Q )
@@ -778,7 +778,7 @@ var quantifierProofs = []*ProofsSection{
 									), // ~ Q(c)
 									DisjunctionArrowTheorem(Pa, Qc),    // ~ P(a) -> Q(c)
 									ContrapositiveTheorem(Not(Pa), Qc), // ~ Q(c) -> P(a)
-									EImply(Not(Qc), Pa),                // P(a)
+									EArrow(Not(Qc), Pa),                // P(a)
 								), // P(a)
 								IOr(Pa, Qb, true), // P(a) v Q(b)
 							), // ∀x.( P(x) v Q(b) )
@@ -885,7 +885,7 @@ var quantifierProofs = []*ProofsSection{
 					Exist("x", And(Qx, Arrow(Qx, R))), // Q(a) ^ Q(a) -> R
 					EAnd(Qa, Arrow(Qa, R), true),      // Q(a)
 					EAnd(Qa, Arrow(Qa, R), false),     // Q(a) -> R
-					EImply(Qa, R),                     // R
+					EArrow(Qa, R),                     // R
 				),
 			),
 		),
@@ -897,7 +897,7 @@ var quantifierProofs = []*ProofsSection{
 					Exist("x", Arrow(Qx, R)), // Q(a) -> R
 					Reit(Forall("x", Qx)),    // ∀x.( Q(x) )
 					EForall(Qx, "x", "a"),    // Q(a)
-					EImply(Qa, R),            // R
+					EArrow(Qa, R),            // R
 				),
 			),
 		),
@@ -992,7 +992,7 @@ var quantifierProofs = []*ProofsSection{
 								),
 								DisjunctionArrowTheorem(Pa, Qb),
 								ContrapositiveTheorem(Not(Pa), Qb),
-								EImply(Not(Qb), Pa),
+								EArrow(Not(Qb), Pa),
 							),
 						),
 						IOr(Forall("x", Px), Exist("y", Qy), true),

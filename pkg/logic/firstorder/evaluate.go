@@ -52,9 +52,9 @@ func (e *Env) Evaluate(node Formula) (bool, error) {
 				return l && r, nil
 			case OrOp:
 				return l || r, nil
-			case ImplicationOp:
+			case ArrowOp:
 				return !l || r, nil
-			case BiconditionalOp:
+			case DArrowOp:
 				return l == r, nil
 			}
 			return false, errors.Errorf("invalid bin op: %+v", t)
