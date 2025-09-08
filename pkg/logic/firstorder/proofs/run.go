@@ -11,6 +11,37 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
+// P o (Q i R) => (P o Q) i (P o R)
+func leftDistributive(outer, inner func(Formula, Formula) *BinOpFormula) (Formula, Formula) {
+	left := outer(P, inner(Q, R))
+	right := inner(outer(P, Q), outer(P, R))
+	return left, right
+}
+
+// (P i Q) o R => (P o R) i (Q o R)
+func rightDistributive(outer, inner func(Formula, Formula) *BinOpFormula) (Formula, Formula) {
+	left := outer(inner(P, Q), R)
+	right := inner(outer(P, R), outer(Q, R))
+	return left, right
+}
+
+func distributiveFormulas() ([]Formula, []Formula) {
+	ops := []func(Formula, Formula) *BinOpFormula{
+		And,
+		Or,
+		Arrow,
+		// DArrow,
+	}
+	var lefts, rights []Formula
+	for _, outer := range ops {
+		for _, inner := range ops {
+			lefts = append(lefts, DArrow(leftDistributive(outer, inner)))
+			rights = append(rights, DArrow(rightDistributive(outer, inner)))
+		}
+	}
+	return lefts, rights
+}
+
 func printSomeTruthTables() {
 	formulas := []Formula{
 		Arrow(P, Or(Q, R)),
@@ -20,11 +51,14 @@ func printSomeTruthTables() {
 		DArrow(And(P, Arrow(Q, R)), Arrow(And(P, Q), And(P, R))),
 		DArrow(Or(P, Arrow(Q, R)), Arrow(Or(P, Q), Or(P, R))),
 		Arrow(P, Arrow(Q, R)),
-		DArrow(Arrow(Arrow(P, Q), R), Arrow(Arrow(P, Q), Arrow(P, R))),
 	}
+	leftDistributives, rightDistributives := distributiveFormulas()
+	formulas = append(formulas, leftDistributives...)
+	formulas = append(formulas, rightDistributives...)
 	for _, t := range formulas {
 		fmt.Println(TruthTable(t, NewEnv(map[string]bool{})).ToFormattedTable(func(t *tablewriter.Table) {
 			t.SetAlignment(tablewriter.ALIGN_CENTER)
+			t.SetAutoFormatHeaders(false)
 		}))
 	}
 }
