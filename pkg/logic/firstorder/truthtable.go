@@ -1,7 +1,9 @@
 package logic
 
 import (
+	"fmt"
 	"maps"
+	"strings"
 
 	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/mattfenwick/collections/pkg/set"
@@ -29,32 +31,86 @@ func mappings(xs []string, vars map[string]bool) []map[string]bool {
 	return out
 }
 
-func TruthTable(formula Formula, env *Env) *utils.Table {
-	rawVars, exprs := findVarsAndExpressions(formula)
+type TTResult struct {
+	Vars          []string
+	VarValues     []bool
+	Formulas      []Formula
+	FormulaValues []bool
+}
+
+func (t *TTResult) VarAssignment() string {
+	return strings.Join(
+		slice.ZipWith(func(v string, b bool) string {
+			val := "F"
+			if b {
+				val = "T"
+			}
+			return fmt.Sprintf("%s: %s", v, val)
+		}, t.Vars, t.VarValues),
+		", ",
+	)
+}
+
+type TT struct {
+	RootFormula Formula
+	RootEnv     *Env
+	Vars        []string
+	Formulas    []Formula
+	Results     []*TTResult
+}
+
+func NewTT(env *Env, rootFormula Formula) *TT {
+	rawVars, formulas := findVarsAndExpressions(rootFormula)
 	vars := slice.Sort(set.FromSlice(rawVars).ToSlice())
-	var rows [][]string
+	var results []*TTResult
 	for _, mapping := range mappings(vars, map[string]bool{}) {
 		originalMapping := copyDict(env.PropToTruth)
 		maps.Copy(originalMapping, mapping)
 		env := &Env{PropToTruth: originalMapping, Domain: env.Domain}
-		var row []string
+		var varValues []bool
 		for _, v := range vars {
-			value := "F"
 			e, ok := env.PropToTruth[v]
 			if !ok {
 				panic(errors.Errorf("expected mapping for %s", v))
 			}
+			varValues = append(varValues, e)
+		}
+		var formulaValues []bool
+		for _, formula := range formulas {
+			e, err := env.Evaluate(formula)
+			if err != nil {
+				panic(err)
+			}
+			formulaValues = append(formulaValues, e)
+		}
+		results = append(results, &TTResult{
+			Vars:          vars,
+			VarValues:     varValues,
+			Formulas:      formulas,
+			FormulaValues: formulaValues,
+		})
+	}
+	return &TT{
+		RootFormula: rootFormula,
+		RootEnv:     env,
+		Vars:        vars,
+		Formulas:    formulas,
+		Results:     results,
+	}
+}
+
+func (t *TT) PrettyTable() *utils.Table {
+	var rows [][]string
+	for _, result := range t.Results {
+		var row []string
+		for _, e := range result.VarValues {
+			value := "F"
 			if e {
 				value = "T"
 			}
 			row = append(row, value)
 		}
-		for _, expr := range exprs {
-			result, err := env.Evaluate(expr)
-			if err != nil {
-				panic(err)
-			}
-			// fmt.Printf("result for env %+v, %+v, %+v\n", env, expr, result)
+		for _, result := range result.FormulaValues {
 			value := "T"
 			if !result {
 				value = "F"
@@ -63,7 +119,8 @@ func TruthTable(formula Formula, env *Env) *utils.Table {
 		}
 		rows = append(rows, row)
 	}
-	headers := append(vars, slice.Map(func(t Formula) string { return t.FormulaPrint(true) }, exprs)...)
+	headers := append([]string{}, t.Vars...)
+	headers = append(headers, slice.Map(func(t Formula) string { return t.FormulaPrint(true) }, t.Formulas)...)
 	return utils.NewTable(headers, rows...)
 }
 

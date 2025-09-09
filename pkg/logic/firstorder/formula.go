@@ -23,6 +23,21 @@ const (
 	DArrowOp BinOp = "<->"
 )
 
+func (b BinOp) Helper() func(Formula, Formula) *BinOpFormula {
+	switch b {
+	case AndOp:
+		return And
+	case OrOp:
+		return Or
+	case ArrowOp:
+		return Arrow
+	case DArrowOp:
+		return DArrow
+	default:
+		panic(errors.Errorf("invalid operator %s", b))
+	}
+}
+
 type Quantifier string
 
 const (

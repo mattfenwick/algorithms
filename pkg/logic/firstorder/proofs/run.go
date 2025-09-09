@@ -7,29 +7,40 @@ import (
 	"strings"
 
 	. "github.com/mattfenwick/algorithms/pkg/logic/firstorder"
+	"github.com/mattfenwick/algorithms/pkg/utils"
 	"github.com/mattfenwick/collections/pkg/file"
 	"github.com/olekukonko/tablewriter"
 )
 
 // P o (Q i R) => (P o Q) i (P o R)
-func leftDistributive(outer, inner func(Formula, Formula) *BinOpFormula) (Formula, Formula) {
-	left := outer(P, inner(Q, R))
-	right := inner(outer(P, Q), outer(P, R))
+func leftDistributive(outer, inner BinOp) (Formula, Formula) {
+	o, i := outer.Helper(), inner.Helper()
+	left := o(P, i(Q, R))
+	right := i(o(P, Q), o(P, R))
 	return left, right
 }
 
 // (P i Q) o R => (P o R) i (Q o R)
-func rightDistributive(outer, inner func(Formula, Formula) *BinOpFormula) (Formula, Formula) {
-	left := outer(inner(P, Q), R)
-	right := inner(outer(P, R), outer(Q, R))
+func rightDistributive(outer, inner BinOp) (Formula, Formula) {
+	o, i := outer.Helper(), inner.Helper()
+	left := o(i(P, Q), R)
+	right := i(o(P, R), o(Q, R))
+	return left, right
+}
+
+// (P o Q) o R => P o (Q o R)
+func associative(op BinOp) (Formula, Formula) {
+	o := op.Helper()
+	left := o(o(P, Q), R)
+	right := o(P, o(Q, R))
 	return left, right
 }
 
 func distributiveFormulas() ([]Formula, []Formula) {
-	ops := []func(Formula, Formula) *BinOpFormula{
-		And,
-		Or,
-		Arrow,
+	ops := []BinOp{
+		AndOp,
+		OrOp,
+		ArrowOp,
 		// DArrow,
 	}
 	var lefts, rights []Formula
@@ -42,24 +53,66 @@ func distributiveFormulas() ([]Formula, []Formula) {
 	return lefts, rights
 }
 
-func printSomeTruthTables() {
-	formulas := []Formula{
-		Arrow(P, Or(Q, R)),
-		Or(Arrow(P, Q), Arrow(P, R)),
-		Arrow(And(P, Q), R),
-		Or(Arrow(P, R), Arrow(Q, R)),
-		DArrow(And(P, Arrow(Q, R)), Arrow(And(P, Q), And(P, R))),
-		DArrow(Or(P, Arrow(Q, R)), Arrow(Or(P, Q), Or(P, R))),
-		Arrow(P, Arrow(Q, R)),
+func defaultTableFormat(t *tablewriter.Table) {
+	t.SetAlignment(tablewriter.ALIGN_CENTER)
+	t.SetAutoFormatHeaders(false)
+}
+
+func printSomeTruthTables(dir string) {
+	ops := []BinOp{
+		AndOp,
+		OrOp,
+		ArrowOp,
+		// DArrowOp,
 	}
-	leftDistributives, rightDistributives := distributiveFormulas()
-	formulas = append(formulas, leftDistributives...)
-	formulas = append(formulas, rightDistributives...)
+	// var pairs [][2]Formula
+	distributiveHeaders := []string{"Outer", "Inner", "Forward", "Backward", "Left", "Right"}
+	leftDistributiveTable := utils.NewTable(distributiveHeaders)
+	rightDistributiveTable := utils.NewTable(distributiveHeaders)
+	for _, outer := range ops {
+		for _, inner := range ops {
+			leftFrom, leftTo := leftDistributive(outer, inner)
+			leftEc := NewEquivCheck(leftFrom, leftTo)
+			leftDistributiveTable.AddRow(append([]string{string(outer), string(inner)}, leftEc.Row()...))
+
+			rightFrom, rightTo := rightDistributive(outer, inner)
+			rightEc := NewEquivCheck(rightFrom, rightTo)
+			rightDistributiveTable.AddRow(append([]string{string(outer), string(inner)}, rightEc.Row()...))
+		}
+	}
+	fmt.Println(leftDistributiveTable.ToFormattedTable(defaultTableFormat))
+	fmt.Println(rightDistributiveTable.ToFormattedTable(defaultTableFormat))
+
+	propertiesOut := fmt.Sprintf(`
+# Left distributive
+
+%s
+
+# Right distributive
+
+%s
+`,
+		leftDistributiveTable.ToMarkdown(),
+		rightDistributiveTable.ToMarkdown())
+	if err := file.WriteString(path.Join(dir, "properties.md"), propertiesOut, 0644); err != nil {
+		panic(err)
+	}
+
+	formulas := []Formula{}
+	// 	Arrow(P, Or(Q, R)),
+	// 	Or(Arrow(P, Q), Arrow(P, R)),
+	// 	Arrow(And(P, Q), R),
+	// 	Or(Arrow(P, R), Arrow(Q, R)),
+	// 	DArrow(And(P, Arrow(Q, R)), Arrow(And(P, Q), And(P, R))),
+	// 	DArrow(Or(P, Arrow(Q, R)), Arrow(Or(P, Q), Or(P, R))),
+	// 	Arrow(P, Arrow(Q, R)),
+	// }
+	// leftDistributives, rightDistributives := distributiveFormulas()
+	// formulas = append(formulas, leftDistributives...)
+	// formulas = append(formulas, rightDistributives...)
 	for _, t := range formulas {
-		fmt.Println(TruthTable(t, NewEnv(map[string]bool{})).ToFormattedTable(func(t *tablewriter.Table) {
-			t.SetAlignment(tablewriter.ALIGN_CENTER)
-			t.SetAutoFormatHeaders(false)
-		}))
+		tt := NewTT(NewEnv(map[string]bool{}), t)
+		fmt.Println(tt.PrettyTable().ToFormattedTable(defaultTableFormat))
 	}
 }
 
@@ -130,21 +183,18 @@ func printSomeTruthTablesDeprecated() {
 			"R(c)": false,
 		}, d...)
 		fmt.Printf("[%d] for domain %+v\n", id, d)
-		fmt.Println(TruthTableFromFormulas(env, formulas...).ToFormattedTable(func(t *tablewriter.Table) {
-			t.SetAlignment(tablewriter.ALIGN_CENTER)
-			t.SetAutoFormatHeaders(false)
-		}))
+		fmt.Println(TruthTableFromFormulas(env, formulas...).ToFormattedTable(defaultTableFormat))
 	}
 }
 
 func Run() {
-	if false {
+	proofDir := "pkg/logic/firstorder/proofs"
+	if true {
 		// TODO what to do with this?
-		printSomeTruthTables()
+		printSomeTruthTables(proofDir)
 		os.Exit(1)
 	}
 
-	proofDir := "pkg/logic/firstorder/proofs"
 	writeOutProofs(quantifierProofs, path.Join(proofDir, "quantifier-proofs.md"))
 	writeOutProofs(propositionalProofSections, path.Join(proofDir, "propositional-proofs.md"))
 }
