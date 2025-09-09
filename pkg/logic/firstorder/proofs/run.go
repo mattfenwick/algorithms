@@ -36,6 +36,22 @@ func associative(op BinOp) (Formula, Formula) {
 	return left, right
 }
 
+// (P o Q) ^ (Q o R) => P o R
+func transitive(op BinOp) (Formula, Formula) {
+	o := op.Helper()
+	left := And(o(P, Q), o(Q, R))
+	right := o(P, R)
+	return left, right
+}
+
+// P o Q => Q o P
+func commutative(op BinOp) (Formula, Formula) {
+	o := op.Helper()
+	left := o(P, Q)
+	right := o(Q, P)
+	return left, right
+}
+
 func distributiveFormulas() ([]Formula, []Formula) {
 	ops := []BinOp{
 		AndOp,
@@ -63,9 +79,13 @@ func printSomeTruthTables(dir string) {
 		AndOp,
 		OrOp,
 		ArrowOp,
-		// DArrowOp,
+		DArrowOp,
 	}
 	// var pairs [][2]Formula
+	assocHeaders := []string{"Op", "Forward", "Backward", "Left", "Right"}
+	assocTable := utils.NewTable(assocHeaders)
+	transTable := utils.NewTable(assocHeaders)
+	commTable := utils.NewTable(assocHeaders)
 	distributiveHeaders := []string{"Outer", "Inner", "Forward", "Backward", "Left", "Right"}
 	leftDistributiveTable := utils.NewTable(distributiveHeaders)
 	rightDistributiveTable := utils.NewTable(distributiveHeaders)
@@ -79,6 +99,15 @@ func printSomeTruthTables(dir string) {
 			rightEc := NewEquivCheck(rightFrom, rightTo)
 			rightDistributiveTable.AddRow(append([]string{string(outer), string(inner)}, rightEc.Row()...))
 		}
+
+		assocEc := NewEquivCheck(associative(outer))
+		assocTable.AddRow(append([]string{string(outer)}, assocEc.Row()...))
+
+		transEc := NewEquivCheck(transitive(outer))
+		transTable.AddRow(append([]string{string(outer)}, transEc.Row()...))
+
+		commEc := NewEquivCheck(commutative(outer))
+		commTable.AddRow(append([]string{string(outer)}, commEc.Row()...))
 	}
 	fmt.Println(leftDistributiveTable.ToFormattedTable(defaultTableFormat))
 	fmt.Println(rightDistributiveTable.ToFormattedTable(defaultTableFormat))
@@ -91,14 +120,31 @@ func printSomeTruthTables(dir string) {
 # Right distributive
 
 %s
+
+# Associative
+
+%s
+
+# Transitivity
+
+%s
+
+# Commutativity
+
+%s
 `,
 		leftDistributiveTable.ToMarkdown(),
-		rightDistributiveTable.ToMarkdown())
+		rightDistributiveTable.ToMarkdown(),
+		assocTable.ToMarkdown(),
+		transTable.ToMarkdown(),
+		commTable.ToMarkdown())
 	if err := file.WriteString(path.Join(dir, "properties.md"), propertiesOut, 0644); err != nil {
 		panic(err)
 	}
 
-	formulas := []Formula{}
+	formulas := []Formula{
+		Arrow(Arrow(Arrow(P, Q), R), Arrow(P, Arrow(Q, R))),
+	}
 	// 	Arrow(P, Or(Q, R)),
 	// 	Or(Arrow(P, Q), Arrow(P, R)),
 	// 	Arrow(And(P, Q), R),
@@ -189,8 +235,7 @@ func printSomeTruthTablesDeprecated() {
 
 func Run() {
 	proofDir := "pkg/logic/firstorder/proofs"
-	if true {
-		// TODO what to do with this?
+	if false {
 		printSomeTruthTables(proofDir)
 		os.Exit(1)
 	}
