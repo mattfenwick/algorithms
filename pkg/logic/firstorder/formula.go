@@ -191,7 +191,9 @@ func FreeTermVar(name string) *TermVar {
 }
 
 // PredicateFormula without args is used by 0th-order
+// - example: T, P
 // PredicateFormula with args is used by ∀/∃
+// - example: Q(a, x) -- where a is free and x is bound
 type PredicateFormula struct {
 	Name  string
 	Terms []*TermVar
