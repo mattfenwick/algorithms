@@ -9,6 +9,7 @@
     5. [~ ( P v Q ) <-> ( ~ P ^ ~ Q )](#proof-1-5)
     6. [~ ( P ^ Q ) <-> ( ~ P v ~ Q )](#proof-1-6)
     7. [( P <-> ~ Q ) <-> ~ ( P <-> Q )](#proof-1-7)
+    8. [( ( ( P -> Q ) ^ ( Q -> R ) ) ^ ( R -> P ) ) -> ( ( ( P <-> Q ) ^ ( Q <-> R ) ) ^ ( R <-> P ) )](#proof-1-8)
 2. [reflexivity](#reflexivity)
     1. [P -> P](#proof-2-1)
     2. [( P ^ P ) <-> P](#proof-2-2)
@@ -297,6 +298,40 @@
 | 47 |  | <pre>.   P <-> ~ Q</pre> | I <-> | 35, 46 |
 | 48 |  | <pre>~ ( P <-> Q ) -> ( P <-> ~ Q )</pre> | subproof I -> | 26 - 47 |
 | 49 |  | <pre>( P <-> ~ Q ) <-> ~ ( P <-> Q )</pre> | I <-> | 25, 48 |
+
+## ( ( ( P -> Q ) ^ ( Q -> R ) ) ^ ( R -> P ) ) -> ( ( ( P <-> Q ) ^ ( Q <-> R ) ) ^ ( R <-> P ) ) <a name="proof-1-8"></a>
+
+| Line | Term vars | Formula | Justification | Lines used |
+| - | - | - | - | - |
+| 1 |  | <pre>.   ( ( P -> Q ) ^ ( Q -> R ) ) ^ ( R -> P )</pre> | Assume: I -> |  |
+| 2 |  | <pre>.   ( P -> Q ) ^ ( Q -> R )</pre> | E ^ (L) | 1 |
+| 3 |  | <pre>.   P -> Q</pre> | E ^ (L) | 2 |
+| 4 |  | <pre>.   Q -> R</pre> | E ^ (R) | 2 |
+| 5 |  | <pre>.   R -> P</pre> | E ^ (R) | 1 |
+| 6 |  | <pre>.   .   P</pre> | Assume: I -> |  |
+| 7 |  | <pre>.   .   P -> Q</pre> | Reiterate | 3 |
+| 8 |  | <pre>.   .   Q -> R</pre> | Reiterate | 4 |
+| 9 |  | <pre>.   .   Q</pre> | E -> | 7, 6 |
+| 10 |  | <pre>.   .   R</pre> | E -> | 8, 9 |
+| 11 |  | <pre>.   P -> R</pre> | subproof I -> | 6 - 10 |
+| 12 |  | <pre>.   .   Q</pre> | Assume: I -> |  |
+| 13 |  | <pre>.   .   Q -> R</pre> | Reiterate | 4 |
+| 14 |  | <pre>.   .   R -> P</pre> | Reiterate | 5 |
+| 15 |  | <pre>.   .   R</pre> | E -> | 13, 12 |
+| 16 |  | <pre>.   .   P</pre> | E -> | 14, 15 |
+| 17 |  | <pre>.   Q -> P</pre> | subproof I -> | 12 - 16 |
+| 18 |  | <pre>.   .   R</pre> | Assume: I -> |  |
+| 19 |  | <pre>.   .   R -> P</pre> | Reiterate | 5 |
+| 20 |  | <pre>.   .   P -> Q</pre> | Reiterate | 3 |
+| 21 |  | <pre>.   .   P</pre> | E -> | 19, 18 |
+| 22 |  | <pre>.   .   Q</pre> | E -> | 20, 21 |
+| 23 |  | <pre>.   R -> Q</pre> | subproof I -> | 18 - 22 |
+| 24 |  | <pre>.   P <-> Q</pre> | I <-> | 3, 17 |
+| 25 |  | <pre>.   Q <-> R</pre> | I <-> | 4, 23 |
+| 26 |  | <pre>.   R <-> P</pre> | I <-> | 5, 11 |
+| 27 |  | <pre>.   ( P <-> Q ) ^ ( Q <-> R )</pre> | I ^ | 24, 25 |
+| 28 |  | <pre>.   ( ( P <-> Q ) ^ ( Q <-> R ) ) ^ ( R <-> P )</pre> | I ^ | 27, 26 |
+| 29 |  | <pre>( ( ( P -> Q ) ^ ( Q -> R ) ) ^ ( R -> P ) ) -> ( ( ( P <-> Q ) ^ ( Q <-> R ) ) ^ ( R <-> P ) )</pre> | subproof I -> | 1 - 28 |
 
 # reflexivity <a name="reflexivity"></a>
 

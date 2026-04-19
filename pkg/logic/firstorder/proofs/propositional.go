@@ -229,6 +229,39 @@ var propositionalProofSections = []*ProofsSection{
 			),
 			IDArrow(DArrow(P, Not(Q)), Not(DArrow(P, Q))),
 		),
+		RootProof(
+			"( ( ( P -> Q ) ^ ( Q -> R ) ) ^ ( R -> P ) ) -> ( ( ( P <-> Q ) ^ ( Q <-> R ) ) ^ ( R <-> P ) )",
+			ArrowProof(
+				And(And(Arrow(P, Q), Arrow(Q, R)), Arrow(R, P)),         // ( ( P -> Q ) ^ ( Q -> R ) ) ^ ( R -> P )
+				EAnd(And(Arrow(P, Q), Arrow(Q, R)), Arrow(R, P), true),  // ( P -> Q ) ^ ( Q -> R )
+				EAnd(Arrow(P, Q), Arrow(Q, R), true),                    // P -> Q
+				EAnd(Arrow(P, Q), Arrow(Q, R), false),                   // Q -> R
+				EAnd(And(Arrow(P, Q), Arrow(Q, R)), Arrow(R, P), false), // R -> P
+				ArrowProof(P,
+					Reit(Arrow(P, Q)), // P -> Q
+					Reit(Arrow(Q, R)), // Q -> R
+					EArrow(P, Q),      // Q
+					EArrow(Q, R),      // R
+				), // P -> R
+				ArrowProof(Q,
+					Reit(Arrow(Q, R)), // Q -> R
+					Reit(Arrow(R, P)), // R -> P
+					EArrow(Q, R),      // R
+					EArrow(R, P),      // P
+				), // Q -> P
+				ArrowProof(R,
+					Reit(Arrow(R, P)), // R -> P
+					Reit(Arrow(P, Q)), // P -> Q
+					EArrow(R, P),      // P
+					EArrow(P, Q),      // Q
+				), // R -> Q
+				IDArrow(P, Q),
+				IDArrow(Q, R),
+				IDArrow(R, P),
+				IAnd(DArrow(P, Q), DArrow(Q, R)),
+				IAnd(And(DArrow(P, Q), DArrow(Q, R)), DArrow(R, P)),
+			),
+		),
 	),
 	NewProofsSection("reflexivity",
 		RootProof(
